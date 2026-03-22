@@ -1,0 +1,5 @@
+{
+    "name": "Campus Lab",
+    "description": "A college platform for students to practice DSA problems, participate in contests, and track their progress.",
+    "requestFramePermissions": []
+}
