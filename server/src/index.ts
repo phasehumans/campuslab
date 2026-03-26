@@ -14,6 +14,9 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
+app.get('/', (_req, res) => {
+    res.send('Backend is running')
+})
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/problems', problemRouter)
 app.use('/api/v1/code-execution', executionRouter)

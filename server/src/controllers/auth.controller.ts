@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { UserRole } from '@prisma/client'
+import { UserRole } from '../generated/prisma/enums.js'
 import { z } from 'zod'
 import { db } from '../libs/db.js'
 
