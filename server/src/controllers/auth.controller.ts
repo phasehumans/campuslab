@@ -15,12 +15,12 @@ const getJwtSecret = (): string => {
 
 const registerUserSchema = z.object({
     name: z.string().min(1),
-    email: z.email(),
+    prn: z.string().min(8).max(8),
     password: z.string().min(6),
 })
 
 const loginUserSchema = z.object({
-    email: z.email(),
+    prn: z.string().min(8).max(8),
     password: z.string().min(1),
 })
 
@@ -35,12 +35,12 @@ export const registerUser = async (req: Request, res: Response) => {
         })
     }
 
-    const { name, email, password } = parseData.data
+    const { name, prn, password } = parseData.data
 
     try {
         const existingUser = await db.user.findUnique({
             where: {
-                email,
+                prn,
             },
         })
 
@@ -54,7 +54,7 @@ export const registerUser = async (req: Request, res: Response) => {
         const hashPassword = await bcrypt.hash(password, 10)
         const newUser = await db.user.create({
             data: {
-                email,
+                prn,
                 name,
                 password: hashPassword,
                 role: UserRole.USER,
@@ -78,7 +78,7 @@ export const registerUser = async (req: Request, res: Response) => {
             user: {
                 id: newUser.id,
                 name: newUser.name,
-                email: newUser.email,
+                prn: newUser.prn,
                 role: newUser.role,
             },
         })
@@ -102,12 +102,12 @@ export const loginUser = async (req: Request, res: Response) => {
         })
     }
 
-    const { email, password } = parseData.data
+    const { prn, password } = parseData.data
 
     try {
         const user = await db.user.findUnique({
             where: {
-                email,
+                prn,
             },
         })
 
@@ -143,7 +143,7 @@ export const loginUser = async (req: Request, res: Response) => {
             user: {
                 id: user.id,
                 name: user.name,
-                email: user.email,
+                prn: user.prn,
                 role: user.role,
             },
         })
@@ -206,7 +206,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
             user: {
                 id: user.id,
                 name: user.name,
-                email: user.email,
+                prn: user.prn,
                 role: user.role,
             },
         })

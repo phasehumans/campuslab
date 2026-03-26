@@ -1,0 +1,24 @@
+#### Setup
+
+- setup wsl
+    - wsl --install
+    - sudo apt update && sudo apt upgrade -y
+- setup docker and docker compose
+    - sudo apt update && sudo apt install -y docker
+    - sudo apt install docker-compose-plugin
+- setup judge0 and config
+    - wget https://github.com/judge0/judge0/releases/download/v1.13.1/judge0-v1.13.1.zip
+    - unzip judge0-v1.13.1.zip
+    - cd judge0-v1.13.1/
+    - nano judge0.conf
+    - set redis and postgres password
+    - docker-compose up -d db redis
+    - sleep 10
+    - docker-compose up -d
+    - sleep 5
+    - docker compose ps
+    - docker ps
+    - curl http://localhost:2358/languages
+    - visit http://localhost:2358/docs
+- setup postgres
+    - docker run --name campus-lab-postgres -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=mypassword -e POSTGRES_DB=campus_lab -p 5433:5432 -d postgres:16
