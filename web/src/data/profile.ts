@@ -1,6 +1,6 @@
 export const MOCK_USER = {
-    name: 'Alex Chen',
-    username: 'alexc',
+    name: 'Chaitanya',
+    username: 'chaitanya',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
     joinDate: 'September 2023',
     rank: 1423,

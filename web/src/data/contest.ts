@@ -6,8 +6,8 @@ export const MOCK_QUESTIONS = [
 ]
 
 export const MOCK_LEADERBOARD = [
-    { rank: 1, name: 'Alex Chen', score: 800, solved: 4 },
-    { rank: 2, name: 'You', score: 500, solved: 3 },
-    { rank: 3, name: 'Sarah Smith', score: 300, solved: 2 },
-    { rank: 4, name: 'John Doe', score: 100, solved: 1 },
+    { rank: 1, name: 'Jayesh', score: 800, solved: 4 },
+    { rank: 2, name: 'Sachin', score: 500, solved: 3 },
+    { rank: 3, name: 'Sakshi', score: 300, solved: 2 },
+    { rank: 4, name: 'Chaitanya', score: 100, solved: 1 },
 ]

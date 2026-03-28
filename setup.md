@@ -12,9 +12,9 @@
     - cd judge0-v1.13.1/
     - nano judge0.conf
     - set redis and postgres password
-    - docker-compose up -d db redis
+    - docker compose up -d db redis
     - sleep 10
-    - docker-compose up -d
+    - docker compose up -d <<<<
     - sleep 5
     - docker compose ps
     - docker ps
