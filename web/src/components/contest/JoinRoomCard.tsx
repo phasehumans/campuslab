@@ -5,9 +5,15 @@ interface JoinRoomCardProps {
     roomCode: string
     setRoomCode: (code: string) => void
     handleJoinRoom: (e: React.MouseEvent) => void
+    isJoining?: boolean
 }
 
-export function JoinRoomCard({ roomCode, setRoomCode, handleJoinRoom }: JoinRoomCardProps) {
+export function JoinRoomCard({
+    roomCode,
+    setRoomCode,
+    handleJoinRoom,
+    isJoining = false,
+}: JoinRoomCardProps) {
     return (
         <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#161616] p-6 flex flex-col shadow-xl">
             <div className="relative z-10 flex flex-col h-full">
@@ -51,10 +57,10 @@ export function JoinRoomCard({ roomCode, setRoomCode, handleJoinRoom }: JoinRoom
 
                 <button
                     onClick={handleJoinRoom}
-                    disabled={roomCode.length < 4}
+                    disabled={roomCode.length < 4 || isJoining}
                     className="w-full mt-6 shrink-0 bg-[#F5F5F5] hover:bg-white disabled:bg-[#F5F5F5]/50 disabled:text-black/50 disabled:cursor-not-allowed text-black font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm"
                 >
-                    Join Contest <ArrowRight className="h-4 w-4" />
+                    {isJoining ? 'Joining...' : 'Join Contest'} <ArrowRight className="h-4 w-4" />
                 </button>
             </div>
         </div>

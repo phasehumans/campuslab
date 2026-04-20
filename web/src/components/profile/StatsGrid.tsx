@@ -1,11 +1,19 @@
 import React from 'react'
 import { Code2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { statsData } from '@/data/profile'
+import type { ProfileResponse } from '@/lib/types'
 
-export function StatsGrid() {
-    const totalSolved = statsData.reduce((acc, curr) => acc + curr.value, 0)
+interface StatsGridProps {
+    stats: ProfileResponse['stats']
+}
 
+const colorMap = {
+    Easy: 'bg-emerald-400',
+    Medium: 'bg-amber-400',
+    Hard: 'bg-rose-400',
+} as const
+
+export function StatsGrid({ stats }: StatsGridProps) {
     return (
         <div className="rounded-2xl border border-white/10 bg-[#161616] p-6 shadow-xl">
             <h3 className="text-base font-medium text-white tracking-tight mb-6 flex items-center gap-2">
@@ -16,7 +24,7 @@ export function StatsGrid() {
                 <div className="relative h-32 w-32 shrink-0 flex items-center justify-center rounded-full border-4 border-white/5">
                     <div className="flex flex-col items-center justify-center">
                         <span className="text-3xl font-bold text-white tracking-tight">
-                            {totalSolved}
+                            {stats.totalSolved}
                         </span>
                         <span className="text-[10px] text-gray-500 uppercase tracking-wider mt-1">
                             Solved
@@ -25,7 +33,7 @@ export function StatsGrid() {
                 </div>
 
                 <div className="flex-1 w-full space-y-5">
-                    {statsData.map((stat) => (
+                    {stats.byDifficulty.map((stat) => (
                         <div key={stat.name} className="space-y-2">
                             <div className="flex justify-between text-xs">
                                 <span className="text-gray-400 font-medium">{stat.name}</span>
@@ -38,8 +46,10 @@ export function StatsGrid() {
                             </div>
                             <div className="h-1.5 w-full bg-[#1A1A1A] rounded-full overflow-hidden">
                                 <div
-                                    className={cn('h-full rounded-full', stat.bg)}
-                                    style={{ width: `${(stat.value / stat.total) * 100}%` }}
+                                    className={cn('h-full rounded-full', colorMap[stat.name])}
+                                    style={{
+                                        width: `${stat.total === 0 ? 0 : (stat.value / stat.total) * 100}%`,
+                                    }}
                                 />
                             </div>
                         </div>

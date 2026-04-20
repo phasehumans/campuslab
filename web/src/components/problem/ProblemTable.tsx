@@ -1,23 +1,16 @@
 import React from 'react'
 import { CheckCircle2, Circle } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-interface Problem {
-    id: number
-    title: string
-    difficulty: string
-    status: string
-    topics: string[]
-}
+import type { ProblemSummary } from '@/lib/types'
 
 interface ProblemTableProps {
-    problems: Problem[]
-    onProblemClick: (id: number) => void
+    problems: ProblemSummary[]
+    onProblemClick: (id: string) => void
 }
 
 export function ProblemTable({ problems, onProblemClick }: ProblemTableProps) {
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-2xl border border-white/5 bg-[#161616]">
             <table className="w-full text-left text-sm border-collapse">
                 <thead>
                     <tr className="border-b border-white/10 text-gray-500">
@@ -54,19 +47,18 @@ export function ProblemTable({ problems, onProblemClick }: ProblemTableProps) {
                                     )}
                                 </td>
                                 <td className="px-4 py-4">
-                                    <span className="text-gray-500 mr-3">{problem.id}.</span>
                                     <span className="font-medium text-gray-200 group-hover:text-white transition-colors">
                                         {problem.title}
                                     </span>
                                 </td>
                                 <td className="px-4 py-4">
                                     <div className="flex flex-wrap gap-1.5">
-                                        {problem.topics.map((t) => (
+                                        {problem.tags.map((tag) => (
                                             <span
-                                                key={t}
+                                                key={tag}
                                                 className="px-2 py-1 text-[11px] rounded-md bg-[#262626] text-gray-400 whitespace-nowrap"
                                             >
-                                                {t}
+                                                {tag}
                                             </span>
                                         ))}
                                     </div>

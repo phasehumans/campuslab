@@ -1,21 +1,33 @@
 import { Check, Copy } from 'lucide-react'
 import CodeMirror from '@uiw/react-codemirror'
-import { rust } from '@codemirror/lang-rust'
+import { cpp } from '@codemirror/lang-cpp'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
-import { DEFAULT_CODE, LANGUAGES } from '@/data/code'
+import { FALLBACK_CODE, LANGUAGES } from '@/data/code'
+import type { EditorLanguage } from '@/lib/types'
 
 interface SolutionsPanelProps {
-    language: string
+    language: EditorLanguage
     copied: boolean
     onCopy: () => void
+    solutionCode?: string
+    editorial?: string | null
 }
 
-export function SolutionsPanel({ language, copied, onCopy }: SolutionsPanelProps) {
+export function SolutionsPanel({
+    language,
+    copied,
+    onCopy,
+    solutionCode,
+    editorial,
+}: SolutionsPanelProps) {
+    const activeLanguage = LANGUAGES.find((item) => item.id === language)
+    const code = solutionCode ?? FALLBACK_CODE[language]
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-white">
-                    Optimal Solution ({LANGUAGES.find((l) => l.id === language)?.name})
+                    Reference Solution ({activeLanguage?.name})
                 </h2>
                 <button
                     onClick={onCopy}
@@ -31,9 +43,9 @@ export function SolutionsPanel({ language, copied, onCopy }: SolutionsPanelProps
             </div>
             <div className="rounded-lg overflow-hidden border border-white/5">
                 <CodeMirror
-                    value={DEFAULT_CODE[language]}
+                    value={code}
                     theme={vscodeDark}
-                    extensions={[LANGUAGES.find((l) => l.id === language)?.ext() || rust()]}
+                    extensions={[activeLanguage?.ext() || cpp()]}
                     readOnly={true}
                     className="text-sm"
                     basicSetup={{
@@ -43,21 +55,12 @@ export function SolutionsPanel({ language, copied, onCopy }: SolutionsPanelProps
                     }}
                 />
             </div>
-            <div className="prose prose-invert max-w-none text-sm text-gray-300">
-                <h3 className="text-white font-medium">Complexity</h3>
-                <ul>
-                    <li>
-                        <strong>Time Complexity:</strong> O(N) where N is the number of elements in
-                        the array. We traverse the list containing N elements exactly once. Each
-                        lookup in the table costs only O(1) time.
-                    </li>
-                    <li>
-                        <strong>Space Complexity:</strong> O(N). The extra space required depends on
-                        the number of items stored in the hash table, which stores at most N
-                        elements.
-                    </li>
-                </ul>
-            </div>
+            {editorial ? (
+                <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4 text-sm text-gray-300 leading-relaxed">
+                    <h3 className="mb-2 text-white font-medium">Approach</h3>
+                    <p>{editorial}</p>
+                </div>
+            ) : null}
         </div>
     )
 }

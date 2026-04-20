@@ -22,15 +22,52 @@ type Judge0Submission = {
     memory_limit?: number
 }
 
-export const getJudge0LanguageId = (language: string): number | null => {
-    const languageMap: Record<string, number> = {
-        PYTHON: 71,
-        JAVASCRIPT: 63,
-        'C++': 54,
-        JAVA: 62,
+const judge0LanguageRegistry = {
+    cpp: {
+        aliases: ['cpp', 'c++'],
+        id: 54,
+        label: 'C++',
+    },
+    python: {
+        aliases: ['python', 'py'],
+        id: 71,
+        label: 'Python',
+    },
+    java: {
+        aliases: ['java'],
+        id: 62,
+        label: 'Java',
+    },
+} as const
+
+const getJudge0ApiUrl = () => {
+    const apiUrl = process.env.JUDGE_API_URL
+
+    if (!apiUrl) {
+        throw new Error('JUDGE_API_URL is not configured')
     }
 
-    return languageMap[language.toUpperCase()] ?? null
+    return apiUrl
+}
+
+export const normalizeJudge0LanguageKey = (language: string) => {
+    const normalized = language.trim().toLowerCase()
+
+    return (
+        Object.entries(judge0LanguageRegistry).find(([, config]) =>
+            config.aliases.some((alias) => alias === normalized)
+        )?.[0] ?? null
+    )
+}
+
+export const getJudge0LanguageId = (language: string): number | null => {
+    const normalizedKey = normalizeJudge0LanguageKey(language)
+    return normalizedKey ? judge0LanguageRegistry[normalizedKey].id : null
+}
+
+export const getJudge0LanguageDisplayName = (language: string) => {
+    const normalizedKey = normalizeJudge0LanguageKey(language)
+    return normalizedKey ? judge0LanguageRegistry[normalizedKey].label : language
 }
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
@@ -38,7 +75,7 @@ const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
 export const pollBatchResults = async (tokens: string[]): Promise<Judge0Result[]> => {
     while (true) {
         const { data } = await axios.get<Judge0BatchResultsResponse>(
-            `${process.env.JUDGE_API_URL}/submissions/batch`,
+            `${getJudge0ApiUrl()}/submissions/batch`,
             {
                 params: {
                     tokens: tokens.join(','),
@@ -64,7 +101,7 @@ export const submitBatch = async (
     submissions: Judge0Submission[]
 ): Promise<Judge0BatchTokenResponse[]> => {
     const { data } = await axios.post<{ submissions: Judge0BatchTokenResponse[] }>(
-        `${process.env.JUDGE_API_URL}/submissions/batch?base64_encoded=false`,
+        `${getJudge0ApiUrl()}/submissions/batch?base64_encoded=false`,
         {
             submissions,
         }
@@ -74,11 +111,8 @@ export const submitBatch = async (
 }
 
 export const getJudge0LanguageName = (languageId: number): string => {
-    const languageMap: Record<number, string> = {
-        71: 'Python',
-        63: 'JavaScript',
-        54: 'C++',
-        62: 'Java',
-    }
-    return languageMap[languageId] ?? 'Unknown'
+    return (
+        Object.values(judge0LanguageRegistry).find((language) => language.id === languageId)
+            ?.label ?? 'Unknown'
+    )
 }

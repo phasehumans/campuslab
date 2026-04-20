@@ -1,0 +1,76 @@
+{
+  "rooms": [
+    {
+      "code": "VV48X2",
+      "hostUserId": "bac2c09d-4312-425b-89e1-871f07bf036e",
+      "maxParticipants": 4,
+      "questionCount": 3,
+      "timeLimitMinutes": 45,
+      "topics": [
+        "Array",
+        "Binary Search",
+        "Dynamic Programming"
+      ],
+      "problemIds": [
+        "c760e775-0e1e-45bd-9a44-a4e98cecf375",
+        "02862102-e87c-418d-b396-f22ea083f911",
+        "dddedc02-7c3c-4e0f-b3fe-3fbe9ec9ab18"
+      ],
+      "problemPoints": {
+        "c760e775-0e1e-45bd-9a44-a4e98cecf375": 200,
+        "02862102-e87c-418d-b396-f22ea083f911": 100,
+        "dddedc02-7c3c-4e0f-b3fe-3fbe9ec9ab18": 200
+      },
+      "participants": [
+        {
+          "userId": "bac2c09d-4312-425b-89e1-871f07bf036e",
+          "joinedAt": "2026-04-20T15:03:43.116Z"
+        }
+      ],
+      "standings": {
+        "bac2c09d-4312-425b-89e1-871f07bf036e": {
+          "score": 0,
+          "solvedProblemIds": [],
+          "lastAcceptedAt": null
+        }
+      },
+      "createdAt": "2026-04-20T15:03:43.116Z",
+      "startsAt": "2026-04-20T15:03:43.116Z",
+      "endsAt": "2026-04-20T15:48:43.116Z"
+    },
+    {
+      "code": "KT2H8Z",
+      "hostUserId": "bac2c09d-4312-425b-89e1-871f07bf036e",
+      "maxParticipants": 4,
+      "questionCount": 2,
+      "timeLimitMinutes": 15,
+      "topics": [
+        "Array"
+      ],
+      "problemIds": [
+        "c760e775-0e1e-45bd-9a44-a4e98cecf375",
+        "dddedc02-7c3c-4e0f-b3fe-3fbe9ec9ab18"
+      ],
+      "problemPoints": {
+        "c760e775-0e1e-45bd-9a44-a4e98cecf375": 200,
+        "dddedc02-7c3c-4e0f-b3fe-3fbe9ec9ab18": 200
+      },
+      "participants": [
+        {
+          "userId": "bac2c09d-4312-425b-89e1-871f07bf036e",
+          "joinedAt": "2026-04-20T15:06:31.873Z"
+        }
+      ],
+      "standings": {
+        "bac2c09d-4312-425b-89e1-871f07bf036e": {
+          "score": 0,
+          "solvedProblemIds": [],
+          "lastAcceptedAt": null
+        }
+      },
+      "createdAt": "2026-04-20T15:06:31.873Z",
+      "startsAt": "2026-04-20T15:06:31.873Z",
+      "endsAt": "2026-04-20T15:21:31.873Z"
+    }
+  ]
+}

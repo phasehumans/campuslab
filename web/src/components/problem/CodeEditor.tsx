@@ -1,6 +1,6 @@
 import React from 'react'
 import CodeMirror from '@uiw/react-codemirror'
-import { rust } from '@codemirror/lang-rust'
+import { cpp } from '@codemirror/lang-cpp'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { LANGUAGES } from '@/data/code'
 
@@ -18,7 +18,7 @@ export function CodeEditor({ code, setCode, language }: CodeEditorProps) {
                 onChange={(val) => setCode(val)}
                 height="100%"
                 theme={vscodeDark}
-                extensions={[LANGUAGES.find((l) => l.id === language)?.ext() || rust()]}
+                extensions={[LANGUAGES.find((l) => l.id === language)?.ext() || cpp()]}
                 className="h-full text-sm"
                 basicSetup={{
                     lineNumbers: true,

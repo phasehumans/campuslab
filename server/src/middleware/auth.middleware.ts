@@ -14,45 +14,81 @@ const getJwtSecret = (): string => {
     return jwtSecret
 }
 
+const getUserFromToken = async (token?: string) => {
+    if (!token) {
+        return null
+    }
+
+    const verified = jwt.verify(token, getJwtSecret()) as AuthTokenPayload
+
+    return db.user.findUnique({
+        where: {
+            id: verified.id,
+        },
+        select: {
+            id: true,
+            name: true,
+            prn: true,
+            role: true,
+        },
+    })
+}
+
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies?.jwt as string | undefined
 
     if (!token) {
-        return res.status(401).json({ message: 'Access Denied: No Token Provided' })
+        return res.status(401).json({
+            success: false,
+            message: 'Access denied: no token provided',
+        })
     }
 
     try {
-        const verified = jwt.verify(token, getJwtSecret()) as AuthTokenPayload
-        const user = await db.user.findUnique({
-            where: {
-                id: verified.id,
-            },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                role: true,
-            },
-        })
+        const user = await getUserFromToken(token)
 
         if (!user) {
             return res.status(404).json({
-                message: 'User Not Found',
+                success: false,
+                message: 'User not found',
             })
         }
 
         req.user = user
-        next()
+        return next()
     } catch (error) {
         return res.status(400).json({
             success: false,
-            message: 'Invalid Token',
+            message: 'Invalid token',
             error: (error as Error).message,
         })
     }
 }
 
-// RBAC - Check if user is admin
+export const optionalAuthMiddleware = async (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+) => {
+    const token = req.cookies?.jwt as string | undefined
+
+    if (!token) {
+        return next()
+    }
+
+    try {
+        const user = await getUserFromToken(token)
+
+        if (user) {
+            req.user = user
+        }
+    } catch {
+        req.user = undefined
+    }
+
+    return next()
+}
+
 export const checkAdmin = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId = req.user?.id
@@ -73,15 +109,16 @@ export const checkAdmin = async (req: Request, res: Response, next: NextFunction
 
         if (!user || user.role !== 'ADMIN') {
             return res.status(403).json({
-                message: 'Access Denied: Admins Only',
+                success: false,
+                message: 'Access denied: admins only',
             })
         }
 
-        next()
+        return next()
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: 'Server Error',
+            message: 'Server error',
             error: (error as Error).message,
         })
     }

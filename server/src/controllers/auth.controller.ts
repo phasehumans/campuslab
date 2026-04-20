@@ -13,6 +13,17 @@ const getJwtSecret = (): string => {
     return jwtSecret
 }
 
+const getCookieOptions = () => {
+    const isProduction = process.env.NODE_ENV === 'production'
+
+    return {
+        httpOnly: true,
+        sameSite: 'lax' as const,
+        secure: isProduction,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    }
+}
+
 const registerUserSchema = z.object({
     name: z.string().min(1),
     prn: z.string().min(9).max(9),
@@ -65,12 +76,7 @@ export const registerUser = async (req: Request, res: Response) => {
             expiresIn: '7d',
         })
 
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            sameSite: 'strict',
-            secure: process.env.NODE_ENV !== 'development',
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        })
+        res.cookie('jwt', token, getCookieOptions())
 
         return res.status(201).json({
             success: true,
@@ -130,12 +136,7 @@ export const loginUser = async (req: Request, res: Response) => {
             expiresIn: '7d',
         })
 
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            sameSite: 'strict',
-            secure: process.env.NODE_ENV !== 'development',
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        })
+        res.cookie('jwt', token, getCookieOptions())
 
         return res.status(200).json({
             success: true,
@@ -158,11 +159,9 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const logoutUser = async (_req: Request, res: Response) => {
     try {
-        res.clearCookie('jwt', {
-            httpOnly: true,
-            sameSite: 'strict',
-            secure: process.env.NODE_ENV !== 'development',
-        })
+        const { maxAge: _maxAge, ...clearCookieOptions } = getCookieOptions()
+
+        res.clearCookie('jwt', clearCookieOptions)
 
         return res.status(200).json({
             success: true,
@@ -202,7 +201,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
 
         return res.status(200).json({
             success: true,
-            message: 'USER PROFILE',
+            message: 'User profile fetched successfully',
             user: {
                 id: user.id,
                 name: user.name,

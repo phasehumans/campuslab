@@ -1,5 +1,9 @@
 import { Router } from 'express'
-import { authMiddleware, checkAdmin } from '../middleware/auth.middleware.js'
+import {
+    authMiddleware,
+    checkAdmin,
+    optionalAuthMiddleware,
+} from '../middleware/auth.middleware.js'
 import {
     createProblem,
     deleteProblem,
@@ -12,10 +16,13 @@ import {
 const problemRouter = Router()
 
 problemRouter.post('/create-problem', authMiddleware, checkAdmin, createProblem)
-problemRouter.get('/get-problems', authMiddleware, getAllProblems)
-problemRouter.get('/get-problems/:id', authMiddleware, getProblemById)
+problemRouter.get('/get-problems', optionalAuthMiddleware, getAllProblems)
+problemRouter.get('/get-problems/:id', optionalAuthMiddleware, getProblemById)
 problemRouter.put('/update-problem/:id', authMiddleware, checkAdmin, updateProblem)
 problemRouter.delete('/delete-problem/:id', authMiddleware, checkAdmin, deleteProblem)
 problemRouter.get('/get-solved-problems', authMiddleware, getSolvedProblems)
+problemRouter.get('/solved', authMiddleware, getSolvedProblems)
+problemRouter.get('/', optionalAuthMiddleware, getAllProblems)
+problemRouter.get('/:id', optionalAuthMiddleware, getProblemById)
 
 export default problemRouter

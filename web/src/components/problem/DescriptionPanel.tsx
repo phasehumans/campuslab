@@ -1,77 +1,98 @@
+import React from 'react'
 import { CheckCircle2 } from 'lucide-react'
+import type { ProblemDetail } from '@/lib/types'
 
-export function DescriptionPanel() {
+interface DescriptionPanelProps {
+    problem: ProblemDetail
+}
+
+export function DescriptionPanel({ problem }: DescriptionPanelProps) {
     return (
         <>
-            <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-bold text-white">1. Two Sum</h1>
-                <span className="text-emerald-500 text-sm font-medium flex items-center gap-1">
-                    Solved <CheckCircle2 className="h-4 w-4" />
-                </span>
+            <div className="flex flex-col gap-4 mb-6">
+                <div className="flex items-center justify-between gap-4">
+                    <h1 className="text-2xl font-bold text-white">{problem.title}</h1>
+                    {problem.status === 'Solved' ? (
+                        <span className="text-emerald-500 text-sm font-medium flex items-center gap-1">
+                            Solved <CheckCircle2 className="h-4 w-4" />
+                        </span>
+                    ) : null}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                    <span
+                        className={`px-2.5 py-1 rounded-full text-xs font-medium ${
+                            problem.difficulty === 'Easy'
+                                ? 'text-emerald-500 bg-emerald-500/10'
+                                : problem.difficulty === 'Medium'
+                                  ? 'text-yellow-500 bg-yellow-500/10'
+                                  : 'text-red-500 bg-red-500/10'
+                        }`}
+                    >
+                        {problem.difficulty}
+                    </span>
+
+                    {problem.tags.map((tag) => (
+                        <span
+                            key={tag}
+                            className="rounded-full bg-white/5 px-2.5 py-1 text-xs text-gray-300"
+                        >
+                            {tag}
+                        </span>
+                    ))}
+                </div>
             </div>
 
-            <div className="flex items-center gap-3 mb-6">
-                <span className="text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full text-xs font-medium">
-                    Easy
-                </span>
-            </div>
+            <div className="space-y-8 text-sm text-gray-300 leading-relaxed">
+                <section className="space-y-4">
+                    {problem.description.split('\n\n').map((paragraph, index) => (
+                        <p key={`${problem.id}-paragraph-${index}`}>{paragraph}</p>
+                    ))}
+                </section>
 
-            <div className="prose prose-invert max-w-none text-sm text-gray-300 space-y-4 leading-relaxed">
-                <p>
-                    Given an array of integers{' '}
-                    <code className="bg-white/10 px-1.5 py-0.5 rounded text-gray-200 font-mono text-xs">
-                        nums
-                    </code>{' '}
-                    and an integer{' '}
-                    <code className="bg-white/10 px-1.5 py-0.5 rounded text-gray-200 font-mono text-xs">
-                        target
-                    </code>
-                    , return{' '}
-                    <em>
-                        indices of the two numbers such that they add up to{' '}
-                        <code className="bg-white/10 px-1.5 py-0.5 rounded text-gray-200 font-mono text-xs">
-                            target
-                        </code>
-                    </em>
-                    .
-                </p>
-                <p>
-                    You may assume that each input would have{' '}
-                    <strong>
-                        <em>exactly</em> one solution
-                    </strong>
-                    , and you may not use the <em>same</em> element twice.
-                </p>
-                <p>You can return the answer in any order.</p>
+                <section className="space-y-4">
+                    <h2 className="text-base font-semibold text-white">Examples</h2>
+                    <div className="space-y-4">
+                        {problem.examples.map((example, index) => (
+                            <div key={`${problem.id}-example-${index}`} className="space-y-2">
+                                <p className="font-bold text-white">
+                                    {example.title ?? `Example ${index + 1}`}
+                                </p>
+                                <pre className="whitespace-pre-wrap bg-white/5 p-4 rounded-lg border border-white/5 text-gray-300 font-mono text-xs leading-relaxed">
+                                    <span className="font-semibold text-white">Input:</span>{' '}
+                                    {example.input}
+                                    {'\n'}
+                                    <span className="font-semibold text-white">Output:</span>{' '}
+                                    {example.output}
+                                    {example.explanation
+                                        ? `\nExplanation: ${example.explanation}`
+                                        : ''}
+                                </pre>
+                            </div>
+                        ))}
+                    </div>
+                </section>
 
-                <div className="mt-8">
-                    <p className="font-bold text-white mb-2">Example 1:</p>
-                    <pre className="bg-white/5 p-4 rounded-lg border border-white/5 text-gray-300 font-mono text-xs leading-relaxed">
-                        <span className="font-semibold text-white">Input:</span> nums = [2,7,11,15],
-                        target = 9{'\n'}
-                        <span className="font-semibold text-white">Output:</span> [0,1]{'\n'}
-                        <span className="font-semibold text-white">Explanation:</span> Because
-                        nums[0] + nums[1] == 9, we return [0, 1].
+                <section className="space-y-2">
+                    <h2 className="text-base font-semibold text-white">Constraints</h2>
+                    <pre className="whitespace-pre-wrap bg-white/5 p-4 rounded-lg border border-white/5 text-gray-300 font-mono text-xs leading-relaxed">
+                        {problem.constraints}
                     </pre>
-                </div>
+                </section>
 
-                <div className="mt-4">
-                    <p className="font-bold text-white mb-2">Example 2:</p>
-                    <pre className="bg-white/5 p-4 rounded-lg border border-white/5 text-gray-300 font-mono text-xs leading-relaxed">
-                        <span className="font-semibold text-white">Input:</span> nums = [3,2,4],
-                        target = 6{'\n'}
-                        <span className="font-semibold text-white">Output:</span> [1,2]
-                    </pre>
-                </div>
+                {problem.hints ? (
+                    <section className="space-y-2">
+                        <h2 className="text-base font-semibold text-white">Hint</h2>
+                        <p>{problem.hints}</p>
+                    </section>
+                ) : null}
 
-                <div className="mt-4">
-                    <p className="font-bold text-white mb-2">Example 3:</p>
-                    <pre className="bg-white/5 p-4 rounded-lg border border-white/5 text-gray-300 font-mono text-xs leading-relaxed">
-                        <span className="font-semibold text-white">Input:</span> nums = [3,3],
-                        target = 6{'\n'}
-                        <span className="font-semibold text-white">Output:</span> [0,1]
-                    </pre>
-                </div>
+                {problem.editorial ? (
+                    <section className="space-y-2">
+                        <h2 className="text-base font-semibold text-white">Editorial</h2>
+                        <p>{problem.editorial}</p>
+                    </section>
+                ) : null}
             </div>
         </>
     )

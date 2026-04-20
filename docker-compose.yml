@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: campuslab-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: campus_lab
+    ports:
+      - "5433:5432"
+    volumes:
+      - campuslab_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  campuslab_postgres_data:

@@ -19,11 +19,13 @@ interface CreateRoomCardProps {
     availableTopics: string[]
     numQuestions: string
     setNumQuestions: (val: string) => void
+    questionOptions?: string[]
     timeLimit: string
     setTimeLimit: (val: string) => void
     createdRoom: CreatedRoom | null
     handleCreateRoom: (e: React.MouseEvent) => void
     onEnterRoom: (e: React.MouseEvent) => void
+    isCreating?: boolean
 }
 
 export function CreateRoomCard({
@@ -34,11 +36,13 @@ export function CreateRoomCard({
     availableTopics,
     numQuestions,
     setNumQuestions,
+    questionOptions = ['1', '2', '3', '4', '5'],
     timeLimit,
     setTimeLimit,
     createdRoom,
     handleCreateRoom,
     onEnterRoom,
+    isCreating = false,
 }: CreateRoomCardProps) {
     return (
         <div className="relative overflow-visible rounded-2xl border border-white/10 bg-[#161616] p-6 flex flex-col shadow-xl">
@@ -126,13 +130,10 @@ export function CreateRoomCard({
                                 <CustomSelect
                                     value={numQuestions}
                                     onChange={setNumQuestions}
-                                    options={[
-                                        { label: '1 Question', value: '1' },
-                                        { label: '2 Questions', value: '2' },
-                                        { label: '3 Questions', value: '3' },
-                                        { label: '4 Questions', value: '4' },
-                                        { label: '5 Questions', value: '5' },
-                                    ]}
+                                    options={questionOptions.map((option) => ({
+                                        label: `${option} Question${option === '1' ? '' : 's'}`,
+                                        value: option,
+                                    }))}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -188,9 +189,10 @@ export function CreateRoomCard({
                 ) : (
                     <button
                         onClick={handleCreateRoom}
-                        className="w-full mt-6 shrink-0 bg-[#F5F5F5] hover:bg-white text-black font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm"
+                        disabled={isCreating}
+                        className="w-full mt-6 shrink-0 bg-[#F5F5F5] hover:bg-white disabled:bg-[#F5F5F5]/60 disabled:cursor-not-allowed text-black font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm"
                     >
-                        Create Room <ArrowRight className="h-4 w-4" />
+                        {isCreating ? 'Creating...' : 'Create Room'} <ArrowRight className="h-4 w-4" />
                     </button>
                 )}
             </div>
