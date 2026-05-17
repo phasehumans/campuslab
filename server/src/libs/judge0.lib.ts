@@ -100,14 +100,20 @@ export const pollBatchResults = async (tokens: string[]): Promise<Judge0Result[]
 export const submitBatch = async (
     submissions: Judge0Submission[]
 ): Promise<Judge0BatchTokenResponse[]> => {
-    const { data } = await axios.post<{ submissions: Judge0BatchTokenResponse[] }>(
-        `${getJudge0ApiUrl()}/submissions/batch?base64_encoded=false`,
-        {
-            submissions,
-        }
-    )
+    const { data } = await axios.post<
+        Judge0BatchTokenResponse[] | { submissions: Judge0BatchTokenResponse[] }
+    >(`${getJudge0ApiUrl()}/submissions/batch?base64_encoded=false`, {
+        submissions,
+    })
 
-    return data.submissions
+    // Judge0 CE returns a plain array, while some versions wrap it in { submissions: [...] }
+    const tokens = Array.isArray(data) ? data : data.submissions
+
+    if (!tokens || tokens.length === 0) {
+        throw new Error('Judge0 returned no submission tokens')
+    }
+
+    return tokens
 }
 
 export const getJudge0LanguageName = (languageId: number): string => {
