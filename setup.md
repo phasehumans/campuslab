@@ -14,7 +14,7 @@
     - set redis and postgres password
     - docker compose up -d db redis
     - sleep 10
-    - docker compose up -d <<<<
+    - docker compose up -d
     - sleep 5
     - docker compose ps
     - docker ps

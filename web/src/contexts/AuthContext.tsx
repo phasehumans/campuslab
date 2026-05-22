@@ -35,7 +35,7 @@ const AUTH_QUERY_KEY = ['auth', 'current-user']
 export function AuthProvider({ children }: { children: ReactNode }) {
     const queryClient = useQueryClient()
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [authMode, setAuthModeState] = useState<AuthMode>('login')
+    const [authMode, setAuthModeState] = useState<AuthMode>('signup')
     const [authError, setAuthError] = useState<string | null>(null)
 
     const currentUserQuery = useQuery({
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
     })
 
-    const openModal = (mode: AuthMode = 'login') => {
+    const openModal = (mode: AuthMode = 'signup') => {
         setAuthModeState(mode)
         setAuthError(null)
         setIsModalOpen(true)

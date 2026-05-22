@@ -303,6 +303,46 @@
       "createdAt": "2026-05-16T04:12:05.144Z",
       "startsAt": "2026-05-16T04:12:05.144Z",
       "endsAt": "2026-05-16T04:57:05.144Z"
+    },
+    {
+      "code": "BLGZPE",
+      "hostUserId": "bac2c09d-4312-425b-89e1-871f07bf036e",
+      "maxParticipants": 4,
+      "questionCount": 3,
+      "timeLimitMinutes": 45,
+      "topics": [
+        "Array",
+        "Binary Search"
+      ],
+      "problemIds": [
+        "dddedc02-7c3c-4e0f-b3fe-3fbe9ec9ab18",
+        "02862102-e87c-418d-b396-f22ea083f911",
+        "c760e775-0e1e-45bd-9a44-a4e98cecf375"
+      ],
+      "problemPoints": {
+        "dddedc02-7c3c-4e0f-b3fe-3fbe9ec9ab18": 200,
+        "02862102-e87c-418d-b396-f22ea083f911": 100,
+        "c760e775-0e1e-45bd-9a44-a4e98cecf375": 200
+      },
+      "participants": [
+        {
+          "userId": "bac2c09d-4312-425b-89e1-871f07bf036e",
+          "joinedAt": "2026-05-22T08:35:24.154Z"
+        }
+      ],
+      "standings": {
+        "bac2c09d-4312-425b-89e1-871f07bf036e": {
+          "score": 300,
+          "solvedProblemIds": [
+            "02862102-e87c-418d-b396-f22ea083f911",
+            "dddedc02-7c3c-4e0f-b3fe-3fbe9ec9ab18"
+          ],
+          "lastAcceptedAt": "2026-05-22T08:36:26.469Z"
+        }
+      },
+      "createdAt": "2026-05-22T08:35:24.154Z",
+      "startsAt": "2026-05-22T08:35:24.154Z",
+      "endsAt": "2026-05-22T09:20:24.154Z"
     }
   ]
 }
