@@ -270,7 +270,7 @@ export function SolveScreen() {
                         <Group orientation="vertical" className="flex-1 w-full h-full">
                             <Panel
                                 id="editor-panel"
-                                defaultSize={bottomPanelOpen ? 70 : 100}
+                                defaultSize={bottomPanelOpen ? 50 : 100}
                                 minSize={30}
                                 className="flex flex-col"
                             >
@@ -300,7 +300,7 @@ export function SolveScreen() {
                                     </Separator>
                                     <Panel
                                         id="testcase-panel"
-                                        defaultSize={30}
+                                        defaultSize={50}
                                         minSize={20}
                                         className="flex flex-col bg-[#1E1E1E] border-t border-white/5"
                                     >

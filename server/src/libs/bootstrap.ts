@@ -6,13 +6,20 @@ const SYSTEM_PRN = '000000000'
 const SYSTEM_PASSWORD = 'campuslab-seed-admin'
 
 export const ensureSeedData = async () => {
-    const [userCount, problemCount] = await Promise.all([db.user.count(), db.problem.count()])
-
-    if (problemCount > 0) {
-        return
-    }
+    const [userCount, existingProblems] = await Promise.all([
+        db.user.count(),
+        db.problem.findMany({
+            select: {
+                id: true,
+                title: true,
+            },
+        }),
+    ])
 
     const password = userCount === 0 ? await bcrypt.hash(SYSTEM_PASSWORD, 10) : undefined
+    const existingProblemByTitle = new Map(
+        existingProblems.map((problem) => [problem.title, problem.id])
+    )
 
     const systemUser = await db.user.upsert({
         where: { prn: SYSTEM_PRN },
@@ -30,7 +37,22 @@ export const ensureSeedData = async () => {
     })
 
     for (const problem of seedProblems) {
-        await db.problem.create({
+        const existingProblemId = existingProblemByTitle.get(problem.title)
+
+        if (existingProblemId) {
+            await db.problem.update({
+                where: {
+                    id: existingProblemId,
+                },
+                data: {
+                    ...problem,
+                    difficulty: problem.difficulty as never,
+                },
+            })
+            continue
+        }
+
+        const createdProblem = await db.problem.create({
             data: {
                 ...problem,
                 difficulty: problem.difficulty as never,
@@ -41,5 +63,7 @@ export const ensureSeedData = async () => {
                 },
             },
         })
+
+        existingProblemByTitle.set(problem.title, createdProblem.id)
     }
 }

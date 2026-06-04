@@ -1,3 +1,5 @@
+import { extraSeedProblems } from './extraSeedProblems.js'
+
 export const seedProblems = [
     {
         title: 'Two Sum',
@@ -41,6 +43,9 @@ Exactly one valid answer exists.`,
             { input: `4\n2 7 11 15\n9`, output: '0 1' },
             { input: `3\n3 2 4\n6`, output: '1 2' },
             { input: `2\n3 3\n6`, output: '0 1' },
+            { input: `5\n-1 0 2 4 8\n7`, output: '0 4' },
+            { input: `6\n1 5 9 12 20 25\n21`, output: '0 4' },
+            { input: `4\n-5 -2 -3 -4\n-8`, output: '0 2' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -210,6 +215,9 @@ s contains only the characters ()[]{}.`,
             { input: '()[]{}', output: 'true' },
             { input: '(]', output: 'false' },
             { input: '([{}])', output: 'true' },
+            { input: '{[()()]}', output: 'true' },
+            { input: '(((', output: 'false' },
+            { input: '{[(])}', output: 'false' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -370,6 +378,9 @@ Output format:
             { input: `9\n-2 1 -3 4 -1 2 1 -5 4`, output: '6' },
             { input: `5\n5 4 -1 7 8`, output: '23' },
             { input: `1\n-3`, output: '-3' },
+            { input: `4\n-1 -2 -3 -4`, output: '-1' },
+            { input: `6\n0 0 0 0 0 0`, output: '0' },
+            { input: `8\n2 -1 2 3 -9 4 5 -1`, output: '9' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -531,6 +542,9 @@ All values in nums are distinct.`,
             { input: `7\n4 5 6 7 0 1 2\n0`, output: '4' },
             { input: `7\n4 5 6 7 0 1 2\n3`, output: '-1' },
             { input: `1\n1\n0`, output: '-1' },
+            { input: `5\n1 2 3 4 5\n3`, output: '2' },
+            { input: `5\n5 1 2 3 4\n5`, output: '0' },
+            { input: `6\n6 7 8 1 2 3\n3`, output: '5' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -724,6 +738,9 @@ s consists of printable ASCII characters.`,
             { input: 'abcabcbb', output: '3' },
             { input: 'bbbbb', output: '1' },
             { input: 'pwwkew', output: '3' },
+            { input: 'dvdf', output: '3' },
+            { input: 'abba', output: '2' },
+            { input: 'abcdef', output: '6' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -846,4 +863,5 @@ public class Main {
 }`,
         },
     },
+    ...extraSeedProblems,
 ]
