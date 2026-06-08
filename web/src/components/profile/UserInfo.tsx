@@ -17,13 +17,19 @@ export function UserInfo({ user, handleLogout }: UserInfoProps) {
                     {/* LeetCode style top section with avatar on left/center */}
                     <div className="flex items-center gap-4 mb-6">
                         <div className="h-20 w-20 rounded-2xl border border-slate-100 bg-slate-50 flex items-center justify-center overflow-hidden shadow-sm shrink-0">
-                            <img src={avatarUrl} alt={user.name ?? 'User'} className="h-full w-full object-cover" />
+                            <img
+                                src={avatarUrl}
+                                alt={user.name ?? 'User'}
+                                className="h-full w-full object-cover"
+                            />
                         </div>
                         <div className="min-w-0">
                             <h1 className="text-lg font-bold text-slate-800 tracking-tight truncate">
                                 {user.name ?? 'Campus Lab User'}
                             </h1>
-                            <p className="text-sm text-slate-400 font-mono font-medium truncate">@{user.prn}</p>
+                            <p className="text-sm text-slate-400 font-mono font-medium truncate">
+                                @{user.prn}
+                            </p>
                             <span className="inline-block mt-2 rounded-full bg-slate-100 border border-slate-200/50 px-2.5 py-0.5 text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                 {user.role}
                             </span>
@@ -52,10 +58,11 @@ export function UserInfo({ user, handleLogout }: UserInfoProps) {
                         <div className="flex items-center gap-2.5 text-slate-600">
                             <CalendarDays className="h-4 w-4 text-slate-400 shrink-0" />
                             <span className="truncate">
-                                Joined {new Date(user.createdAt).toLocaleDateString(undefined, {
+                                Joined{' '}
+                                {new Date(user.createdAt).toLocaleDateString(undefined, {
                                     year: 'numeric',
                                     month: 'short',
-                                    day: 'numeric'
+                                    day: 'numeric',
                                 })}
                             </span>
                         </div>

@@ -28,7 +28,8 @@ export function AnalyticsCard({ submissions }: AnalyticsCardProps) {
     // 1. Calculate Accuracy
     const totalSubmissions = submissions.length
     const acceptedSubmissions = submissions.filter((s) => s.status === 'Accepted').length
-    const accuracyRate = totalSubmissions > 0 ? Math.round((acceptedSubmissions / totalSubmissions) * 100) : 0
+    const accuracyRate =
+        totalSubmissions > 0 ? Math.round((acceptedSubmissions / totalSubmissions) * 100) : 0
 
     // 2. Calculate Languages Used
     const languageCounts: Record<string, number> = {}
@@ -46,12 +47,12 @@ export function AnalyticsCard({ submissions }: AnalyticsCardProps) {
         .sort((a, b) => b.count - a.count)
 
     const preferredLanguageKey = languagesList[0]?.name || 'none'
-    const preferredLanguageName = LANGUAGE_DISPLAY_NAMES[preferredLanguageKey] || (preferredLanguageKey === 'none' ? 'None' : preferredLanguageKey)
+    const preferredLanguageName =
+        LANGUAGE_DISPLAY_NAMES[preferredLanguageKey] ||
+        (preferredLanguageKey === 'none' ? 'None' : preferredLanguageKey)
 
     // 3. Unique Days Active
-    const uniqueDays = new Set(
-        submissions.map((s) => new Date(s.createdAt).toDateString())
-    ).size
+    const uniqueDays = new Set(submissions.map((s) => new Date(s.createdAt).toDateString())).size
 
     return (
         <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_40px_rgba(0,0,0,0.03)] space-y-6">
@@ -63,8 +64,10 @@ export function AnalyticsCard({ submissions }: AnalyticsCardProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                 {/* Left side: Segmented Language Bar */}
                 <div className="space-y-4">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Language Distribution</span>
-                    
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+                        Language Distribution
+                    </span>
+
                     {languagesList.length > 0 ? (
                         <div>
                             {/* Horizontal Segmented Bar */}
@@ -89,11 +92,20 @@ export function AnalyticsCard({ submissions }: AnalyticsCardProps) {
                             <div className="flex flex-wrap gap-x-4 gap-y-2.5 mt-4">
                                 {languagesList.map((lang) => {
                                     const color = LANGUAGE_COLORS[lang.name] || DEFAULT_COLOR
-                                    const displayName = LANGUAGE_DISPLAY_NAMES[lang.name] || lang.name
+                                    const displayName =
+                                        LANGUAGE_DISPLAY_NAMES[lang.name] || lang.name
                                     return (
-                                        <div key={lang.name} className="flex items-center gap-2 text-xs">
-                                            <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
-                                            <span className="font-bold text-slate-700">{displayName}</span>
+                                        <div
+                                            key={lang.name}
+                                            className="flex items-center gap-2 text-xs"
+                                        >
+                                            <span
+                                                className="h-2.5 w-2.5 rounded-full shrink-0"
+                                                style={{ backgroundColor: color }}
+                                            />
+                                            <span className="font-bold text-slate-700">
+                                                {displayName}
+                                            </span>
                                             <span className="text-slate-400 font-normal">
                                                 ({lang.count} sub)
                                             </span>
@@ -115,28 +127,42 @@ export function AnalyticsCard({ submissions }: AnalyticsCardProps) {
                         <div className="flex items-center gap-3">
                             <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
                             <div>
-                                <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider leading-none mb-1">Accuracy</span>
-                                <span className="text-[11px] text-slate-500 font-medium">{acceptedSubmissions} of {totalSubmissions} accepted</span>
+                                <span className="block text-xs font-bold text-slate-400 uppercase tracking-wider leading-none mb-1">
+                                    Accuracy
+                                </span>
+                                <span className="text-[11px] text-slate-500 font-medium">
+                                    {acceptedSubmissions} of {totalSubmissions} accepted
+                                </span>
                             </div>
                         </div>
-                        <span className="text-2xl font-extrabold text-slate-800 tracking-tight">{accuracyRate}%</span>
+                        <span className="text-2xl font-extrabold text-slate-800 tracking-tight">
+                            {accuracyRate}%
+                        </span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 flex flex-col justify-between shadow-sm">
                             <div className="flex items-center gap-2 mb-3">
                                 <Calendar className="h-4 w-4 text-orange-500 shrink-0" />
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Days</span>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                    Active Days
+                                </span>
                             </div>
-                            <span className="text-2xl font-extrabold text-slate-800 tracking-tight leading-none">{uniqueDays} Days</span>
+                            <span className="text-2xl font-extrabold text-slate-800 tracking-tight leading-none">
+                                {uniqueDays} Days
+                            </span>
                         </div>
 
                         <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 flex flex-col justify-between shadow-sm">
                             <div className="flex items-center gap-2 mb-3">
                                 <Code2 className="h-4 w-4 text-indigo-500 shrink-0" />
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Preferred</span>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                    Preferred
+                                </span>
                             </div>
-                            <span className="text-base font-extrabold text-slate-800 tracking-tight leading-none truncate capitalize">{preferredLanguageName}</span>
+                            <span className="text-base font-extrabold text-slate-800 tracking-tight leading-none truncate capitalize">
+                                {preferredLanguageName}
+                            </span>
                         </div>
                     </div>
                 </div>

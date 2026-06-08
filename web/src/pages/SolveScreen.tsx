@@ -28,7 +28,8 @@ export function SolveScreen() {
 
     const [activeTab, setActiveTab] = useState<'description' | 'solutions'>('description')
     const [language, setLanguage] = useState<EditorLanguage>('cpp')
-    const [codeByLanguage, setCodeByLanguage] = useState<Record<EditorLanguage, string>>(FALLBACK_CODE)
+    const [codeByLanguage, setCodeByLanguage] =
+        useState<Record<EditorLanguage, string>>(FALLBACK_CODE)
     const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false)
     const [bottomPanelOpen, setBottomPanelOpen] = useState(false)
     const [activeBottomTab, setActiveBottomTab] = useState<'testcase' | 'testresult'>('testcase')
@@ -69,8 +70,9 @@ export function SolveScreen() {
             runCode({
                 sourceCode: codeByLanguage[language],
                 language,
-                testcases:
-                    problemQuery.data?.examples.length ? problemQuery.data.examples : problemQuery.data?.testcases ?? [],
+                testcases: problemQuery.data?.examples.length
+                    ? problemQuery.data.examples
+                    : (problemQuery.data?.testcases ?? []),
             }),
         onSuccess: (execution) => {
             setResultTitle('Run Results')
@@ -178,10 +180,11 @@ export function SolveScreen() {
         return (
             <div className="flex h-screen items-center justify-center bg-[#0A0A0A] text-gray-400 relative">
                 {/* Subtle dark gridline background pattern */}
-                <div 
-                    className="absolute inset-0 pointer-events-none z-0 opacity-40" 
+                <div
+                    className="absolute inset-0 pointer-events-none z-0 opacity-40"
                     style={{
-                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
+                        backgroundImage:
+                            'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
                         backgroundSize: '30px 30px',
                     }}
                 />
@@ -194,10 +197,11 @@ export function SolveScreen() {
         return (
             <div className="flex h-screen flex-col items-center justify-center gap-4 bg-[#0A0A0A] px-6 text-center relative">
                 {/* Subtle dark gridline background pattern */}
-                <div 
-                    className="absolute inset-0 pointer-events-none z-0 opacity-40" 
+                <div
+                    className="absolute inset-0 pointer-events-none z-0 opacity-40"
                     style={{
-                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
+                        backgroundImage:
+                            'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
                         backgroundSize: '30px 30px',
                     }}
                 />
@@ -222,10 +226,11 @@ export function SolveScreen() {
     return (
         <div className="flex flex-col h-screen bg-[#0A0A0A] text-gray-300 font-sans overflow-hidden relative">
             {/* Subtle dark gridline background pattern */}
-            <div 
-                className="absolute inset-0 pointer-events-none z-0 opacity-45" 
+            <div
+                className="absolute inset-0 pointer-events-none z-0 opacity-45"
                 style={{
-                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
+                    backgroundImage:
+                        'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
                     backgroundSize: '30px 30px',
                 }}
             />
@@ -256,7 +261,15 @@ export function SolveScreen() {
                                             : 'text-gray-400 hover:text-gray-200 hover:bg-[#121212]/50'
                                     )}
                                 >
-                                    <FileText className={cn("h-4 w-4", activeTab === 'description' ? 'text-[#3E6FC3]' : 'text-gray-400')} /> Description
+                                    <FileText
+                                        className={cn(
+                                            'h-4 w-4',
+                                            activeTab === 'description'
+                                                ? 'text-[#3E6FC3]'
+                                                : 'text-gray-400'
+                                        )}
+                                    />{' '}
+                                    Description
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('solutions')}
@@ -267,7 +280,15 @@ export function SolveScreen() {
                                             : 'text-gray-400 hover:text-gray-200 hover:bg-[#121212]/50'
                                     )}
                                 >
-                                    <FlaskConical className={cn("h-4 w-4", activeTab === 'solutions' ? 'text-[#3E6FC3]' : 'text-gray-400')} /> Solutions
+                                    <FlaskConical
+                                        className={cn(
+                                            'h-4 w-4',
+                                            activeTab === 'solutions'
+                                                ? 'text-[#3E6FC3]'
+                                                : 'text-gray-400'
+                                        )}
+                                    />{' '}
+                                    Solutions
                                 </button>
                             </div>
 
@@ -334,7 +355,9 @@ export function SolveScreen() {
                                             <BottomPanelHeader
                                                 activeBottomTab={activeBottomTab}
                                                 setActiveBottomTab={(tab) =>
-                                                    setActiveBottomTab(tab as 'testcase' | 'testresult')
+                                                    setActiveBottomTab(
+                                                        tab as 'testcase' | 'testresult'
+                                                    )
                                                 }
                                                 setBottomPanelOpen={setBottomPanelOpen}
                                             />
@@ -347,7 +370,10 @@ export function SolveScreen() {
                                                     />
                                                 ) : (
                                                     <TestResultPanel
-                                                        isLoading={runMutation.isPending || submitMutation.isPending}
+                                                        isLoading={
+                                                            runMutation.isPending ||
+                                                            submitMutation.isPending
+                                                        }
                                                         title={resultTitle}
                                                         result={executionResult}
                                                         message={resultMessage}

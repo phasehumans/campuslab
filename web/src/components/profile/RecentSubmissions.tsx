@@ -74,7 +74,9 @@ export function RecentSubmissions({ submissions }: RecentSubmissionsProps) {
                         </div>
                     ))
                 ) : (
-                    <div className="p-6 text-sm text-slate-400 font-medium">No submissions yet.</div>
+                    <div className="p-6 text-sm text-slate-400 font-medium">
+                        No submissions yet.
+                    </div>
                 )}
             </div>
         </div>

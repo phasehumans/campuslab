@@ -155,7 +155,9 @@ export function LoginModal() {
                                   : 'Create Account'}
                         </button>
                         <p className="text-center text-sm text-gray-500 mt-6 font-medium">
-                            {authMode === 'login' ? "Don't have an account?" : 'Already registered?'}{' '}
+                            {authMode === 'login'
+                                ? "Don't have an account?"
+                                : 'Already registered?'}{' '}
                             <button
                                 type="button"
                                 onClick={() =>

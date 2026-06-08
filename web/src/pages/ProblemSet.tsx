@@ -1,7 +1,18 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Search, BarChart2, Activity, Hash, BookOpen, Clock, Lightbulb, Award, Star, ArrowRight } from 'lucide-react'
+import {
+    Search,
+    BarChart2,
+    Activity,
+    Hash,
+    BookOpen,
+    Clock,
+    Lightbulb,
+    Award,
+    Star,
+    ArrowRight,
+} from 'lucide-react'
 import { getApiErrorMessage, getProblems } from '@/lib/api'
 import { FilterDropdown } from '@/components/ui/FilterDropdown'
 import { Pagination } from '@/components/ui/Pagination'
@@ -23,7 +34,9 @@ export function ProblemSet() {
 
     const allTopics = useMemo(
         () =>
-            Array.from(new Set((problemsQuery.data ?? []).flatMap((problem) => problem.tags))).sort(),
+            Array.from(
+                new Set((problemsQuery.data ?? []).flatMap((problem) => problem.tags))
+            ).sort(),
         [problemsQuery.data]
     )
 
@@ -70,16 +83,17 @@ export function ProblemSet() {
             {/* CodeChef Style Practice Banner */}
             <div className="w-full bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F2A5C] text-white p-8 rounded-3xl relative overflow-hidden shadow-xl mb-8 border border-white/5">
                 {/* Banner grid overlay */}
-                <div 
-                    className="absolute inset-0 pointer-events-none opacity-[0.05]" 
+                <div
+                    className="absolute inset-0 pointer-events-none opacity-[0.05]"
                     style={{
-                        backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)',
+                        backgroundImage:
+                            'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)',
                         backgroundSize: '20px 20px',
                     }}
                 />
                 {/* Glowing decorative elements */}
                 <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-[#3E6FC3]/20 rounded-full blur-3xl pointer-events-none" />
-                
+
                 <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                     <div className="max-w-2xl space-y-4">
                         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 text-[#93C5FD]">
@@ -90,7 +104,10 @@ export function ProblemSet() {
                             Practice Data Structures and Algorithms
                         </h1>
                         <p className="text-sm sm:text-base text-slate-300/95 leading-relaxed max-w-xl font-medium">
-                            Enhance your algorithmic intuition and problem-solving speed by tackling curated exercises on Linked Lists, Stacks, Trees, Graphs, Two Pointers, Dynamic Programming, and more. Solve over {totalCount} structured problems in total.
+                            Enhance your algorithmic intuition and problem-solving speed by tackling
+                            curated exercises on Linked Lists, Stacks, Trees, Graphs, Two Pointers,
+                            Dynamic Programming, and more. Solve over {totalCount} structured
+                            problems in total.
                         </p>
                     </div>
 
@@ -101,32 +118,42 @@ export function ProblemSet() {
                                 <div className="flex justify-center mb-1.5">
                                     <Clock className="h-5 w-5 text-blue-400" />
                                 </div>
-                                <span className="block text-lg font-bold text-white leading-none">Self-Paced</span>
-                                <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">Time</span>
+                                <span className="block text-lg font-bold text-white leading-none">
+                                    Self-Paced
+                                </span>
+                                <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">
+                                    Time
+                                </span>
                             </div>
                             <div>
                                 <div className="flex justify-center mb-1.5">
                                     <Lightbulb className="h-5 w-5 text-blue-400" />
                                 </div>
-                                <span className="block text-lg font-bold text-white leading-none">{totalCount}</span>
-                                <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">Problems</span>
+                                <span className="block text-lg font-bold text-white leading-none">
+                                    {totalCount}
+                                </span>
+                                <span className="text-[10px] text-blue-300 uppercase font-bold tracking-wider">
+                                    Problems
+                                </span>
                             </div>
                         </div>
 
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between text-xs font-semibold text-blue-200">
-                                    <span>{solvedCount}/{totalCount} Problems</span>
+                                    <span>
+                                        {solvedCount}/{totalCount} Problems
+                                    </span>
                                     <span>{percentDone}% done</span>
                                 </div>
                                 <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                                    <div 
-                                        className="h-full bg-[#10B981] rounded-full transition-all duration-500" 
+                                    <div
+                                        className="h-full bg-[#10B981] rounded-full transition-all duration-500"
                                         style={{ width: `${percentDone}%` }}
                                     />
                                 </div>
                             </div>
-                            
+
                             <button
                                 onClick={handleResume}
                                 className="w-full bg-[#3E6FC3] hover:bg-[#325a9e] text-white py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 text-sm"

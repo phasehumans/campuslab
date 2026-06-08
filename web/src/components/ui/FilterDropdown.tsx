@@ -43,7 +43,10 @@ export function FilterDropdown({
             >
                 {Icon && (
                     <Icon
-                        className={cn('h-4 w-4', value === 'All' ? 'text-slate-400' : 'text-[#3E6FC3]')}
+                        className={cn(
+                            'h-4 w-4',
+                            value === 'All' ? 'text-slate-400' : 'text-[#3E6FC3]'
+                        )}
                     />
                 )}
                 <span className="truncate max-w-[100px] font-semibold">

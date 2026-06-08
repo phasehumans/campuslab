@@ -22,9 +22,12 @@ export function Pagination({
     return (
         <div className="flex items-center justify-between text-sm text-slate-500 mt-6 px-4">
             <span>
-                Showing <span className="font-semibold text-slate-700">{indexOfFirstItem + 1}</span> to{' '}
-                <span className="font-semibold text-slate-700">{Math.min(indexOfLastItem, totalItems)}</span> of{' '}
-                <span className="font-semibold text-slate-700">{totalItems}</span> questions
+                Showing <span className="font-semibold text-slate-700">{indexOfFirstItem + 1}</span>{' '}
+                to{' '}
+                <span className="font-semibold text-slate-700">
+                    {Math.min(indexOfLastItem, totalItems)}
+                </span>{' '}
+                of <span className="font-semibold text-slate-700">{totalItems}</span> questions
             </span>
             <div className="flex gap-2">
                 <button

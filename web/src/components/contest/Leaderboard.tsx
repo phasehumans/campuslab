@@ -49,7 +49,9 @@ export function Leaderboard({ entries }: LeaderboardProps) {
                                     >
                                         {entry.isYou ? 'You' : entry.name}
                                     </span>
-                                    <span className="text-[11px] text-slate-400 font-medium">{entry.prn}</span>
+                                    <span className="text-[11px] text-slate-400 font-medium">
+                                        {entry.prn}
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4 text-sm">

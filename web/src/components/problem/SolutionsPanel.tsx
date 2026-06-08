@@ -12,12 +12,7 @@ interface SolutionsPanelProps {
     solutionCode?: string
 }
 
-export function SolutionsPanel({
-    language,
-    copied,
-    onCopy,
-    solutionCode,
-}: SolutionsPanelProps) {
+export function SolutionsPanel({ language, copied, onCopy, solutionCode }: SolutionsPanelProps) {
     const activeLanguage = LANGUAGES.find((item) => item.id === language)
     const code = solutionCode ?? FALLBACK_CODE[language]
 

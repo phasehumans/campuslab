@@ -21,7 +21,8 @@ const textColorMap = {
 
 export function StatsGrid({ stats }: StatsGridProps) {
     const totalProblems = stats.byDifficulty.reduce((acc, curr) => acc + curr.total, 0)
-    const totalPercent = totalProblems === 0 ? 0 : Math.round((stats.totalSolved / totalProblems) * 100)
+    const totalPercent =
+        totalProblems === 0 ? 0 : Math.round((stats.totalSolved / totalProblems) * 100)
 
     return (
         <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_12px_40px_rgba(0,0,0,0.03)]">
@@ -70,7 +71,8 @@ export function StatsGrid({ stats }: StatsGridProps) {
                 {/* Stacked LeetCode style bars */}
                 <div className="flex-1 w-full space-y-4">
                     {stats.byDifficulty.map((stat) => {
-                        const percent = stat.total === 0 ? 0 : Math.round((stat.value / stat.total) * 100)
+                        const percent =
+                            stat.total === 0 ? 0 : Math.round((stat.value / stat.total) * 100)
                         return (
                             <div key={stat.name} className="space-y-1.5">
                                 <div className="flex justify-between text-xs font-semibold">
@@ -89,7 +91,10 @@ export function StatsGrid({ stats }: StatsGridProps) {
                                 </div>
                                 <div className="h-2 w-full bg-slate-50 border border-slate-100 rounded-full overflow-hidden">
                                     <div
-                                        className={cn('h-full rounded-full transition-all duration-500', colorMap[stat.name])}
+                                        className={cn(
+                                            'h-full rounded-full transition-all duration-500',
+                                            colorMap[stat.name]
+                                        )}
                                         style={{ width: `${percent}%` }}
                                     />
                                 </div>

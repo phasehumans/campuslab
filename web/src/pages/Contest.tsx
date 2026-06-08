@@ -4,12 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { CreateRoomCard } from '@/components/contest/CreateRoomCard'
 import { JoinRoomCard } from '@/components/contest/JoinRoomCard'
 import { useAuth } from '@/contexts/AuthContext'
-import {
-    createContestRoom,
-    getApiErrorMessage,
-    getProblems,
-    joinContestRoom,
-} from '@/lib/api'
+import { createContestRoom, getApiErrorMessage, getProblems, joinContestRoom } from '@/lib/api'
 
 export function Contest() {
     const navigate = useNavigate()
@@ -36,7 +31,9 @@ export function Contest() {
 
     const availableTopics = useMemo(
         () =>
-            Array.from(new Set((problemsQuery.data ?? []).flatMap((problem) => problem.tags))).sort(),
+            Array.from(
+                new Set((problemsQuery.data ?? []).flatMap((problem) => problem.tags))
+            ).sort(),
         [problemsQuery.data]
     )
 
@@ -47,7 +44,9 @@ export function Contest() {
     }, [availableTopics, topics.length])
 
     const maxQuestionCount = Math.max(1, Math.min(5, problemsQuery.data?.length ?? 1))
-    const questionOptions = Array.from({ length: maxQuestionCount }, (_, index) => String(index + 1))
+    const questionOptions = Array.from({ length: maxQuestionCount }, (_, index) =>
+        String(index + 1)
+    )
 
     useEffect(() => {
         if (!questionOptions.includes(numQuestions)) {
@@ -150,7 +149,11 @@ export function Contest() {
                             availableTopics={availableTopics}
                             numQuestions={numQuestions}
                             setNumQuestions={(value) =>
-                                setNumQuestions(questionOptions.includes(value) ? value : questionOptions[0] ?? '1')
+                                setNumQuestions(
+                                    questionOptions.includes(value)
+                                        ? value
+                                        : (questionOptions[0] ?? '1')
+                                )
                             }
                             questionOptions={questionOptions}
                             timeLimit={timeLimit}

@@ -22,7 +22,9 @@ export function JoinRoomCard({
                         <Play className="h-5 w-5 text-[#3E6FC3] ml-0.5" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-slate-800 tracking-tight">Join Room</h2>
+                        <h2 className="text-lg font-bold text-slate-800 tracking-tight">
+                            Join Room
+                        </h2>
                         <p className="text-xs text-slate-400 mt-0.5">Enter a code to compete</p>
                     </div>
                 </div>

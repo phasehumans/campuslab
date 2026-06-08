@@ -49,7 +49,9 @@ export function QuestionsList({ roomCode, questions }: QuestionsListProps) {
                                         {question.difficulty}
                                     </span>
                                     <span className="text-slate-300">•</span>
-                                    <span className="text-slate-500 font-medium">{question.points} Points</span>
+                                    <span className="text-slate-500 font-medium">
+                                        {question.points} Points
+                                    </span>
                                 </div>
                             </div>
                         </div>

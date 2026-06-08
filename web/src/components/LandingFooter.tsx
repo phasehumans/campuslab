@@ -21,11 +21,12 @@ export function LandingFooter() {
                             </span>
                         </Link>
                         <p className="text-sm text-slate-300 leading-relaxed font-medium">
-                            An exclusive competitive programming and social learning platform for students to master DSA, create contest rooms, and track real-time coding progress.
+                            An exclusive competitive programming and social learning platform for
+                            students to master DSA, create contest rooms, and track real-time coding
+                            progress.
                         </p>
                         {/* Social Links */}
-                        <div className="flex gap-4 pt-2">
-                        </div>
+                        <div className="flex gap-4 pt-2"></div>
                     </div>
 
                     {/* Column 2: Platform Links */}
@@ -35,8 +36,8 @@ export function LandingFooter() {
                         </h3>
                         <ul className="space-y-2.5 text-sm font-medium">
                             <li>
-                                <Link 
-                                    to="/practice" 
+                                <Link
+                                    to="/practice"
                                     onClick={(e) => {
                                         if (!isLoggedIn) {
                                             e.preventDefault()
@@ -49,8 +50,8 @@ export function LandingFooter() {
                                 </Link>
                             </li>
                             <li>
-                                <Link 
-                                    to="/contest" 
+                                <Link
+                                    to="/contest"
                                     onClick={(e) => {
                                         if (!isLoggedIn) {
                                             e.preventDefault()
@@ -63,8 +64,8 @@ export function LandingFooter() {
                                 </Link>
                             </li>
                             <li>
-                                <Link 
-                                    to="/practice" 
+                                <Link
+                                    to="/practice"
                                     onClick={(e) => {
                                         if (!isLoggedIn) {
                                             e.preventDefault()
@@ -86,19 +87,13 @@ export function LandingFooter() {
                         </h3>
                         <ul className="space-y-2.5 text-sm font-medium">
                             <li>
-                                <span className="text-slate-400">
-                                    Real-time Matchmaking
-                                </span>
+                                <span className="text-slate-400">Real-time Matchmaking</span>
                             </li>
                             <li>
-                                <span className="text-slate-400">
-                                    AI Mentor Help
-                                </span>
+                                <span className="text-slate-400">AI Mentor Help</span>
                             </li>
                             <li>
-                                <span className="text-slate-400">
-                                    Faculty Dashboard
-                                </span>
+                                <span className="text-slate-400">Faculty Dashboard</span>
                             </li>
                         </ul>
                     </div>
@@ -109,7 +104,11 @@ export function LandingFooter() {
                             Academic Project
                         </h3>
                         <p className="text-sm text-slate-300 leading-relaxed font-medium">
-                            Semester Project built by <span className="text-white font-semibold">Sakshi, Jayesh, Sachin & Chaitanya</span>.
+                            Semester Project built by{' '}
+                            <span className="text-white font-semibold">
+                                Sakshi, Jayesh, Sachin & Chaitanya
+                            </span>
+                            .
                         </p>
                         <p className="text-xs text-slate-400 leading-relaxed">
                             R. C. Patel Institute of Technology

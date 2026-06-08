@@ -67,9 +67,12 @@ export function ProblemTable({ problems, onProblemClick }: ProblemTableProps) {
                                     <span
                                         className={cn(
                                             'font-semibold text-xs px-2.5 py-0.5 rounded-full inline-block text-center w-18 border',
-                                            problem.difficulty === 'Easy' && 'text-emerald-700 bg-emerald-50 border-emerald-100',
-                                            problem.difficulty === 'Medium' && 'text-amber-700 bg-amber-50 border-amber-100',
-                                            problem.difficulty === 'Hard' && 'text-rose-700 bg-rose-50 border-rose-100'
+                                            problem.difficulty === 'Easy' &&
+                                                'text-emerald-700 bg-emerald-50 border-emerald-100',
+                                            problem.difficulty === 'Medium' &&
+                                                'text-amber-700 bg-amber-50 border-amber-100',
+                                            problem.difficulty === 'Hard' &&
+                                                'text-rose-700 bg-rose-50 border-rose-100'
                                         )}
                                     >
                                         {problem.difficulty}

@@ -52,7 +52,9 @@ export function CreateRoomCard({
                         <Plus className="h-5 w-5 text-[#3E6FC3]" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-slate-800 tracking-tight">Create Room</h2>
+                        <h2 className="text-lg font-bold text-slate-800 tracking-tight">
+                            Create Room
+                        </h2>
                         <p className="text-xs text-slate-400 mt-0.5">Host a custom contest</p>
                     </div>
                 </div>
@@ -192,7 +194,8 @@ export function CreateRoomCard({
                         disabled={isCreating}
                         className="w-full mt-6 shrink-0 bg-[#3E6FC3] hover:bg-[#325a9e] disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 text-sm"
                     >
-                        {isCreating ? 'Creating...' : 'Create Room'} <ArrowRight className="h-4 w-4" />
+                        {isCreating ? 'Creating...' : 'Create Room'}{' '}
+                        <ArrowRight className="h-4 w-4" />
                     </button>
                 )}
             </div>

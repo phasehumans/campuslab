@@ -96,13 +96,17 @@ export function ContestRoom() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 bg-white border border-slate-100 p-6 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.02)]">
                 <div>
                     <div className="flex items-center gap-3">
-                        <div className={cn(
-                            "px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2 border shadow-sm",
-                            timeLeft > 0 
-                                ? "bg-emerald-50 border-emerald-100 text-emerald-700"
-                                : "bg-slate-100 border-slate-200 text-slate-600"
-                        )}>
-                            {timeLeft > 0 && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
+                        <div
+                            className={cn(
+                                'px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2 border shadow-sm',
+                                timeLeft > 0
+                                    ? 'bg-emerald-50 border-emerald-100 text-emerald-700'
+                                    : 'bg-slate-100 border-slate-200 text-slate-600'
+                            )}
+                        >
+                            {timeLeft > 0 && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            )}
                             {timeLeft > 0 ? 'Live' : 'Ended'}
                         </div>
                         <span className="text-sm font-mono text-slate-400 tracking-wider">
