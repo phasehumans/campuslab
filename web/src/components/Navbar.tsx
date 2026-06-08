@@ -10,7 +10,7 @@ export function Navbar() {
     const { isLoggedIn, openModal } = useAuth()
 
     const navLinks = [
-        { name: 'Problem Sheet', path: '/', icon: Code2 },
+        { name: 'Problem Sheet', path: '/practice', icon: Code2 },
         { name: 'Contest', path: '/contest', icon: Trophy },
     ]
 
@@ -36,6 +36,12 @@ export function Navbar() {
                                 <Link
                                     key={link.name}
                                     to={link.path}
+                                    onClick={(e) => {
+                                        if (!isLoggedIn) {
+                                            e.preventDefault()
+                                            openModal('login')
+                                        }
+                                    }}
                                     className={cn(
                                         'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200',
                                         isActive
