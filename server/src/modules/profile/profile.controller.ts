@@ -13,7 +13,8 @@ export const getMyProfile = async (req: Request, res: Response) => {
     }
 
     try {
-        const [user, problems, solvedProblems, recentSubmissions] = await profileService.getUserProfileStats(userId)
+        const [user, problems, solvedProblems, recentSubmissions] =
+            await profileService.getUserProfileStats(userId)
 
         if (!user) {
             return res.status(404).json({

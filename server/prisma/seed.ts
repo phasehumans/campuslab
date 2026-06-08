@@ -22,7 +22,8 @@ import { mathNumberTheoryProblems } from './seed-data/15-math-number-theory.js'
 
 import type { SeedProblem } from './seed-data/types.js'
 
-const DATABASE_URL = process.env.DATABASE_URL ?? 'postgresql://myuser:mypassword@localhost:5433/campus_lab'
+const DATABASE_URL =
+    process.env.DATABASE_URL ?? 'postgresql://myuser:mypassword@localhost:5433/campus_lab'
 
 async function main() {
     const pool = new Pool({ connectionString: DATABASE_URL })

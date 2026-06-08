@@ -3,28 +3,42 @@ import type { SeedProblem } from './types.js'
 export const twoPointersSlidingProblems: SeedProblem[] = [
     // ==================== EASY #1: Remove Element In-Place ====================
     {
-        title: "Remove Element In-Place",
-        description: "Given an array `arr` and an integer `val`, remove all occurrences of `val` in-place and return the new length `k`.\n\nTo make the output deterministic, print:\n1. The new length `k` on the first line.\n2. The first `k` elements of the modified array in sorted order, space-separated, on the second line.\n\nYou must do this in-place with O(1) extra space.\n\n**Input Format:**\n- First line: two integers `n` (the size of the array) and `val`, space-separated.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- First line: the new length `k`.\n- Second line: the first `k` elements of the modified array sorted in ascending order, space-separated.",
-        difficulty: "EASY",
-        tags: ["two-pointers", "arrays"],
-        constraints: "0 <= n <= 10^5\n-10^9 <= arr[i] <= 10^9\n-10^9 <= val <= 10^9",
-        hints: "Use a write pointer to keep track of the position of the next element that is not equal to val.",
-        editorial: "Use two pointers: one reader pointer scanning the array and one writer pointer incrementing only when the current element is not equal to val. Finally, sort the first k elements to match the requested output format.\n\n**Time Complexity:** O(n log n) due to sorting for printing, but O(n) for the in-place deletion.\n**Space Complexity:** O(1) auxiliary space.",
+        title: 'Remove Element In-Place',
+        description:
+            'Given an array `arr` and an integer `val`, remove all occurrences of `val` in-place and return the new length `k`.\n\nTo make the output deterministic, print:\n1. The new length `k` on the first line.\n2. The first `k` elements of the modified array in sorted order, space-separated, on the second line.\n\nYou must do this in-place with O(1) extra space.\n\n**Input Format:**\n- First line: two integers `n` (the size of the array) and `val`, space-separated.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- First line: the new length `k`.\n- Second line: the first `k` elements of the modified array sorted in ascending order, space-separated.',
+        difficulty: 'EASY',
+        tags: ['two-pointers', 'arrays'],
+        constraints: '0 <= n <= 10^5\n-10^9 <= arr[i] <= 10^9\n-10^9 <= val <= 10^9',
+        hints: 'Use a write pointer to keep track of the position of the next element that is not equal to val.',
+        editorial:
+            'Use two pointers: one reader pointer scanning the array and one writer pointer incrementing only when the current element is not equal to val. Finally, sort the first k elements to match the requested output format.\n\n**Time Complexity:** O(n log n) due to sorting for printing, but O(n) for the in-place deletion.\n**Space Complexity:** O(1) auxiliary space.',
         examples: [
-            { title: "Example 1", input: "4 3\n3 2 2 3", output: "2\n2 2", explanation: "After removing all 3s, the array has length 2. The remaining elements are [2, 2]." },
-            { title: "Example 2", input: "8 2\n0 1 2 2 3 0 4 2", output: "5\n0 0 1 3 4", explanation: "After removing all 2s, the remaining elements are [0, 1, 3, 0, 4]. Sorted: [0, 0, 1, 3, 4]." }
+            {
+                title: 'Example 1',
+                input: '4 3\n3 2 2 3',
+                output: '2\n2 2',
+                explanation:
+                    'After removing all 3s, the array has length 2. The remaining elements are [2, 2].',
+            },
+            {
+                title: 'Example 2',
+                input: '8 2\n0 1 2 2 3 0 4 2',
+                output: '5\n0 0 1 3 4',
+                explanation:
+                    'After removing all 2s, the remaining elements are [0, 1, 3, 0, 4]. Sorted: [0, 0, 1, 3, 4].',
+            },
         ],
         testcases: [
-            { input: "4 3\n3 2 2 3", output: "2\n2 2" },
-            { input: "8 2\n0 1 2 2 3 0 4 2", output: "5\n0 0 1 3 4" },
-            { input: "1 5\n5", output: "0\n" },
-            { input: "1 5\n3", output: "1\n3" },
-            { input: "5 1\n1 1 1 1 1", output: "0\n" },
-            { input: "6 3\n1 2 4 5 6 7", output: "6\n1 2 4 5 6 7" },
-            { input: "10 9\n9 1 9 2 9 3 9 4 9 5", output: "5\n1 2 3 4 5" },
-            { input: "7 0\n0 0 0 1 0 0 0", output: "1\n1" },
-            { input: "8 7\n7 8 7 8 7 8 7 8", output: "4\n8 8 8 8" },
-            { input: "12 4\n4 1 4 2 4 3 4 5 4 6 4 7", output: "7\n1 2 3 5 6 7" }
+            { input: '4 3\n3 2 2 3', output: '2\n2 2' },
+            { input: '8 2\n0 1 2 2 3 0 4 2', output: '5\n0 0 1 3 4' },
+            { input: '1 5\n5', output: '0\n' },
+            { input: '1 5\n3', output: '1\n3' },
+            { input: '5 1\n1 1 1 1 1', output: '0\n' },
+            { input: '6 3\n1 2 4 5 6 7', output: '6\n1 2 4 5 6 7' },
+            { input: '10 9\n9 1 9 2 9 3 9 4 9 5', output: '5\n1 2 3 4 5' },
+            { input: '7 0\n0 0 0 1 0 0 0', output: '1\n1' },
+            { input: '8 7\n7 8 7 8 7 8 7 8', output: '4\n8 8 8 8' },
+            { input: '12 4\n4 1 4 2 4 3 4 5 4 6 4 7', output: '7\n1 2 3 5 6 7' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -57,7 +71,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -169,34 +183,47 @@ fn main() {
         write!(out, "{}", arr[i]).unwrap();
     }
     writeln!(out).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #2: Move All Zeroes ====================
     {
-        title: "Move All Zeroes",
-        description: "Given an integer array `arr`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.\n\nYou must do this in-place without making a copy of the array.\n\n**Input Format:**\n- First line: integer `n` (the size of the array).\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single line containing `n` space-separated integers representing the modified array.",
-        difficulty: "EASY",
-        tags: ["two-pointers", "arrays"],
-        constraints: "1 <= n <= 10^5\n-2^31 <= arr[i] <= 2^31 - 1",
-        hints: "Keep a pointer to the position of the last non-zero element found so far.",
-        editorial: "Iterate through the array. Whenever a non-zero element is encountered, swap it with the element at the write pointer, then increment the write pointer.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.",
+        title: 'Move All Zeroes',
+        description:
+            "Given an integer array `arr`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.\n\nYou must do this in-place without making a copy of the array.\n\n**Input Format:**\n- First line: integer `n` (the size of the array).\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single line containing `n` space-separated integers representing the modified array.",
+        difficulty: 'EASY',
+        tags: ['two-pointers', 'arrays'],
+        constraints: '1 <= n <= 10^5\n-2^31 <= arr[i] <= 2^31 - 1',
+        hints: 'Keep a pointer to the position of the last non-zero element found so far.',
+        editorial:
+            'Iterate through the array. Whenever a non-zero element is encountered, swap it with the element at the write pointer, then increment the write pointer.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.',
         examples: [
-            { title: "Example 1", input: "5\n0 1 0 3 12", output: "1 3 12 0 0", explanation: "All zeroes are moved to the end, while non-zero elements retain their relative order." },
-            { title: "Example 2", input: "1\n0", output: "0", explanation: "Only one element, which is 0. Output remains 0." }
+            {
+                title: 'Example 1',
+                input: '5\n0 1 0 3 12',
+                output: '1 3 12 0 0',
+                explanation:
+                    'All zeroes are moved to the end, while non-zero elements retain their relative order.',
+            },
+            {
+                title: 'Example 2',
+                input: '1\n0',
+                output: '0',
+                explanation: 'Only one element, which is 0. Output remains 0.',
+            },
         ],
         testcases: [
-            { input: "5\n0 1 0 3 12", output: "1 3 12 0 0" },
-            { input: "1\n0", output: "0" },
-            { input: "3\n0 0 0", output: "0 0 0" },
-            { input: "4\n1 2 3 4", output: "1 2 3 4" },
-            { input: "6\n0 0 1 0 2 0", output: "1 2 0 0 0 0" },
-            { input: "5\n4 2 0 0 1", output: "4 2 1 0 0" },
-            { input: "2\n0 5", output: "5 0" },
-            { input: "8\n0 1 0 3 0 5 0 7", output: "1 3 5 7 0 0 0 0" },
-            { input: "10\n0 0 0 0 0 0 0 0 0 1", output: "1 0 0 0 0 0 0 0 0 0" },
-            { input: "7\n9 0 8 0 7 0 6", output: "9 8 7 6 0 0 0" }
+            { input: '5\n0 1 0 3 12', output: '1 3 12 0 0' },
+            { input: '1\n0', output: '0' },
+            { input: '3\n0 0 0', output: '0 0 0' },
+            { input: '4\n1 2 3 4', output: '1 2 3 4' },
+            { input: '6\n0 0 1 0 2 0', output: '1 2 0 0 0 0' },
+            { input: '5\n4 2 0 0 1', output: '4 2 1 0 0' },
+            { input: '2\n0 5', output: '5 0' },
+            { input: '8\n0 1 0 3 0 5 0 7', output: '1 3 5 7 0 0 0 0' },
+            { input: '10\n0 0 0 0 0 0 0 0 0 1', output: '1 0 0 0 0 0 0 0 0 0' },
+            { input: '7\n9 0 8 0 7 0 6', output: '9 8 7 6 0 0 0' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -229,7 +256,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -328,34 +355,47 @@ fn main() {
         write!(out, "{}", arr[i]).unwrap();
     }
     writeln!(out).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #3: Squares of Sorted Array ====================
     {
-        title: "Squares of Sorted Array",
-        description: "Given an integer array `arr` sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.\n\nTry to solve it in O(n) time using two pointers.\n\n**Input Format:**\n- First line: integer `n` (the size of the array).\n- Second line: `n` space-separated integers sorted in non-decreasing order.\n\n**Output Format:**\n- A single line containing `n` space-separated integers representing the sorted squares.",
-        difficulty: "EASY",
-        tags: ["two-pointers", "arrays"],
-        constraints: "1 <= n <= 10^5\n-10^4 <= arr[i] <= 10^4\narr is sorted in non-decreasing order",
-        hints: "Since the array is sorted, the absolute values of the elements are largest at both ends. Compare elements from both ends.",
-        editorial: "Initialize two pointers at the start and end of the array. Compare the absolute values of the elements at these pointers, square the larger one, place it at the end of the result array, and move the corresponding pointer.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(n) for the output array.",
+        title: 'Squares of Sorted Array',
+        description:
+            'Given an integer array `arr` sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.\n\nTry to solve it in O(n) time using two pointers.\n\n**Input Format:**\n- First line: integer `n` (the size of the array).\n- Second line: `n` space-separated integers sorted in non-decreasing order.\n\n**Output Format:**\n- A single line containing `n` space-separated integers representing the sorted squares.',
+        difficulty: 'EASY',
+        tags: ['two-pointers', 'arrays'],
+        constraints:
+            '1 <= n <= 10^5\n-10^4 <= arr[i] <= 10^4\narr is sorted in non-decreasing order',
+        hints: 'Since the array is sorted, the absolute values of the elements are largest at both ends. Compare elements from both ends.',
+        editorial:
+            'Initialize two pointers at the start and end of the array. Compare the absolute values of the elements at these pointers, square the larger one, place it at the end of the result array, and move the corresponding pointer.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(n) for the output array.',
         examples: [
-            { title: "Example 1", input: "5\n-4 -1 0 3 10", output: "0 1 9 16 100", explanation: "Squares: [16, 1, 0, 9, 100]. Sorted: [0, 1, 9, 16, 100]." },
-            { title: "Example 2", input: "4\n-7 -3 2 3", output: "4 9 9 49", explanation: "Squares: [49, 9, 4, 9]. Sorted: [4, 9, 9, 49]." }
+            {
+                title: 'Example 1',
+                input: '5\n-4 -1 0 3 10',
+                output: '0 1 9 16 100',
+                explanation: 'Squares: [16, 1, 0, 9, 100]. Sorted: [0, 1, 9, 16, 100].',
+            },
+            {
+                title: 'Example 2',
+                input: '4\n-7 -3 2 3',
+                output: '4 9 9 49',
+                explanation: 'Squares: [49, 9, 4, 9]. Sorted: [4, 9, 9, 49].',
+            },
         ],
         testcases: [
-            { input: "5\n-4 -1 0 3 10", output: "0 1 9 16 100" },
-            { input: "4\n-7 -3 2 3", output: "4 9 9 49" },
-            { input: "1\n-5", output: "25" },
-            { input: "3\n-2 -1 0", output: "0 1 4" },
-            { input: "3\n0 1 2", output: "0 1 4" },
-            { input: "6\n-10 -5 -2 0 1 8", output: "0 4 1 25 64 100" },
-            { input: "8\n-4 -4 -3 0 1 2 4 5", output: "0 1 4 9 16 16 16 25" },
-            { input: "5\n-2 -2 -2 -2 -2", output: "4 4 4 4 4" },
-            { input: "6\n-3 -2 -1 1 2 3", output: "1 1 4 4 9 9" },
-            { input: "10\n-10 -9 -8 -7 -6 5 6 7 8 9", output: "25 36 36 49 49 64 64 81 81 100" }
+            { input: '5\n-4 -1 0 3 10', output: '0 1 9 16 100' },
+            { input: '4\n-7 -3 2 3', output: '4 9 9 49' },
+            { input: '1\n-5', output: '25' },
+            { input: '3\n-2 -1 0', output: '0 1 4' },
+            { input: '3\n0 1 2', output: '0 1 4' },
+            { input: '6\n-10 -5 -2 0 1 8', output: '0 4 1 25 64 100' },
+            { input: '8\n-4 -4 -3 0 1 2 4 5', output: '0 1 4 9 16 16 16 25' },
+            { input: '5\n-2 -2 -2 -2 -2', output: '4 4 4 4 4' },
+            { input: '6\n-3 -2 -1 1 2 3', output: '1 1 4 4 9 9' },
+            { input: '10\n-10 -9 -8 -7 -6 5 6 7 8 9', output: '25 36 36 49 49 64 64 81 81 100' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -388,7 +428,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -504,34 +544,47 @@ fn main() {
         write!(out, "{}", res[i]).unwrap();
     }
     writeln!(out).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #4: Is Subsequence ====================
     {
-        title: "Is Subsequence",
-        description: "Given two strings `s` and `t`, return `true` if `s` is a subsequence of `t`, or `false` otherwise.\n\nA subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters.\n\n**Input Format:**\n- First line: string `s`.\n- Second line: string `t`.\n\n**Output Format:**\n- Print \"true\" or \"false\".",
-        difficulty: "EASY",
-        tags: ["two-pointers", "strings"],
-        constraints: "0 <= |s| <= 10^5\n0 <= |t| <= 10^5\ns and t consist only of lowercase English letters",
-        hints: "Use two pointers to scan both strings simultaneously. Advance the pointer for s only when a match is found.",
-        editorial: "Maintain a pointer for each string. Scan t character by character. If the character matches the current character in s, increment the pointer for s. If the pointer for s reaches the end, s is a subsequence.\n\n**Time Complexity:** O(|t|)\n**Space Complexity:** O(1) auxiliary space.",
+        title: 'Is Subsequence',
+        description:
+            'Given two strings `s` and `t`, return `true` if `s` is a subsequence of `t`, or `false` otherwise.\n\nA subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters.\n\n**Input Format:**\n- First line: string `s`.\n- Second line: string `t`.\n\n**Output Format:**\n- Print "true" or "false".',
+        difficulty: 'EASY',
+        tags: ['two-pointers', 'strings'],
+        constraints:
+            '0 <= |s| <= 10^5\n0 <= |t| <= 10^5\ns and t consist only of lowercase English letters',
+        hints: 'Use two pointers to scan both strings simultaneously. Advance the pointer for s only when a match is found.',
+        editorial:
+            'Maintain a pointer for each string. Scan t character by character. If the character matches the current character in s, increment the pointer for s. If the pointer for s reaches the end, s is a subsequence.\n\n**Time Complexity:** O(|t|)\n**Space Complexity:** O(1) auxiliary space.',
         examples: [
-            { title: "Example 1", input: "abc\nahbgdc", output: "true", explanation: "We can find 'a', 'b', and 'c' in order in the string 'ahbgdc'." },
-            { title: "Example 2", input: "axc\nahbgdc", output: "false", explanation: "'x' does not appear in 'ahbgdc', so 'axc' is not a subsequence." }
+            {
+                title: 'Example 1',
+                input: 'abc\nahbgdc',
+                output: 'true',
+                explanation: "We can find 'a', 'b', and 'c' in order in the string 'ahbgdc'.",
+            },
+            {
+                title: 'Example 2',
+                input: 'axc\nahbgdc',
+                output: 'false',
+                explanation: "'x' does not appear in 'ahbgdc', so 'axc' is not a subsequence.",
+            },
         ],
         testcases: [
-            { input: "abc\nahbgdc", output: "true" },
-            { input: "axc\nahbgdc", output: "false" },
-            { input: "a\na", output: "true" },
-            { input: "a\nb", output: "false" },
-            { input: "sing\nsomeinterestingthings", output: "true" },
-            { input: "code\ncoooodde", output: "true" },
-            { input: "abc\ncba", output: "false" },
-            { input: "longstring\nlloonnngggssttrriinngg", output: "true" },
-            { input: "xyz\nabc", output: "false" },
-            { input: "hello\nhell", output: "false" }
+            { input: 'abc\nahbgdc', output: 'true' },
+            { input: 'axc\nahbgdc', output: 'false' },
+            { input: 'a\na', output: 'true' },
+            { input: 'a\nb', output: 'false' },
+            { input: 'sing\nsomeinterestingthings', output: 'true' },
+            { input: 'code\ncoooodde', output: 'true' },
+            { input: 'abc\ncba', output: 'false' },
+            { input: 'longstring\nlloonnngggssttrriinngg', output: 'true' },
+            { input: 'xyz\nabc', output: 'false' },
+            { input: 'hello\nhell', output: 'false' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -564,7 +617,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -648,34 +701,47 @@ fn main() {
     } else {
         writeln!(out, "false").unwrap();
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #5: Check Palindrome Number ====================
     {
-        title: "Check Palindrome Number",
-        description: "Given an integer `x`, return `true` if `x` is a palindrome, and `false` otherwise.\n\nAn integer is a palindrome when it reads the same backward as forward. For example, `121` is a palindrome while `-121` is not because it becomes `121-` when read from right to left.\n\n**Input Format:**\n- A single line containing the integer `x`.\n\n**Output Format:**\n- Print \"true\" or \"false\".",
-        difficulty: "EASY",
-        tags: ["two-pointers"],
-        constraints: "-2^31 <= x <= 2^31 - 1",
-        hints: "A negative number cannot be a palindrome. For non-negative integers, you can either reverse the number numerically or check characters of its string representation from both ends.",
-        editorial: "Convert the number to its string representation. If the string starts with '-', it is false. Otherwise, use two pointers from both ends of the string to check if characters match.\n\n**Time Complexity:** O(number of digits in x)\n**Space Complexity:** O(number of digits in x) for string storage.",
+        title: 'Check Palindrome Number',
+        description:
+            'Given an integer `x`, return `true` if `x` is a palindrome, and `false` otherwise.\n\nAn integer is a palindrome when it reads the same backward as forward. For example, `121` is a palindrome while `-121` is not because it becomes `121-` when read from right to left.\n\n**Input Format:**\n- A single line containing the integer `x`.\n\n**Output Format:**\n- Print "true" or "false".',
+        difficulty: 'EASY',
+        tags: ['two-pointers'],
+        constraints: '-2^31 <= x <= 2^31 - 1',
+        hints: 'A negative number cannot be a palindrome. For non-negative integers, you can either reverse the number numerically or check characters of its string representation from both ends.',
+        editorial:
+            "Convert the number to its string representation. If the string starts with '-', it is false. Otherwise, use two pointers from both ends of the string to check if characters match.\n\n**Time Complexity:** O(number of digits in x)\n**Space Complexity:** O(number of digits in x) for string storage.",
         examples: [
-            { title: "Example 1", input: "121", output: "true", explanation: "121 reads as 121 from left to right and right to left." },
-            { title: "Example 2", input: "-121", output: "false", explanation: "From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome." }
+            {
+                title: 'Example 1',
+                input: '121',
+                output: 'true',
+                explanation: '121 reads as 121 from left to right and right to left.',
+            },
+            {
+                title: 'Example 2',
+                input: '-121',
+                output: 'false',
+                explanation:
+                    'From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.',
+            },
         ],
         testcases: [
-            { input: "121", output: "true" },
-            { input: "-121", output: "false" },
-            { input: "10", output: "false" },
-            { input: "0", output: "true" },
-            { input: "12321", output: "true" },
-            { input: "123321", output: "true" },
-            { input: "123456", output: "false" },
-            { input: "-101", output: "false" },
-            { input: "1", output: "true" },
-            { input: "1000000001", output: "true" }
+            { input: '121', output: 'true' },
+            { input: '-121', output: 'false' },
+            { input: '10', output: 'false' },
+            { input: '0', output: 'true' },
+            { input: '12321', output: 'true' },
+            { input: '123321', output: 'true' },
+            { input: '123456', output: 'false' },
+            { input: '-101', output: 'false' },
+            { input: '1', output: 'true' },
+            { input: '1000000001', output: 'true' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -708,7 +774,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -796,34 +862,52 @@ fn main() {
             writeln!(out, "{}", is_pal).unwrap();
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #1: Three Sum to Zero ====================
     {
-        title: "Three Sum to Zero",
-        description: "Given an integer array `arr`, return all unique triplets `[arr[i], arr[j], arr[k]]` such that `i != j`, `i != k`, and `j != k`, and `arr[i] + arr[j] + arr[k] == 0`.\n\nTo make the output deterministic:\n- Print each triplet on a new line, space-separated.\n- The elements within each triplet must be sorted in ascending order.\n- The triplets themselves must be sorted lexicographically.\n\n**Input Format:**\n- First line: integer `n` (the size of the array).\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- All unique triplets sorted lexicographically, each on a new line.",
-        difficulty: "MEDIUM",
-        tags: ["two-pointers", "arrays"],
-        constraints: "3 <= n <= 3000\n-10^5 <= arr[i] <= 10^5",
-        hints: "Sort the array first. Then, loop through each element and use the two-pointer technique to find two other elements that sum to its negation.",
-        editorial: "Sort the array. For each element arr[i], if it is positive, we can stop. Otherwise, avoid duplicates by checking if arr[i] == arr[i-1]. Use two pointers left = i + 1 and right = n - 1 to find pairs summing to -arr[i]. Skip duplicates during the two-pointer step as well.\n\n**Time Complexity:** O(n^2)\n**Space Complexity:** O(log n) or O(n) for sorting depending on the language.",
+        title: 'Three Sum to Zero',
+        description:
+            'Given an integer array `arr`, return all unique triplets `[arr[i], arr[j], arr[k]]` such that `i != j`, `i != k`, and `j != k`, and `arr[i] + arr[j] + arr[k] == 0`.\n\nTo make the output deterministic:\n- Print each triplet on a new line, space-separated.\n- The elements within each triplet must be sorted in ascending order.\n- The triplets themselves must be sorted lexicographically.\n\n**Input Format:**\n- First line: integer `n` (the size of the array).\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- All unique triplets sorted lexicographically, each on a new line.',
+        difficulty: 'MEDIUM',
+        tags: ['two-pointers', 'arrays'],
+        constraints: '3 <= n <= 3000\n-10^5 <= arr[i] <= 10^5',
+        hints: 'Sort the array first. Then, loop through each element and use the two-pointer technique to find two other elements that sum to its negation.',
+        editorial:
+            'Sort the array. For each element arr[i], if it is positive, we can stop. Otherwise, avoid duplicates by checking if arr[i] == arr[i-1]. Use two pointers left = i + 1 and right = n - 1 to find pairs summing to -arr[i]. Skip duplicates during the two-pointer step as well.\n\n**Time Complexity:** O(n^2)\n**Space Complexity:** O(log n) or O(n) for sorting depending on the language.',
         examples: [
-            { title: "Example 1", input: "6\n-1 0 1 2 -1 -4", output: "-1 -1 2\n-1 0 1", explanation: "The unique triplets are [-1, -1, 2] and [-1, 0, 1]." },
-            { title: "Example 2", input: "3\n0 1 1", output: "", explanation: "No triplet sums up to 0." }
+            {
+                title: 'Example 1',
+                input: '6\n-1 0 1 2 -1 -4',
+                output: '-1 -1 2\n-1 0 1',
+                explanation: 'The unique triplets are [-1, -1, 2] and [-1, 0, 1].',
+            },
+            {
+                title: 'Example 2',
+                input: '3\n0 1 1',
+                output: '',
+                explanation: 'No triplet sums up to 0.',
+            },
         ],
         testcases: [
-            { input: "6\n-1 0 1 2 -1 -4", output: "-1 -1 2\n-1 0 1" },
-            { input: "3\n0 1 1", output: "" },
-            { input: "3\n0 0 0", output: "0 0 0" },
-            { input: "9\n-2 0 1 1 2 -1 -4 0 -2", output: "-2 0 2\n-2 1 1\n-1 0 1" },
-            { input: "5\n-1 -1 -1 2 2", output: "-1 -1 2" },
-            { input: "8\n-5 1 2 3 4 -2 -1 -3", output: "-5 1 4\n-5 2 3\n-3 -1 4\n-3 1 2\n-2 -1 3" },
-            { input: "4\n1 -1 -1 0", output: "" },
-            { input: "10\n-4 -3 -2 -1 0 1 2 3 4 5", output: "-4 -1 5\n-4 0 4\n-4 1 3\n-3 -2 5\n-3 -1 4\n-3 0 3\n-3 1 2\n-2 -1 3\n-2 0 2\n-1 0 1" },
-            { input: "7\n-3 0 1 2 -1 -1 2", output: "-3 1 2\n-1 -1 2\n-1 0 1" },
-            { input: "12\n4 -2 -2 0 1 2 -1 -4 3 -1 0 2", output: "-4 0 4\n-4 1 3\n-4 2 2\n-2 -2 4\n-2 -1 3\n-2 0 2\n-1 -1 2\n-1 0 1" }
+            { input: '6\n-1 0 1 2 -1 -4', output: '-1 -1 2\n-1 0 1' },
+            { input: '3\n0 1 1', output: '' },
+            { input: '3\n0 0 0', output: '0 0 0' },
+            { input: '9\n-2 0 1 1 2 -1 -4 0 -2', output: '-2 0 2\n-2 1 1\n-1 0 1' },
+            { input: '5\n-1 -1 -1 2 2', output: '-1 -1 2' },
+            { input: '8\n-5 1 2 3 4 -2 -1 -3', output: '-5 1 4\n-5 2 3\n-3 -1 4\n-3 1 2\n-2 -1 3' },
+            { input: '4\n1 -1 -1 0', output: '' },
+            {
+                input: '10\n-4 -3 -2 -1 0 1 2 3 4 5',
+                output: '-4 -1 5\n-4 0 4\n-4 1 3\n-3 -2 5\n-3 -1 4\n-3 0 3\n-3 1 2\n-2 -1 3\n-2 0 2\n-1 0 1',
+            },
+            { input: '7\n-3 0 1 2 -1 -1 2', output: '-3 1 2\n-1 -1 2\n-1 0 1' },
+            {
+                input: '12\n4 -2 -2 0 1 2 -1 -4 3 -1 0 2',
+                output: '-4 0 4\n-4 1 3\n-4 2 2\n-2 -2 4\n-2 -1 3\n-2 0 2\n-1 -1 2\n-1 0 1',
+            },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -856,7 +940,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -991,34 +1075,47 @@ fn main() {
             }
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #2: Container With Most Water ====================
     {
-        title: "Container With Most Water",
-        description: "Given `n` non-negative integers `arr` representing line heights, find two lines that together with the x-axis form a container, such that the container contains the most water.\n\nReturn the maximum amount of water a container can store.\n\n**Input Format:**\n- First line: integer `n`.\n- Second line: `n` space-separated heights.\n\n**Output Format:**\n- A single integer representing the maximum water container area.",
-        difficulty: "MEDIUM",
-        tags: ["two-pointers", "arrays"],
-        constraints: "2 <= n <= 10^5\n0 <= arr[i] <= 10^4",
-        hints: "Start with the widest container using two pointers at both ends of the array. Move the pointer pointing to the shorter line inward.",
-        editorial: "Initialize two pointers, left = 0 and right = n - 1. Calculate the area as (right - left) * min(arr[left], arr[right]). Move the pointer with the smaller height, since moving the larger one can never increase the container height.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.",
+        title: 'Container With Most Water',
+        description:
+            'Given `n` non-negative integers `arr` representing line heights, find two lines that together with the x-axis form a container, such that the container contains the most water.\n\nReturn the maximum amount of water a container can store.\n\n**Input Format:**\n- First line: integer `n`.\n- Second line: `n` space-separated heights.\n\n**Output Format:**\n- A single integer representing the maximum water container area.',
+        difficulty: 'MEDIUM',
+        tags: ['two-pointers', 'arrays'],
+        constraints: '2 <= n <= 10^5\n0 <= arr[i] <= 10^4',
+        hints: 'Start with the widest container using two pointers at both ends of the array. Move the pointer pointing to the shorter line inward.',
+        editorial:
+            'Initialize two pointers, left = 0 and right = n - 1. Calculate the area as (right - left) * min(arr[left], arr[right]). Move the pointer with the smaller height, since moving the larger one can never increase the container height.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.',
         examples: [
-            { title: "Example 1", input: "9\n1 8 6 2 5 4 8 3 7", output: "49", explanation: "The max area of water is obtained between index 1 (height 8) and index 8 (height 7). Area = (8 - 1) * min(8, 7) = 7 * 7 = 49." },
-            { title: "Example 2", input: "2\n1 1", output: "1", explanation: "The two elements form a container of width 1 and height 1. Area = 1." }
+            {
+                title: 'Example 1',
+                input: '9\n1 8 6 2 5 4 8 3 7',
+                output: '49',
+                explanation:
+                    'The max area of water is obtained between index 1 (height 8) and index 8 (height 7). Area = (8 - 1) * min(8, 7) = 7 * 7 = 49.',
+            },
+            {
+                title: 'Example 2',
+                input: '2\n1 1',
+                output: '1',
+                explanation: 'The two elements form a container of width 1 and height 1. Area = 1.',
+            },
         ],
         testcases: [
-            { input: "9\n1 8 6 2 5 4 8 3 7", output: "49" },
-            { input: "2\n1 1", output: "1" },
-            { input: "2\n4 3", output: "3" },
-            { input: "5\n1 2 1 2 1", output: "4" },
-            { input: "10\n10 9 8 7 6 5 4 3 2 1", output: "25" },
-            { input: "5\n3 1 2 4 5", output: "12" },
-            { input: "8\n2 3 4 5 18 17 6 7", output: "21" },
-            { input: "10\n1 2 3 4 5 6 7 8 9 10", output: "25" },
-            { input: "6\n10 100 100 10 10 10", output: "100" },
-            { input: "12\n12 1 2 3 4 5 6 7 8 9 10 11", output: "121" }
+            { input: '9\n1 8 6 2 5 4 8 3 7', output: '49' },
+            { input: '2\n1 1', output: '1' },
+            { input: '2\n4 3', output: '3' },
+            { input: '5\n1 2 1 2 1', output: '4' },
+            { input: '10\n10 9 8 7 6 5 4 3 2 1', output: '25' },
+            { input: '5\n3 1 2 4 5', output: '12' },
+            { input: '8\n2 3 4 5 18 17 6 7', output: '21' },
+            { input: '10\n1 2 3 4 5 6 7 8 9 10', output: '25' },
+            { input: '6\n10 100 100 10 10 10', output: '100' },
+            { input: '12\n12 1 2 3 4 5 6 7 8 9 10 11', output: '121' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1051,7 +1148,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1159,34 +1256,47 @@ fn main() {
         }
     }
     writeln!(out, "{}", max_water).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #3: Max Consecutive Ones with K Flips ====================
     {
-        title: "Max Consecutive Ones with K Flips",
-        description: "Given a binary array `arr` and an integer `k`, return the maximum number of consecutive `1`'s in the array if you can flip at most `k` `0`s.\n\n**Input Format:**\n- First line: two space-separated integers `n` (size of the array) and `k` (max flips).\n- Second line: `n` space-separated integers (either 0 or 1).\n\n**Output Format:**\n- A single integer representing the maximum consecutive 1s.",
-        difficulty: "MEDIUM",
-        tags: ["sliding-window", "arrays"],
-        constraints: "1 <= n <= 10^5\n0 <= k <= n\narr[i] is either 0 or 1",
-        hints: "Use a sliding window. Expand the right boundary. If the count of zeroes in the window exceeds k, shrink the left boundary until the count of zeroes is <= k.",
-        editorial: "Maintain a sliding window [left, right] and track the number of zeroes inside it. If zero_count > k, increment left until zero_count <= k. The maximum window size (right - left + 1) during the traversal is the answer.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.",
+        title: 'Max Consecutive Ones with K Flips',
+        description:
+            "Given a binary array `arr` and an integer `k`, return the maximum number of consecutive `1`'s in the array if you can flip at most `k` `0`s.\n\n**Input Format:**\n- First line: two space-separated integers `n` (size of the array) and `k` (max flips).\n- Second line: `n` space-separated integers (either 0 or 1).\n\n**Output Format:**\n- A single integer representing the maximum consecutive 1s.",
+        difficulty: 'MEDIUM',
+        tags: ['sliding-window', 'arrays'],
+        constraints: '1 <= n <= 10^5\n0 <= k <= n\narr[i] is either 0 or 1',
+        hints: 'Use a sliding window. Expand the right boundary. If the count of zeroes in the window exceeds k, shrink the left boundary until the count of zeroes is <= k.',
+        editorial:
+            'Maintain a sliding window [left, right] and track the number of zeroes inside it. If zero_count > k, increment left until zero_count <= k. The maximum window size (right - left + 1) during the traversal is the answer.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.',
         examples: [
-            { title: "Example 1", input: "11 2\n1 1 1 0 0 0 1 1 1 1 0", output: "6", explanation: "Flipping at most two zeroes gives 6 consecutive ones: 1 1 1 0 0 [0 1 1 1 1 0] -> [1 1 1 1 1 1] after flipping." },
-            { title: "Example 2", input: "19 3\n0 0 1 1 0 0 1 1 1 0 1 1 0 0 0 1 1 1 1", output: "10", explanation: "Flip the zeroes at indices 5, 9, and 12 to get 10 consecutive ones." }
+            {
+                title: 'Example 1',
+                input: '11 2\n1 1 1 0 0 0 1 1 1 1 0',
+                output: '6',
+                explanation:
+                    'Flipping at most two zeroes gives 6 consecutive ones: 1 1 1 0 0 [0 1 1 1 1 0] -> [1 1 1 1 1 1] after flipping.',
+            },
+            {
+                title: 'Example 2',
+                input: '19 3\n0 0 1 1 0 0 1 1 1 0 1 1 0 0 0 1 1 1 1',
+                output: '10',
+                explanation: 'Flip the zeroes at indices 5, 9, and 12 to get 10 consecutive ones.',
+            },
         ],
         testcases: [
-            { input: "11 2\n1 1 1 0 0 0 1 1 1 1 0", output: "6" },
-            { input: "19 3\n0 0 1 1 0 0 1 1 1 0 1 1 0 0 0 1 1 1 1", output: "10" },
-            { input: "5 0\n1 0 1 1 0", output: "2" },
-            { input: "6 1\n0 0 0 0 0 0", output: "1" },
-            { input: "6 5\n0 0 0 0 0 0", output: "5" },
-            { input: "6 6\n0 0 0 0 0 0", output: "6" },
-            { input: "8 2\n1 0 0 1 0 0 1 1", output: "5" },
-            { input: "10 1\n1 1 1 1 1 1 1 1 1 1", output: "10" },
-            { input: "15 2\n1 0 0 0 1 1 0 0 1 0 1 1 0 1 1", output: "7" },
-            { input: "20 4\n1 0 0 1 1 0 1 0 1 1 1 0 0 0 1 1 1 1 0 1", output: "12" }
+            { input: '11 2\n1 1 1 0 0 0 1 1 1 1 0', output: '6' },
+            { input: '19 3\n0 0 1 1 0 0 1 1 1 0 1 1 0 0 0 1 1 1 1', output: '10' },
+            { input: '5 0\n1 0 1 1 0', output: '2' },
+            { input: '6 1\n0 0 0 0 0 0', output: '1' },
+            { input: '6 5\n0 0 0 0 0 0', output: '5' },
+            { input: '6 6\n0 0 0 0 0 0', output: '6' },
+            { input: '8 2\n1 0 0 1 0 0 1 1', output: '5' },
+            { input: '10 1\n1 1 1 1 1 1 1 1 1 1', output: '10' },
+            { input: '15 2\n1 0 0 0 1 1 0 0 1 0 1 1 0 1 1', output: '7' },
+            { input: '20 4\n1 0 0 1 1 0 1 0 1 1 1 0 0 0 1 1 1 1 0 1', output: '12' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1219,7 +1329,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1338,34 +1448,48 @@ fn main() {
         ans = cmp::max(ans, right - left + 1);
     }
     writeln!(out, "{}", ans).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #4: Fruits Into Baskets ====================
     {
-        title: "Fruits Into Baskets",
-        description: "You are visiting a farm that has a single row of fruit trees represented by an integer array `fruits` where `fruits[i]` is the type of fruit the `i`-th tree produces.\n\nYou have two baskets, and each basket can only hold a single type of fruit. There is no limit on the amount of fruit each basket can hold.\nStarting from any tree of your choice, you must pick exactly one fruit from every tree (including the start tree) while moving to the right. Stop when you reach a tree with fruit of a type that cannot fit in your baskets.\n\nReturn the maximum number of fruits you can pick.\n\n**Input Format:**\n- First line: integer `n`.\n- Second line: `n` space-separated integers representing fruit types.\n\n**Output Format:**\n- A single integer representing the maximum fruits you can pick.",
-        difficulty: "MEDIUM",
-        tags: ["sliding-window", "arrays"],
-        constraints: "1 <= n <= 10^5\n0 <= fruits[i] <= 10^5",
-        hints: "This is equivalent to finding the longest contiguous subarray with at most 2 distinct integers. Use a sliding window and a hash map to count occurrences.",
-        editorial: "Maintain a sliding window with a hash map of fruit counts. If map.size() > 2, increment the left pointer and decrement fruit counts in the map. Remove keys with 0 count. The answer is the maximum window size.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space (since the map size is at most 3).",
+        title: 'Fruits Into Baskets',
+        description:
+            'You are visiting a farm that has a single row of fruit trees represented by an integer array `fruits` where `fruits[i]` is the type of fruit the `i`-th tree produces.\n\nYou have two baskets, and each basket can only hold a single type of fruit. There is no limit on the amount of fruit each basket can hold.\nStarting from any tree of your choice, you must pick exactly one fruit from every tree (including the start tree) while moving to the right. Stop when you reach a tree with fruit of a type that cannot fit in your baskets.\n\nReturn the maximum number of fruits you can pick.\n\n**Input Format:**\n- First line: integer `n`.\n- Second line: `n` space-separated integers representing fruit types.\n\n**Output Format:**\n- A single integer representing the maximum fruits you can pick.',
+        difficulty: 'MEDIUM',
+        tags: ['sliding-window', 'arrays'],
+        constraints: '1 <= n <= 10^5\n0 <= fruits[i] <= 10^5',
+        hints: 'This is equivalent to finding the longest contiguous subarray with at most 2 distinct integers. Use a sliding window and a hash map to count occurrences.',
+        editorial:
+            'Maintain a sliding window with a hash map of fruit counts. If map.size() > 2, increment the left pointer and decrement fruit counts in the map. Remove keys with 0 count. The answer is the maximum window size.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space (since the map size is at most 3).',
         examples: [
-            { title: "Example 1", input: "3\n1 2 1", output: "3", explanation: "We can pick fruit types [1, 2, 1] which matches the two baskets restriction." },
-            { title: "Example 2", input: "4\n0 1 2 2", output: "3", explanation: "We can pick [1, 2, 2]. If we start at the first tree, we get [0, 1] of length 2." }
+            {
+                title: 'Example 1',
+                input: '3\n1 2 1',
+                output: '3',
+                explanation:
+                    'We can pick fruit types [1, 2, 1] which matches the two baskets restriction.',
+            },
+            {
+                title: 'Example 2',
+                input: '4\n0 1 2 2',
+                output: '3',
+                explanation:
+                    'We can pick [1, 2, 2]. If we start at the first tree, we get [0, 1] of length 2.',
+            },
         ],
         testcases: [
-            { input: "3\n1 2 1", output: "3" },
-            { input: "4\n0 1 2 2", output: "3" },
-            { input: "5\n1 2 3 2 2", output: "4" },
-            { input: "11\n3 3 3 1 2 1 1 2 3 3 4", output: "5" },
-            { input: "1\n42", output: "1" },
-            { input: "6\n1 1 1 1 1 1", output: "6" },
-            { input: "8\n1 2 3 4 5 6 7 8", output: "2" },
-            { input: "10\n1 2 1 3 4 3 4 3 5 6", output: "5" },
-            { input: "12\n1 2 1 2 3 2 3 2 1 2 1 2", output: "5" },
-            { input: "15\n1 1 2 2 3 3 2 2 3 3 1 1 1 2 2", output: "8" }
+            { input: '3\n1 2 1', output: '3' },
+            { input: '4\n0 1 2 2', output: '3' },
+            { input: '5\n1 2 3 2 2', output: '4' },
+            { input: '11\n3 3 3 1 2 1 1 2 3 3 4', output: '5' },
+            { input: '1\n42', output: '1' },
+            { input: '6\n1 1 1 1 1 1', output: '6' },
+            { input: '8\n1 2 3 4 5 6 7 8', output: '2' },
+            { input: '10\n1 2 1 3 4 3 4 3 5 6', output: '5' },
+            { input: '12\n1 2 1 2 3 2 3 2 1 2 1 2', output: '5' },
+            { input: '15\n1 1 2 2 3 3 2 2 3 3 1 1 1 2 2', output: '8' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1398,7 +1522,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1513,34 +1637,47 @@ fn main() {
         ans = cmp::max(ans, right - left + 1);
     }
     writeln!(out, "{}", ans).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #5: Boats to Save People ====================
     {
-        title: "Boats to Save People",
-        description: "You are given an array `people` where `people[i]` is the weight of the `i`-th person, and an infinite number of boats where each boat can carry a maximum weight of `limit`.\nEach boat carries at most two people at the same time, provided the sum of their weight is at most `limit`.\n\nReturn the minimum number of boats to carry every given person.\n\n**Input Format:**\n- First line: two space-separated integers `n` (number of people) and `limit` (max boat capacity).\n- Second line: `n` space-separated integers representing weights.\n\n**Output Format:**\n- A single integer representing the minimum number of boats.",
-        difficulty: "MEDIUM",
-        tags: ["two-pointers", "greedy"],
-        constraints: "1 <= n <= 5 * 10^4\n1 <= people[i] <= limit <= 3 * 10^4",
-        hints: "Sort the people by weight. Try to pair the heaviest person with the lightest person. If they fit together, put both in a boat. Otherwise, the heaviest person must go alone.",
-        editorial: "Sort the weights array. Maintain two pointers: left = 0 (lightest) and right = n - 1 (heaviest). If people[left] + people[right] <= limit, they share a boat and we increment left. In all cases, the heaviest person gets a boat, so we decrement right and increment the boat count.\n\n**Time Complexity:** O(n log n) for sorting.\n**Space Complexity:** O(log n) or O(n) for sorting depending on the language.",
+        title: 'Boats to Save People',
+        description:
+            'You are given an array `people` where `people[i]` is the weight of the `i`-th person, and an infinite number of boats where each boat can carry a maximum weight of `limit`.\nEach boat carries at most two people at the same time, provided the sum of their weight is at most `limit`.\n\nReturn the minimum number of boats to carry every given person.\n\n**Input Format:**\n- First line: two space-separated integers `n` (number of people) and `limit` (max boat capacity).\n- Second line: `n` space-separated integers representing weights.\n\n**Output Format:**\n- A single integer representing the minimum number of boats.',
+        difficulty: 'MEDIUM',
+        tags: ['two-pointers', 'greedy'],
+        constraints: '1 <= n <= 5 * 10^4\n1 <= people[i] <= limit <= 3 * 10^4',
+        hints: 'Sort the people by weight. Try to pair the heaviest person with the lightest person. If they fit together, put both in a boat. Otherwise, the heaviest person must go alone.',
+        editorial:
+            'Sort the weights array. Maintain two pointers: left = 0 (lightest) and right = n - 1 (heaviest). If people[left] + people[right] <= limit, they share a boat and we increment left. In all cases, the heaviest person gets a boat, so we decrement right and increment the boat count.\n\n**Time Complexity:** O(n log n) for sorting.\n**Space Complexity:** O(log n) or O(n) for sorting depending on the language.',
         examples: [
-            { title: "Example 1", input: "2 3\n1 2", output: "1", explanation: "1 boat is enough to carry both people since 1 + 2 = 3 <= 3." },
-            { title: "Example 2", input: "4 5\n3 2 2 1", output: "3", explanation: "3 boats: (1, 2), (2), (3). Note that (3, 2) is <= 5, but each boat can hold at most 2 people." }
+            {
+                title: 'Example 1',
+                input: '2 3\n1 2',
+                output: '1',
+                explanation: '1 boat is enough to carry both people since 1 + 2 = 3 <= 3.',
+            },
+            {
+                title: 'Example 2',
+                input: '4 5\n3 2 2 1',
+                output: '3',
+                explanation:
+                    '3 boats: (1, 2), (2), (3). Note that (3, 2) is <= 5, but each boat can hold at most 2 people.',
+            },
         ],
         testcases: [
-            { input: "2 3\n1 2", output: "1" },
-            { input: "4 5\n3 2 2 1", output: "3" },
-            { input: "4 6\n3 5 3 4", output: "3" },
-            { input: "1 5\n4", output: "1" },
-            { input: "6 10\n5 5 5 5 5 5", output: "3" },
-            { input: "7 10\n10 9 8 7 6 5 4", output: "6" },
-            { input: "8 8\n2 2 3 3 4 4 5 5", output: "4" },
-            { input: "10 15\n10 10 10 10 10 5 5 5 5 5", output: "5" },
-            { input: "10 20\n20 19 18 17 16 15 14 13 12 11", output: "10" },
-            { input: "12 100\n50 49 51 52 48 47 53 54 46 45 55 56", output: "7" }
+            { input: '2 3\n1 2', output: '1' },
+            { input: '4 5\n3 2 2 1', output: '3' },
+            { input: '4 6\n3 5 3 4', output: '3' },
+            { input: '1 5\n4', output: '1' },
+            { input: '6 10\n5 5 5 5 5 5', output: '3' },
+            { input: '7 10\n10 9 8 7 6 5 4', output: '6' },
+            { input: '8 8\n2 2 3 3 4 4 5 5', output: '4' },
+            { input: '10 15\n10 10 10 10 10 5 5 5 5 5', output: '5' },
+            { input: '10 20\n20 19 18 17 16 15 14 13 12 11', output: '10' },
+            { input: '12 100\n50 49 51 52 48 47 53 54 46 45 55 56', output: '7' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1573,7 +1710,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1693,34 +1830,47 @@ fn main() {
         boats += 1;
     }
     writeln!(out, "{}", boats).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #1: Sliding Window Maximum ====================
     {
-        title: "Sliding Window Maximum",
-        description: "You are given an array of integers `arr` and a sliding window of size `k` moving from left to right. You can only see the `k` numbers in the window at any time.\n\nReturn the maximum of each sliding window.\n\n**Input Format:**\n- First line: two space-separated integers `n` (size of array) and `k` (window size).\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single line of space-separated integers representing the maximum of each window of size `k`.",
-        difficulty: "HARD",
-        tags: ["sliding-window", "monotonic-queue"],
-        constraints: "1 <= n <= 10^5\n1 <= k <= n\n-10^4 <= arr[i] <= 10^4",
-        hints: "Use a double-ended queue (deque) to store indices of array elements. Maintain elements in the deque in a decreasing order of their values.",
-        editorial: "Maintain a monotonic deque where elements are sorted in decreasing order. For each element arr[i]: 1. Remove indices out of the window from the front of the deque. 2. Remove indices of elements smaller than arr[i] from the back of the deque. 3. Add i. 4. The front of the deque is the maximum of the current window.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(k) for the deque.",
+        title: 'Sliding Window Maximum',
+        description:
+            'You are given an array of integers `arr` and a sliding window of size `k` moving from left to right. You can only see the `k` numbers in the window at any time.\n\nReturn the maximum of each sliding window.\n\n**Input Format:**\n- First line: two space-separated integers `n` (size of array) and `k` (window size).\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single line of space-separated integers representing the maximum of each window of size `k`.',
+        difficulty: 'HARD',
+        tags: ['sliding-window', 'monotonic-queue'],
+        constraints: '1 <= n <= 10^5\n1 <= k <= n\n-10^4 <= arr[i] <= 10^4',
+        hints: 'Use a double-ended queue (deque) to store indices of array elements. Maintain elements in the deque in a decreasing order of their values.',
+        editorial:
+            'Maintain a monotonic deque where elements are sorted in decreasing order. For each element arr[i]: 1. Remove indices out of the window from the front of the deque. 2. Remove indices of elements smaller than arr[i] from the back of the deque. 3. Add i. 4. The front of the deque is the maximum of the current window.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(k) for the deque.',
         examples: [
-            { title: "Example 1", input: "8 3\n1 3 -1 -3 5 3 6 7", output: "3 3 5 5 6 7", explanation: "Window max updates: [1, 3, -1] -> 3, [3, -1, -3] -> 3, [-1, -3, 5] -> 5, etc." },
-            { title: "Example 2", input: "1 1\n1", output: "1", explanation: "A single window containing the only element." }
+            {
+                title: 'Example 1',
+                input: '8 3\n1 3 -1 -3 5 3 6 7',
+                output: '3 3 5 5 6 7',
+                explanation:
+                    'Window max updates: [1, 3, -1] -> 3, [3, -1, -3] -> 3, [-1, -3, 5] -> 5, etc.',
+            },
+            {
+                title: 'Example 2',
+                input: '1 1\n1',
+                output: '1',
+                explanation: 'A single window containing the only element.',
+            },
         ],
         testcases: [
-            { input: "8 3\n1 3 -1 -3 5 3 6 7", output: "3 3 5 5 6 7" },
-            { input: "1 1\n1", output: "1" },
-            { input: "5 2\n1 -1 2 -2 3", output: "1 2 2 3" },
-            { input: "6 3\n7 2 4 1 5 3", output: "7 4 5 5" },
-            { input: "7 4\n10 20 30 40 30 20 10", output: "40 40 40 40" },
-            { input: "8 1\n4 3 2 1 5 6 7 8", output: "4 3 2 1 5 6 7 8" },
-            { input: "8 8\n1 2 3 4 5 6 7 8", output: "8" },
-            { input: "10 3\n12 11 10 9 8 7 6 5 4 3", output: "12 11 10 9 8 7 6 5" },
-            { input: "10 5\n1 3 -1 -3 5 3 6 7 10 9", output: "5 5 6 7 10 10" },
-            { input: "12 4\n9 10 9 -7 -4 -8 2 -6 11 12 15 -3", output: "10 10 9 2 2 11 12 15 15" }
+            { input: '8 3\n1 3 -1 -3 5 3 6 7', output: '3 3 5 5 6 7' },
+            { input: '1 1\n1', output: '1' },
+            { input: '5 2\n1 -1 2 -2 3', output: '1 2 2 3' },
+            { input: '6 3\n7 2 4 1 5 3', output: '7 4 5 5' },
+            { input: '7 4\n10 20 30 40 30 20 10', output: '40 40 40 40' },
+            { input: '8 1\n4 3 2 1 5 6 7 8', output: '4 3 2 1 5 6 7 8' },
+            { input: '8 8\n1 2 3 4 5 6 7 8', output: '8' },
+            { input: '10 3\n12 11 10 9 8 7 6 5 4 3', output: '12 11 10 9 8 7 6 5' },
+            { input: '10 5\n1 3 -1 -3 5 3 6 7 10 9', output: '5 5 6 7 10 10' },
+            { input: '12 4\n9 10 9 -7 -4 -8 2 -6 11 12 15 -3', output: '10 10 9 2 2 11 12 15 15' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1753,7 +1903,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1881,34 +2031,47 @@ fn main() {
         }
     }
     writeln!(out).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #2: Subarray with K Different Integers ====================
     {
-        title: "Subarray with K Different Integers",
-        description: "Given an integer array `arr` and an integer `k`, return the number of good subarrays of `arr`.\n\nA good subarray is a contiguous part of the array where the number of different integers is exactly `k`.\n\n**Input Format:**\n- First line: two space-separated integers `n` and `k`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer representing the number of good subarrays.",
-        difficulty: "HARD",
-        tags: ["sliding-window", "arrays"],
-        constraints: "1 <= n <= 2 * 10^4\n1 <= k <= n\n1 <= arr[i] <= n",
-        hints: "The number of subarrays with exactly K distinct integers is equal to (atMost(K) - atMost(K - 1)), where atMost(K) is the number of subarrays with at most K distinct integers.",
-        editorial: "Implement a helper function atMost(K) using a sliding window. atMost(K) counts the number of subarrays with at most K distinct integers by expanding right and shrinking left to keep distinct count <= K, adding (right - left + 1) to the count at each step. Return atMost(k) - atMost(k - 1).\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(n) for storing counts in the helper function.",
+        title: 'Subarray with K Different Integers',
+        description:
+            'Given an integer array `arr` and an integer `k`, return the number of good subarrays of `arr`.\n\nA good subarray is a contiguous part of the array where the number of different integers is exactly `k`.\n\n**Input Format:**\n- First line: two space-separated integers `n` and `k`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer representing the number of good subarrays.',
+        difficulty: 'HARD',
+        tags: ['sliding-window', 'arrays'],
+        constraints: '1 <= n <= 2 * 10^4\n1 <= k <= n\n1 <= arr[i] <= n',
+        hints: 'The number of subarrays with exactly K distinct integers is equal to (atMost(K) - atMost(K - 1)), where atMost(K) is the number of subarrays with at most K distinct integers.',
+        editorial:
+            'Implement a helper function atMost(K) using a sliding window. atMost(K) counts the number of subarrays with at most K distinct integers by expanding right and shrinking left to keep distinct count <= K, adding (right - left + 1) to the count at each step. Return atMost(k) - atMost(k - 1).\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(n) for storing counts in the helper function.',
         examples: [
-            { title: "Example 1", input: "5 2\n1 2 1 2 3", output: "7", explanation: "Subarrays formed with exactly 2 different integers: [1, 2], [2, 1], [1, 2], [2, 3], [1, 2, 1], [2, 1, 2], [1, 2, 1, 2]." },
-            { title: "Example 2", input: "5 3\n1 2 1 3 4", output: "3", explanation: "Subarrays: [1, 2, 1, 3], [2, 1, 3], [1, 3, 4]." }
+            {
+                title: 'Example 1',
+                input: '5 2\n1 2 1 2 3',
+                output: '7',
+                explanation:
+                    'Subarrays formed with exactly 2 different integers: [1, 2], [2, 1], [1, 2], [2, 3], [1, 2, 1], [2, 1, 2], [1, 2, 1, 2].',
+            },
+            {
+                title: 'Example 2',
+                input: '5 3\n1 2 1 3 4',
+                output: '3',
+                explanation: 'Subarrays: [1, 2, 1, 3], [2, 1, 3], [1, 3, 4].',
+            },
         ],
         testcases: [
-            { input: "5 2\n1 2 1 2 3", output: "7" },
-            { input: "5 3\n1 2 1 3 4", output: "3" },
-            { input: "1 1\n5", output: "1" },
-            { input: "6 1\n1 1 1 1 1 1", output: "21" },
-            { input: "6 2\n1 1 1 2 2 2", output: "9" },
-            { input: "8 2\n1 2 1 2 1 2 1 2", output: "28" },
-            { input: "8 3\n1 2 3 1 2 3 1 2", output: "21" },
-            { input: "10 4\n1 2 3 4 1 2 3 4 1 2", output: "28" },
-            { input: "12 5\n1 2 3 4 5 1 2 3 4 5 1 2", output: "36" },
-            { input: "15 3\n1 2 1 2 3 1 3 1 2 3 2 3 1 2 1", output: "81" }
+            { input: '5 2\n1 2 1 2 3', output: '7' },
+            { input: '5 3\n1 2 1 3 4', output: '3' },
+            { input: '1 1\n5', output: '1' },
+            { input: '6 1\n1 1 1 1 1 1', output: '21' },
+            { input: '6 2\n1 1 1 2 2 2', output: '9' },
+            { input: '8 2\n1 2 1 2 1 2 1 2', output: '28' },
+            { input: '8 3\n1 2 3 1 2 3 1 2', output: '21' },
+            { input: '10 4\n1 2 3 4 1 2 3 4 1 2', output: '28' },
+            { input: '12 5\n1 2 3 4 5 1 2 3 4 5 1 2', output: '36' },
+            { input: '15 3\n1 2 1 2 3 1 3 1 2 3 2 3 1 2 1', output: '81' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1941,7 +2104,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2082,34 +2245,46 @@ fn main() {
         _ => vec![],
     };
     writeln!(out, "{}", at_most(&arr, k) - at_most(&arr, k - 1)).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #3: Shortest Subarray with Sum >= K ====================
     {
-        title: "Shortest Subarray with Sum >= K",
-        description: "Given an integer array `arr` and an integer `k`, return the length of the shortest non-empty subarray of `arr` with a sum of at least `k`. If there is no such subarray, return `-1`.\n\nNote that the array can contain negative numbers.\n\n**Input Format:**\n- First line: two space-separated integers `n` and `k`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer representing the minimum length of a subarray with sum >= k, or -1 if none exists.",
-        difficulty: "HARD",
-        tags: ["sliding-window", "monotonic-queue", "prefix-sum"],
-        constraints: "1 <= n <= 10^5\n-10^5 <= arr[i] <= 10^5\n1 <= k <= 10^9",
-        hints: "Create a prefix sum array. Maintain a monotonic deque storing indices of prefix sums. For each index, check if the current prefix sum minus the prefix sum at the front of the deque is >= k.",
-        editorial: "Use prefix sums: prefix[i+1] = prefix[i] + arr[i]. We want to find min(j - i) such that prefix[j] - prefix[i] >= k. Keep a deque of indices. For each j: 1. While prefix[j] - prefix[dq.front()] >= k, update answer with j - dq.front() and pop front. 2. While prefix[j] <= prefix[dq.back()], pop back to maintain increasing order.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(n) for prefix sums and deque.",
+        title: 'Shortest Subarray with Sum >= K',
+        description:
+            'Given an integer array `arr` and an integer `k`, return the length of the shortest non-empty subarray of `arr` with a sum of at least `k`. If there is no such subarray, return `-1`.\n\nNote that the array can contain negative numbers.\n\n**Input Format:**\n- First line: two space-separated integers `n` and `k`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer representing the minimum length of a subarray with sum >= k, or -1 if none exists.',
+        difficulty: 'HARD',
+        tags: ['sliding-window', 'monotonic-queue', 'prefix-sum'],
+        constraints: '1 <= n <= 10^5\n-10^5 <= arr[i] <= 10^5\n1 <= k <= 10^9',
+        hints: 'Create a prefix sum array. Maintain a monotonic deque storing indices of prefix sums. For each index, check if the current prefix sum minus the prefix sum at the front of the deque is >= k.',
+        editorial:
+            'Use prefix sums: prefix[i+1] = prefix[i] + arr[i]. We want to find min(j - i) such that prefix[j] - prefix[i] >= k. Keep a deque of indices. For each j: 1. While prefix[j] - prefix[dq.front()] >= k, update answer with j - dq.front() and pop front. 2. While prefix[j] <= prefix[dq.back()], pop back to maintain increasing order.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(n) for prefix sums and deque.',
         examples: [
-            { title: "Example 1", input: "1 1\n1", output: "1", explanation: "The only element satisfies the condition." },
-            { title: "Example 2", input: "3 4\n1 2 -1", output: "-1", explanation: "No subarray sums up to at least 4." }
+            {
+                title: 'Example 1',
+                input: '1 1\n1',
+                output: '1',
+                explanation: 'The only element satisfies the condition.',
+            },
+            {
+                title: 'Example 2',
+                input: '3 4\n1 2 -1',
+                output: '-1',
+                explanation: 'No subarray sums up to at least 4.',
+            },
         ],
         testcases: [
-            { input: "1 1\n1", output: "1" },
-            { input: "3 4\n1 2 -1", output: "-1" },
-            { input: "3 3\n2 -1 2", output: "3" },
-            { input: "5 6\n1 2 3 4 5", output: "2" },
-            { input: "6 3\n-1 1 -2 3 -1 2", output: "1" },
-            { input: "8 10\n3 -2 5 -1 6 -3 2 7", output: "3" },
-            { input: "10 100\n10 20 30 40 50 10 20 30 40 50", output: "3" },
-            { input: "10 15\n-5 8 -3 4 -1 10 -2 3 -4 12", output: "5" },
-            { input: "12 8\n2 -1 2 -1 2 -1 2 -1 2 -1 2 -1", output: "-1" },
-            { input: "15 25\n-10 15 -5 10 20 -15 30 -5 12 18 -20 5 15 10 5", output: "1" }
+            { input: '1 1\n1', output: '1' },
+            { input: '3 4\n1 2 -1', output: '-1' },
+            { input: '3 3\n2 -1 2', output: '3' },
+            { input: '5 6\n1 2 3 4 5', output: '2' },
+            { input: '6 3\n-1 1 -2 3 -1 2', output: '1' },
+            { input: '8 10\n3 -2 5 -1 6 -3 2 7', output: '3' },
+            { input: '10 100\n10 20 30 40 50 10 20 30 40 50', output: '3' },
+            { input: '10 15\n-5 8 -3 4 -1 10 -2 3 -4 12', output: '5' },
+            { input: '12 8\n2 -1 2 -1 2 -1 2 -1 2 -1 2 -1', output: '-1' },
+            { input: '15 25\n-10 15 -5 10 20 -15 30 -5 12 18 -20 5 15 10 5', output: '1' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2142,7 +2317,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2270,34 +2445,48 @@ fn main() {
     } else {
         writeln!(out, "-1").unwrap();
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #4: Max Score After Remove Substring ====================
     {
-        title: "Max Score After Remove Substring",
-        description: "Given a string `s` and two integers `x` and `y`. You can perform two types of operations any number of times:\n- Remove substring \"ab\" and gain `x` points.\n- Remove substring \"ba\" and gain `y` points.\n\nReturn the maximum points you can gain.\n\n**Input Format:**\n- First line: string `s`.\n- Second line: two space-separated integers `x` and `y`.\n\n**Output Format:**\n- A single integer representing the maximum points.",
-        difficulty: "HARD",
-        tags: ["two-pointers", "greedy", "stack"],
-        constraints: "1 <= |s| <= 10^5\n1 <= x, y <= 10^4\ns consists of lowercase English letters",
-        hints: "This can be solved greedily. Always prioritize removing the pattern that gives more points (\"ab\" or \"ba\") using a stack/two-pointers. Then, process the remaining string for the other pattern.",
-        editorial: "Without loss of generality, assume x >= y. First, run a stack-based greedy pass to remove all occurrences of \"ab\" and gain x points per removal. Then, run a second pass on the remaining characters in the stack to remove all occurrences of \"ba\" and gain y points per removal.\n\n**Time Complexity:** O(|s|)\n**Space Complexity:** O(|s|) for the stack.",
+        title: 'Max Score After Remove Substring',
+        description:
+            'Given a string `s` and two integers `x` and `y`. You can perform two types of operations any number of times:\n- Remove substring "ab" and gain `x` points.\n- Remove substring "ba" and gain `y` points.\n\nReturn the maximum points you can gain.\n\n**Input Format:**\n- First line: string `s`.\n- Second line: two space-separated integers `x` and `y`.\n\n**Output Format:**\n- A single integer representing the maximum points.',
+        difficulty: 'HARD',
+        tags: ['two-pointers', 'greedy', 'stack'],
+        constraints: '1 <= |s| <= 10^5\n1 <= x, y <= 10^4\ns consists of lowercase English letters',
+        hints: 'This can be solved greedily. Always prioritize removing the pattern that gives more points ("ab" or "ba") using a stack/two-pointers. Then, process the remaining string for the other pattern.',
+        editorial:
+            'Without loss of generality, assume x >= y. First, run a stack-based greedy pass to remove all occurrences of "ab" and gain x points per removal. Then, run a second pass on the remaining characters in the stack to remove all occurrences of "ba" and gain y points per removal.\n\n**Time Complexity:** O(|s|)\n**Space Complexity:** O(|s|) for the stack.',
         examples: [
-            { title: "Example 1", input: "aabbaabiabaa\n5 4", output: "20", explanation: "Remove 'ab' first because x > y. We can remove 'ab' 4 times to get 20 points." },
-            { title: "Example 2", input: "aabaabbab\n4 5", output: "18", explanation: "Remove 'ba' first because y > x. Remaining string can be cleared for some 'ab'." }
+            {
+                title: 'Example 1',
+                input: 'aabbaabiabaa\n5 4',
+                output: '20',
+                explanation:
+                    "Remove 'ab' first because x > y. We can remove 'ab' 4 times to get 20 points.",
+            },
+            {
+                title: 'Example 2',
+                input: 'aabaabbab\n4 5',
+                output: '18',
+                explanation:
+                    "Remove 'ba' first because y > x. Remaining string can be cleared for some 'ab'.",
+            },
         ],
         testcases: [
-            { input: "aabbaabiabaa\n5 4", output: "20" },
-            { input: "aabaabbab\n4 5", output: "18" },
-            { input: "a\n10 20", output: "0" },
-            { input: "ab\n10 20", output: "10" },
-            { input: "ba\n10 20", output: "20" },
-            { input: "abababab\n10 20", output: "70" },
-            { input: "abbababa\n15 25", output: "90" },
-            { input: "bbbaaa\n5 10", output: "30" },
-            { input: "abacaba\n100 200", output: "400" },
-            { input: "baababaaab\n50 60", output: "230" }
+            { input: 'aabbaabiabaa\n5 4', output: '20' },
+            { input: 'aabaabbab\n4 5', output: '18' },
+            { input: 'a\n10 20', output: '0' },
+            { input: 'ab\n10 20', output: '10' },
+            { input: 'ba\n10 20', output: '20' },
+            { input: 'abababab\n10 20', output: '70' },
+            { input: 'abbababa\n15 25', output: '90' },
+            { input: 'bbbaaa\n5 10', output: '30' },
+            { input: 'abacaba\n100 200', output: '400' },
+            { input: 'baababaaab\n50 60', output: '230' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2330,7 +2519,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2481,34 +2670,46 @@ fn main() {
     let (s_rem, score1) = remove_pattern(&s, f0, f1, f_v);
     let (_, score2) = remove_pattern(&s_rem, s0, s1, s_v);
     writeln!(out, "{}", score1 + score2).unwrap();
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #5: Minimum Operations to Reduce X ====================
     {
-        title: "Minimum Operations to Reduce X",
-        description: "You are given an integer array `arr` and an integer `x`. In one operation, you can remove either the leftmost or the rightmost element from the array and subtract its value from `x`.\n\nReturn the minimum number of operations to reduce `x` to exactly `0` if possible, otherwise, return `-1`.\n\n**Input Format:**\n- First line: two space-separated integers `n` and `x`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer representing the minimum number of operations, or -1 if impossible.",
-        difficulty: "HARD",
-        tags: ["sliding-window", "arrays"],
-        constraints: "1 <= n <= 10^5\n1 <= arr[i] <= 10^4\n1 <= x <= 10^9",
-        hints: "Instead of finding elements at the ends, find the longest contiguous subarray in the middle that sums to (total_sum - x).",
-        editorial: "Let target = sum(arr) - x. If target < 0, return -1. If target == 0, return n. Find the maximum length of a subarray whose sum is exactly target using a sliding window. The minimum operations will be n - max_len.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.",
+        title: 'Minimum Operations to Reduce X',
+        description:
+            'You are given an integer array `arr` and an integer `x`. In one operation, you can remove either the leftmost or the rightmost element from the array and subtract its value from `x`.\n\nReturn the minimum number of operations to reduce `x` to exactly `0` if possible, otherwise, return `-1`.\n\n**Input Format:**\n- First line: two space-separated integers `n` and `x`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer representing the minimum number of operations, or -1 if impossible.',
+        difficulty: 'HARD',
+        tags: ['sliding-window', 'arrays'],
+        constraints: '1 <= n <= 10^5\n1 <= arr[i] <= 10^4\n1 <= x <= 10^9',
+        hints: 'Instead of finding elements at the ends, find the longest contiguous subarray in the middle that sums to (total_sum - x).',
+        editorial:
+            'Let target = sum(arr) - x. If target < 0, return -1. If target == 0, return n. Find the maximum length of a subarray whose sum is exactly target using a sliding window. The minimum operations will be n - max_len.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1) auxiliary space.',
         examples: [
-            { title: "Example 1", input: "5 5\n1 1 4 2 3", output: "2", explanation: "Remove 3 and 2 from the right to reduce x to 0 in 2 operations." },
-            { title: "Example 2", input: "5 10\n5 6 7 8 9", output: "-1", explanation: "It is impossible to reduce x to exactly 0." }
+            {
+                title: 'Example 1',
+                input: '5 5\n1 1 4 2 3',
+                output: '2',
+                explanation: 'Remove 3 and 2 from the right to reduce x to 0 in 2 operations.',
+            },
+            {
+                title: 'Example 2',
+                input: '5 10\n5 6 7 8 9',
+                output: '-1',
+                explanation: 'It is impossible to reduce x to exactly 0.',
+            },
         ],
         testcases: [
-            { input: "5 5\n1 1 4 2 3", output: "2" },
-            { input: "5 10\n5 6 7 8 9", output: "-1" },
-            { input: "3 10\n3 2 20", output: "-1" },
-            { input: "3 4\n2 1 2", output: "-1" },
-            { input: "1 5\n5", output: "1" },
-            { input: "5 8\n3 2 20 1 3", output: "3" },
-            { input: "8 12\n1 2 5 1 1 1 2 6", output: "5" },
-            { input: "10 20\n1 1 1 1 1 1 1 1 1 1", output: "-1" },
-            { input: "10 10\n1 1 1 1 1 1 1 1 1 1", output: "10" },
-            { input: "12 25\n5 2 3 1 1 10 2 3 4 5 1 8", output: "6" }
+            { input: '5 5\n1 1 4 2 3', output: '2' },
+            { input: '5 10\n5 6 7 8 9', output: '-1' },
+            { input: '3 10\n3 2 20', output: '-1' },
+            { input: '3 4\n2 1 2', output: '-1' },
+            { input: '1 5\n5', output: '1' },
+            { input: '5 8\n3 2 20 1 3', output: '3' },
+            { input: '8 12\n1 2 5 1 1 1 2 6', output: '5' },
+            { input: '10 20\n1 1 1 1 1 1 1 1 1 1', output: '-1' },
+            { input: '10 10\n1 1 1 1 1 1 1 1 1 1', output: '10' },
+            { input: '12 25\n5 2 3 1 1 10 2 3 4 5 1 8', output: '6' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2541,7 +2742,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2708,7 +2909,7 @@ fn main() {
     } else {
         writeln!(out, "-1").unwrap();
     }
-}`
-        }
-    }
+}`,
+        },
+    },
 ]

@@ -3,28 +3,41 @@ import type { SeedProblem } from './types.js'
 export const triesStringsProblems: SeedProblem[] = [
     // ==================== EASY #1: Longest Common Prefix ====================
     {
-        title: "Longest Common Prefix",
-        description: "Write a program to find the longest common prefix string amongst an array of strings.\n\nIf there is no common prefix, return an empty string.\n\n**Input Format:**\n- First line: integer n, the number of strings.\n- Next n lines: each containing a string s_i.\n\n**Output Format:**\n- The longest common prefix. If there is no common prefix, output an empty line.",
-        difficulty: "EASY",
-        tags: ["trie", "strings"],
-        constraints: "1 <= n <= 1000\n1 <= |s_i| <= 1000\ns_i consists only of lowercase English letters.",
-        hints: "You can compare characters index by index across all strings, or insert them into a Trie and find the common path.",
-        editorial: "**Approach: Character by Character Comparison**\n\nCompare the characters of all strings at each index until a mismatch is found or any string is exhausted.\n\n**Time Complexity:** O(N * L) where N is the number of strings and L is the length of the shortest string.\n**Space Complexity:** O(1).",
+        title: 'Longest Common Prefix',
+        description:
+            'Write a program to find the longest common prefix string amongst an array of strings.\n\nIf there is no common prefix, return an empty string.\n\n**Input Format:**\n- First line: integer n, the number of strings.\n- Next n lines: each containing a string s_i.\n\n**Output Format:**\n- The longest common prefix. If there is no common prefix, output an empty line.',
+        difficulty: 'EASY',
+        tags: ['trie', 'strings'],
+        constraints:
+            '1 <= n <= 1000\n1 <= |s_i| <= 1000\ns_i consists only of lowercase English letters.',
+        hints: 'You can compare characters index by index across all strings, or insert them into a Trie and find the common path.',
+        editorial:
+            '**Approach: Character by Character Comparison**\n\nCompare the characters of all strings at each index until a mismatch is found or any string is exhausted.\n\n**Time Complexity:** O(N * L) where N is the number of strings and L is the length of the shortest string.\n**Space Complexity:** O(1).',
         examples: [
-            { title: "Example 1", input: "3\nflower\nflow\nflight", output: "fl", explanation: "The longest common prefix is 'fl'." },
-            { title: "Example 2", input: "3\ndog\nracecar\ncar", output: "", explanation: "There is no common prefix among the input strings." }
+            {
+                title: 'Example 1',
+                input: '3\nflower\nflow\nflight',
+                output: 'fl',
+                explanation: "The longest common prefix is 'fl'.",
+            },
+            {
+                title: 'Example 2',
+                input: '3\ndog\nracecar\ncar',
+                output: '',
+                explanation: 'There is no common prefix among the input strings.',
+            },
         ],
         testcases: [
-            { input: "3\nflower\nflow\nflight", output: "fl" },
-            { input: "3\ndog\nracecar\ncar", output: "" },
-            { input: "1\napple", output: "apple" },
-            { input: "4\nabc\nabcde\nab\nabcd", output: "ab" },
-            { input: "3\napple\nbanana\ncherry", output: "" },
-            { input: "2\nsame\nsame", output: "same" },
-            { input: "5\na\na\na\na\na", output: "a" },
-            { input: "2\npre\nprefix", output: "pre" },
-            { input: "3\nxyz\nxy\nx", output: "x" },
-            { input: "4\ninterspecies\ninterstellar\ninterstate\ninterest", output: "inter" }
+            { input: '3\nflower\nflow\nflight', output: 'fl' },
+            { input: '3\ndog\nracecar\ncar', output: '' },
+            { input: '1\napple', output: 'apple' },
+            { input: '4\nabc\nabcde\nab\nabcd', output: 'ab' },
+            { input: '3\napple\nbanana\ncherry', output: '' },
+            { input: '2\nsame\nsame', output: 'same' },
+            { input: '5\na\na\na\na\na', output: 'a' },
+            { input: '2\npre\nprefix', output: 'pre' },
+            { input: '3\nxyz\nxy\nx', output: 'x' },
+            { input: '4\ninterspecies\ninterstellar\ninterstate\ninterest', output: 'inter' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -82,7 +95,7 @@ fn main() {
         let n: usize = line.trim().parse().unwrap();
         // Read lines and solve
     }
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -181,34 +194,46 @@ fn main() {
         }
         writeln!(out, "{}", pref).unwrap();
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #2: Valid Palindrome II ====================
     {
-        title: "Valid Palindrome II",
-        description: "Given a string s, return \"true\" if the s can be palindrome after deleting at most one character from it. Otherwise, return \"false\".\n\n**Input Format:**\n- A single line containing the string s.\n\n**Output Format:**\n- \"true\" if s can be a palindrome after deleting at most one character, else \"false\".",
-        difficulty: "EASY",
-        tags: ["strings"],
-        constraints: "1 <= |s| <= 10^5\ns consists of lowercase English letters.",
-        hints: "Use a two-pointer approach comparing letters from both ends. Upon mismatch, check both possible single deletions.",
-        editorial: "**Approach: Two Pointers with Choice**\n\nStart two pointers, left = 0 and right = |s| - 1. When characters match, increment left and decrement right. If they mismatch, check if deleting s[left] or s[right] creates a palindrome. Checking either substring takes O(N) time.\n\n**Time Complexity:** O(N) where N is the length of s.\n**Space Complexity:** O(1).",
+        title: 'Valid Palindrome II',
+        description:
+            'Given a string s, return "true" if the s can be palindrome after deleting at most one character from it. Otherwise, return "false".\n\n**Input Format:**\n- A single line containing the string s.\n\n**Output Format:**\n- "true" if s can be a palindrome after deleting at most one character, else "false".',
+        difficulty: 'EASY',
+        tags: ['strings'],
+        constraints: '1 <= |s| <= 10^5\ns consists of lowercase English letters.',
+        hints: 'Use a two-pointer approach comparing letters from both ends. Upon mismatch, check both possible single deletions.',
+        editorial:
+            '**Approach: Two Pointers with Choice**\n\nStart two pointers, left = 0 and right = |s| - 1. When characters match, increment left and decrement right. If they mismatch, check if deleting s[left] or s[right] creates a palindrome. Checking either substring takes O(N) time.\n\n**Time Complexity:** O(N) where N is the length of s.\n**Space Complexity:** O(1).',
         examples: [
-            { title: "Example 1", input: "aba", output: "true", explanation: "Already a palindrome." },
-            { title: "Example 2", input: "abca", output: "true", explanation: "Deleting character 'c' results in 'aba', which is a palindrome." }
+            {
+                title: 'Example 1',
+                input: 'aba',
+                output: 'true',
+                explanation: 'Already a palindrome.',
+            },
+            {
+                title: 'Example 2',
+                input: 'abca',
+                output: 'true',
+                explanation: "Deleting character 'c' results in 'aba', which is a palindrome.",
+            },
         ],
         testcases: [
-            { input: "aba", output: "true" },
-            { input: "abca", output: "true" },
-            { input: "abc", output: "false" },
-            { input: "a", output: "true" },
-            { input: "ab", output: "true" },
-            { input: "abcba", output: "true" },
-            { input: "abccba", output: "true" },
-            { input: "abcbca", output: "true" },
-            { input: "teebbccbbeet", output: "true" },
-            { input: "abcdeca", output: "false" }
+            { input: 'aba', output: 'true' },
+            { input: 'abca', output: 'true' },
+            { input: 'abc', output: 'false' },
+            { input: 'a', output: 'true' },
+            { input: 'ab', output: 'true' },
+            { input: 'abcba', output: 'true' },
+            { input: 'abccba', output: 'true' },
+            { input: 'abcbca', output: 'true' },
+            { input: 'teebbccbbeet', output: 'true' },
+            { input: 'abcdeca', output: 'false' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -248,7 +273,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read s and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -371,34 +396,47 @@ fn main() {
             writeln!(out, "false").unwrap();
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #3: Length of Last Word ====================
     {
-        title: "Length of Last Word",
-        description: "Given a string s consisting of words and spaces, return the length of the last word in the string.\n\nA word is a maximal substring consisting of non-space characters only.\n\n**Input Format:**\n- A single line containing the string s.\n\n**Output Format:**\n- The length of the last word.",
-        difficulty: "EASY",
-        tags: ["strings"],
-        constraints: "1 <= |s| <= 10^5\ns consists of only English letters and spaces ' '.\nThere will be at least one word in s.",
-        hints: "Start scanning the string from the end. Ignore any trailing spaces, then count characters until you reach a space or the start of the string.",
-        editorial: "**Approach: Backward Traversal**\n\nStart at index |s| - 1. Loop backward to skip all trailing spaces. Once you find a non-space character, continue backward counting each character until you hit a space or the start of the string. Return this count.\n\n**Time Complexity:** O(N) where N is the length of s.\n**Space Complexity:** O(1).",
+        title: 'Length of Last Word',
+        description:
+            'Given a string s consisting of words and spaces, return the length of the last word in the string.\n\nA word is a maximal substring consisting of non-space characters only.\n\n**Input Format:**\n- A single line containing the string s.\n\n**Output Format:**\n- The length of the last word.',
+        difficulty: 'EASY',
+        tags: ['strings'],
+        constraints:
+            "1 <= |s| <= 10^5\ns consists of only English letters and spaces ' '.\nThere will be at least one word in s.",
+        hints: 'Start scanning the string from the end. Ignore any trailing spaces, then count characters until you reach a space or the start of the string.',
+        editorial:
+            '**Approach: Backward Traversal**\n\nStart at index |s| - 1. Loop backward to skip all trailing spaces. Once you find a non-space character, continue backward counting each character until you hit a space or the start of the string. Return this count.\n\n**Time Complexity:** O(N) where N is the length of s.\n**Space Complexity:** O(1).',
         examples: [
-            { title: "Example 1", input: "Hello World", output: "5", explanation: "The last word is 'World' of length 5." },
-            { title: "Example 2", input: "   fly me   to   the moon  ", output: "4", explanation: "The last word is 'moon' of length 4." }
+            {
+                title: 'Example 1',
+                input: 'Hello World',
+                output: '5',
+                explanation: "The last word is 'World' of length 5.",
+            },
+            {
+                title: 'Example 2',
+                input: '   fly me   to   the moon  ',
+                output: '4',
+                explanation: "The last word is 'moon' of length 4.",
+            },
         ],
         testcases: [
-            { input: "Hello World", output: "5" },
-            { input: "   fly me   to   the moon  ", output: "4" },
-            { input: "luffy is still joyboy", output: "6" },
-            { input: "a", output: "1" },
-            { input: "a ", output: "1" },
-            { input: " a", output: "1" },
-            { input: "   hello   ", output: "5" },
-            { input: "longestwordisthisone", output: "20" },
-            { input: "multiple   spaces   between   words", output: "5" },
-            { input: "this is a test of a very long sentence with many words indeed", output: "6" }
+            { input: 'Hello World', output: '5' },
+            { input: '   fly me   to   the moon  ', output: '4' },
+            { input: 'luffy is still joyboy', output: '6' },
+            { input: 'a', output: '1' },
+            { input: 'a ', output: '1' },
+            { input: ' a', output: '1' },
+            { input: '   hello   ', output: '5' },
+            { input: 'longestwordisthisone', output: '20' },
+            { input: 'multiple   spaces   between   words', output: '5' },
+            { input: 'this is a test of a very long sentence with many words indeed', output: '6' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -438,7 +476,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read the line and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -500,43 +538,65 @@ fn main() {
             writeln!(out, "0").unwrap();
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #1: Implement Trie (Prefix Tree) ====================
     {
-        title: "Implement Trie (Prefix Tree)",
-        description: "A trie (pronounced as 'try') or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings.\n\nImplement a Trie with the following operations:\n- `insert <word>`: Inserts the string `word` into the trie.\n- `search <word>`: Returns `true` if the string `word` is in the trie, and `false` otherwise.\n- `startsWith <prefix>`: Returns `true` if there is a previously inserted string that has the prefix `prefix`, and `false` otherwise.\n\n**Input Format:**\n- First line: integer q, the number of operations.\n- Next q lines: each contains an operation in one of the formats:\n  - `insert <word>`\n  - `search <word>`\n  - `startsWith <prefix>`\n\n**Output Format:**\n- For each `search` and `startsWith` operation, print `true` or `false` on a new line.",
-        difficulty: "MEDIUM",
-        tags: ["trie", "prefix-tree", "strings"],
-        constraints: "1 <= q <= 10^5\nWords and prefixes consist of lowercase English letters.\n1 <= |word|, |prefix| <= 100",
-        hints: "Use a tree structure where each node contains an array of 26 pointers for children and a boolean flag isEnd.",
-        editorial: "**Approach: Node Tree Representation**\n\nCreate a node structure representing characters. Each node holds an array of size 26 for children pointers pointing to downstream characters, along with an indicator flag `isEnd`. Traversal maps letters to indices (0-25) by subtracting 'a'.\n\n**Time Complexity:** O(L) per operation, where L is the word/prefix length.\n**Space Complexity:** O(U * 26) where U is the total number of unique prefixes inserted.",
+        title: 'Implement Trie (Prefix Tree)',
+        description:
+            "A trie (pronounced as 'try') or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings.\n\nImplement a Trie with the following operations:\n- `insert <word>`: Inserts the string `word` into the trie.\n- `search <word>`: Returns `true` if the string `word` is in the trie, and `false` otherwise.\n- `startsWith <prefix>`: Returns `true` if there is a previously inserted string that has the prefix `prefix`, and `false` otherwise.\n\n**Input Format:**\n- First line: integer q, the number of operations.\n- Next q lines: each contains an operation in one of the formats:\n  - `insert <word>`\n  - `search <word>`\n  - `startsWith <prefix>`\n\n**Output Format:**\n- For each `search` and `startsWith` operation, print `true` or `false` on a new line.",
+        difficulty: 'MEDIUM',
+        tags: ['trie', 'prefix-tree', 'strings'],
+        constraints:
+            '1 <= q <= 10^5\nWords and prefixes consist of lowercase English letters.\n1 <= |word|, |prefix| <= 100',
+        hints: 'Use a tree structure where each node contains an array of 26 pointers for children and a boolean flag isEnd.',
+        editorial:
+            "**Approach: Node Tree Representation**\n\nCreate a node structure representing characters. Each node holds an array of size 26 for children pointers pointing to downstream characters, along with an indicator flag `isEnd`. Traversal maps letters to indices (0-25) by subtracting 'a'.\n\n**Time Complexity:** O(L) per operation, where L is the word/prefix length.\n**Space Complexity:** O(U * 26) where U is the total number of unique prefixes inserted.",
         examples: [
             {
-                title: "Example 1",
-                input: "5\ninsert apple\nsearch apple\nsearch app\nstartsWith app\ninsert app\nsearch app",
-                output: "true\nfalse\ntrue\ntrue",
-                explanation: "Trie holds 'apple'. Searching 'apple' is true. Searching 'app' is false. StartsWith 'app' is true because 'apple' begins with 'app'. After inserting 'app', searching 'app' becomes true."
+                title: 'Example 1',
+                input: '5\ninsert apple\nsearch apple\nsearch app\nstartsWith app\ninsert app\nsearch app',
+                output: 'true\nfalse\ntrue\ntrue',
+                explanation:
+                    "Trie holds 'apple'. Searching 'apple' is true. Searching 'app' is false. StartsWith 'app' is true because 'apple' begins with 'app'. After inserting 'app', searching 'app' becomes true.",
             },
             {
-                title: "Example 2",
-                input: "4\ninsert hello\nstartsWith hell\nsearch helloa\nsearch hello",
-                output: "true\nfalse\ntrue"
-            }
+                title: 'Example 2',
+                input: '4\ninsert hello\nstartsWith hell\nsearch helloa\nsearch hello',
+                output: 'true\nfalse\ntrue',
+            },
         ],
         testcases: [
-            { input: "5\ninsert apple\nsearch apple\nsearch app\nstartsWith app\ninsert app\nsearch app", output: "true\nfalse\ntrue\ntrue" },
-            { input: "4\ninsert hello\nstartsWith hell\nsearch helloa\nsearch hello", output: "true\nfalse\ntrue" },
-            { input: "2\ninsert a\nsearch a", output: "true" },
-            { input: "2\nstartsWith a\nsearch a", output: "false\nfalse" },
-            { input: "6\ninsert apple\nstartsWith a\nstartsWith ap\nstartsWith app\nstartsWith appl\nstartsWith apple", output: "true\ntrue\ntrue\ntrue\ntrue" },
-            { input: "3\ninsert a\ninsert a\nsearch a", output: "true" },
-            { input: "8\ninsert car\ninsert card\ninsert cart\nsearch car\nsearch card\nsearch cart\nsearch cat\nstartsWith ca", output: "true\ntrue\ntrue\nfalse\ntrue" },
-            { input: "4\ninsert helper\nstartsWith helper\nsearch helper\nsearch help", output: "true\ntrue\nfalse" },
-            { input: "2\ninsert a\nsearch b", output: "false" },
-            { input: "12\ninsert abc\ninsert def\nsearch abc\nsearch def\nstartsWith ab\nstartsWith de\nsearch ab\nsearch de\nstartsWith abc\nstartsWith def\nsearch a\nsearch d", output: "true\ntrue\ntrue\ntrue\nfalse\nfalse\ntrue\ntrue\nfalse\nfalse" }
+            {
+                input: '5\ninsert apple\nsearch apple\nsearch app\nstartsWith app\ninsert app\nsearch app',
+                output: 'true\nfalse\ntrue\ntrue',
+            },
+            {
+                input: '4\ninsert hello\nstartsWith hell\nsearch helloa\nsearch hello',
+                output: 'true\nfalse\ntrue',
+            },
+            { input: '2\ninsert a\nsearch a', output: 'true' },
+            { input: '2\nstartsWith a\nsearch a', output: 'false\nfalse' },
+            {
+                input: '6\ninsert apple\nstartsWith a\nstartsWith ap\nstartsWith app\nstartsWith appl\nstartsWith apple',
+                output: 'true\ntrue\ntrue\ntrue\ntrue',
+            },
+            { input: '3\ninsert a\ninsert a\nsearch a', output: 'true' },
+            {
+                input: '8\ninsert car\ninsert card\ninsert cart\nsearch car\nsearch card\nsearch cart\nsearch cat\nstartsWith ca',
+                output: 'true\ntrue\ntrue\nfalse\ntrue',
+            },
+            {
+                input: '4\ninsert helper\nstartsWith helper\nsearch helper\nsearch help',
+                output: 'true\ntrue\nfalse',
+            },
+            { input: '2\ninsert a\nsearch b', output: 'false' },
+            {
+                input: '12\ninsert abc\ninsert def\nsearch abc\nsearch def\nstartsWith ab\nstartsWith de\nsearch ab\nsearch de\nstartsWith abc\nstartsWith def\nsearch a\nsearch d',
+                output: 'true\ntrue\ntrue\ntrue\nfalse\nfalse\ntrue\ntrue\nfalse\nfalse',
+            },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -574,7 +634,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -837,43 +897,53 @@ fn main() {
             }
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #2: Design Add and Search Words Data Structure ====================
     {
-        title: "Design Add and Search Words Data Structure",
-        description: "Design a data structure that supports adding new words and finding if a string matches any previously added string.\n\nImplement the WordDictionary class:\n- `add <word>`: Adds `word` to the data structure.\n- `search <word>`: Returns `true` if there is any string in the data structure that matches `word`, or `false` otherwise. `word` may contain dots `.` where a dot can be matched with any letter.\n\n**Input Format:**\n- First line: integer q, the number of operations.\n- Next q lines: each contains an operation in one of the formats:\n  - `add <word>`\n  - `search <word>`\n\n**Output Format:**\n- For each `search` operation, print `true` or `false` on a new line.",
-        difficulty: "MEDIUM",
-        tags: ["trie", "prefix-tree", "strings"],
-        constraints: "1 <= q <= 5 * 10^4\nWords consist of lowercase English letters and '.'.\nFor add operations, word contains only lowercase English letters.\n1 <= |word| <= 100",
+        title: 'Design Add and Search Words Data Structure',
+        description:
+            'Design a data structure that supports adding new words and finding if a string matches any previously added string.\n\nImplement the WordDictionary class:\n- `add <word>`: Adds `word` to the data structure.\n- `search <word>`: Returns `true` if there is any string in the data structure that matches `word`, or `false` otherwise. `word` may contain dots `.` where a dot can be matched with any letter.\n\n**Input Format:**\n- First line: integer q, the number of operations.\n- Next q lines: each contains an operation in one of the formats:\n  - `add <word>`\n  - `search <word>`\n\n**Output Format:**\n- For each `search` operation, print `true` or `false` on a new line.',
+        difficulty: 'MEDIUM',
+        tags: ['trie', 'prefix-tree', 'strings'],
+        constraints:
+            "1 <= q <= 5 * 10^4\nWords consist of lowercase English letters and '.'.\nFor add operations, word contains only lowercase English letters.\n1 <= |word| <= 100",
         hints: "Use a Trie. During search, if you encounter the wildcard '.', recursively search all active children of the current node.",
-        editorial: "**Approach: Trie DFS Wildcard Matching**\n\nThe insertion matches standard Trie. For search, traverse recursively. If the current character is '.', try traversing down all 26 possible children and recursively evaluate. If it is a normal character, follow the matching branch.\n\n**Time Complexity:** O(L) for normal search/insert, up to O(26^L) in the worst-case of all dots, though typically much faster.\n**Space Complexity:** O(U * 26) where U is the number of characters in the Trie.",
+        editorial:
+            "**Approach: Trie DFS Wildcard Matching**\n\nThe insertion matches standard Trie. For search, traverse recursively. If the current character is '.', try traversing down all 26 possible children and recursively evaluate. If it is a normal character, follow the matching branch.\n\n**Time Complexity:** O(L) for normal search/insert, up to O(26^L) in the worst-case of all dots, though typically much faster.\n**Space Complexity:** O(U * 26) where U is the number of characters in the Trie.",
         examples: [
             {
-                title: "Example 1",
-                input: "7\nadd bad\nadd dad\nadd mad\nsearch pad\nsearch bad\nsearch .ad\nsearch b..",
-                output: "false\ntrue\ntrue\ntrue",
-                explanation: "'pad' is false. 'bad' matches exactly. '.ad' matches 'bad', 'dad', 'mad'. 'b..' matches 'bad'."
+                title: 'Example 1',
+                input: '7\nadd bad\nadd dad\nadd mad\nsearch pad\nsearch bad\nsearch .ad\nsearch b..',
+                output: 'false\ntrue\ntrue\ntrue',
+                explanation:
+                    "'pad' is false. 'bad' matches exactly. '.ad' matches 'bad', 'dad', 'mad'. 'b..' matches 'bad'.",
             },
             {
-                title: "Example 2",
-                input: "5\nadd a\nadd ab\nsearch a.\nsearch .\nsearch ..",
-                output: "true\ntrue\nfalse"
-            }
+                title: 'Example 2',
+                input: '5\nadd a\nadd ab\nsearch a.\nsearch .\nsearch ..',
+                output: 'true\ntrue\nfalse',
+            },
         ],
         testcases: [
-            { input: "7\nadd bad\nadd dad\nadd mad\nsearch pad\nsearch bad\nsearch .ad\nsearch b..", output: "false\ntrue\ntrue\ntrue" },
-            { input: "5\nadd a\nadd ab\nsearch a.\nsearch .\nsearch ..", output: "true\ntrue\nfalse" },
-            { input: "4\nadd cat\nsearch cat\nsearch c.t\nsearch .at", output: "true\ntrue\ntrue" },
-            { input: "2\nsearch a\nsearch .", output: "false\nfalse" },
-            { input: "3\nadd apple\nsearch a.p.e\nsearch .....", output: "true\ntrue" },
-            { input: "3\nadd car\nsearch ca.\nsearch c..", output: "true\ntrue" },
-            { input: "2\nadd ca\nsearch ...", output: "false" },
-            { input: "2\nadd hello\nsearch .ello", output: "true" },
-            { input: "3\nadd a\nadd b\nsearch .", output: "true" },
-            { input: "4\nadd a\nadd abc\nsearch .\nsearch ...", output: "true\ntrue" }
+            {
+                input: '7\nadd bad\nadd dad\nadd mad\nsearch pad\nsearch bad\nsearch .ad\nsearch b..',
+                output: 'false\ntrue\ntrue\ntrue',
+            },
+            {
+                input: '5\nadd a\nadd ab\nsearch a.\nsearch .\nsearch ..',
+                output: 'true\ntrue\nfalse',
+            },
+            { input: '4\nadd cat\nsearch cat\nsearch c.t\nsearch .at', output: 'true\ntrue\ntrue' },
+            { input: '2\nsearch a\nsearch .', output: 'false\nfalse' },
+            { input: '3\nadd apple\nsearch a.p.e\nsearch .....', output: 'true\ntrue' },
+            { input: '3\nadd car\nsearch ca.\nsearch c..', output: 'true\ntrue' },
+            { input: '2\nadd ca\nsearch ...', output: 'false' },
+            { input: '2\nadd hello\nsearch .ello', output: 'true' },
+            { input: '3\nadd a\nadd b\nsearch .', output: 'true' },
+            { input: '4\nadd a\nadd abc\nsearch .\nsearch ...', output: 'true\ntrue' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -911,7 +981,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Implement WordDictionary with wildcard matching
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1175,34 +1245,48 @@ fn main() {
             }
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #3: Longest Common Prefix (Trie) ====================
     {
-        title: "Longest Common Prefix (Trie)",
-        description: "Given a list of n strings, and an integer k, find the longest prefix that is shared by at least k strings.\n\nIf there are multiple prefixes of the maximum length, return the lexicographically smallest one. If no prefix of length >= 1 is shared by at least k strings, output an empty line.\n\n**Input Format:**\n- First line: two integers n and k.\n- Next n lines: each contains a string s_i consisting of lowercase English letters.\n\n**Output Format:**\n- The lexicographically smallest prefix of maximum length shared by at least k strings. If none, print an empty line.",
-        difficulty: "MEDIUM",
-        tags: ["trie", "prefix-tree", "strings"],
-        constraints: "1 <= n <= 5 * 10^4\n1 <= k <= n\n1 <= |s_i| <= 100",
-        hints: "Insert all words into a Trie. Each node should track how many times it was visited during insertions. DFS the Trie to find nodes visited >= k times.",
-        editorial: "**Approach: Trie counting and DFS**\n\nBuild a Trie where each node records a count of words passing through it. After inserting all n strings, perform a DFS starting at the root. We only visit children where count >= k. Since we check children alphabetically from 'a' to 'z', the first candidate that hits the maximum depth will be our lexicographically smallest prefix.\n\n**Time Complexity:** O(N * L) to build the Trie, and O(Alphabet_Size * L) to DFS, where L is the maximum string length.\n**Space Complexity:** O(N * L * Alphabet_Size) Trie node storage.",
+        title: 'Longest Common Prefix (Trie)',
+        description:
+            'Given a list of n strings, and an integer k, find the longest prefix that is shared by at least k strings.\n\nIf there are multiple prefixes of the maximum length, return the lexicographically smallest one. If no prefix of length >= 1 is shared by at least k strings, output an empty line.\n\n**Input Format:**\n- First line: two integers n and k.\n- Next n lines: each contains a string s_i consisting of lowercase English letters.\n\n**Output Format:**\n- The lexicographically smallest prefix of maximum length shared by at least k strings. If none, print an empty line.',
+        difficulty: 'MEDIUM',
+        tags: ['trie', 'prefix-tree', 'strings'],
+        constraints: '1 <= n <= 5 * 10^4\n1 <= k <= n\n1 <= |s_i| <= 100',
+        hints: 'Insert all words into a Trie. Each node should track how many times it was visited during insertions. DFS the Trie to find nodes visited >= k times.',
+        editorial:
+            "**Approach: Trie counting and DFS**\n\nBuild a Trie where each node records a count of words passing through it. After inserting all n strings, perform a DFS starting at the root. We only visit children where count >= k. Since we check children alphabetically from 'a' to 'z', the first candidate that hits the maximum depth will be our lexicographically smallest prefix.\n\n**Time Complexity:** O(N * L) to build the Trie, and O(Alphabet_Size * L) to DFS, where L is the maximum string length.\n**Space Complexity:** O(N * L * Alphabet_Size) Trie node storage.",
         examples: [
-            { title: "Example 1", input: "4 3\napple\napplet\napricot\napril", output: "ap", explanation: "'a' and 'ap' are shared by all 4 strings. 'app' is only shared by 2. Thus, 'ap' is the longest prefix shared by >= 3 strings." },
-            { title: "Example 2", input: "5 2\nbanana\nbandana\ncherry\nchess\napple", output: "ban", explanation: "'ban' is shared by 'banana' and 'bandana' (length 3). 'che' is shared by 'cherry' and 'chess' (length 3). 'ban' is lexicographically smaller." }
+            {
+                title: 'Example 1',
+                input: '4 3\napple\napplet\napricot\napril',
+                output: 'ap',
+                explanation:
+                    "'a' and 'ap' are shared by all 4 strings. 'app' is only shared by 2. Thus, 'ap' is the longest prefix shared by >= 3 strings.",
+            },
+            {
+                title: 'Example 2',
+                input: '5 2\nbanana\nbandana\ncherry\nchess\napple',
+                output: 'ban',
+                explanation:
+                    "'ban' is shared by 'banana' and 'bandana' (length 3). 'che' is shared by 'cherry' and 'chess' (length 3). 'ban' is lexicographically smaller.",
+            },
         ],
         testcases: [
-            { input: "4 3\napple\napplet\napricot\napril", output: "ap" },
-            { input: "5 2\nbanana\nbandana\ncherry\nchess\napple", output: "ban" },
-            { input: "3 1\ncat\ndog\ncar", output: "car" },
-            { input: "3 3\nflower\nflow\nflight", output: "fl" },
-            { input: "3 3\nabc\ndef\nghi", output: "" },
-            { input: "4 2\nabcd\nabce\ndefg\ndefi", output: "abc" },
-            { input: "5 3\na\nb\na\nb\na", output: "a" },
-            { input: "3 2\ntest\ntest\ntest", output: "test" },
-            { input: "3 2\nabcdefgh\nabcdefgi\nxyz", output: "abcdefg" },
-            { input: "4 2\napple\napply\napricot\napril", output: "app" }
+            { input: '4 3\napple\napplet\napricot\napril', output: 'ap' },
+            { input: '5 2\nbanana\nbandana\ncherry\nchess\napple', output: 'ban' },
+            { input: '3 1\ncat\ndog\ncar', output: 'car' },
+            { input: '3 3\nflower\nflow\nflight', output: 'fl' },
+            { input: '3 3\nabc\ndef\nghi', output: '' },
+            { input: '4 2\nabcd\nabce\ndefg\ndefi', output: 'abc' },
+            { input: '5 3\na\nb\na\nb\na', output: 'a' },
+            { input: '3 2\ntest\ntest\ntest', output: 'test' },
+            { input: '3 2\nabcdefgh\nabcdefgi\nxyz', output: 'abcdefg' },
+            { input: '4 2\napple\napply\napricot\napril', output: 'app' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1240,7 +1324,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read n, k and find the common prefix
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1453,44 +1537,60 @@ fn main() {
         dfs(&root, 0, &mut path, k, &mut max_depth, &mut best_path);
         writeln!(out, "{}", best_path).unwrap();
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #4: Search Suggestion System ====================
     {
-        title: "Search Suggestion System",
-        description: "You are given an array of strings products and a string searchWord.\n\nDesign a system that suggests at most three products from products after each character of searchWord is typed. Suggested products should have common prefix with searchWord. If there are more than three products with a common prefix, return the three lexicographically minimum products.\n\nPrint the suggestions after each character of searchWord is typed.\n\n**Input Format:**\n- First line: integer n, the number of products.\n- Next n lines: each contains a product string.\n- Last line: string searchWord.\n\n**Output Format:**\n- For each character typed in searchWord (from prefix of length 1 to length |searchWord|), print the suggested products on a single line, space-separated, in lexicographical order. If no products match, print a blank line.",
-        difficulty: "MEDIUM",
-        tags: ["trie", "prefix-tree", "strings"],
-        constraints: "1 <= n <= 1000\n1 <= |products[i]| <= 2000\n1 <= |searchWord| <= 1000\nAll strings consist of lowercase English letters.",
-        hints: "Sort the products array. Use binary search (lower bound) to find the first candidate starting with the typed prefix.",
-        editorial: "**Approach: Sorted Array with Binary Search**\n\nSort the products in O(N log N * L) time. When matching a typed prefix, perform a binary search (lower bound) to find the first product. Check if the product and the subsequent two products share the prefix. If they do, collect them. This matches the standard Trie prefix autocomplete query but is easier to write.\n\n**Time Complexity:** O(N * log N * L + S * log N * L) where S is the length of searchWord.\n**Space Complexity:** O(1) beyond storing products.",
+        title: 'Search Suggestion System',
+        description:
+            'You are given an array of strings products and a string searchWord.\n\nDesign a system that suggests at most three products from products after each character of searchWord is typed. Suggested products should have common prefix with searchWord. If there are more than three products with a common prefix, return the three lexicographically minimum products.\n\nPrint the suggestions after each character of searchWord is typed.\n\n**Input Format:**\n- First line: integer n, the number of products.\n- Next n lines: each contains a product string.\n- Last line: string searchWord.\n\n**Output Format:**\n- For each character typed in searchWord (from prefix of length 1 to length |searchWord|), print the suggested products on a single line, space-separated, in lexicographical order. If no products match, print a blank line.',
+        difficulty: 'MEDIUM',
+        tags: ['trie', 'prefix-tree', 'strings'],
+        constraints:
+            '1 <= n <= 1000\n1 <= |products[i]| <= 2000\n1 <= |searchWord| <= 1000\nAll strings consist of lowercase English letters.',
+        hints: 'Sort the products array. Use binary search (lower bound) to find the first candidate starting with the typed prefix.',
+        editorial:
+            '**Approach: Sorted Array with Binary Search**\n\nSort the products in O(N log N * L) time. When matching a typed prefix, perform a binary search (lower bound) to find the first product. Check if the product and the subsequent two products share the prefix. If they do, collect them. This matches the standard Trie prefix autocomplete query but is easier to write.\n\n**Time Complexity:** O(N * log N * L + S * log N * L) where S is the length of searchWord.\n**Space Complexity:** O(1) beyond storing products.',
         examples: [
             {
-                title: "Example 1",
-                input: "5\nmobile\nmouse\nmoneypot\nmonitor\nmousepad\nmouse",
-                output: "mobile moneypot monitor\nmobile moneypot monitor\nmobile moneypot monitor\nmouse mousepad\nmouse mousepad",
-                explanation: "After typing 'm', 'mo', 'moy' -> mobile, moneypot, monitor. After 'mou', 'mous', 'mouse' -> mouse, mousepad."
+                title: 'Example 1',
+                input: '5\nmobile\nmouse\nmoneypot\nmonitor\nmousepad\nmouse',
+                output: 'mobile moneypot monitor\nmobile moneypot monitor\nmobile moneypot monitor\nmouse mousepad\nmouse mousepad',
+                explanation:
+                    "After typing 'm', 'mo', 'moy' -> mobile, moneypot, monitor. After 'mou', 'mous', 'mouse' -> mouse, mousepad.",
             },
             {
-                title: "Example 2",
-                input: "3\nhavana\nhavana\nhavana\ntatiana",
-                output: "\n\n\n\n\n\n",
-                explanation: "None of the products start with 't', so 7 blank lines are printed."
-            }
+                title: 'Example 2',
+                input: '3\nhavana\nhavana\nhavana\ntatiana',
+                output: '\n\n\n\n\n\n',
+                explanation: "None of the products start with 't', so 7 blank lines are printed.",
+            },
         ],
         testcases: [
-            { input: "5\nmobile\nmouse\nmoneypot\nmonitor\nmousepad\nmouse", output: "mobile moneypot monitor\nmobile moneypot monitor\nmobile moneypot monitor\nmouse mousepad\nmouse mousepad" },
-            { input: "3\nhavana\nhavana\nhavana\ntatiana", output: "\n\n\n\n\n\n" },
-            { input: "1\nabc\nab", output: "abc\nabc" },
-            { input: "1\nabc\nxyz", output: "\n\n" },
-            { input: "4\nbags\nbaggage\nbanner\nbox\nbag", output: "baggage bags banner\nbaggage bags banner\nbaggage bags" },
-            { input: "4\na\na\na\na\na", output: "a a a" },
-            { input: "1\ncode\ncoder", output: "code\ncode\ncode\ncode\n" },
-            { input: "3\na\nb\nc\na", output: "a" },
-            { input: "3\napple\napricot\napply\napp", output: "apple apricot apply\napple apricot apply\napple apply" },
-            { input: "5\nabcd\nabce\nabcf\nabcg\nabch\nabcd", output: "abcd abce abcf\nabcd abce abcf\nabcd abce abcf\nabcd" }
+            {
+                input: '5\nmobile\nmouse\nmoneypot\nmonitor\nmousepad\nmouse',
+                output: 'mobile moneypot monitor\nmobile moneypot monitor\nmobile moneypot monitor\nmouse mousepad\nmouse mousepad',
+            },
+            { input: '3\nhavana\nhavana\nhavana\ntatiana', output: '\n\n\n\n\n\n' },
+            { input: '1\nabc\nab', output: 'abc\nabc' },
+            { input: '1\nabc\nxyz', output: '\n\n' },
+            {
+                input: '4\nbags\nbaggage\nbanner\nbox\nbag',
+                output: 'baggage bags banner\nbaggage bags banner\nbaggage bags',
+            },
+            { input: '4\na\na\na\na\na', output: 'a a a' },
+            { input: '1\ncode\ncoder', output: 'code\ncode\ncode\ncode\n' },
+            { input: '3\na\nb\nc\na', output: 'a' },
+            {
+                input: '3\napple\napricot\napply\napp',
+                output: 'apple apricot apply\napple apricot apply\napple apply',
+            },
+            {
+                input: '5\nabcd\nabce\nabcf\nabcg\nabch\nabcd',
+                output: 'abcd abce abcf\nabcd abce abcf\nabcd abce abcf\nabcd',
+            },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1528,7 +1628,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Sort array or search via Trie
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1678,44 +1778,47 @@ fn main() {
             }
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #1: Word Search II ====================
     {
-        title: "Word Search II",
-        description: "Given an m x n board of characters and a list of strings words, return all words on the board.\n\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\n\n**Input Format:**\n- First line: two integers m and n (board dimensions).\n- Next m lines: a string of length n representing the row of the board.\n- Next line: an integer w, the number of words.\n- Next w lines: each containing a word to search.\n\n**Output Format:**\n- The words found on the board, sorted in lexicographical order, one per line.",
-        difficulty: "HARD",
-        tags: ["trie", "backtracking", "strings"],
-        constraints: "1 <= m, n <= 12\nboard[i][j] is a lowercase English letter.\n1 <= w <= 100\n1 <= |words[i]| <= 10\nwords[i] consists of lowercase English letters.\nAll words in words are unique.",
-        hints: "Insert all search words into a Trie. Walk the board with DFS, moving down the Trie branches concurrently.",
-        editorial: "**Approach: Backtracking with Trie**\n\nBuild a Trie containing all target words. Run a DFS from every board cell. At each cell, step down the matching character transition in the Trie. Mark cells visited by changing them to '#' temporarily and restore them. When a node's word is found, record it, then clear it to avoid duplicate output.\n\n**Time Complexity:** O(M * N * 4^L) where L is the maximum word length.\n**Space Complexity:** O(U * 26) Trie nodes.",
+        title: 'Word Search II',
+        description:
+            'Given an m x n board of characters and a list of strings words, return all words on the board.\n\nEach word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.\n\n**Input Format:**\n- First line: two integers m and n (board dimensions).\n- Next m lines: a string of length n representing the row of the board.\n- Next line: an integer w, the number of words.\n- Next w lines: each containing a word to search.\n\n**Output Format:**\n- The words found on the board, sorted in lexicographical order, one per line.',
+        difficulty: 'HARD',
+        tags: ['trie', 'backtracking', 'strings'],
+        constraints:
+            '1 <= m, n <= 12\nboard[i][j] is a lowercase English letter.\n1 <= w <= 100\n1 <= |words[i]| <= 10\nwords[i] consists of lowercase English letters.\nAll words in words are unique.',
+        hints: 'Insert all search words into a Trie. Walk the board with DFS, moving down the Trie branches concurrently.',
+        editorial:
+            "**Approach: Backtracking with Trie**\n\nBuild a Trie containing all target words. Run a DFS from every board cell. At each cell, step down the matching character transition in the Trie. Mark cells visited by changing them to '#' temporarily and restore them. When a node's word is found, record it, then clear it to avoid duplicate output.\n\n**Time Complexity:** O(M * N * 4^L) where L is the maximum word length.\n**Space Complexity:** O(U * 26) Trie nodes.",
         examples: [
             {
-                title: "Example 1",
-                input: "4 4\noaan\netae\nihkr\niflv\n4\noath\npea\neat\nrain",
-                output: "eat\noath",
-                explanation: "The words 'eat' and 'oath' are found on the board."
+                title: 'Example 1',
+                input: '4 4\noaan\netae\nihkr\niflv\n4\noath\npea\neat\nrain',
+                output: 'eat\noath',
+                explanation: "The words 'eat' and 'oath' are found on the board.",
             },
             {
-                title: "Example 2",
-                input: "2 2\nab\ncd\n1\nabcd",
-                output: "",
-                explanation: "No path exists for 'abcd' since diagonal steps are not allowed."
-            }
+                title: 'Example 2',
+                input: '2 2\nab\ncd\n1\nabcd',
+                output: '',
+                explanation: "No path exists for 'abcd' since diagonal steps are not allowed.",
+            },
         ],
         testcases: [
-            { input: "4 4\noaan\netae\nihkr\niflv\n4\noath\npea\neat\nrain", output: "eat\noath" },
-            { input: "2 2\nab\ncd\n1\nabcd", output: "" },
-            { input: "2 2\nab\ncd\n1\nabba", output: "" },
-            { input: "1 1\na\n1\na", output: "a" },
-            { input: "2 2\nab\nba\n4\nab\nba\naba\nbab", output: "ab\naba\nba\nbab" },
-            { input: "3 3\nabc\ndef\nghi\n2\nxyz\nhello", output: "" },
-            { input: "2 2\nab\ncd\n1\nabcde", output: "" },
-            { input: "3 3\nabc\nfed\nghi\n1\nabcdefghi", output: "abcdefghi" },
-            { input: "3 3\naaa\naaa\naaa\n1\naaaaa", output: "aaaaa" },
-            { input: "3 3\nabc\ndef\nghi\n3\nadg\nbeh\ncfi", output: "adg\nbeh\ncfi" }
+            { input: '4 4\noaan\netae\nihkr\niflv\n4\noath\npea\neat\nrain', output: 'eat\noath' },
+            { input: '2 2\nab\ncd\n1\nabcd', output: '' },
+            { input: '2 2\nab\ncd\n1\nabba', output: '' },
+            { input: '1 1\na\n1\na', output: 'a' },
+            { input: '2 2\nab\nba\n4\nab\nba\naba\nbab', output: 'ab\naba\nba\nbab' },
+            { input: '3 3\nabc\ndef\nghi\n2\nxyz\nhello', output: '' },
+            { input: '2 2\nab\ncd\n1\nabcde', output: '' },
+            { input: '3 3\nabc\nfed\nghi\n1\nabcdefghi', output: 'abcdefghi' },
+            { input: '3 3\naaa\naaa\naaa\n1\naaaaa', output: 'aaaaa' },
+            { input: '3 3\nabc\ndef\nghi\n3\nadg\nbeh\ncfi', output: 'adg\nbeh\ncfi' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1753,7 +1856,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // DFS with Trie tracking
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2028,43 +2131,49 @@ fn main() {
             }
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #2: Palindrome Pairs ====================
     {
-        title: "Palindrome Pairs",
-        description: "Given a list of unique words, find all pairs of distinct indices (i, j) in the given list, so that the concatenation of the two words, i.e., words[i] + words[j] is a palindrome.\n\n**Input Format:**\n- First line: integer n, the number of words.\n- Next n lines: each contains a word.\n\n**Output Format:**\n- First line: integer p, the number of palindrome pairs found.\n- Next p lines: two space-separated integers i and j representing the indices of the matching pair. The pairs should be sorted first by i, and then by j.",
-        difficulty: "HARD",
-        tags: ["trie", "strings", "hash-table"],
-        constraints: "1 <= n <= 5000\n0 <= |words[i]| <= 100\nAll words in the list are unique.",
-        hints: "For each word, split it into two halves. If the first half is a palindrome, you need the reverse of the second half to exist. If the second half is a palindrome, you need the reverse of the first half to exist.",
-        editorial: "**Approach: Prefix/Suffix Palindrome Hashing**\n\nMap each word to its index. For each word w, split it into s1 and s2 at all indices 0..|w|. If s1 is a palindrome, we check if the reverse of s2 exists in our map. If it does and is at index k != i, then (k, i) forms a palindrome. Similarly, if s2 is a palindrome, check if the reverse of s1 exists in our map to form (i, k). Using a set/sorted container prevents duplicates and outputs pairs in sorted order.\n\n**Time Complexity:** O(N * L^2) where N is the number of words and L is the max word length.\n**Space Complexity:** O(N * L) to store the hash table.",
+        title: 'Palindrome Pairs',
+        description:
+            'Given a list of unique words, find all pairs of distinct indices (i, j) in the given list, so that the concatenation of the two words, i.e., words[i] + words[j] is a palindrome.\n\n**Input Format:**\n- First line: integer n, the number of words.\n- Next n lines: each contains a word.\n\n**Output Format:**\n- First line: integer p, the number of palindrome pairs found.\n- Next p lines: two space-separated integers i and j representing the indices of the matching pair. The pairs should be sorted first by i, and then by j.',
+        difficulty: 'HARD',
+        tags: ['trie', 'strings', 'hash-table'],
+        constraints: '1 <= n <= 5000\n0 <= |words[i]| <= 100\nAll words in the list are unique.',
+        hints: 'For each word, split it into two halves. If the first half is a palindrome, you need the reverse of the second half to exist. If the second half is a palindrome, you need the reverse of the first half to exist.',
+        editorial:
+            '**Approach: Prefix/Suffix Palindrome Hashing**\n\nMap each word to its index. For each word w, split it into s1 and s2 at all indices 0..|w|. If s1 is a palindrome, we check if the reverse of s2 exists in our map. If it does and is at index k != i, then (k, i) forms a palindrome. Similarly, if s2 is a palindrome, check if the reverse of s1 exists in our map to form (i, k). Using a set/sorted container prevents duplicates and outputs pairs in sorted order.\n\n**Time Complexity:** O(N * L^2) where N is the number of words and L is the max word length.\n**Space Complexity:** O(N * L) to store the hash table.',
         examples: [
             {
-                title: "Example 1",
-                input: "5\nabcd\ndcba\nlls\ns\nsssll",
-                output: "4\n0 1\n1 0\n2 4\n3 2",
-                explanation: "words[0]+words[1] = 'abcddcba' (palindrome). words[1]+words[0] = 'dcbaabcd' (palindrome). words[2]+words[4] = 'llssssll'. words[3]+words[2] = 'slls'."
+                title: 'Example 1',
+                input: '5\nabcd\ndcba\nlls\ns\nsssll',
+                output: '4\n0 1\n1 0\n2 4\n3 2',
+                explanation:
+                    "words[0]+words[1] = 'abcddcba' (palindrome). words[1]+words[0] = 'dcbaabcd' (palindrome). words[2]+words[4] = 'llssssll'. words[3]+words[2] = 'slls'.",
             },
             {
-                title: "Example 2",
-                input: "2\nbat\ntab",
-                output: "2\n0 1\n1 0"
-            }
+                title: 'Example 2',
+                input: '2\nbat\ntab',
+                output: '2\n0 1\n1 0',
+            },
         ],
         testcases: [
-            { input: "5\nabcd\ndcba\nlls\ns\nsssll", output: "4\n0 1\n1 0\n2 4\n3 2" },
-            { input: "2\nbat\ntab", output: "2\n0 1\n1 0" },
-            { input: "3\na\n\naba", output: "4\n0 1\n1 0\n1 2\n2 1" },
-            { input: "3\na\nb\nc", output: "0" },
-            { input: "4\ncode\nedoc\nc\ned", output: "2\n0 1\n1 0" },
-            { input: "2\nracecar\naba", output: "0" },
-            { input: "3\nabc\ncba\nxyz", output: "2\n0 1\n1 0" },
-            { input: "3\nabac\naba\ncab", output: "2\n0 1\n2 0" },
-            { input: "4\na\naa\naaa\naaaa", output: "12\n0 1\n0 2\n0 3\n1 0\n1 2\n1 3\n2 0\n2 1\n2 3\n3 0\n3 1\n3 2" },
-            { input: "3\nabcdefg\ngfedcba\nh", output: "2\n0 1\n1 0" }
+            { input: '5\nabcd\ndcba\nlls\ns\nsssll', output: '4\n0 1\n1 0\n2 4\n3 2' },
+            { input: '2\nbat\ntab', output: '2\n0 1\n1 0' },
+            { input: '3\na\n\naba', output: '4\n0 1\n1 0\n1 2\n2 1' },
+            { input: '3\na\nb\nc', output: '0' },
+            { input: '4\ncode\nedoc\nc\ned', output: '2\n0 1\n1 0' },
+            { input: '2\nracecar\naba', output: '0' },
+            { input: '3\nabc\ncba\nxyz', output: '2\n0 1\n1 0' },
+            { input: '3\nabac\naba\ncab', output: '2\n0 1\n2 0' },
+            {
+                input: '4\na\naa\naaa\naaaa',
+                output: '12\n0 1\n0 2\n0 3\n1 0\n1 2\n1 3\n2 0\n2 1\n2 3\n3 0\n3 1\n3 2',
+            },
+            { input: '3\nabcdefg\ngfedcba\nh', output: '2\n0 1\n1 0' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2102,7 +2211,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Parse words and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2330,43 +2439,47 @@ fn main() {
             writeln!(out, "{} {}", u, v).unwrap();
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #3: Suffix Automaton Basics ====================
     {
-        title: "Suffix Automaton Basics",
-        description: "Build a Suffix Automaton (SAM) for a given string s to answer queries.\n\nSupported queries:\n- `distinct`: Print the total number of distinct substrings in s.\n- `count p`: Print the number of times pattern p appears as a substring in s.\n\n**Input Format:**\n- First line: string s.\n- Second line: integer q, the number of queries.\n- Next q lines: each contains a query in format `distinct` or `count <pattern>`.\n\n**Output Format:**\n- For each query, print the answer on a new line.",
-        difficulty: "HARD",
-        tags: ["suffix-automaton", "strings", "graphs"],
-        constraints: "1 <= |s| <= 10^5\n1 <= q <= 10^5\n1 <= |pattern| <= 10^5\nSum of pattern lengths <= 5 * 10^5\nAll strings consist of lowercase English letters.",
-        hints: "Build the SAM online by extending one character at a time. To support occurrence counts, propagate counts up the link tree after construction.",
-        editorial: "**Approach: Suffix Automaton (SAM)**\n\nBuild the SAM in O(|s|) time. Each node represents a set of equivalent substrings. The number of distinct substrings is computed by summing (len[i] - len[link[i]]) over all states. To answer occurrences, we set the count of suffix paths for prefix states to 1, and propagate this count via link transitions in length-descending order. Queries then traverse the matching characters starting at root.\n\n**Time Complexity:** O(|s| + q * |pattern|) total execution time.\n**Space Complexity:** O(|s| * Alphabet_Size) for transitions.",
+        title: 'Suffix Automaton Basics',
+        description:
+            'Build a Suffix Automaton (SAM) for a given string s to answer queries.\n\nSupported queries:\n- `distinct`: Print the total number of distinct substrings in s.\n- `count p`: Print the number of times pattern p appears as a substring in s.\n\n**Input Format:**\n- First line: string s.\n- Second line: integer q, the number of queries.\n- Next q lines: each contains a query in format `distinct` or `count <pattern>`.\n\n**Output Format:**\n- For each query, print the answer on a new line.',
+        difficulty: 'HARD',
+        tags: ['suffix-automaton', 'strings', 'graphs'],
+        constraints:
+            '1 <= |s| <= 10^5\n1 <= q <= 10^5\n1 <= |pattern| <= 10^5\nSum of pattern lengths <= 5 * 10^5\nAll strings consist of lowercase English letters.',
+        hints: 'Build the SAM online by extending one character at a time. To support occurrence counts, propagate counts up the link tree after construction.',
+        editorial:
+            '**Approach: Suffix Automaton (SAM)**\n\nBuild the SAM in O(|s|) time. Each node represents a set of equivalent substrings. The number of distinct substrings is computed by summing (len[i] - len[link[i]]) over all states. To answer occurrences, we set the count of suffix paths for prefix states to 1, and propagate this count via link transitions in length-descending order. Queries then traverse the matching characters starting at root.\n\n**Time Complexity:** O(|s| + q * |pattern|) total execution time.\n**Space Complexity:** O(|s| * Alphabet_Size) for transitions.',
         examples: [
             {
-                title: "Example 1",
-                input: "abacaba\n4\ndistinct\ncount aba\ncount a\ncount c",
-                output: "21\n2\n4\n1",
-                explanation: "Total distinct substrings is 21. 'aba' appears twice (at 0 and 4). 'a' appears 4 times. 'c' appears once."
+                title: 'Example 1',
+                input: 'abacaba\n4\ndistinct\ncount aba\ncount a\ncount c',
+                output: '21\n2\n4\n1',
+                explanation:
+                    "Total distinct substrings is 21. 'aba' appears twice (at 0 and 4). 'a' appears 4 times. 'c' appears once.",
             },
             {
-                title: "Example 2",
-                input: "aaaaa\n3\ndistinct\ncount a\ncount aa",
-                output: "5\n5\n4"
-            }
+                title: 'Example 2',
+                input: 'aaaaa\n3\ndistinct\ncount a\ncount aa',
+                output: '5\n5\n4',
+            },
         ],
         testcases: [
-            { input: "abacaba\n4\ndistinct\ncount aba\ncount a\ncount c", output: "21\n2\n4\n1" },
-            { input: "aaaaa\n3\ndistinct\ncount a\ncount aa", output: "5\n5\n4" },
-            { input: "a\n2\ncount a\ncount b", output: "1\n0" },
-            { input: "abc\n1\ncount xyz", output: "0" },
-            { input: "abacaba\n1\ndistinct", output: "21" },
-            { input: "ababab\n1\ncount ab", output: "3" },
-            { input: "banana\n2\ncount ana\ncount an", output: "2\n2" },
-            { input: "abcdef\n1\ncount cd", output: "1" },
-            { input: "abcdefg\n1\ndistinct", output: "28" },
-            { input: "aba\n3\ndistinct\ncount b\ncount ab", output: "5\n1\n1" }
+            { input: 'abacaba\n4\ndistinct\ncount aba\ncount a\ncount c', output: '21\n2\n4\n1' },
+            { input: 'aaaaa\n3\ndistinct\ncount a\ncount aa', output: '5\n5\n4' },
+            { input: 'a\n2\ncount a\ncount b', output: '1\n0' },
+            { input: 'abc\n1\ncount xyz', output: '0' },
+            { input: 'abacaba\n1\ndistinct', output: '21' },
+            { input: 'ababab\n1\ncount ab', output: '3' },
+            { input: 'banana\n2\ncount ana\ncount an', output: '2\n2' },
+            { input: 'abcdef\n1\ncount cd', output: '1' },
+            { input: 'abcdefg\n1\ndistinct', output: '28' },
+            { input: 'aba\n3\ndistinct\ncount b\ncount ab', output: '5\n1\n1' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2401,7 +2514,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Build Suffix Automaton and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2764,7 +2877,7 @@ fn main() {
             }
         }
     }
-}`
-        }
-    }
+}`,
+        },
+    },
 ]

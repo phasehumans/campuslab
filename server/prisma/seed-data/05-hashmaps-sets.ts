@@ -3,38 +3,41 @@ import type { SeedProblem } from './types.js'
 export const hashmapsSetsProblems: SeedProblem[] = [
     // ==================== EASY #1: Two Sum with HashMap ====================
     {
-        title: "Two Sum with HashMap",
-        description: "Given an array of integers `nums` and an integer `target`, find the indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input has exactly one solution, and you may not use the same element twice.\n\nPrint the two indices in ascending order, separated by a space.\n\n**Input Format:**\n- First line: integer `n` (the size of the array)\n- Second line: `n` space-separated integers\n- Third line: integer `target`\n\n**Output Format:**\n- Two space-separated indices in ascending order.",
-        difficulty: "EASY",
-        tags: ["hash-map", "counting"],
-        constraints: "2 <= n <= 10^5\n-10^9 <= nums[i] <= 10^9\n-10^9 <= target <= 10^9\nExactly one solution exists.",
+        title: 'Two Sum with HashMap',
+        description:
+            'Given an array of integers `nums` and an integer `target`, find the indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input has exactly one solution, and you may not use the same element twice.\n\nPrint the two indices in ascending order, separated by a space.\n\n**Input Format:**\n- First line: integer `n` (the size of the array)\n- Second line: `n` space-separated integers\n- Third line: integer `target`\n\n**Output Format:**\n- Two space-separated indices in ascending order.',
+        difficulty: 'EASY',
+        tags: ['hash-map', 'counting'],
+        constraints:
+            '2 <= n <= 10^5\n-10^9 <= nums[i] <= 10^9\n-10^9 <= target <= 10^9\nExactly one solution exists.',
         hints: "Instead of checking all pairs, store each number's index in a hash map as you iterate. For the current number, check if target - num already exists in the map.",
-        editorial: "**Approach: Single-pass Hash Map**\n\nWe iterate through the array once. At each step, we calculate the complement `complement = target - nums[i]`. If the complement exists in our hash map, it means we have found the two numbers. We print their indices. Otherwise, we add the current number and its index to the hash map.\n\n**Time Complexity:** O(n) time to traverse the array of size n.\n**Space Complexity:** O(n) space to store elements in the hash map.",
+        editorial:
+            '**Approach: Single-pass Hash Map**\n\nWe iterate through the array once. At each step, we calculate the complement `complement = target - nums[i]`. If the complement exists in our hash map, it means we have found the two numbers. We print their indices. Otherwise, we add the current number and its index to the hash map.\n\n**Time Complexity:** O(n) time to traverse the array of size n.\n**Space Complexity:** O(n) space to store elements in the hash map.',
         examples: [
             {
-                title: "Example 1",
-                input: "4\n2 7 11 15\n9",
-                output: "0 1",
-                explanation: "nums[0] + nums[1] == 2 + 7 == 9. Thus we print '0 1'."
+                title: 'Example 1',
+                input: '4\n2 7 11 15\n9',
+                output: '0 1',
+                explanation: "nums[0] + nums[1] == 2 + 7 == 9. Thus we print '0 1'.",
             },
             {
-                title: "Example 2",
-                input: "3\n3 2 4\n6",
-                output: "1 2",
-                explanation: "nums[1] + nums[2] == 2 + 4 == 6. Thus we print '1 2'."
-            }
+                title: 'Example 2',
+                input: '3\n3 2 4\n6',
+                output: '1 2',
+                explanation: "nums[1] + nums[2] == 2 + 4 == 6. Thus we print '1 2'.",
+            },
         ],
         testcases: [
-            { input: "4\n2 7 11 15\n9", output: "0 1" },
-            { input: "3\n3 2 4\n6", output: "1 2" },
-            { input: "2\n3 3\n6", output: "0 1" },
-            { input: "5\n-1 -2 -3 -4 -5\n-8", output: "2 4" },
-            { input: "6\n10 20 30 40 50 60\n100", output: "3 5" },
-            { input: "7\n1 5 8 9 12 15 20\n21", output: "0 6" },
-            { input: "4\n0 4 3 0\n0", output: "0 3" },
-            { input: "2\n-1000000000 1000000000\n0", output: "0 1" },
-            { input: "6\n5 25 75 100 2 3\n103", output: "3 5" },
-            { input: "10\n4 8 15 16 23 42 1 2 3 5\n47", output: "5 9" }
+            { input: '4\n2 7 11 15\n9', output: '0 1' },
+            { input: '3\n3 2 4\n6', output: '1 2' },
+            { input: '2\n3 3\n6', output: '0 1' },
+            { input: '5\n-1 -2 -3 -4 -5\n-8', output: '2 4' },
+            { input: '6\n10 20 30 40 50 60\n100', output: '3 5' },
+            { input: '7\n1 5 8 9 12 15 20\n21', output: '0 6' },
+            { input: '4\n0 4 3 0\n0', output: '0 3' },
+            { input: '2\n-1000000000 1000000000\n0', output: '0 1' },
+            { input: '6\n5 25 75 100 2 3\n103', output: '3 5' },
+            { input: '10\n4 8 15 16 23 42 1 2 3 5\n47', output: '5 9' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -67,7 +70,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -163,44 +166,47 @@ fn main() {
             }
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #2: Isomorphic Strings ====================
     {
-        title: "Isomorphic Strings",
-        description: "Given two strings `s` and `t`, determine if they are isomorphic.\n\nTwo strings `s` and `t` are isomorphic if the characters in `s` can be replaced to get `t`.\n\nAll occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.\n\n**Input Format:**\n- First line: string `s`\n- Second line: string `t`\n\n**Output Format:**\n- Print \"true\" if the strings are isomorphic, and \"false\" otherwise.",
-        difficulty: "EASY",
-        tags: ["hash-map", "frequency"],
-        constraints: "1 <= |s| <= 10^5\n|s| == |t|\ns and t consist of printable non-whitespace ASCII characters.",
-        hints: "Map each character of s to t, and t to s. If you ever find a mismatch in the mappings, then the strings are not isomorphic.",
-        editorial: "**Approach: Double Character Mapping**\n\nWe can track character maps using two arrays or hash maps: `mapS` maps characters in `s` to characters in `t`, and `mapT` maps characters in `t` to characters in `s`. If at any index `i`, the mapping does not match the previously stored values, then the strings are not isomorphic.\n\n**Time Complexity:** O(n) where n is the length of string `s`.\n**Space Complexity:** O(K) where K is the size of the character set (ASCII size = 256).",
+        title: 'Isomorphic Strings',
+        description:
+            'Given two strings `s` and `t`, determine if they are isomorphic.\n\nTwo strings `s` and `t` are isomorphic if the characters in `s` can be replaced to get `t`.\n\nAll occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.\n\n**Input Format:**\n- First line: string `s`\n- Second line: string `t`\n\n**Output Format:**\n- Print "true" if the strings are isomorphic, and "false" otherwise.',
+        difficulty: 'EASY',
+        tags: ['hash-map', 'frequency'],
+        constraints:
+            '1 <= |s| <= 10^5\n|s| == |t|\ns and t consist of printable non-whitespace ASCII characters.',
+        hints: 'Map each character of s to t, and t to s. If you ever find a mismatch in the mappings, then the strings are not isomorphic.',
+        editorial:
+            '**Approach: Double Character Mapping**\n\nWe can track character maps using two arrays or hash maps: `mapS` maps characters in `s` to characters in `t`, and `mapT` maps characters in `t` to characters in `s`. If at any index `i`, the mapping does not match the previously stored values, then the strings are not isomorphic.\n\n**Time Complexity:** O(n) where n is the length of string `s`.\n**Space Complexity:** O(K) where K is the size of the character set (ASCII size = 256).',
         examples: [
             {
-                title: "Example 1",
-                input: "egg\nadd",
-                output: "true",
-                explanation: "e -> a, g -> d. The mappings are unique and consistent."
+                title: 'Example 1',
+                input: 'egg\nadd',
+                output: 'true',
+                explanation: 'e -> a, g -> d. The mappings are unique and consistent.',
             },
             {
-                title: "Example 2",
-                input: "foo\nbar",
-                output: "false",
-                explanation: "o maps to both a and r, which is invalid."
-            }
+                title: 'Example 2',
+                input: 'foo\nbar',
+                output: 'false',
+                explanation: 'o maps to both a and r, which is invalid.',
+            },
         ],
         testcases: [
-            { input: "egg\nadd", output: "true" },
-            { input: "foo\nbar", output: "false" },
-            { input: "paper\ntitle", output: "true" },
-            { input: "a\na", output: "true" },
-            { input: "ab\naa", output: "false" },
-            { input: "badc\nbaba", output: "false" },
-            { input: "13\n42", output: "true" },
-            { input: "same\nsame", output: "true" },
-            { input: "abcdefghijklmnopqrstuvwxyz\nabcdefghijklmnopqrstuvwxyz", output: "true" },
-            { input: "aba\nbaa", output: "false" }
+            { input: 'egg\nadd', output: 'true' },
+            { input: 'foo\nbar', output: 'false' },
+            { input: 'paper\ntitle', output: 'true' },
+            { input: 'a\na', output: 'true' },
+            { input: 'ab\naa', output: 'false' },
+            { input: 'badc\nbaba', output: 'false' },
+            { input: '13\n42', output: 'true' },
+            { input: 'same\nsame', output: 'true' },
+            { input: 'abcdefghijklmnopqrstuvwxyz\nabcdefghijklmnopqrstuvwxyz', output: 'true' },
+            { input: 'aba\nbaa', output: 'false' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -233,7 +239,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read two strings and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -367,44 +373,48 @@ fn main() {
             println!("false");
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #3: Happy Number Check ====================
     {
-        title: "Happy Number Check",
-        description: "Determine if a positive integer `n` is a happy number.\n\nA happy number is a number defined by the following process:\n- Starting with any positive integer, replace the number by the sum of the squares of its digits.\n- Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.\n- Those numbers for which this process ends in 1 are happy.\n\n**Input Format:**\n- A single line containing the positive integer `n`.\n\n**Output Format:**\n- Print \"true\" if `n` is happy, and \"false\" otherwise.",
-        difficulty: "EASY",
-        tags: ["hash-set", "counting"],
-        constraints: "1 <= n <= 2^31 - 1",
+        title: 'Happy Number Check',
+        description:
+            'Determine if a positive integer `n` is a happy number.\n\nA happy number is a number defined by the following process:\n- Starting with any positive integer, replace the number by the sum of the squares of its digits.\n- Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.\n- Those numbers for which this process ends in 1 are happy.\n\n**Input Format:**\n- A single line containing the positive integer `n`.\n\n**Output Format:**\n- Print "true" if `n` is happy, and "false" otherwise.',
+        difficulty: 'EASY',
+        tags: ['hash-set', 'counting'],
+        constraints: '1 <= n <= 2^31 - 1',
         hints: "Simulate the sum of squares of digits. To detect loops, store each generated sum in a Hash Set. If a sum repeats itself, it's not a happy number.",
-        editorial: "**Approach: Cycle Detection with Hash Set**\n\nWe calculate the next number by summing the squares of the digits of `n`. We keep repeating this process while inserting the intermediate values into a Hash Set. If the number becomes 1, it is happy. If the current number is already present in the Hash Set, it means we have entered a cycle that does not contain 1, so the number is not happy.\n\n**Time Complexity:** O(log n) as the numbers shrink rapidly to small values (sums of squares of digits of $2^{31}-1$ are small, e.g., max 729), then take at most a constant number of steps to cycle or reach 1.\n**Space Complexity:** O(log n) to store visited numbers.",
+        editorial:
+            '**Approach: Cycle Detection with Hash Set**\n\nWe calculate the next number by summing the squares of the digits of `n`. We keep repeating this process while inserting the intermediate values into a Hash Set. If the number becomes 1, it is happy. If the current number is already present in the Hash Set, it means we have entered a cycle that does not contain 1, so the number is not happy.\n\n**Time Complexity:** O(log n) as the numbers shrink rapidly to small values (sums of squares of digits of $2^{31}-1$ are small, e.g., max 729), then take at most a constant number of steps to cycle or reach 1.\n**Space Complexity:** O(log n) to store visited numbers.',
         examples: [
             {
-                title: "Example 1",
-                input: "19",
-                output: "true",
-                explanation: "1^2 + 9^2 = 82\n8^2 + 2^2 = 68\n6^2 + 8^2 = 100\n1^2 + 0^2 + 0^2 = 1."
+                title: 'Example 1',
+                input: '19',
+                output: 'true',
+                explanation:
+                    '1^2 + 9^2 = 82\n8^2 + 2^2 = 68\n6^2 + 8^2 = 100\n1^2 + 0^2 + 0^2 = 1.',
             },
             {
-                title: "Example 2",
-                input: "2",
-                output: "false",
-                explanation: "2 will enter a loop: 2 -> 4 -> 16 -> 37 -> 58 -> 89 -> 145 -> 42 -> 20 -> 4."
-            }
+                title: 'Example 2',
+                input: '2',
+                output: 'false',
+                explanation:
+                    '2 will enter a loop: 2 -> 4 -> 16 -> 37 -> 58 -> 89 -> 145 -> 42 -> 20 -> 4.',
+            },
         ],
         testcases: [
-            { input: "19", output: "true" },
-            { input: "2", output: "false" },
-            { input: "1", output: "true" },
-            { input: "7", output: "true" },
-            { input: "4", output: "false" },
-            { input: "3", output: "false" },
-            { input: "100", output: "true" },
-            { input: "2147483647", output: "false" },
-            { input: "20", output: "false" },
-            { input: "10", output: "true" }
+            { input: '19', output: 'true' },
+            { input: '2', output: 'false' },
+            { input: '1', output: 'true' },
+            { input: '7', output: 'true' },
+            { input: '4', output: 'false' },
+            { input: '3', output: 'false' },
+            { input: '100', output: 'true' },
+            { input: '2147483647', output: 'false' },
+            { input: '20', output: 'false' },
+            { input: '10', output: 'true' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -437,7 +447,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read n and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -547,44 +557,47 @@ fn main() {
             println!("false");
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #4: Ransom Note ====================
     {
-        title: "Ransom Note",
-        description: "Given two strings `ransomNote` and `magazine`, return `true` if `ransomNote` can be constructed by using the characters from `magazine` and `false` otherwise.\n\nEach character in `magazine` can only be used once in `ransomNote`.\n\n**Input Format:**\n- First line: string `ransomNote`\n- Second line: string `magazine`\n\n**Output Format:**\n- Print \"true\" or \"false\".",
-        difficulty: "EASY",
-        tags: ["hash-map", "frequency"],
-        constraints: "1 <= |ransomNote|, |magazine| <= 10^5\nBoth strings consist of lowercase English letters.",
-        hints: "Count the occurrences of each character in `magazine`. Then iterate through `ransomNote` and decrement counts. If a count drops below zero, return false.",
-        editorial: "**Approach: Character Count Array**\n\nSince the characters are only lowercase English letters, we can use an integer array of size 26 (acting as a fixed-size Hash Map) to count the frequencies of characters in `magazine`. Next, we iterate through `ransomNote` and decrement the counts. If any character frequency becomes negative, it means we don't have enough characters in the magazine, so we output `false`.\n\n**Time Complexity:** O(N + M) where N = |ransomNote| and M = |magazine|.\n**Space Complexity:** O(1) space, since we use a fixed-size array of 26 integers.",
+        title: 'Ransom Note',
+        description:
+            'Given two strings `ransomNote` and `magazine`, return `true` if `ransomNote` can be constructed by using the characters from `magazine` and `false` otherwise.\n\nEach character in `magazine` can only be used once in `ransomNote`.\n\n**Input Format:**\n- First line: string `ransomNote`\n- Second line: string `magazine`\n\n**Output Format:**\n- Print "true" or "false".',
+        difficulty: 'EASY',
+        tags: ['hash-map', 'frequency'],
+        constraints:
+            '1 <= |ransomNote|, |magazine| <= 10^5\nBoth strings consist of lowercase English letters.',
+        hints: 'Count the occurrences of each character in `magazine`. Then iterate through `ransomNote` and decrement counts. If a count drops below zero, return false.',
+        editorial:
+            "**Approach: Character Count Array**\n\nSince the characters are only lowercase English letters, we can use an integer array of size 26 (acting as a fixed-size Hash Map) to count the frequencies of characters in `magazine`. Next, we iterate through `ransomNote` and decrement the counts. If any character frequency becomes negative, it means we don't have enough characters in the magazine, so we output `false`.\n\n**Time Complexity:** O(N + M) where N = |ransomNote| and M = |magazine|.\n**Space Complexity:** O(1) space, since we use a fixed-size array of 26 integers.",
         examples: [
             {
-                title: "Example 1",
-                input: "a\nb",
-                output: "false",
-                explanation: "The magazine 'b' cannot construct the ransom note 'a'."
+                title: 'Example 1',
+                input: 'a\nb',
+                output: 'false',
+                explanation: "The magazine 'b' cannot construct the ransom note 'a'.",
             },
             {
-                title: "Example 2",
-                input: "aa\naab",
-                output: "true",
-                explanation: "The magazine 'aab' has two 'a's, which is enough to construct 'aa'."
-            }
+                title: 'Example 2',
+                input: 'aa\naab',
+                output: 'true',
+                explanation: "The magazine 'aab' has two 'a's, which is enough to construct 'aa'.",
+            },
         ],
         testcases: [
-            { input: "a\nb", output: "false" },
-            { input: "aa\nab", output: "false" },
-            { input: "aa\naab", output: "true" },
-            { input: "a\na", output: "true" },
-            { input: "hello\nolleh", output: "true" },
-            { input: "hello\nollehworld", output: "true" },
-            { input: "world\nworl", output: "false" },
-            { input: "abc\ndef", output: "false" },
-            { input: "abcde\nedcba", output: "true" },
-            { input: "abcdefghijklmnopqrstuvwxyz\nabcdefghijklmnopqrstuvwxyz", output: "true" }
+            { input: 'a\nb', output: 'false' },
+            { input: 'aa\nab', output: 'false' },
+            { input: 'aa\naab', output: 'true' },
+            { input: 'a\na', output: 'true' },
+            { input: 'hello\nolleh', output: 'true' },
+            { input: 'hello\nollehworld', output: 'true' },
+            { input: 'world\nworl', output: 'false' },
+            { input: 'abc\ndef', output: 'false' },
+            { input: 'abcde\nedcba', output: 'true' },
+            { input: 'abcdefghijklmnopqrstuvwxyz\nabcdefghijklmnopqrstuvwxyz', output: 'true' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -617,7 +630,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read ransomNote and magazine, and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -718,44 +731,49 @@ fn main() {
             println!("false");
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== EASY #5: Jewels and Stones ====================
     {
-        title: "Jewels and Stones",
-        description: "You're given strings `jewels` representing the types of stones that are jewels, and `stones` representing the stones you have. Each character in `stones` is a type of stone you have. Find how many of the stones you have are also jewels.\n\nLetters are case sensitive, so \"a\" is considered a different type of stone from \"A\".\n\n**Input Format:**\n- First line: string `jewels`\n- Second line: string `stones`\n\n**Output Format:**\n- An integer representing the number of stones that are jewels.",
-        difficulty: "EASY",
-        tags: ["hash-set", "counting"],
-        constraints: "1 <= |jewels|, |stones| <= 10^5\nAll characters in jewels are unique.\nBoth strings consist of English letters (case-sensitive).",
-        hints: "Store all the characters of `jewels` in a Hash Set. Then, iterate through `stones` and check if each stone is in the set.",
-        editorial: "**Approach: Hash Set Lookup**\n\nWe insert all characters of `jewels` into a Hash Set. This allows us to verify if a character is a jewel in O(1) time. Then, we iterate through `stones` and count how many characters exist in the Hash Set.\n\n**Time Complexity:** O(J + S) where J = |jewels| and S = |stones|.\n**Space Complexity:** O(J) to store jewels in the Hash Set.",
+        title: 'Jewels and Stones',
+        description:
+            'You\'re given strings `jewels` representing the types of stones that are jewels, and `stones` representing the stones you have. Each character in `stones` is a type of stone you have. Find how many of the stones you have are also jewels.\n\nLetters are case sensitive, so "a" is considered a different type of stone from "A".\n\n**Input Format:**\n- First line: string `jewels`\n- Second line: string `stones`\n\n**Output Format:**\n- An integer representing the number of stones that are jewels.',
+        difficulty: 'EASY',
+        tags: ['hash-set', 'counting'],
+        constraints:
+            '1 <= |jewels|, |stones| <= 10^5\nAll characters in jewels are unique.\nBoth strings consist of English letters (case-sensitive).',
+        hints: 'Store all the characters of `jewels` in a Hash Set. Then, iterate through `stones` and check if each stone is in the set.',
+        editorial:
+            '**Approach: Hash Set Lookup**\n\nWe insert all characters of `jewels` into a Hash Set. This allows us to verify if a character is a jewel in O(1) time. Then, we iterate through `stones` and count how many characters exist in the Hash Set.\n\n**Time Complexity:** O(J + S) where J = |jewels| and S = |stones|.\n**Space Complexity:** O(J) to store jewels in the Hash Set.',
         examples: [
             {
-                title: "Example 1",
-                input: "aA\naAAbbbb",
-                output: "3",
-                explanation: "The jewels are 'a' and 'A'. Among 'aAAbbbb', there are 3 jewels: 'a', 'A', 'A'."
+                title: 'Example 1',
+                input: 'aA\naAAbbbb',
+                output: '3',
+                explanation:
+                    "The jewels are 'a' and 'A'. Among 'aAAbbbb', there are 3 jewels: 'a', 'A', 'A'.",
             },
             {
-                title: "Example 2",
-                input: "z\nZZ",
-                output: "0",
-                explanation: "The only jewel is 'z'. Since stones are uppercase 'Z', none are jewels."
-            }
+                title: 'Example 2',
+                input: 'z\nZZ',
+                output: '0',
+                explanation:
+                    "The only jewel is 'z'. Since stones are uppercase 'Z', none are jewels.",
+            },
         ],
         testcases: [
-            { input: "aA\naAAbbbb", output: "3" },
-            { input: "z\nZZ", output: "0" },
-            { input: "abc\nabc", output: "3" },
-            { input: "a\nbbbbb", output: "0" },
-            { input: "A\nAAAAA", output: "5" },
-            { input: "aA\na", output: "1" },
-            { input: "aB\nBaBa", output: "4" },
-            { input: "xY\nxyzXYZ", output: "2" },
-            { input: "abcde\nfghij", output: "0" },
-            { input: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\nacegIKM", output: "7" }
+            { input: 'aA\naAAbbbb', output: '3' },
+            { input: 'z\nZZ', output: '0' },
+            { input: 'abc\nabc', output: '3' },
+            { input: 'a\nbbbbb', output: '0' },
+            { input: 'A\nAAAAA', output: '5' },
+            { input: 'aA\na', output: '1' },
+            { input: 'aB\nBaBa', output: '4' },
+            { input: 'xY\nxyzXYZ', output: '2' },
+            { input: 'abcde\nfghij', output: '0' },
+            { input: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\nacegIKM', output: '7' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -788,7 +806,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read jewels and stones, and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -868,44 +886,54 @@ fn main() {
         }
         println!("{}", count);
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #1: Group Anagrams ====================
     {
-        title: "Group Anagrams",
-        description: "Given an array of strings `strs`, group the anagrams together.\n\nTo make the output deterministic and testable, you must:\n1. Sort the words within each group lexicographically.\n2. Sort the groups lexicographically based on their first words.\n3. Print each group on a new line with space-separated words.\n\n**Input Format:**\n- First line: integer `n` (number of strings)\n- Second line: `n` space-separated strings of lowercase English letters.\n\n**Output Format:**\n- Each group of anagrams on a new line, space-separated, formatted according to the rules.",
-        difficulty: "MEDIUM",
-        tags: ["hash-map", "sorting", "frequency"],
-        constraints: "1 <= n <= 10^4\n0 <= |strs[i]| <= 100\nAll strings consist of lowercase English letters.",
-        hints: "Anagrams have the same character counts. If you sort the characters of each string, anagrams will yield the identical sorted key. Use this key in a hash map.",
-        editorial: "**Approach: Sorted String as Hash Map Key**\n\nWe iterate through the list of strings. For each string, we create a sorted copy of its characters. This sorted string is a unique key for its anagram group. We insert the original string into a hash map where the key is the sorted string. After grouping, we sort each group individually, then sort all the groups lexicographically based on their first word, ensuring deterministic output.\n\n**Time Complexity:** O(n * L log L + n log n) where n is the number of strings and L is the maximum length of a string.\n**Space Complexity:** O(n * L) to store the strings in the hash map.",
+        title: 'Group Anagrams',
+        description:
+            'Given an array of strings `strs`, group the anagrams together.\n\nTo make the output deterministic and testable, you must:\n1. Sort the words within each group lexicographically.\n2. Sort the groups lexicographically based on their first words.\n3. Print each group on a new line with space-separated words.\n\n**Input Format:**\n- First line: integer `n` (number of strings)\n- Second line: `n` space-separated strings of lowercase English letters.\n\n**Output Format:**\n- Each group of anagrams on a new line, space-separated, formatted according to the rules.',
+        difficulty: 'MEDIUM',
+        tags: ['hash-map', 'sorting', 'frequency'],
+        constraints:
+            '1 <= n <= 10^4\n0 <= |strs[i]| <= 100\nAll strings consist of lowercase English letters.',
+        hints: 'Anagrams have the same character counts. If you sort the characters of each string, anagrams will yield the identical sorted key. Use this key in a hash map.',
+        editorial:
+            '**Approach: Sorted String as Hash Map Key**\n\nWe iterate through the list of strings. For each string, we create a sorted copy of its characters. This sorted string is a unique key for its anagram group. We insert the original string into a hash map where the key is the sorted string. After grouping, we sort each group individually, then sort all the groups lexicographically based on their first word, ensuring deterministic output.\n\n**Time Complexity:** O(n * L log L + n log n) where n is the number of strings and L is the maximum length of a string.\n**Space Complexity:** O(n * L) to store the strings in the hash map.',
         examples: [
             {
-                title: "Example 1",
-                input: "6\neat tea tan ate nat bat",
-                output: "ate eat tea\nbat\nnat tan",
-                explanation: "The sorted groups are: [ate, eat, tea] (first word 'ate'), [bat] (first word 'bat'), [nat, tan] (first word 'nat'). Sorting by first words gives: 'ate eat tea', then 'bat', then 'nat tan'."
+                title: 'Example 1',
+                input: '6\neat tea tan ate nat bat',
+                output: 'ate eat tea\nbat\nnat tan',
+                explanation:
+                    "The sorted groups are: [ate, eat, tea] (first word 'ate'), [bat] (first word 'bat'), [nat, tan] (first word 'nat'). Sorting by first words gives: 'ate eat tea', then 'bat', then 'nat tan'.",
             },
             {
-                title: "Example 2",
-                input: "1\na",
-                output: "a",
-                explanation: "Only one string, so it prints itself."
-            }
+                title: 'Example 2',
+                input: '1\na',
+                output: 'a',
+                explanation: 'Only one string, so it prints itself.',
+            },
         ],
         testcases: [
-            { input: "6\neat tea tan ate nat bat", output: "ate eat tea\nbat\nnat tan" },
-            { input: "1\na", output: "a" },
-            { input: "3\naba baa aab", output: "aab aba baa" },
-            { input: "4\na b a b", output: "a a\nb b" },
-            { input: "5\ncat dog tac god act", output: "act cat tac\ndog god" },
-            { input: "6\nlisten silent enlist google gogole oggleg", output: "enlist listen silent\ngoogle gogole oggleg" },
-            { input: "2\nxyz zyx", output: "xyz zyx" },
-            { input: "4\naaa aaa bbb bbb", output: "aaa aaa\nbbb bbb" },
-            { input: "3\nhello world olleh", output: "hello olleh\nworld" },
-            { input: "8\nrat tar art car arc rac abc cba", output: "abc cba\narc car rac\nart rat tar" }
+            { input: '6\neat tea tan ate nat bat', output: 'ate eat tea\nbat\nnat tan' },
+            { input: '1\na', output: 'a' },
+            { input: '3\naba baa aab', output: 'aab aba baa' },
+            { input: '4\na b a b', output: 'a a\nb b' },
+            { input: '5\ncat dog tac god act', output: 'act cat tac\ndog god' },
+            {
+                input: '6\nlisten silent enlist google gogole oggleg',
+                output: 'enlist listen silent\ngoogle gogole oggleg',
+            },
+            { input: '2\nxyz zyx', output: 'xyz zyx' },
+            { input: '4\naaa aaa bbb bbb', output: 'aaa aaa\nbbb bbb' },
+            { input: '3\nhello world olleh', output: 'hello olleh\nworld' },
+            {
+                input: '8\nrat tar art car arc rac abc cba',
+                output: 'abc cba\narc car rac\nart rat tar',
+            },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -938,7 +966,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input, solve and sort
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1061,44 +1089,48 @@ fn main() {
             }
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #2: Longest Consecutive Sequence ====================
     {
-        title: "Longest Consecutive Sequence",
-        description: "Given an unsorted array of integers `nums`, find the length of the longest consecutive elements sequence.\n\nYou must write an algorithm that runs in `O(n)` time complexity.\n\n**Input Format:**\n- First line: integer `n` (size of the array)\n- Second line: `n` space-separated integers\n\n**Output Format:**\n- A single integer: the length of the longest consecutive sequence.",
-        difficulty: "MEDIUM",
-        tags: ["hash-set", "counting"],
-        constraints: "1 <= n <= 10^5\n-10^9 <= nums[i] <= 10^9",
-        hints: "Insert all numbers into a Hash Set. Then, iterate through the set. If `num - 1` is not in the set, it means `num` is the start of a sequence. Count forward from `num` to find the length of the sequence.",
-        editorial: "**Approach: Hash Set Sequence Builder**\n\nBy storing all numbers in a Hash Set, we can check for the existence of any number in O(1) time. For each number `x`, we check if `x - 1` is in the set. If it is NOT, then `x` is the start of a consecutive sequence. We then count how many consecutive elements `x + 1`, `x + 2`, etc. exist in the set. By only checking sequences from their starting points, each element is visited at most twice.\n\n**Time Complexity:** O(n) because each number in the array is processed a constant number of times.\n**Space Complexity:** O(n) to store the numbers in the Hash Set.",
+        title: 'Longest Consecutive Sequence',
+        description:
+            'Given an unsorted array of integers `nums`, find the length of the longest consecutive elements sequence.\n\nYou must write an algorithm that runs in `O(n)` time complexity.\n\n**Input Format:**\n- First line: integer `n` (size of the array)\n- Second line: `n` space-separated integers\n\n**Output Format:**\n- A single integer: the length of the longest consecutive sequence.',
+        difficulty: 'MEDIUM',
+        tags: ['hash-set', 'counting'],
+        constraints: '1 <= n <= 10^5\n-10^9 <= nums[i] <= 10^9',
+        hints: 'Insert all numbers into a Hash Set. Then, iterate through the set. If `num - 1` is not in the set, it means `num` is the start of a sequence. Count forward from `num` to find the length of the sequence.',
+        editorial:
+            '**Approach: Hash Set Sequence Builder**\n\nBy storing all numbers in a Hash Set, we can check for the existence of any number in O(1) time. For each number `x`, we check if `x - 1` is in the set. If it is NOT, then `x` is the start of a consecutive sequence. We then count how many consecutive elements `x + 1`, `x + 2`, etc. exist in the set. By only checking sequences from their starting points, each element is visited at most twice.\n\n**Time Complexity:** O(n) because each number in the array is processed a constant number of times.\n**Space Complexity:** O(n) to store the numbers in the Hash Set.',
         examples: [
             {
-                title: "Example 1",
-                input: "6\n100 4 200 1 3 2",
-                output: "4",
-                explanation: "The longest consecutive elements sequence is [1, 2, 3, 4]. Its length is 4."
+                title: 'Example 1',
+                input: '6\n100 4 200 1 3 2',
+                output: '4',
+                explanation:
+                    'The longest consecutive elements sequence is [1, 2, 3, 4]. Its length is 4.',
             },
             {
-                title: "Example 2",
-                input: "10\n0 3 7 2 5 8 4 6 0 1",
-                output: "9",
-                explanation: "The longest consecutive sequence is [0, 1, 2, 3, 4, 5, 6, 7, 8]. Its length is 9."
-            }
+                title: 'Example 2',
+                input: '10\n0 3 7 2 5 8 4 6 0 1',
+                output: '9',
+                explanation:
+                    'The longest consecutive sequence is [0, 1, 2, 3, 4, 5, 6, 7, 8]. Its length is 9.',
+            },
         ],
         testcases: [
-            { input: "6\n100 4 200 1 3 2", output: "4" },
-            { input: "10\n0 3 7 2 5 8 4 6 0 1", output: "9" },
-            { input: "1\n42", output: "1" },
-            { input: "5\n1 2 3 4 5", output: "5" },
-            { input: "5\n5 4 3 2 1", output: "5" },
-            { input: "5\n10 20 30 40 50", output: "1" },
-            { input: "6\n1 1 1 1 1 1", output: "1" },
-            { input: "8\n10 -1 2 0 1 3 -2 -3", output: "7" },
-            { input: "2\n-1000000000 1000000000", output: "1" },
-            { input: "10\n2 1 99 100 3 101 4 102 5 103", output: "5" }
+            { input: '6\n100 4 200 1 3 2', output: '4' },
+            { input: '10\n0 3 7 2 5 8 4 6 0 1', output: '9' },
+            { input: '1\n42', output: '1' },
+            { input: '5\n1 2 3 4 5', output: '5' },
+            { input: '5\n5 4 3 2 1', output: '5' },
+            { input: '5\n10 20 30 40 50', output: '1' },
+            { input: '6\n1 1 1 1 1 1', output: '1' },
+            { input: '8\n10 -1 2 0 1 3 -2 -3', output: '7' },
+            { input: '2\n-1000000000 1000000000', output: '1' },
+            { input: '10\n2 1 99 100 3 101 4 102 5 103', output: '5' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1131,7 +1163,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read array and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1246,44 +1278,46 @@ fn main() {
             println!("{}", longest);
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #3: Subarray Sum Equals K ====================
     {
-        title: "Subarray Sum Equals K",
-        description: "Given an array of integers `nums` and an integer `k`, return the total number of subarrays whose sum equals to `k`.\n\nA subarray is defined as a contiguous non-empty sequence of elements within an array.\n\n**Input Format:**\n- First line: two space-separated integers `n` (the size of the array) and `k`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer: the number of subarrays whose sum is `k`.",
-        difficulty: "MEDIUM",
-        tags: ["hash-map", "prefix-sum", "counting"],
-        constraints: "1 <= n <= 10^5\n-10^3 <= nums[i] <= 10^3\n-10^7 <= k <= 10^7",
-        hints: "If the cumulative sum up to index `i` is `S_i`, and cumulative sum up to index `j` is `S_j` (with `j < i`), then the sum of subarray `nums[j+1..i]` is `S_i - S_j`. If `S_i - S_j = k`, then `S_j = S_i - k`. Use a Hash Map to store the frequencies of prefix sums.",
-        editorial: "**Approach: Prefix Sum Hash Map**\n\nWe traverse the array and maintain the running prefix sum `current_sum`. For each index, the subarray sum ending at this index will equal `k` if there exists a previous prefix sum equal to `current_sum - k`. We lookup `current_sum - k` in our Hash Map, add its frequency to the answer, and then insert the new prefix sum `current_sum` (or increment its frequency) in the map. The map is initialized with `0` having frequency `1` (representing an empty prefix).\n\n**Time Complexity:** O(n) as we traverse the array of size n exactly once.\n**Space Complexity:** O(n) to store prefix sums in the Hash Map.",
+        title: 'Subarray Sum Equals K',
+        description:
+            'Given an array of integers `nums` and an integer `k`, return the total number of subarrays whose sum equals to `k`.\n\nA subarray is defined as a contiguous non-empty sequence of elements within an array.\n\n**Input Format:**\n- First line: two space-separated integers `n` (the size of the array) and `k`.\n- Second line: `n` space-separated integers.\n\n**Output Format:**\n- A single integer: the number of subarrays whose sum is `k`.',
+        difficulty: 'MEDIUM',
+        tags: ['hash-map', 'prefix-sum', 'counting'],
+        constraints: '1 <= n <= 10^5\n-10^3 <= nums[i] <= 10^3\n-10^7 <= k <= 10^7',
+        hints: 'If the cumulative sum up to index `i` is `S_i`, and cumulative sum up to index `j` is `S_j` (with `j < i`), then the sum of subarray `nums[j+1..i]` is `S_i - S_j`. If `S_i - S_j = k`, then `S_j = S_i - k`. Use a Hash Map to store the frequencies of prefix sums.',
+        editorial:
+            '**Approach: Prefix Sum Hash Map**\n\nWe traverse the array and maintain the running prefix sum `current_sum`. For each index, the subarray sum ending at this index will equal `k` if there exists a previous prefix sum equal to `current_sum - k`. We lookup `current_sum - k` in our Hash Map, add its frequency to the answer, and then insert the new prefix sum `current_sum` (or increment its frequency) in the map. The map is initialized with `0` having frequency `1` (representing an empty prefix).\n\n**Time Complexity:** O(n) as we traverse the array of size n exactly once.\n**Space Complexity:** O(n) to store prefix sums in the Hash Map.',
         examples: [
             {
-                title: "Example 1",
-                input: "3 2\n1 1 1",
-                output: "2",
-                explanation: "The subarrays are [1, 1] at index 0..1 and [1, 1] at index 1..2."
+                title: 'Example 1',
+                input: '3 2\n1 1 1',
+                output: '2',
+                explanation: 'The subarrays are [1, 1] at index 0..1 and [1, 1] at index 1..2.',
             },
             {
-                title: "Example 2",
-                input: "3 3\n1 2 3",
-                output: "2",
-                explanation: "The subarrays are [1, 2] at index 0..1 and [3] at index 2..2."
-            }
+                title: 'Example 2',
+                input: '3 3\n1 2 3',
+                output: '2',
+                explanation: 'The subarrays are [1, 2] at index 0..1 and [3] at index 2..2.',
+            },
         ],
         testcases: [
-            { input: "3 2\n1 1 1", output: "2" },
-            { input: "3 3\n1 2 3", output: "2" },
-            { input: "1 0\n0", output: "1" },
-            { input: "5 0\n0 0 0 0 0", output: "15" },
-            { input: "4 5\n1 2 3 4", output: "1" },
-            { input: "6 -1\n1 -1 2 -2 3 -3", output: "3" },
-            { input: "4 2\n2 -2 2 -2", output: "3" },
-            { input: "5 10\n1 2 3 4 5", output: "2" },
-            { input: "3 10\n10 10 10", output: "3" },
-            { input: "10 5\n1 2 3 -3 -2 -1 5 10 -5 5", output: "5" }
+            { input: '3 2\n1 1 1', output: '2' },
+            { input: '3 3\n1 2 3', output: '2' },
+            { input: '1 0\n0', output: '1' },
+            { input: '5 0\n0 0 0 0 0', output: '15' },
+            { input: '4 5\n1 2 3 4', output: '1' },
+            { input: '6 -1\n1 -1 2 -2 3 -3', output: '3' },
+            { input: '4 2\n2 -2 2 -2', output: '3' },
+            { input: '5 10\n1 2 3 4 5', output: '2' },
+            { input: '3 10\n10 10 10', output: '3' },
+            { input: '10 5\n1 2 3 -3 -2 -1 5 10 -5 5', output: '5' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1316,7 +1350,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1424,44 +1458,47 @@ fn main() {
             println!("{}", count);
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #4: Four Sum Count ====================
     {
-        title: "Four Sum Count",
-        description: "Given four integer arrays `A`, `B`, `C`, and `D` of size `n`, return the number of tuples `(i, j, k, l)` such that:\n`A[i] + B[j] + C[k] + D[l] == 0`\n\n**Input Format:**\n- First line: integer `n` (the size of each array)\n- Second line: `n` space-separated integers representing array `A`\n- Third line: `n` space-separated integers representing array `B`\n- Fourth line: `n` space-separated integers representing array `C`\n- Fifth line: `n` space-separated integers representing array `D`\n\n**Output Format:**\n- A single integer representing the count of tuples summing to 0.",
-        difficulty: "MEDIUM",
-        tags: ["hash-map", "counting"],
-        constraints: "1 <= n <= 200\n-10^9 <= A[i], B[i], C[i], D[i] <= 10^9",
-        hints: "Break the problem down into two halves. Find all possible sums of pairs from `A` and `B` and store their frequencies in a Hash Map. Then, iterate through all pairs in `C` and `D` and check if their negative sum exists in the map.",
-        editorial: "**Approach: Split in Half (Meet-in-the-middle)**\n\nChecking all four combinations takes O(n^4), which is too slow. Instead, we can precompute the sum of elements from A and B: `sumAB = A[i] + B[j]` and store the frequencies of these sums in a Hash Map. Next, we iterate through every pair in C and D, calculating `sumCD = C[k] + D[l]`. If `-sumCD` exists in our Hash Map, we add its frequency to the total count. This reduces complexity to O(n^2).\n\n**Time Complexity:** O(n^2) to compute A+B and C+D combinations.\n**Space Complexity:** O(n^2) to store combinations of A and B in the Hash Map.",
+        title: 'Four Sum Count',
+        description:
+            'Given four integer arrays `A`, `B`, `C`, and `D` of size `n`, return the number of tuples `(i, j, k, l)` such that:\n`A[i] + B[j] + C[k] + D[l] == 0`\n\n**Input Format:**\n- First line: integer `n` (the size of each array)\n- Second line: `n` space-separated integers representing array `A`\n- Third line: `n` space-separated integers representing array `B`\n- Fourth line: `n` space-separated integers representing array `C`\n- Fifth line: `n` space-separated integers representing array `D`\n\n**Output Format:**\n- A single integer representing the count of tuples summing to 0.',
+        difficulty: 'MEDIUM',
+        tags: ['hash-map', 'counting'],
+        constraints: '1 <= n <= 200\n-10^9 <= A[i], B[i], C[i], D[i] <= 10^9',
+        hints: 'Break the problem down into two halves. Find all possible sums of pairs from `A` and `B` and store their frequencies in a Hash Map. Then, iterate through all pairs in `C` and `D` and check if their negative sum exists in the map.',
+        editorial:
+            '**Approach: Split in Half (Meet-in-the-middle)**\n\nChecking all four combinations takes O(n^4), which is too slow. Instead, we can precompute the sum of elements from A and B: `sumAB = A[i] + B[j]` and store the frequencies of these sums in a Hash Map. Next, we iterate through every pair in C and D, calculating `sumCD = C[k] + D[l]`. If `-sumCD` exists in our Hash Map, we add its frequency to the total count. This reduces complexity to O(n^2).\n\n**Time Complexity:** O(n^2) to compute A+B and C+D combinations.\n**Space Complexity:** O(n^2) to store combinations of A and B in the Hash Map.',
         examples: [
             {
-                title: "Example 1",
-                input: "2\n1 2\n-2 -1\n-1 2\n0 2",
-                output: "2",
-                explanation: "The two tuples are:\n1. (0, 0, 0, 1) -> A[0]+B[0]+C[0]+D[1] = 1 + (-2) + (-1) + 2 = 0\n2. (1, 1, 0, 0) -> A[1]+B[1]+C[0]+D[0] = 2 + (-1) + (-1) + 0 = 0"
+                title: 'Example 1',
+                input: '2\n1 2\n-2 -1\n-1 2\n0 2',
+                output: '2',
+                explanation:
+                    'The two tuples are:\n1. (0, 0, 0, 1) -> A[0]+B[0]+C[0]+D[1] = 1 + (-2) + (-1) + 2 = 0\n2. (1, 1, 0, 0) -> A[1]+B[1]+C[0]+D[0] = 2 + (-1) + (-1) + 0 = 0',
             },
             {
-                title: "Example 2",
-                input: "1\n0\n0\n0\n0",
-                output: "1",
-                explanation: "A[0]+B[0]+C[0]+D[0] = 0. One tuple: (0, 0, 0, 0)."
-            }
+                title: 'Example 2',
+                input: '1\n0\n0\n0\n0',
+                output: '1',
+                explanation: 'A[0]+B[0]+C[0]+D[0] = 0. One tuple: (0, 0, 0, 0).',
+            },
         ],
         testcases: [
-            { input: "2\n1 2\n-2 -1\n-1 2\n0 2", output: "2" },
-            { input: "1\n0\n0\n0\n0", output: "1" },
-            { input: "1\n1\n1\n1\n1", output: "0" },
-            { input: "2\n0 0\n0 0\n0 0\n0 0", output: "16" },
-            { input: "3\n1 2 3\n-1 -2 -3\n0 1 2\n0 -1 -2", output: "19" },
-            { input: "2\n-1 1\n-1 1\n-1 1\n-1 1", output: "6" },
-            { input: "3\n10 -5 2\n3 -10 5\n1 1 1\n-14 2 -2", output: "3" },
-            { input: "3\n1 -1 0\n2 -2 0\n3 -3 0\n4 -4 0", output: "7" },
-            { input: "2\n100 200\n-100 -200\n50 -50\n-50 50", output: "6" },
-            { input: "4\n-1 -2 -3 -4\n1 2 3 4\n-1 -2 -3 -4\n1 2 3 4", output: "44" }
+            { input: '2\n1 2\n-2 -1\n-1 2\n0 2', output: '2' },
+            { input: '1\n0\n0\n0\n0', output: '1' },
+            { input: '1\n1\n1\n1\n1', output: '0' },
+            { input: '2\n0 0\n0 0\n0 0\n0 0', output: '16' },
+            { input: '3\n1 2 3\n-1 -2 -3\n0 1 2\n0 -1 -2', output: '19' },
+            { input: '2\n-1 1\n-1 1\n-1 1\n-1 1', output: '6' },
+            { input: '3\n10 -5 2\n3 -10 5\n1 1 1\n-14 2 -2', output: '3' },
+            { input: '3\n1 -1 0\n2 -2 0\n3 -3 0\n4 -4 0', output: '7' },
+            { input: '2\n100 200\n-100 -200\n50 -50\n-50 50', output: '6' },
+            { input: '4\n-1 -2 -3 -4\n1 2 3 4\n-1 -2 -3 -4\n1 2 3 4', output: '44' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1494,7 +1531,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1639,44 +1676,64 @@ fn main() {
         }
         println!("{}", count);
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== MEDIUM #5: Encode and Decode Strings ====================
     {
-        title: "Encode and Decode Strings",
-        description: "Design an algorithm to encode a list of strings into a single string. The single string can then be sent over a network and decoded back into the original list of strings.\n\nTo make it testable, you must output:\n1. The length of the encoded string.\n2. The encoded string itself.\n3. The decoded list of strings (one per line) to verify they match the inputs.\n\n**Input Format:**\n- First line: integer `n` (number of strings)\n- Subsequent `n` lines: each line contains a string (which can be empty, or contain spaces, but no newlines).\n\n**Output Format:**\n- First line: the encoded string length\n- Second line: the encoded string\n- Next `n` lines: the decoded strings (one per line).",
-        difficulty: "MEDIUM",
-        tags: ["hash-map", "string"],
-        constraints: "0 <= n <= 100\n0 <= |strs[i]| <= 100\nInput strings consist of printable ASCII characters (excluding newlines).",
+        title: 'Encode and Decode Strings',
+        description:
+            'Design an algorithm to encode a list of strings into a single string. The single string can then be sent over a network and decoded back into the original list of strings.\n\nTo make it testable, you must output:\n1. The length of the encoded string.\n2. The encoded string itself.\n3. The decoded list of strings (one per line) to verify they match the inputs.\n\n**Input Format:**\n- First line: integer `n` (number of strings)\n- Subsequent `n` lines: each line contains a string (which can be empty, or contain spaces, but no newlines).\n\n**Output Format:**\n- First line: the encoded string length\n- Second line: the encoded string\n- Next `n` lines: the decoded strings (one per line).',
+        difficulty: 'MEDIUM',
+        tags: ['hash-map', 'string'],
+        constraints:
+            '0 <= n <= 100\n0 <= |strs[i]| <= 100\nInput strings consist of printable ASCII characters (excluding newlines).',
         hints: "Use a length-prefix method. For each string `s`, encode it as `len(s) + '#' + s`. This ensures that we know exactly how many characters to read next, avoiding collisions with '#' itself.",
-        editorial: "**Approach: Length-Prefix Serialization**\n\nTo safely encode strings of arbitrary content (even containing delimiter characters like `#`), we prepend the length of each string followed by a delimiter `#` before the string itself. For example, the list `[\"hello\", \"world\"]` is serialized as `\"5#hello5#world\"`.\nDuring decoding, we read characters up to `#` to parse the length of the string, then read exactly `len` characters for the string, and repeat. This handles empty strings (`0#`) and strings with special symbols seamlessly.\n\n**Time Complexity:** O(N) where N is the total characters across all strings (linear time to serialize and deserialize).\n**Space Complexity:** O(N) to store the serialized string.",
+        editorial:
+            '**Approach: Length-Prefix Serialization**\n\nTo safely encode strings of arbitrary content (even containing delimiter characters like `#`), we prepend the length of each string followed by a delimiter `#` before the string itself. For example, the list `["hello", "world"]` is serialized as `"5#hello5#world"`.\nDuring decoding, we read characters up to `#` to parse the length of the string, then read exactly `len` characters for the string, and repeat. This handles empty strings (`0#`) and strings with special symbols seamlessly.\n\n**Time Complexity:** O(N) where N is the total characters across all strings (linear time to serialize and deserialize).\n**Space Complexity:** O(N) to store the serialized string.',
         examples: [
             {
-                title: "Example 1",
-                input: "2\nhello\nworld",
-                output: "14\n5#hello5#world\nhello\nworld",
-                explanation: "The encoded string is '5#hello5#world', length is 14. Decoded strings match original inputs."
+                title: 'Example 1',
+                input: '2\nhello\nworld',
+                output: '14\n5#hello5#world\nhello\nworld',
+                explanation:
+                    "The encoded string is '5#hello5#world', length is 14. Decoded strings match original inputs.",
             },
             {
-                title: "Example 2",
-                input: "1\n",
-                output: "2\n0#\n",
-                explanation: "An empty string is encoded as '0#'. The length is 2. The decoded string is empty."
-            }
+                title: 'Example 2',
+                input: '1\n',
+                output: '2\n0#\n',
+                explanation:
+                    "An empty string is encoded as '0#'. The length is 2. The decoded string is empty.",
+            },
         ],
         testcases: [
-            { input: "2\nhello\nworld", output: "14\n5#hello5#world\nhello\nworld" },
-            { input: "3\na\nab\nabc", output: "12\n1#a2#ab3#abc\na\nab\nabc" },
-            { input: "1\n", output: "2\n0#\n" },
-            { input: "4\ncode\n#is\n#fun\n!", output: "20\n4#code3##is4##fun1#!\ncode\n#is\n#fun\n!" },
-            { input: "3\nhello world\n   spaces   \n   ", output: "34\n11#hello world12#   spaces   3#   \nhello world\n   spaces   \n   " },
-            { input: "2\n1234567890\n0987654321", output: "26\n10#123456789010#0987654321\n1234567890\n0987654321" },
-            { input: "3\naaaaaaaaaa\nbbbbb\n", output: "22\n10#aaaaaaaaaa5#bbbbb0#\naaaaaaaaaa\nbbbbb\n" },
-            { input: "10\n!\n@\n#\n$\n%\n^\n&\n*\n(\n)", output: "30\n1#!1#@1##1#$1#%1#^1#&1#*1#(1#)\n!\n@\n#\n$\n%\n^\n&\n*\n(\n)" },
-            { input: "0", output: "0\n\n" },
-            { input: "3\nsame\nsame\nsame", output: "18\n4#same4#same4#same\nsame\nsame\nsame" }
+            { input: '2\nhello\nworld', output: '14\n5#hello5#world\nhello\nworld' },
+            { input: '3\na\nab\nabc', output: '12\n1#a2#ab3#abc\na\nab\nabc' },
+            { input: '1\n', output: '2\n0#\n' },
+            {
+                input: '4\ncode\n#is\n#fun\n!',
+                output: '20\n4#code3##is4##fun1#!\ncode\n#is\n#fun\n!',
+            },
+            {
+                input: '3\nhello world\n   spaces   \n   ',
+                output: '34\n11#hello world12#   spaces   3#   \nhello world\n   spaces   \n   ',
+            },
+            {
+                input: '2\n1234567890\n0987654321',
+                output: '26\n10#123456789010#0987654321\n1234567890\n0987654321',
+            },
+            {
+                input: '3\naaaaaaaaaa\nbbbbb\n',
+                output: '22\n10#aaaaaaaaaa5#bbbbb0#\naaaaaaaaaa\nbbbbb\n',
+            },
+            {
+                input: '10\n!\n@\n#\n$\n%\n^\n&\n*\n(\n)',
+                output: '30\n1#!1#@1##1#$1#%1#^1#&1#*1#(1#)\n!\n@\n#\n$\n%\n^\n&\n*\n(\n)',
+            },
+            { input: '0', output: '0\n\n' },
+            { input: '3\nsame\nsame\nsame', output: '18\n4#same4#same4#same\nsame\nsame\nsame' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1709,7 +1766,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -1881,44 +1938,49 @@ fn main() {
             println!("{}", s);
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #1: Minimum Window Substring ====================
     {
-        title: "Minimum Window Substring",
-        description: "Given two strings `s` and `t` of lengths `m` and `n` respectively, find the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window.\n\nIf there is no such substring, print an empty line.\nIf there are multiple such windows, print the first one that appears in `s`.\n\n**Input Format:**\n- First line: string `s`\n- Second line: string `t`\n\n**Output Format:**\n- The minimum window substring (or an empty line if none exists).",
-        difficulty: "HARD",
-        tags: ["hash-map", "sliding-window", "frequency"],
-        constraints: "1 <= |s|, |t| <= 10^5\ns and t consist of uppercase and lowercase English letters.",
-        hints: "Use the sliding window technique. Keep two pointers, left and right. Expand right to find a valid window. Once a valid window is found, contract left to minimize it.",
-        editorial: "**Approach: Sliding Window with Two Maps/Arrays**\n\nWe maintain the counts of characters required from `t` in `target_counts`. We then use a sliding window defined by two pointers `l` and `r` on `s`. We expand `r`, adding elements to our `window_counts`. When the window contains all characters of `t` in required frequencies, we try to shrink the window from the left by advancing `l` while maintaining validity. We keep track of the minimum window length and its starting index.\n\n**Time Complexity:** O(|s| + |t|) as each character is processed at most twice (once by right pointer, once by left pointer).\n**Space Complexity:** O(K) where K = 256 for the character set.",
+        title: 'Minimum Window Substring',
+        description:
+            'Given two strings `s` and `t` of lengths `m` and `n` respectively, find the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window.\n\nIf there is no such substring, print an empty line.\nIf there are multiple such windows, print the first one that appears in `s`.\n\n**Input Format:**\n- First line: string `s`\n- Second line: string `t`\n\n**Output Format:**\n- The minimum window substring (or an empty line if none exists).',
+        difficulty: 'HARD',
+        tags: ['hash-map', 'sliding-window', 'frequency'],
+        constraints:
+            '1 <= |s|, |t| <= 10^5\ns and t consist of uppercase and lowercase English letters.',
+        hints: 'Use the sliding window technique. Keep two pointers, left and right. Expand right to find a valid window. Once a valid window is found, contract left to minimize it.',
+        editorial:
+            '**Approach: Sliding Window with Two Maps/Arrays**\n\nWe maintain the counts of characters required from `t` in `target_counts`. We then use a sliding window defined by two pointers `l` and `r` on `s`. We expand `r`, adding elements to our `window_counts`. When the window contains all characters of `t` in required frequencies, we try to shrink the window from the left by advancing `l` while maintaining validity. We keep track of the minimum window length and its starting index.\n\n**Time Complexity:** O(|s| + |t|) as each character is processed at most twice (once by right pointer, once by left pointer).\n**Space Complexity:** O(K) where K = 256 for the character set.',
         examples: [
             {
-                title: "Example 1",
-                input: "ADOBECODEBANC\nABC",
-                output: "BANC",
-                explanation: "The minimum window substring containing all 'A', 'B', 'C' is 'BANC' (length 4)."
+                title: 'Example 1',
+                input: 'ADOBECODEBANC\nABC',
+                output: 'BANC',
+                explanation:
+                    "The minimum window substring containing all 'A', 'B', 'C' is 'BANC' (length 4).",
             },
             {
-                title: "Example 2",
-                input: "a\naa",
-                output: "",
-                explanation: "s has only one 'a' but t requires two 'a's, so no window is possible."
-            }
+                title: 'Example 2',
+                input: 'a\naa',
+                output: '',
+                explanation:
+                    "s has only one 'a' but t requires two 'a's, so no window is possible.",
+            },
         ],
         testcases: [
-            { input: "ADOBECODEBANC\nABC", output: "BANC" },
-            { input: "a\na", output: "a" },
-            { input: "a\naa", output: "" },
-            { input: "ABAACBAB\nABC", output: "ACB" },
-            { input: "A\nB", output: "" },
-            { input: "AAAAAA\nA", output: "A" },
-            { input: "GEEKSFORGEEKS\nORK", output: "KSFOR" },
-            { input: "XYZYX\nXYZ", output: "XYZ" },
-            { input: "aabdec\nabc", output: "abdec" },
-            { input: "bba\nab", output: "ba" }
+            { input: 'ADOBECODEBANC\nABC', output: 'BANC' },
+            { input: 'a\na', output: 'a' },
+            { input: 'a\naa', output: '' },
+            { input: 'ABAACBAB\nABC', output: 'ACB' },
+            { input: 'A\nB', output: '' },
+            { input: 'AAAAAA\nA', output: 'A' },
+            { input: 'GEEKSFORGEEKS\nORK', output: 'KSFOR' },
+            { input: 'XYZYX\nXYZ', output: 'XYZ' },
+            { input: 'aabdec\nabc', output: 'abdec' },
+            { input: 'bba\nab', output: 'ba' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -1951,7 +2013,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2168,44 +2230,51 @@ fn main() {
             println!("{}", &s[min_l..min_l + min_len]);
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #2: Substring Concatenation Indices ====================
     {
-        title: "Substring Concatenation Indices",
-        description: "You are given a string `s` and an array of strings `words`. All strings in `words` are of the exact same length.\n\nA concatenated substring in `s` is a substring that contains all the strings of any permutation of `words` concatenated.\n\nFind all starting indices of concatenated substrings in `s`.\n\nPrint the starting indices in ascending order, separated by spaces. If no such indices exist, print an empty line.\n\n**Input Format:**\n- First line: string `s`\n- Second line: integer `m` (number of words in the array)\n- Next `m` lines: each line contains a word from the array `words`.\n\n**Output Format:**\n- A single line of space-separated indices in ascending order.",
-        difficulty: "HARD",
-        tags: ["hash-map", "sliding-window", "frequency"],
-        constraints: "1 <= |s| <= 10^4\n1 <= m <= 1000\n1 <= |words[i]| <= 30\nAll words are of the same length.\ns and words[i] consist of lowercase English letters.",
-        hints: "Let word_len be the length of each word. We can use a sliding window over the string. Since the starting index can shift from 0 to word_len - 1, we execute the sliding window word_len times.",
-        editorial: "**Approach: Sliding Window over Word Boundaries**\n\nInstead of checking all substrings of size `word_len * m` from scratch, we can run a sliding window. Since word boundaries can start at any offset `i` from `0` to `word_len - 1`, we slide a window of size `word_len` at a time. We maintain a Hash Map of counts for words in the current window. If we encounter a word not in `words`, we reset the window. If a word's count exceeds the target count, we slide the left boundary of the window to the right until the count is valid. If we match all `m` words, the left boundary is added to the result.\n\n**Time Complexity:** O(|s| * word_len) as we run the sliding window `word_len` times, and each run processes at most |s| / word_len words.\n**Space Complexity:** O(m * word_len) to store the words in hash maps.",
+        title: 'Substring Concatenation Indices',
+        description:
+            'You are given a string `s` and an array of strings `words`. All strings in `words` are of the exact same length.\n\nA concatenated substring in `s` is a substring that contains all the strings of any permutation of `words` concatenated.\n\nFind all starting indices of concatenated substrings in `s`.\n\nPrint the starting indices in ascending order, separated by spaces. If no such indices exist, print an empty line.\n\n**Input Format:**\n- First line: string `s`\n- Second line: integer `m` (number of words in the array)\n- Next `m` lines: each line contains a word from the array `words`.\n\n**Output Format:**\n- A single line of space-separated indices in ascending order.',
+        difficulty: 'HARD',
+        tags: ['hash-map', 'sliding-window', 'frequency'],
+        constraints:
+            '1 <= |s| <= 10^4\n1 <= m <= 1000\n1 <= |words[i]| <= 30\nAll words are of the same length.\ns and words[i] consist of lowercase English letters.',
+        hints: 'Let word_len be the length of each word. We can use a sliding window over the string. Since the starting index can shift from 0 to word_len - 1, we execute the sliding window word_len times.',
+        editorial:
+            "**Approach: Sliding Window over Word Boundaries**\n\nInstead of checking all substrings of size `word_len * m` from scratch, we can run a sliding window. Since word boundaries can start at any offset `i` from `0` to `word_len - 1`, we slide a window of size `word_len` at a time. We maintain a Hash Map of counts for words in the current window. If we encounter a word not in `words`, we reset the window. If a word's count exceeds the target count, we slide the left boundary of the window to the right until the count is valid. If we match all `m` words, the left boundary is added to the result.\n\n**Time Complexity:** O(|s| * word_len) as we run the sliding window `word_len` times, and each run processes at most |s| / word_len words.\n**Space Complexity:** O(m * word_len) to store the words in hash maps.",
         examples: [
             {
-                title: "Example 1",
-                input: "barfoothefoobarman\n2\nfoo\nbar",
-                output: "0 9",
-                explanation: "Substring at index 0 is 'barfoo' (contains 'bar' then 'foo'). Substring at index 9 is 'foobar' (contains 'foo' then 'bar')."
+                title: 'Example 1',
+                input: 'barfoothefoobarman\n2\nfoo\nbar',
+                output: '0 9',
+                explanation:
+                    "Substring at index 0 is 'barfoo' (contains 'bar' then 'foo'). Substring at index 9 is 'foobar' (contains 'foo' then 'bar').",
             },
             {
-                title: "Example 2",
-                input: "wordgoodgoodgoodbestword\n4\nword\ngood\nbest\nword",
-                output: "",
-                explanation: "No substring of length 16 contains all 4 words."
-            }
+                title: 'Example 2',
+                input: 'wordgoodgoodgoodbestword\n4\nword\ngood\nbest\nword',
+                output: '',
+                explanation: 'No substring of length 16 contains all 4 words.',
+            },
         ],
         testcases: [
-            { input: "barfoothefoobarman\n2\nfoo\nbar", output: "0 9" },
-            { input: "wordgoodgoodgoodbestword\n4\nword\ngood\nbest\nword", output: "" },
-            { input: "barfoofoobarthefoobarman\n3\nbar\nfoo\nthe", output: "6 9 12" },
-            { input: "wordgoodgoodgoodbestword\n4\nword\ngood\nbest\ngood", output: "8" },
-            { input: "lingmindraboofooowingdingbarrwingmonkeypoundcake\n5\nfooo\nbarr\nwing\nding\nwing", output: "13" },
-            { input: "a\n1\na", output: "0" },
-            { input: "ababaab\n2\nab\nba", output: "3" },
-            { input: "aaaaaaaaaaaa\n2\naa\naa", output: "0 1 2 3 4 5 6 7 8" },
-            { input: "mississippi\n2\nis\nip", output: "" },
-            { input: "foobarfoobar\n2\nfoo\nbar", output: "0 3 6" }
+            { input: 'barfoothefoobarman\n2\nfoo\nbar', output: '0 9' },
+            { input: 'wordgoodgoodgoodbestword\n4\nword\ngood\nbest\nword', output: '' },
+            { input: 'barfoofoobarthefoobarman\n3\nbar\nfoo\nthe', output: '6 9 12' },
+            { input: 'wordgoodgoodgoodbestword\n4\nword\ngood\nbest\ngood', output: '8' },
+            {
+                input: 'lingmindraboofooowingdingbarrwingmonkeypoundcake\n5\nfooo\nbarr\nwing\nding\nwing',
+                output: '13',
+            },
+            { input: 'a\n1\na', output: '0' },
+            { input: 'ababaab\n2\nab\nba', output: '3' },
+            { input: 'aaaaaaaaaaaa\n2\naa\naa', output: '0 1 2 3 4 5 6 7 8' },
+            { input: 'mississippi\n2\nis\nip', output: '' },
+            { input: 'foobarfoobar\n2\nfoo\nbar', output: '0 3 6' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2238,7 +2307,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2470,44 +2539,47 @@ fn main() {
             println!("{}", strs.join(" "));
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #3: Longest Duplicate Substring ====================
     {
-        title: "Longest Duplicate Substring",
-        description: "Given a string `s`, consider all duplicated substrings: substrings of `s` that occur 2 or more times. The occurrences may overlap.\n\nFind any duplicated substring that has the longest possible length. If `s` does not have a duplicated substring, print an empty line.\n\n**Input Format:**\n- A single line containing the string `s` consisting of lowercase English letters.\n\n**Output Format:**\n- A single string representing the longest duplicate substring (or empty line if none).",
-        difficulty: "HARD",
-        tags: ["hash-map", "binary-search", "rolling-hash"],
-        constraints: "2 <= |s| <= 10^5\ns consists of lowercase English letters.",
-        hints: "Use binary search on the length of the duplicate substring (range `1` to `len(s)`). For a fixed length `L`, we can use Rabin-Karp (rolling hash) to check if any substring of length `L` is duplicated in O(N) time.",
-        editorial: "**Approach: Binary Search on Substring Length + Rolling Hash (Rabin-Karp)**\n\nThe length of the longest duplicate substring can be binary-searched between `1` and `n`. For a candidate length `L`:\n1. Compute the rolling hash of all substrings of length `L` using a base (e.g. `26`) and two modulos (e.g. `10^9+7` and `10^9+9`) to avoid collisions.\n2. Store the double hashes in a Hash Set.\n3. If a hash is seen again, we've found a duplicate substring of length `L` (return its start index). If no duplicate is found for `L`, we search shorter lengths.\n\n**Time Complexity:** O(n log n) because binary search takes O(log n) steps, and Rabin-Karp takes O(n) time per step.\n**Space Complexity:** O(n) to store substring hashes in the Hash Set.",
+        title: 'Longest Duplicate Substring',
+        description:
+            'Given a string `s`, consider all duplicated substrings: substrings of `s` that occur 2 or more times. The occurrences may overlap.\n\nFind any duplicated substring that has the longest possible length. If `s` does not have a duplicated substring, print an empty line.\n\n**Input Format:**\n- A single line containing the string `s` consisting of lowercase English letters.\n\n**Output Format:**\n- A single string representing the longest duplicate substring (or empty line if none).',
+        difficulty: 'HARD',
+        tags: ['hash-map', 'binary-search', 'rolling-hash'],
+        constraints: '2 <= |s| <= 10^5\ns consists of lowercase English letters.',
+        hints: 'Use binary search on the length of the duplicate substring (range `1` to `len(s)`). For a fixed length `L`, we can use Rabin-Karp (rolling hash) to check if any substring of length `L` is duplicated in O(N) time.',
+        editorial:
+            "**Approach: Binary Search on Substring Length + Rolling Hash (Rabin-Karp)**\n\nThe length of the longest duplicate substring can be binary-searched between `1` and `n`. For a candidate length `L`:\n1. Compute the rolling hash of all substrings of length `L` using a base (e.g. `26`) and two modulos (e.g. `10^9+7` and `10^9+9`) to avoid collisions.\n2. Store the double hashes in a Hash Set.\n3. If a hash is seen again, we've found a duplicate substring of length `L` (return its start index). If no duplicate is found for `L`, we search shorter lengths.\n\n**Time Complexity:** O(n log n) because binary search takes O(log n) steps, and Rabin-Karp takes O(n) time per step.\n**Space Complexity:** O(n) to store substring hashes in the Hash Set.",
         examples: [
             {
-                title: "Example 1",
-                input: "banana",
-                output: "ana",
-                explanation: "The substring 'ana' appears twice: at index 1 ('banana') and index 3 ('banana')."
+                title: 'Example 1',
+                input: 'banana',
+                output: 'ana',
+                explanation:
+                    "The substring 'ana' appears twice: at index 1 ('banana') and index 3 ('banana').",
             },
             {
-                title: "Example 2",
-                input: "abcd",
-                output: "",
-                explanation: "No substring appears more than once."
-            }
+                title: 'Example 2',
+                input: 'abcd',
+                output: '',
+                explanation: 'No substring appears more than once.',
+            },
         ],
         testcases: [
-            { input: "banana", output: "ana" },
-            { input: "abcd", output: "" },
-            { input: "aaaaa", output: "aaaa" },
-            { input: "aab", output: "a" },
-            { input: "majestical", output: "a" },
-            { input: "babab", output: "bab" },
-            { input: "leetcoder", output: "e" },
-            { input: "tralalala", output: "alala" },
-            { input: "mississippi", output: "issi" },
-            { input: "doubletrouble", output: "ouble" }
+            { input: 'banana', output: 'ana' },
+            { input: 'abcd', output: '' },
+            { input: 'aaaaa', output: 'aaaa' },
+            { input: 'aab', output: 'a' },
+            { input: 'majestical', output: 'a' },
+            { input: 'babab', output: 'bab' },
+            { input: 'leetcoder', output: 'e' },
+            { input: 'tralalala', output: 'alala' },
+            { input: 'mississippi', output: 'issi' },
+            { input: 'doubletrouble', output: 'ouble' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2540,7 +2612,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -2851,44 +2923,49 @@ fn main() {
             println!("{}", &s[start..start + best_len]);
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #4: Alien Dictionary Order ====================
     {
-        title: "Alien Dictionary Order",
-        description: "There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you.\n\nYou are given a list of strings `words` from the alien language's dictionary, where the strings in `words` are sorted lexicographically according to the rules of this new language.\n\nReturn a string of the unique letters in the new alien language sorted in lexicographically increasing order of the alien language. If there is no consistent order of letters (e.g. there is a cycle), return `\"\"`.\n\nIf there are multiple valid orders, return the one that is lexicographically smallest when compared as standard English strings.\n\n**Input Format:**\n- First line: integer `n` (number of words)\n- Next `n` lines: each line contains a word from the alien dictionary.\n\n**Output Format:**\n- A single string containing the sorted alien letters. If no valid order exists, print an empty line.",
-        difficulty: "HARD",
-        tags: ["hash-map", "graph", "topological-sort"],
-        constraints: "1 <= n <= 100\n1 <= |words[i]| <= 100\nwords consist of lowercase English letters.",
+        title: 'Alien Dictionary Order',
+        description:
+            'There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you.\n\nYou are given a list of strings `words` from the alien language\'s dictionary, where the strings in `words` are sorted lexicographically according to the rules of this new language.\n\nReturn a string of the unique letters in the new alien language sorted in lexicographically increasing order of the alien language. If there is no consistent order of letters (e.g. there is a cycle), return `""`.\n\nIf there are multiple valid orders, return the one that is lexicographically smallest when compared as standard English strings.\n\n**Input Format:**\n- First line: integer `n` (number of words)\n- Next `n` lines: each line contains a word from the alien dictionary.\n\n**Output Format:**\n- A single string containing the sorted alien letters. If no valid order exists, print an empty line.',
+        difficulty: 'HARD',
+        tags: ['hash-map', 'graph', 'topological-sort'],
+        constraints:
+            '1 <= n <= 100\n1 <= |words[i]| <= 100\nwords consist of lowercase English letters.',
         hints: "Build a directed graph where an edge `u -> v` exists if letter `u` comes before letter `v`. Check for invalid prefix relationships (like 'abc' sorted before 'ab'). Run topological sort using Kahn's algorithm with a priority queue.",
-        editorial: "**Approach: Directed Graph + Topological Sort (Kahn's BFS)**\n\n1. **Graph Construction:** Compare adjacent words to find the first differing character. If word1 is a prefix of word2 but comes after word2, the ordering is invalid (return `\"\"`). Otherwise, the mismatched characters form a directed edge `c1 -> c2` representing the rule `c1` comes before `c2`.\n2. **Topological Sort:** We use Kahn's algorithm. To resolve ties deterministically and obtain the lexicographically smallest topological sort, we store nodes with in-degree 0 in a Min-Priority Queue. If the count of sorted nodes is less than the count of unique letters, a cycle exists, meaning no consistent ordering is possible.\n\n**Time Complexity:** O(N * L) where N is the number of words and L is the average length of a word.\n**Space Complexity:** O(U + E) where U is the number of unique letters (at most 26) and E is the number of relations.",
+        editorial:
+            '**Approach: Directed Graph + Topological Sort (Kahn\'s BFS)**\n\n1. **Graph Construction:** Compare adjacent words to find the first differing character. If word1 is a prefix of word2 but comes after word2, the ordering is invalid (return `""`). Otherwise, the mismatched characters form a directed edge `c1 -> c2` representing the rule `c1` comes before `c2`.\n2. **Topological Sort:** We use Kahn\'s algorithm. To resolve ties deterministically and obtain the lexicographically smallest topological sort, we store nodes with in-degree 0 in a Min-Priority Queue. If the count of sorted nodes is less than the count of unique letters, a cycle exists, meaning no consistent ordering is possible.\n\n**Time Complexity:** O(N * L) where N is the number of words and L is the average length of a word.\n**Space Complexity:** O(U + E) where U is the number of unique letters (at most 26) and E is the number of relations.',
         examples: [
             {
-                title: "Example 1",
-                input: "5\nwrt\nwrf\ner\nett\nrftt",
-                output: "wertf",
-                explanation: "From the sorted list, we can deduce:\n- 't' comes before 'f'\n- 'w' comes before 'e'\n- 'r' comes before 't'\n- 'e' comes before 'r'\nThis yields the ordering 'wertf'."
+                title: 'Example 1',
+                input: '5\nwrt\nwrf\ner\nett\nrftt',
+                output: 'wertf',
+                explanation:
+                    "From the sorted list, we can deduce:\n- 't' comes before 'f'\n- 'w' comes before 'e'\n- 'r' comes before 't'\n- 'e' comes before 'r'\nThis yields the ordering 'wertf'.",
             },
             {
-                title: "Example 2",
-                input: "3\nz\nx\nz",
-                output: "",
-                explanation: "'z' comes before 'x', but 'x' also comes before 'z'. This cycle makes it invalid."
-            }
+                title: 'Example 2',
+                input: '3\nz\nx\nz',
+                output: '',
+                explanation:
+                    "'z' comes before 'x', but 'x' also comes before 'z'. This cycle makes it invalid.",
+            },
         ],
         testcases: [
-            { input: "5\nwrt\nwrf\ner\nett\nrftt", output: "wertf" },
-            { input: "3\nz\nx\nz", output: "" },
-            { input: "3\nz\nx\ny", output: "zxy" },
-            { input: "2\nz\nz", output: "z" },
-            { input: "2\nabc\nab", output: "" },
-            { input: "4\na\nb\nc\nd", output: "abcd" },
-            { input: "4\ncab\ncba\nabc\nabd", output: "cabd" },
-            { input: "2\nbaa\nabcd", output: "bacd" },
-            { input: "3\nza\nzb\nca", output: "abzc" },
-            { input: "4\nz\nx\na\nzb", output: "" }
+            { input: '5\nwrt\nwrf\ner\nett\nrftt', output: 'wertf' },
+            { input: '3\nz\nx\nz', output: '' },
+            { input: '3\nz\nx\ny', output: 'zxy' },
+            { input: '2\nz\nz', output: 'z' },
+            { input: '2\nabc\nab', output: '' },
+            { input: '4\na\nb\nc\nd', output: 'abcd' },
+            { input: '4\ncab\ncba\nabc\nabd', output: 'cabd' },
+            { input: '2\nbaa\nabcd', output: 'bacd' },
+            { input: '3\nza\nzb\nca', output: 'abzc' },
+            { input: '4\nz\nx\na\nzb', output: '' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -2921,7 +2998,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -3231,44 +3308,48 @@ fn main() {
             println!("{}", res);
         }
     }
-}`
-        }
+}`,
+        },
     },
 
     // ==================== HARD #5: Grid Illumination ====================
     {
-        title: "Grid Illumination",
-        description: "There is a 2D grid of size `n x n` where each cell is initially off (dark). You are given a list of lamp positions `lamps` where `lamps[i] = [r_i, c_i]` indicates that there is a lamp at cell `(r_i, c_i)` which is turned on. When a lamp is turned on, it illuminates its cell and all cells in the same row, column, and two diagonals.\n\nYou are also given a list of queries `queries` where `queries[j] = [r_j, c_j]`. For the `j`-th query, determine whether the cell `(r_j, c_j)` is illuminated or not. After answering the query, you must turn off the lamp at `(r_j, c_j)` and all lamps in the 8 adjacent cells (including diagonal neighbors and the cell itself).\n\nPrint the results of the queries (1 for illuminated, 0 for not illuminated), space-separated on a single line.\n\n**Input Format:**\n- First line: three space-separated integers: `n` (grid size), `L` (number of lamps), `Q` (number of queries)\n- Next `L` lines: each line contains two space-separated integers representing row and col of a lamp.\n- Next `Q` lines: each line contains two space-separated integers representing row and col of a query.\n\n**Output Format:**\n- A single line containing `Q` space-separated integers (either 0 or 1).",
-        difficulty: "HARD",
-        tags: ["hash-map", "hash-set"],
-        constraints: "1 <= n <= 10^9\n1 <= L, Q <= 20000\n0 <= r_i, c_i < n",
-        hints: "Since grid size is up to 10^9, we cannot store the grid in a 2D array. Use Hash Maps to count the number of active lamps in each row, column, and diagonals. Also use a Hash Set to track active lamp coordinates to turn them off in O(1) time.",
-        editorial: "**Approach: Frequency Counter Hash Maps + Unique Coordinates Hash Set**\n\nWe track active lamps using:\n- `row_count[r]`: number of active lamps in row `r`.\n- `col_count[c]`: number of active lamps in column `c`.\n- `diag1_count[r - c]`: number of active lamps on diagonal parallel to the main diagonal.\n- `diag2_count[r + c]`: number of active lamps on diagonal parallel to the anti-diagonal.\n- `lamps`: Hash Set of combined 64-bit coordinates representing active lamp positions.\n\nFor each query `(r, c)`:\n1. If `row_count[r] > 0`, `col_count[c] > 0`, `diag1_count[r-c] > 0`, or `diag2_count[r+c] > 0`, the query cell is illuminated (output 1); otherwise output 0.\n2. Iterate through the 3x3 grid centered at `(r, c)`. For each cell `(nr, nc)`, check if a lamp exists in the `lamps` set. If it does, remove it and decrement the corresponding row, column, and diagonal counts.\n\n**Time Complexity:** O(L + Q) since initialization takes O(L) and each query does at most 9 checks in O(1) time.\n**Space Complexity:** O(L) to store the lamps in the maps and set.",
+        title: 'Grid Illumination',
+        description:
+            'There is a 2D grid of size `n x n` where each cell is initially off (dark). You are given a list of lamp positions `lamps` where `lamps[i] = [r_i, c_i]` indicates that there is a lamp at cell `(r_i, c_i)` which is turned on. When a lamp is turned on, it illuminates its cell and all cells in the same row, column, and two diagonals.\n\nYou are also given a list of queries `queries` where `queries[j] = [r_j, c_j]`. For the `j`-th query, determine whether the cell `(r_j, c_j)` is illuminated or not. After answering the query, you must turn off the lamp at `(r_j, c_j)` and all lamps in the 8 adjacent cells (including diagonal neighbors and the cell itself).\n\nPrint the results of the queries (1 for illuminated, 0 for not illuminated), space-separated on a single line.\n\n**Input Format:**\n- First line: three space-separated integers: `n` (grid size), `L` (number of lamps), `Q` (number of queries)\n- Next `L` lines: each line contains two space-separated integers representing row and col of a lamp.\n- Next `Q` lines: each line contains two space-separated integers representing row and col of a query.\n\n**Output Format:**\n- A single line containing `Q` space-separated integers (either 0 or 1).',
+        difficulty: 'HARD',
+        tags: ['hash-map', 'hash-set'],
+        constraints: '1 <= n <= 10^9\n1 <= L, Q <= 20000\n0 <= r_i, c_i < n',
+        hints: 'Since grid size is up to 10^9, we cannot store the grid in a 2D array. Use Hash Maps to count the number of active lamps in each row, column, and diagonals. Also use a Hash Set to track active lamp coordinates to turn them off in O(1) time.',
+        editorial:
+            '**Approach: Frequency Counter Hash Maps + Unique Coordinates Hash Set**\n\nWe track active lamps using:\n- `row_count[r]`: number of active lamps in row `r`.\n- `col_count[c]`: number of active lamps in column `c`.\n- `diag1_count[r - c]`: number of active lamps on diagonal parallel to the main diagonal.\n- `diag2_count[r + c]`: number of active lamps on diagonal parallel to the anti-diagonal.\n- `lamps`: Hash Set of combined 64-bit coordinates representing active lamp positions.\n\nFor each query `(r, c)`:\n1. If `row_count[r] > 0`, `col_count[c] > 0`, `diag1_count[r-c] > 0`, or `diag2_count[r+c] > 0`, the query cell is illuminated (output 1); otherwise output 0.\n2. Iterate through the 3x3 grid centered at `(r, c)`. For each cell `(nr, nc)`, check if a lamp exists in the `lamps` set. If it does, remove it and decrement the corresponding row, column, and diagonal counts.\n\n**Time Complexity:** O(L + Q) since initialization takes O(L) and each query does at most 9 checks in O(1) time.\n**Space Complexity:** O(L) to store the lamps in the maps and set.',
         examples: [
             {
-                title: "Example 1",
-                input: "5 1 1\n0 0\n4 4",
-                output: "1",
-                explanation: "Lamp is at (0, 0). Query is at (4, 4). Since 4 - 4 == 0 - 0, they are on the same diagonal. It is illuminated, outputting 1."
+                title: 'Example 1',
+                input: '5 1 1\n0 0\n4 4',
+                output: '1',
+                explanation:
+                    'Lamp is at (0, 0). Query is at (4, 4). Since 4 - 4 == 0 - 0, they are on the same diagonal. It is illuminated, outputting 1.',
             },
             {
-                title: "Example 2",
-                input: "6 2 2\n0 0\n4 4\n1 1\n1 2",
-                output: "1 0",
-                explanation: "Query 1 at (1, 1) is illuminated by both lamps. Output 1. The lamp at (0, 0) is adjacent to (1, 1), so it is turned off. Query 2 at (1, 2) is no longer illuminated by any lamps. Output 0."
-            }
+                title: 'Example 2',
+                input: '6 2 2\n0 0\n4 4\n1 1\n1 2',
+                output: '1 0',
+                explanation:
+                    'Query 1 at (1, 1) is illuminated by both lamps. Output 1. The lamp at (0, 0) is adjacent to (1, 1), so it is turned off. Query 2 at (1, 2) is no longer illuminated by any lamps. Output 0.',
+            },
         ],
         testcases: [
-            { input: "5 1 1\n0 0\n4 4", output: "1" },
-            { input: "5 1 1\n0 0\n1 2", output: "0" },
-            { input: "6 2 2\n0 0\n4 4\n1 1\n1 2", output: "1 0" },
-            { input: "5 2 2\n0 0\n0 4\n0 4\n0 1", output: "1 1" },
-            { input: "10 3 3\n0 0\n4 4\n8 8\n2 2\n4 4\n8 8", output: "1 1 1" },
-            { input: "10 2 1\n1 1\n1 1\n1 1", output: "1" },
-            { input: "10 2 2\n3 4\n4 3\n3 3\n4 4", output: "1 0" },
-            { input: "8 2 2\n2 2\n5 5\n3 3\n3 3", output: "1 1" },
-            { input: "5 2 2\n0 0\n4 4\n0 4\n4 0", output: "1 1" },
-            { input: "100 1 3\n50 50\n0 0\n50 50\n99 99", output: "1 1 0" }
+            { input: '5 1 1\n0 0\n4 4', output: '1' },
+            { input: '5 1 1\n0 0\n1 2', output: '0' },
+            { input: '6 2 2\n0 0\n4 4\n1 1\n1 2', output: '1 0' },
+            { input: '5 2 2\n0 0\n0 4\n0 4\n0 1', output: '1 1' },
+            { input: '10 3 3\n0 0\n4 4\n8 8\n2 2\n4 4\n8 8', output: '1 1 1' },
+            { input: '10 2 1\n1 1\n1 1\n1 1', output: '1' },
+            { input: '10 2 2\n3 4\n4 3\n3 3\n4 4', output: '1 0' },
+            { input: '8 2 2\n2 2\n5 5\n3 3\n3 3', output: '1 1' },
+            { input: '5 2 2\n0 0\n4 4\n0 4\n4 0', output: '1 1' },
+            { input: '100 1 3\n50 50\n0 0\n50 50\n99 99', output: '1 1 0' },
         ],
         codesnippets: {
             cpp: `#include <bits/stdc++.h>
@@ -3301,7 +3382,7 @@ public class Main {
 fn main() {
     let stdin = io::stdin();
     // Read input and solve
-}`
+}`,
         },
         referneceSolution: {
             cpp: `#include <bits/stdc++.h>
@@ -3553,7 +3634,1001 @@ fn main() {
         }
         println!("{}", res.join(" "));
     }
-}`
+}`,
+        },
+    },
+
+    // ==================== EASY #6: Unique Number of Occurrences ====================
+    {
+        title: 'Unique Number of Occurrences',
+        description:
+            'Given an array of integers `arr`, return `true` if the number of occurrences of each value in the array is unique or `false` otherwise.\n\n**Input Format:**\n- First line: integer `n` (the size of the array)\n- Second line: `n` space-separated integers\n\n**Output Format:**\n- Print "true" if the number of occurrences of each value is unique, and "false" otherwise.',
+        difficulty: 'EASY',
+        tags: ['hash-map', 'hash-set', 'counting'],
+        constraints: '1 <= n <= 1000\n-1000 <= arr[i] <= 1000',
+        hints: 'First, count the occurrences of each number using a hash map. Then, insert all these occurrences into a hash set. If the size of the set is equal to the size of the map, it means all frequencies are unique.',
+        editorial:
+            '**Approach: Frequency Map and Set**\n\nWe first traverse the array and construct a frequency map (or Hash Map) to count the number of occurrences of each element.\nNext, we extract all values (frequencies) from the map and insert them into a Hash Set. Since a Hash Set only stores unique elements, we can compare the size of the Hash Set to the size of the Hash Map. If their sizes are equal, every element has a unique frequency. Otherwise, some elements have the same frequency, so we return `false`.\n\n**Time Complexity:** O(N) where N is the length of `arr`, as map operations and set insertions take O(1) on average.\n**Space Complexity:** O(N) to store the elements in the map and their frequencies in the set.',
+        examples: [
+            {
+                title: 'Example 1',
+                input: '6\n1 2 2 1 1 3',
+                output: 'true',
+                explanation:
+                    'The value 1 has 3 occurrences, 2 has 2, and 3 has 1. No two values have the same number of occurrences.',
+            },
+            {
+                title: 'Example 2',
+                input: '2\n1 2',
+                output: 'false',
+                explanation: 'Both 1 and 2 occur 1 time. The count of occurrences is not unique.',
+            },
+        ],
+        testcases: [
+            { input: '6\n1 2 2 1 1 3', output: 'true' },
+            { input: '2\n1 2', output: 'false' },
+            { input: '10\n-3 0 1 -3 1 1 1 -3 10 0', output: 'true' },
+            { input: '1\n5', output: 'true' },
+            { input: '4\n1 1 2 2', output: 'false' },
+            { input: '8\n2 3 3 4 4 4 5 5', output: 'false' },
+            { input: '9\n10 20 20 30 30 30 40 40 40', output: 'false' },
+            { input: '6\n-1 -1 -1 -2 -2 -3', output: 'true' },
+            { input: '5\n10 10 10 10 10', output: 'true' },
+            { input: '10\n1 2 3 4 5 6 7 8 9 10', output: 'false' },
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read input and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read input and solve
+    pass
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read input and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read input and solve
+}`,
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (!(cin >> n)) return 0;
+    unordered_map<int, int> counts;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        counts[x]++;
+    }
+    unordered_set<int> occurrences;
+    bool unique = true;
+    for (auto const& [val, count] : counts) {
+        if (occurrences.count(count)) {
+            unique = false;
+            break;
+        }
+        occurrences.insert(count);
+    }
+    cout << (unique ? "true" : "false") << "\n";
+    return 0;
+}`,
+            python: `import sys
+
+def main():
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    n = int(input_data[0])
+    arr = [int(x) for x in input_data[1:n+1]]
+    counts = {}
+    for x in arr:
+        counts[x] = counts.get(x, 0) + 1
+    occurrences = set()
+    unique = True
+    for count in counts.values():
+        if count in occurrences:
+            unique = False
+            break
+        occurrences.add(count)
+    print("true" if unique else "false")
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        int n = Integer.parseInt(line.trim());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int x = Integer.parseInt(st.nextToken());
+            counts.put(x, counts.getOrDefault(x, 0) + 1);
+        }
+        Set<Integer> occurrences = new HashSet<>();
+        boolean unique = true;
+        for (int count : counts.values()) {
+            if (occurrences.contains(count)) {
+                unique = false;
+                break;
+            }
+            occurrences.add(count);
+        }
+        System.out.println(unique ? "true" : "false");
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+use std::collections::{HashMap, HashSet};
+
+fn main() {
+    let stdin = io::stdin();
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(n_str)) = lines.next() {
+        let n: usize = n_str.trim().parse().unwrap();
+        if let Some(Ok(arr_str)) = lines.next() {
+            let arr: Vec<i32> = arr_str.split_whitespace()
+                .map(|x| x.parse().unwrap()).collect();
+            let mut counts = HashMap::new();
+            for &x in &arr {
+                *counts.entry(x).or_insert(0) += 1;
+            }
+            let mut occurrences = HashSet::new();
+            let mut unique = true;
+            for &count in counts.values() {
+                if !occurrences.insert(count) {
+                    unique = false;
+                    break;
+                }
+            }
+            if unique {
+                println!("true");
+            } else {
+                println!("false");
+            }
         }
     }
+}`,
+        },
+    },
+
+    // ==================== EASY #7: First Unique Character ====================
+    {
+        title: 'First Unique Character',
+        description:
+            'Given a string `s`, find the first non-repeating character in it and print its index. If it does not exist, print -1.\n\n**Input Format:**\n- A single line containing the string `s`.\n\n**Output Format:**\n- Print the 0-based index of the first non-repeating character, or -1 if none exists.',
+        difficulty: 'EASY',
+        tags: ['hash-map', 'frequency'],
+        constraints: '1 <= s.length <= 10^5\ns consists of lowercase English letters.',
+        hints: 'Use a hash map or an array of size 26 to count the frequency of each character. Then iterate through the string a second time and return the index of the first character with a count of 1.',
+        editorial:
+            '**Approach: Two-pass Frequency Count**\n\nWe count the occurrences of each character in the string. Since the alphabet is lowercase English letters, we can use a frequency array of size 26 or a hash map. In the first pass, we populate the frequency table. In the second pass, we scan the string from left to right, checking the frequency of each character. The first character that has a frequency of 1 is the first non-repeating character, and we print its index. If we scan the entire string and find no such character, we print -1.\n\n**Time Complexity:** O(N) where N is the length of `s`, as we do two linear scans.\n**Space Complexity:** O(1) because the size of the alphabet is constant (26).',
+        examples: [
+            {
+                title: 'Example 1',
+                input: 'leetcode',
+                output: '0',
+                explanation: "The character 'l' is the first unique character, located at index 0.",
+            },
+            {
+                title: 'Example 2',
+                input: 'loveleetcode',
+                output: '2',
+                explanation: "The character 'v' is the first unique character, located at index 2.",
+            },
+        ],
+        testcases: [
+            { input: 'leetcode', output: '0' },
+            { input: 'loveleetcode', output: '2' },
+            { input: 'aabb', output: '-1' },
+            { input: 'a', output: '0' },
+            { input: 'abacaba', output: '3' },
+            { input: 'abcdefg', output: '0' },
+            { input: 'aabbccddeeffg', output: '12' },
+            { input: 'hheelllloowwoorrlldd', output: '-1' },
+            { input: 'xyzxy', output: '2' },
+            { input: 'repetition', output: '0' },
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read input and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read input and solve
+    pass
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read input and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read input and solve
+}`,
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    string s;
+    if (!(cin >> s)) return 0;
+    vector<int> counts(26, 0);
+    for (char c : s) {
+        counts[c - 'a']++;
+    }
+    int ans = -1;
+    for (int i = 0; i < s.length(); i++) {
+        if (counts[s[i] - 'a'] == 1) {
+            ans = i;
+            break;
+        }
+    }
+    cout << ans << "\n";
+    return 0;
+}`,
+            python: `import sys
+
+def main():
+    lines = sys.stdin.read().split()
+    if not lines:
+        return
+    s = lines[0]
+    counts = {}
+    for c in s:
+        counts[c] = counts.get(c, 0) + 1
+    ans = -1
+    for i, c in enumerate(s):
+        if counts[c] == 1:
+            ans = i
+            break
+    print(ans)
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String s = br.readLine();
+        if (s == null) return;
+        s = s.trim();
+        int[] counts = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            counts[s.charAt(i) - 'a']++;
+        }
+        int ans = -1;
+        for (int i = 0; i < s.length(); i++) {
+            if (counts[s.charAt(i) - 'a'] == 1) {
+                ans = i;
+                break;
+            }
+        }
+        System.out.println(ans);
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(line)) = lines.next() {
+        let s = line.trim();
+        let mut counts = vec![0; 26];
+        for b in s.bytes() {
+            counts[(b - b'a') as usize] += 1;
+        }
+        let mut ans = -1;
+        for (i, b) in s.bytes().enumerate() {
+            if counts[(b - b'a') as usize] == 1 {
+                ans = i as i32;
+                break;
+            }
+        }
+        println!("{}", ans);
+    }
+}`,
+        },
+    },
+
+    // ==================== MEDIUM #6: Max Length Equal Subarray ====================
+    {
+        title: 'Max Length Equal Subarray',
+        description:
+            'Given a binary array `nums` (containing only 0 and 1), find the maximum length of a contiguous subarray with an equal number of 0 and 1.\n\n**Input Format:**\n- First line: integer `n` (the size of the array)\n- Second line: `n` space-separated integers (either 0 or 1)\n\n**Output Format:**\n- Print the maximum length of such a contiguous subarray.',
+        difficulty: 'MEDIUM',
+        tags: ['hash-map', 'prefix-sum'],
+        constraints: '1 <= n <= 10^5\nnums[i] is either 0 or 1.',
+        hints: 'Change 0s in the array to -1s. The problem then reduces to finding the maximum length subarray with a sum of 0. You can solve this by storing the first occurrence of prefix sums in a hash map.',
+        editorial:
+            '**Approach: Prefix Sum and Hash Map**\n\nIf we treat 0 as -1, the problem becomes finding the longest subarray with sum 0.\nWe compute the prefix sums of this modified array. If a prefix sum value repeats at index `i` and index `j` (where `i > j`), it means the elements between `j + 1` and `i` sum up to 0 (meaning equal number of 0s and 1s).\nTo maximize this length, we store the first index where each prefix sum is encountered in a Hash Map. If we see the prefix sum again, we calculate the difference between the current index and the stored first index. The maximum of these differences is our answer.\nWe initialize our map with `0 -> -1` to handle subarrays starting from index 0.\n\n**Time Complexity:** O(N) as we traverse the array of size N once.\n**Space Complexity:** O(N) to store prefix sums in the map in the worst case.',
+        examples: [
+            {
+                title: 'Example 1',
+                input: '2\n0 1',
+                output: '2',
+                explanation:
+                    '[0, 1] is the longest contiguous subarray with an equal number of 0 and 1.',
+            },
+            {
+                title: 'Example 2',
+                input: '3\n0 1 0',
+                output: '2',
+                explanation:
+                    '[0, 1] or [1, 0] is a contiguous subarray with equal 0 and 1. The maximum length is 2.',
+            },
+        ],
+        testcases: [
+            { input: '2\n0 1', output: '2' },
+            { input: '3\n0 1 0', output: '2' },
+            { input: '7\n0 1 0 0 1 1 0', output: '6' },
+            { input: '4\n1 1 1 1', output: '0' },
+            { input: '1\n0', output: '0' },
+            { input: '10\n0 0 1 0 0 0 1 1 1 0', output: '8' },
+            { input: '8\n0 1 1 1 0 0 1 0', output: '8' },
+            { input: '6\n0 0 0 1 1 1', output: '6' },
+            { input: '6\n1 1 0 0 1 1', output: '4' },
+            { input: '12\n0 1 0 1 0 1 0 1 0 1 0 1', output: '12' },
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read input and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read input and solve
+    pass
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read input and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read input and solve
+}`,
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (!(cin >> n)) return 0;
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++) cin >> nums[i];
+    unordered_map<int, int> m;
+    m[0] = -1;
+    int max_len = 0;
+    int curr_sum = 0;
+    for (int i = 0; i < n; i++) {
+        curr_sum += (nums[i] == 1 ? 1 : -1);
+        if (m.count(curr_sum)) {
+            max_len = max(max_len, i - m[curr_sum]);
+        } else {
+            m[curr_sum] = i;
+        }
+    }
+    cout << max_len << "\n";
+    return 0;
+}`,
+            python: `import sys
+
+def main():
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    n = int(input_data[0])
+    nums = [int(x) for x in input_data[1:n+1]]
+    m = {0: -1}
+    max_len = 0
+    curr_sum = 0
+    for i, num in enumerate(nums):
+        curr_sum += 1 if num == 1 else -1
+        if curr_sum in m:
+            max_len = max(max_len, i - m[curr_sum])
+        else:
+            m[curr_sum] = i
+    print(max_len)
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        int n = Integer.parseInt(line.trim());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = Integer.parseInt(st.nextToken());
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        int maxLen = 0;
+        int currSum = 0;
+        for (int i = 0; i < n; i++) {
+            currSum += (nums[i] == 1 ? 1 : -1);
+            if (map.containsKey(currSum)) {
+                maxLen = Math.max(maxLen, i - map.get(currSum));
+            } else {
+                map.put(currSum, i);
+            }
+        }
+        System.out.println(maxLen);
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+use std::collections::HashMap;
+
+fn main() {
+    let stdin = io::stdin();
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(n_str)) = lines.next() {
+        let n: usize = n_str.trim().parse().unwrap();
+        if let Some(Ok(nums_str)) = lines.next() {
+            let nums: Vec<i32> = nums_str.split_whitespace()
+                .map(|x| x.parse().unwrap()).collect();
+            let mut map = HashMap::new();
+            map.insert(0, -1);
+            let mut max_len = 0;
+            let mut curr_sum = 0;
+            for i in 0..n {
+                curr_sum += if nums[i] == 1 { 1 } else { -1 };
+                if let Some(&prev_idx) = map.get(&curr_sum) {
+                    let len = i as i32 - prev_idx;
+                    if len > max_len {
+                        max_len = len;
+                    }
+                } else {
+                    map.insert(curr_sum, i as i32);
+                }
+            }
+            println!("{}", max_len);
+        }
+    }
+}`,
+        },
+    },
+
+    // ==================== MEDIUM #7: Subarray Sums Divisible by K ====================
+    {
+        title: 'Subarray Sums Divisible by K',
+        description:
+            'Given an integer array `nums` and an integer `k`, return the number of non-empty subarrays that have a sum divisible by `k`.\n\n**Input Format:**\n- First line: integer `n` (the size of the array)\n- Second line: `n` space-separated integers\n- Third line: integer `k`\n\n**Output Format:**\n- Print the number of subarrays whose sum is divisible by `k`.',
+        difficulty: 'MEDIUM',
+        tags: ['hash-map', 'prefix-sum'],
+        constraints: '1 <= n <= 30000\n-10000 <= nums[i] <= 10000\n2 <= k <= 10000',
+        hints: 'Store frequencies of prefix sums modulo k. Remember that modulo operations in languages like C++, Java, and Rust can yield negative numbers, so you need to adjust negative remainders by adding k.',
+        editorial:
+            '**Approach: Modulo Prefix Sum Frequency Map**\n\nWe track the running sum of the array, `curr_sum`. For any subarray `nums[i..j]` to have a sum divisible by `k`, the condition `(prefixSum[j] - prefixSum[i-1]) % k == 0` must hold. This is equivalent to `prefixSum[j] % k == prefixSum[i-1] % k`.\nThus, we can keep track of the occurrences of each remainder when the prefix sums are divided by `k`.\nAt each index, we compute `rem = curr_sum % k`. In C++, Java, and Rust, `curr_sum % k` can be negative. We normalize it to a positive value in `[0, k-1]` using `((curr_sum % k) + k) % k`.\nWe add the current frequency of `rem` to our result and then increment its count in our map. We initialize the map with `0 -> 1` to represent a prefix sum of 0 having been seen once.\n\n**Time Complexity:** O(N) since we perform a single pass through the array of size N.\n**Space Complexity:** O(min(N, K)) to store the frequencies of the remainders in the hash map.',
+        examples: [
+            {
+                title: 'Example 1',
+                input: '6\n4 5 0 -2 -3 1\n5',
+                output: '7',
+                explanation:
+                    'There are 7 subarrays with a sum divisible by k = 5:\n[4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2, -3], [-2, -3]',
+            },
+            {
+                title: 'Example 2',
+                input: '1\n5\n9',
+                output: '0',
+                explanation: 'The only subarray is [5], whose sum 5 is not divisible by 9.',
+            },
+        ],
+        testcases: [
+            { input: '6\n4 5 0 -2 -3 1\n5', output: '7' },
+            { input: '1\n5\n9', output: '0' },
+            { input: '5\n-1 2 9 4 0\n2', output: '7' },
+            { input: '3\n1 2 3\n3', output: '3' },
+            { input: '5\n-1 -1 -1 -1 -1\n5', output: '1' },
+            { input: '8\n1 1 1 1 1 1 1 1\n2', output: '16' },
+            { input: '4\n1 2 3 4\n5', output: '2' },
+            { input: '7\n1 -2 3 -4 5 -6 7\n1', output: '28' },
+            { input: '10\n10 20 30 40 50 60 70 80 90 100\n7', output: '10' },
+            { input: '12\n0 0 0 0 0 0 0 0 0 0 0 0\n13', output: '78' },
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read input and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read input and solve
+    pass
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read input and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read input and solve
+}`,
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (!(cin >> n)) return 0;
+    vector<long long> nums(n);
+    for (int i = 0; i < n; i++) cin >> nums[i];
+    long long k;
+    cin >> k;
+    unordered_map<long long, long long> counts;
+    counts[0] = 1;
+    long long curr_sum = 0;
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+        curr_sum += nums[i];
+        long long rem = ((curr_sum % k) + k) % k;
+        ans += counts[rem];
+        counts[rem]++;
+    }
+    cout << ans << "\n";
+    return 0;
+}`,
+            python: `import sys
+
+def main():
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    n = int(input_data[0])
+    nums = [int(x) for x in input_data[1:n+1]]
+    k = int(input_data[n+1])
+    counts = {0: 1}
+    curr_sum = 0
+    ans = 0
+    for num in nums:
+        curr_sum += num
+        rem = curr_sum % k
+        if rem in counts:
+            ans += counts[rem]
+            counts[rem] += 1
+        else:
+            counts[rem] = 1
+    print(ans)
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        int n = Integer.parseInt(line.trim());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        long[] nums = new long[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = Long.parseLong(st.nextToken());
+        }
+        long k = Long.parseLong(br.readLine().trim());
+        Map<Long, Long> counts = new HashMap<>();
+        counts.put(0L, 1L);
+        long currSum = 0;
+        long ans = 0;
+        for (int i = 0; i < n; i++) {
+            currSum += nums[i];
+            long rem = ((currSum % k) + k) % k;
+            ans += counts.getOrDefault(rem, 0L);
+            counts.put(rem, counts.getOrDefault(rem, 0L) + 1);
+        }
+        System.out.println(ans);
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+use std::collections::HashMap;
+
+fn main() {
+    let stdin = io::stdin();
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(n_str)) = lines.next() {
+        let n: usize = n_str.trim().parse().unwrap();
+        if let Some(Ok(nums_str)) = lines.next() {
+            let nums: Vec<i64> = nums_str.split_whitespace()
+                .map(|x| x.parse().unwrap()).collect();
+            if let Some(Ok(k_str)) = lines.next() {
+                let k: i64 = k_str.trim().parse().unwrap();
+                let mut counts = HashMap::new();
+                counts.insert(0, 1);
+                let mut curr_sum = 0;
+                let mut ans = 0;
+                for i in 0..n {
+                    curr_sum += nums[i];
+                    let mut rem = curr_sum % k;
+                    if rem < 0 {
+                        rem += k;
+                    }
+                    if let Some(&cnt) = counts.get(&rem) {
+                        ans += cnt;
+                        *counts.get_mut(&rem).unwrap() += 1;
+                    } else {
+                        counts.insert(rem, 1);
+                    }
+                }
+                println!("{}", ans);
+            }
+        }
+    }
+}`,
+        },
+    },
+
+    // ==================== HARD #6: Max Points on a Line ====================
+    {
+        title: 'Max Points on a Line',
+        description:
+            'Given an array of 2D points on a plane, find the maximum number of points that lie on the same straight line.\n\n**Input Format:**\n- First line: integer `n` (the number of points)\n- Next `n` lines: two space-separated integers `x` and `y` representing each point.\n\n**Output Format:**\n- Print the maximum number of points on a line.',
+        difficulty: 'HARD',
+        tags: ['hash-map', 'math', 'geometry'],
+        constraints: '1 <= n <= 300\n-10^4 <= x, y <= 10^4\nAll points are unique.',
+        hints: 'For each point, calculate the slopes to all other points. Use a hash map to count the frequency of each slope. Represent the slope as a simplified fraction (numerator and denominator after dividing by their GCD) to avoid precision errors.',
+        editorial:
+            '**Approach: Slope Hash Map with GCD**\n\nFor `n <= 2`, the answer is always `n` because any two points define a line.\nFor `n > 2`, we can iterate through each point `i` and calculate the slope of the line connecting `i` to every other point `j`. The slope of the line between `(x1, y1)` and `(x2, y2)` is `(y2 - y1) / (x2 - x1)`. However, floating-point divisions can suffer from precision errors.\nTo avoid this, we can store the slope in its simplified fraction form `(dy / g, dx / g)`, where `dy = y2 - y1`, `dx = x2 - x1`, and `g = gcd(dy, dx)`.\nTo ensure that negative slopes are represented uniquely, we can normalize the signs: if `dx < 0` or (`dx == 0` and `dy < 0`), we multiply both `dx` and `dy` by -1.\nFor each point `i`, we use a Hash Map to record the count of each normalized slope. The maximum count of a slope + 1 (representing the point `i` itself) gives the maximum number of points on a line passing through `i`. We take the maximum of this value over all points.\n\n**Time Complexity:** O(N^2 * log(MAX_COORD)) where N is the number of points. We pair every point with all other points, and calculating the GCD takes logarithmic time.\n**Space Complexity:** O(N) to store the slopes in the hash map for each point.',
+        examples: [
+            {
+                title: 'Example 1',
+                input: '3\n1 1\n2 2\n3 3',
+                output: '3',
+                explanation: 'All three points lie on the line y = x.',
+            },
+            {
+                title: 'Example 2',
+                input: '6\n1 1\n3 2\n5 3\n4 1\n2 3\n1 4',
+                output: '4',
+                explanation:
+                    'The points (1, 4), (2, 3), (3, 2), and (4, 1) lie on the line y = -x + 5. The maximum number of points on a line is 4.',
+            },
+        ],
+        testcases: [
+            { input: '3\n1 1\n2 2\n3 3', output: '3' },
+            { input: '6\n1 1\n3 2\n5 3\n4 1\n2 3\n1 4', output: '4' },
+            { input: '1\n0 0', output: '1' },
+            { input: '2\n0 0\n1 1', output: '2' },
+            { input: '4\n1 1\n1 2\n1 3\n1 4', output: '4' },
+            { input: '5\n1 1\n2 1\n3 1\n4 1\n5 1', output: '5' },
+            { input: '9\n0 0\n1 1\n2 2\n3 3\n0 1\n1 2\n2 3\n0 2\n2 0', output: '4' },
+            { input: '4\n0 0\n10 10\n-5 -5\n1 2', output: '3' },
+            { input: '8\n0 0\n1 2\n2 4\n3 6\n1 1\n2 2\n3 3\n4 4', output: '5' },
+            { input: '10\n0 0\n1 3\n2 6\n3 9\n4 12\n1 1\n2 2\n3 3\n4 4\n5 5', output: '6' },
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read input and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read input and solve
+    pass
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read input and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read input and solve
+}`,
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int get_gcd(int a, int b) {
+    a = abs(a);
+    b = abs(b);
+    while (b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (!(cin >> n)) return 0;
+    vector<pair<int, int>> points(n);
+    for (int i = 0; i < n; i++) {
+        cin >> points[i].first >> points[i].second;
+    }
+    if (n <= 2) {
+        cout << n << "\n";
+        return 0;
+    }
+    int max_points = 0;
+    for (int i = 0; i < n; i++) {
+        map<pair<int, int>, int> slope_counts;
+        int local_max = 0;
+        for (int j = 0; j < n; j++) {
+            if (i == j) continue;
+            int dx = points[j].first - points[i].first;
+            int dy = points[j].second - points[i].second;
+            int g = get_gcd(dx, dy);
+            dx /= g;
+            dy /= g;
+            if (dx < 0 || (dx == 0 && dy < 0)) {
+                dx = -dx;
+                dy = -dy;
+            }
+            slope_counts[{dx, dy}]++;
+            local_max = max(local_max, slope_counts[{dx, dy}]);
+        }
+        max_points = max(max_points, local_max + 1);
+    }
+    cout << max_points << "\n";
+    return 0;
+}`,
+            python: `import sys
+import math
+
+def get_gcd(a, b):
+    return math.gcd(a, b)
+
+def main():
+    input_data = sys.stdin.read().split()
+    if not input_data:
+        return
+    n = int(input_data[0])
+    points = []
+    idx = 1
+    for _ in range(n):
+        x = int(input_data[idx])
+        y = int(input_data[idx+1])
+        points.append((x, y))
+        idx += 2
+    if n <= 2:
+        print(n)
+        return
+    max_points = 0
+    for i in range(n):
+        slope_counts = {}
+        local_max = 0
+        for j in range(n):
+            if i == j:
+                continue
+            dx = points[j][0] - points[i][0]
+            dy = points[j][1] - points[i][1]
+            g = get_gcd(dx, dy)
+            dx //= g
+            dy //= g
+            if dx < 0 or (dx == 0 and dy < 0):
+                dx = -dx
+                dy = -dy
+            slope_counts[(dx, dy)] = slope_counts.get((dx, dy), 0) + 1
+            if slope_counts[(dx, dy)] > local_max:
+                local_max = slope_counts[(dx, dy)]
+        if local_max + 1 > max_points:
+            max_points = local_max + 1
+    print(max_points)
+
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    private static int getGcd(int a, int b) {
+        a = Math.abs(a);
+        b = Math.abs(b);
+        while (b > 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+    
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        int n = Integer.parseInt(line.trim());
+        int[] x = new int[n];
+        int[] y = new int[n];
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            x[i] = Integer.parseInt(st.nextToken());
+            y[i] = Integer.parseInt(st.nextToken());
+        }
+        if (n <= 2) {
+            System.out.println(n);
+            return;
+        }
+        int maxPoints = 0;
+        for (int i = 0; i < n; i++) {
+            Map<String, Integer> slopeCounts = new HashMap<>();
+            int localMax = 0;
+            for (int j = 0; j < n; j++) {
+                if (i == j) continue;
+                int dx = x[j] - x[i];
+                int dy = y[j] - y[i];
+                int g = getGcd(dx, dy);
+                dx /= g;
+                dy /= g;
+                if (dx < 0 || (dx == 0 && dy < 0)) {
+                    dx = -dx;
+                    dy = -dy;
+                }
+                String key = dx + "_" + dy;
+                slopeCounts.put(key, slopeCounts.getOrDefault(key, 0) + 1);
+                localMax = Math.max(localMax, slopeCounts.get(key));
+            }
+            maxPoints = Math.max(maxPoints, localMax + 1);
+        }
+        System.out.println(maxPoints);
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+use std::collections::HashMap;
+
+fn get_gcd(mut a: i32, mut b: i32) -> i32 {
+    a = a.abs();
+    b = b.abs();
+    while b > 0 {
+        let temp = b;
+        b = a % b;
+        a = temp;
+    }
+    a
+}
+
+fn main() {
+    let stdin = io::stdin();
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(n_str)) = lines.next() {
+        let n: usize = n_str.trim().parse().unwrap();
+        let mut x = Vec::with_capacity(n);
+        let mut y = Vec::with_capacity(n);
+        for _ in 0..n {
+            if let Some(Ok(line)) = lines.next() {
+                let parts: Vec<&str> = line.split_whitespace().collect();
+                x.push(parts[0].parse::<i32>().unwrap());
+                y.push(parts[1].parse::<i32>().unwrap());
+            }
+        }
+        if n <= 2 {
+            println!("{}", n);
+            return;
+        }
+        let mut max_points = 0;
+        for i in 0..n {
+            let mut slope_counts = HashMap::new();
+            let mut local_max = 0;
+            for j in 0..n {
+                if i == j {
+                    continue;
+                }
+                let mut dx = x[j] - x[i];
+                let mut dy = y[j] - y[i];
+                let g = get_gcd(dx, dy);
+                dx /= g;
+                dy /= g;
+                if dx < 0 || (dx == 0 && dy < 0) {
+                    dx = -dx;
+                    dy = -dy;
+                }
+                let count = slope_counts.entry((dx, dy)).or_insert(0);
+                *count += 1;
+                if *count > local_max {
+                    local_max = *count;
+                }
+            }
+            if local_max + 1 > max_points {
+                max_points = local_max + 1;
+            }
+        }
+        println!("{}", max_points);
+    }
+}`,
+        },
+    },
 ]

@@ -65,11 +65,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const optionalAuthMiddleware = async (
-    req: Request,
-    _res: Response,
-    next: NextFunction
-) => {
+export const optionalAuthMiddleware = async (req: Request, _res: Response, next: NextFunction) => {
     const token = req.cookies?.jwt as string | undefined
 
     if (!token) {

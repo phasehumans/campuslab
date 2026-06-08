@@ -33,7 +33,11 @@ export const upsertProblemSolved = async (userId: string, problemId: string) => 
     })
 }
 
-export const handleContestSubmission = async (contestCode: string, userId: string, problemId: string) => {
+export const handleContestSubmission = async (
+    contestCode: string,
+    userId: string,
+    problemId: string
+) => {
     try {
         await recordContestProblemSolved(contestCode, userId, problemId)
     } catch {

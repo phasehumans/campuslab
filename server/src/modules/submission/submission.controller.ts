@@ -87,7 +87,9 @@ export const submitCode = async (req: Request, res: Response) => {
             }
         }
 
-        const submissionWithTestcases = await submissionService.getSubmissionWithTestcases(submission.id)
+        const submissionWithTestcases = await submissionService.getSubmissionWithTestcases(
+            submission.id
+        )
 
         return res.status(201).json({
             success: true,
@@ -128,7 +130,10 @@ export const getAllSubmissions = async (req: Request, res: Response) => {
                 id: submission.id,
                 problemId: submission.problemId,
                 title: submission.problem.title,
-                difficulty: difficultyLabels[submission.problem.difficulty as keyof typeof difficultyLabels],
+                difficulty:
+                    difficultyLabels[
+                        submission.problem.difficulty as keyof typeof difficultyLabels
+                    ],
                 status: submission.status,
                 language: submission.language,
                 createdAt: submission.createdAt,
@@ -155,7 +160,10 @@ export const getSubmissionsById = async (req: Request, res: Response) => {
     }
 
     try {
-        const submissions = await submissionService.getSubmissionsByProblemAndUser(problemId, userId)
+        const submissions = await submissionService.getSubmissionsByProblemAndUser(
+            problemId,
+            userId
+        )
 
         return res.status(200).json({
             success: true,

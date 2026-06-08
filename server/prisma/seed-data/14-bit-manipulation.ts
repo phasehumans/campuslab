@@ -119,7 +119,9 @@ fn main() {
     writeln!(out, "{}", result).unwrap();
 }`
         }
-    },\n\n// ==================== EASY #2: Number of 1 Bits ====================
+    },
+
+// ==================== EASY #2: Number of 1 Bits ====================
     {
         title: "Number of 1 Bits",
         description: "Given a non-negative integer n, count the number of 1-bits (set bits) in its binary representation. This is also known as the Hamming weight.\n\n**Input Format:**\n- A single line containing a non-negative integer n\n\n**Output Format:**\n- A single integer: the number of set bits in n",
@@ -218,7 +220,9 @@ fn main() {
     writeln!(out, "{}", n.count_ones()).unwrap();
 }`
         }
-    },\n\n// ==================== EASY #3: Power of Two ====================
+    },
+
+// ==================== EASY #3: Power of Two ====================
     {
         title: "Power of Two",
         description: "Given a positive integer n, determine if it is a power of two.\n\nA power of two is a number of the form 2^k where k >= 0.\n\n**Input Format:**\n- A single line containing a positive integer n\n\n**Output Format:**\n- Print \"true\" if n is a power of two, \"false\" otherwise",
@@ -317,7 +321,9 @@ fn main() {
     }
 }`
         }
-    },\n\n// ==================== EASY #4: Reverse Bits ====================
+    },
+
+// ==================== EASY #4: Reverse Bits ====================
     {
         title: "Reverse Bits",
         description: "Given a 32-bit unsigned integer, reverse its bits and print the resulting number.\n\nFor example, the 32-bit representation of 13 is 00000000000000000000000000001101. Reversing it gives 10110000000000000000000000000000, which is 2952790016.\n\n**Input Format:**\n- A single line containing a non-negative integer n (fits in 32-bit unsigned)\n\n**Output Format:**\n- The integer obtained after reversing all 32 bits of n",
@@ -430,7 +436,9 @@ fn main() {
     writeln!(out, "{}", result).unwrap();
 }`
         }
-    },\n\n// ==================== MEDIUM #1: Subsets Using Bits ====================
+    },
+
+// ==================== MEDIUM #1: Subsets Using Bits ====================
     {
         title: "Subsets Using Bits",
         description: "Given an array of n distinct integers, generate all possible subsets (the power set) using bit manipulation. Print each subset on a separate line with elements space-separated. Print subsets in the order of their bitmask (0, 1, 2, ..., 2^n - 1). For the empty subset, print an empty line.\n\n**Input Format:**\n- First line: integer n\n- Second line: n space-separated integers\n\n**Output Format:**\n- 2^n lines, each containing the elements of one subset. The i-th line corresponds to bitmask i (0-indexed).",
@@ -568,7 +576,9 @@ fn main() {
     }
 }`
         }
-    },\n\n// ==================== MEDIUM #2: Bitwise AND Range ====================
+    },
+
+// ==================== MEDIUM #2: Bitwise AND Range ====================
     {
         title: "Bitwise AND Range",
         description: "Given two integers left and right (left <= right), find the bitwise AND of all numbers in the range [left, right] inclusive.\n\n**Input Format:**\n- A single line containing two space-separated integers left and right\n\n**Output Format:**\n- The bitwise AND of all numbers from left to right",
@@ -692,7 +702,9 @@ fn main() {
     writeln!(out, "{}", left << shift).unwrap();
 }`
         }
-    },\n\n// ==================== MEDIUM #3: Maximum XOR ====================
+    },
+
+// ==================== MEDIUM #3: Maximum XOR ====================
     {
         title: "Maximum XOR of Two Numbers",
         description: "Given an array of non-negative integers, find the maximum XOR of any two elements in the array.\n\n**Input Format:**\n- First line: integer n (size of array)\n- Second line: n space-separated non-negative integers\n\n**Output Format:**\n- The maximum XOR value",
@@ -847,7 +859,9 @@ fn main() {
     writeln!(out, "{}", max_xor).unwrap();
 }`
         }
-    },\n\n// ==================== HARD #1: Maximum XOR Two Numbers (Advanced) ====================
+    },
+
+// ==================== HARD #1: Maximum XOR Two Numbers (Advanced) ====================
     {
         title: "Maximum XOR Two Numbers Advanced",
         description: "Given an array of n non-negative integers, find the maximum XOR of any two elements. This is the hard version with larger constraints.\n\n**Input Format:**\n- First line: integer n\n- Second line: n space-separated non-negative integers\n\n**Output Format:**\n- The maximum XOR value\n\nYou must solve this efficiently using a trie-based approach.",
@@ -1043,7 +1057,9 @@ fn main() {
     writeln!(out, "{}", max_xor).unwrap();
 }`
         }
-    },\n\n// ==================== HARD #2: Minimum Flips ====================
+    },
+
+// ==================== HARD #2: Minimum Flips ====================
     {
         title: "Minimum Bit Flips for AND OR XOR",
         description: "Given three integers a, b, and c, find the minimum number of bit flips in a and b such that (a OR b) equals c.\n\nA bit flip changes a 0 to 1 or a 1 to 0 in the binary representation.\n\n**Input Format:**\n- A single line containing three space-separated non-negative integers a, b, c\n\n**Output Format:**\n- The minimum number of bit flips needed",
@@ -1188,7 +1204,9 @@ fn main() {
     writeln!(out, "{}", flips).unwrap();
 }`
         }
-    },\n\n    // ==================== HARD #3: Number of Steps to Reduce to Zero ====================
+    },
+
+    // ==================== HARD #3: Number of Steps to Reduce to Zero ====================
     {
         title: "Number of Steps to Reduce to Zero",
         description: "Given a binary string s representing a non-negative integer, return the number of steps required to reduce it to zero.\n\nAt each step, you can perform one of the following operations:\n1. If the current number is even, you must divide it by 2.\n2. If the current number is odd, you must subtract 1 from it.\n\nThe input string may contain leading zeros, which should be ignored when determining the number of steps. If the value is 0, the answer is 0.",
@@ -1349,4 +1367,782 @@ fn main() {
     }
 }`
         }
-    }\n]\n
+    },
+
+// ==================== EASY #5: Hamming Distance ====================
+    {
+        title: "Hamming Distance",
+        description: "Given two non-negative integers x and y, calculate their Hamming distance. The Hamming distance between two integers is the number of positions at which the corresponding bits are different.\n\n**Input Format:**\n- A single line containing two space-separated integers x and y.\n\n**Output Format:**\n- An integer representing the Hamming distance.",
+        difficulty: "EASY",
+        tags: ["bit-manipulation", "xor"],
+        constraints: "0 <= x, y <= 2^31 - 1",
+        hints: "The Hamming distance is the number of set bits in the XOR of x and y. You can use x ^ y and then count its set bits.",
+        editorial: "**Approach: Bitwise XOR**\n\nThe Hamming distance counts the number of positions where the binary representations of x and y differ. We can compute the bitwise XOR of x and y: `val = x ^ y`. The set bits in `val` represent the positions where x and y differ. We then count the number of set bits in `val` using standard set bit counting techniques (like Brian Kernighan's algorithm).\n\n**Time Complexity:** O(log(max(x, y))) or O(1) as integers are 32-bit.\n**Space Complexity:** O(1).",
+        examples: [
+            { title: "Example 1", input: "1 4", output: "2", explanation: "1 (0001) ^ 4 (0100) = 5 (0101) which has 2 set bits." },
+            { title: "Example 2", input: "3 3", output: "0", explanation: "3 (0011) ^ 3 (0011) = 0 (0000) which has 0 set bits." }
+        ],
+        testcases: [
+            { input: "1 4", output: "2" },
+            { input: "3 3", output: "0" },
+            { input: "0 0", output: "0" },
+            { input: "0 1", output: "1" },
+            { input: "2147483647 0", output: "31" },
+            { input: "93 73", output: "2" },
+            { input: "100 200", output: "4" },
+            { input: "1073741824 1073741823", output: "31" },
+            { input: "12345 54321", output: "5" },
+            { input: "1000000 0", output: "7" }
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read two integers and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read two integers and solve
+    pass
+
+if __name__ == "__main__":
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read two integers and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read two integers and solve
+}`
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    long long x, y;
+    if (cin >> x >> y) {
+        long long val = x ^ y;
+        int count = 0;
+        while (val > 0) {
+            val &= (val - 1);
+            count++;
+        }
+        cout << count << "\\n";
+    }
+    return 0;
+}`,
+            python: `import sys
+def main():
+    input = sys.stdin.read
+    data = input().split()
+    if len(data) >= 2:
+        x = int(data[0])
+        y = int(data[1])
+        print(bin(x ^ y).count('1'))
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        StringTokenizer st = new StringTokenizer(line);
+        if (st.hasMoreTokens()) {
+            long x = Long.parseLong(st.nextToken());
+            long y = Long.parseLong(st.nextToken());
+            System.out.println(Long.bitCount(x ^ y));
+        }
+    }
+}`,
+            rust: `use std::io::{self, BufRead, Write, BufWriter};
+fn main() {
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut out = BufWriter::new(stdout.lock());
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(line)) = lines.next() {
+        let parts: Vec<u64> = line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+        if parts.len() >= 2 {
+            let x = parts[0];
+            let y = parts[1];
+            writeln!(out, "{}", (x ^ y).count_ones()).unwrap();
+        }
+    }
+}`
+        }
+    },
+
+// ==================== EASY #6: Missing Number ====================
+    {
+        title: "Missing Number",
+        description: "Given an array containing n distinct numbers in the range `[0, n]`, return the only number in the range that is missing from the array.\n\nYou must implement a solution with O(n) time complexity and O(1) space complexity.\n\n**Input Format:**\n- First line: an integer n, the size of the array.\n- Second line: n space-separated integers representing the array.\n\n**Output Format:**\n- The missing integer.",
+        difficulty: "EASY",
+        tags: ["bit-manipulation", "xor"],
+        constraints: "1 <= n <= 10^5\\n0 <= arr[i] <= n\\nAll elements are distinct",
+        hints: "XOR of a number with itself is 0, and with 0 is the number itself. What if you XOR all numbers from 0 to n and then XOR all elements in the array?",
+        editorial: "**Approach: XOR Sum**\n\nBy XORing all numbers from 0 to n, and then XORing all elements in the array, every number present in the array will appear twice and cancel out. The only number remaining will be the missing one.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1)",
+        examples: [
+            { title: "Example 1", input: "3\n3 0 1", output: "2", explanation: "n = 3. All numbers are in range [0, 3]. 2 is the missing number." },
+            { title: "Example 2", input: "9\n9 6 4 2 3 5 7 0 1", output: "8", explanation: "n = 9. All numbers are in range [0, 9]. 8 is the missing number." }
+        ],
+        testcases: [
+            { input: "3\n3 0 1", output: "2" },
+            { input: "9\n9 6 4 2 3 5 7 0 1", output: "8" },
+            { input: "1\n0", output: "1" },
+            { input: "1\n1", output: "0" },
+            { input: "2\n0 1", output: "2" },
+            { input: "2\n2 1", output: "0" },
+            { input: "5\n0 1 2 3 4", output: "5" },
+            { input: "5\n5 4 3 2 1", output: "0" },
+            { input: "6\n3 0 1 4 6 2", output: "5" },
+            { input: "10\n10 9 8 7 6 5 4 3 2 0", output: "1" }
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read n and array, solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read n and array, solve
+    pass
+
+if __name__ == "__main__":
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read n and array, solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read n and array, solve
+}`
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (cin >> n) {
+        int xor_sum = 0;
+        for (int i = 0; i <= n; i++) {
+            xor_sum ^= i;
+        }
+        for (int i = 0; i < n; i++) {
+            int val;
+            cin >> val;
+            xor_sum ^= val;
+        }
+        cout << xor_sum << "\\n";
+    }
+    return 0;
+}`,
+            python: `import sys
+def main():
+    input = sys.stdin.read
+    data = input().split()
+    if not data:
+        return
+    n = int(data[0])
+    xor_sum = 0
+    for i in range(n + 1):
+        xor_sum ^= i
+    for i in range(1, n + 1):
+        xor_sum ^= int(data[i])
+    print(xor_sum)
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        int n = Integer.parseInt(line.trim());
+        int xor_sum = 0;
+        for (int i = 0; i <= n; i++) {
+            xor_sum ^= i;
+        }
+        String arrLine = br.readLine();
+        if (arrLine != null) {
+            StringTokenizer st = new StringTokenizer(arrLine);
+            for (int i = 0; i < n; i++) {
+                if (st.hasMoreTokens()) {
+                    xor_sum ^= Integer.parseInt(st.nextToken());
+                }
+            }
+        }
+        System.out.println(xor_sum);
+    }
+}`,
+            rust: `use std::io::{self, BufRead, Write, BufWriter};
+fn main() {
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut out = BufWriter::new(stdout.lock());
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(line)) = lines.next() {
+        let n: usize = line.trim().parse().unwrap();
+        let mut xor_sum = 0;
+        for i in 0..=n {
+            xor_sum ^= i;
+        }
+        if let Some(Ok(arr_line)) = lines.next() {
+            let nums: Vec<usize> = arr_line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+            for num in nums {
+                xor_sum ^= num;
+            }
+        }
+        writeln!(out, "{}", xor_sum).unwrap();
+    }
+}`
+        }
+    },
+
+// ==================== MEDIUM #4: Single Number III ====================
+    {
+        title: "Single Number III",
+        description: "Given an array of integers where every element appears exactly twice except for two elements which appear only once, find the two elements that appear only once.\n\nPrint the two elements in ascending order, space-separated.\n\nYou must implement a solution with O(n) time complexity and O(1) space complexity.\n\n**Input Format:**\n- First line: integer n, the size of the array.\n- Second line: n space-separated integers.\n\n**Output Format:**\n- Two space-separated integers in ascending order.",
+        difficulty: "MEDIUM",
+        tags: ["bit-manipulation", "xor"],
+        constraints: "4 <= n <= 10^5\\nn is even\\n0 <= arr[i] <= 10^9\\nExactly two elements appear once, all other elements appear exactly twice",
+        hints: "If you XOR all elements, you get `xor_sum = x ^ y`, where x and y are the two unique elements. Since x and y are distinct, `xor_sum` must have at least one set bit. Use the position of this set bit to partition the array.",
+        editorial: "**Approach: Partitioning with Lowest Set Bit**\n\n1. XOR all numbers in the array to get `diff = x ^ y`.\n2. Find the lowest set bit in `diff` using `diff & -diff`.\n3. Partition all numbers in the array into two groups: those that have this bit set, and those that do not. x and y will end up in different groups, and all duplicate pairs will cancel out within their respective groups.\n4. Print the remaining numbers in ascending order.\n\n**Time Complexity:** O(n)\n**Space Complexity:** O(1)",
+        examples: [
+            { title: "Example 1", input: "6\n1 2 1 3 2 5", output: "3 5", explanation: "3 and 5 appear once, while others appear twice." },
+            { title: "Example 2", input: "4\n4 6 6 8", output: "4 8", explanation: "4 and 8 appear once, while others appear twice." }
+        ],
+        testcases: [
+            { input: "6\n1 2 1 3 2 5", output: "3 5" },
+            { input: "4\n4 6 6 8", output: "4 8" },
+            { input: "4\n10 20 10 30", output: "20 30" },
+            { input: "8\n0 100 0 500 100 1000 500 2000", output: "1000 2000" },
+            { input: "6\n1000000000 999999999 1000000000 123 999999999 456", output: "123 456" },
+            { input: "4\n5 9 5 2", output: "2 9" },
+            { input: "8\n2 3 4 2 3 4 5 7", output: "5 7" },
+            { input: "10\n1 1 2 2 3 3 4 5 5 6", output: "4 6" },
+            { input: "6\n77 88 99 77 99 101", output: "88 101" },
+            { input: "4\n0 5 0 2", output: "2 5" }
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read array and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read array and solve
+    pass
+
+if __name__ == "__main__":
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read array and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read array and solve
+}`
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (cin >> n) {
+        vector<long long> arr(n);
+        long long xor_sum = 0;
+        for (int i = 0; i < n; i++) {
+            cin >> arr[i];
+            xor_sum ^= arr[i];
+        }
+        long long lowest_bit = xor_sum & (-xor_sum);
+        long long num1 = 0, num2 = 0;
+        for (int i = 0; i < n; i++) {
+            if (arr[i] & lowest_bit) {
+                num1 ^= arr[i];
+            } else {
+                num2 ^= arr[i];
+            }
+        }
+        if (num1 > num2) swap(num1, num2);
+        cout << num1 << " " << num2 << "\\n";
+    }
+    return 0;
+}`,
+            python: `import sys
+def main():
+    input = sys.stdin.read
+    data = input().split()
+    if not data:
+        return
+    n = int(data[0])
+    arr = [int(x) for x in data[1:n+1]]
+    xor_sum = 0
+    for x in arr:
+        xor_sum ^= x
+    lowest_bit = xor_sum & (-xor_sum)
+    num1, num2 = 0, 0
+    for x in arr:
+        if x & lowest_bit:
+            num1 ^= x
+        else:
+            num2 ^= x
+    if num1 > num2:
+        num1, num2 = num2, num1
+    print(f"{num1} {num2}")
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        int n = Integer.parseInt(line.trim());
+        long[] arr = new long[n];
+        long xor_sum = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine().trim());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Long.parseLong(st.nextToken());
+            xor_sum ^= arr[i];
+        }
+        long lowest_bit = xor_sum & (-xor_sum);
+        long num1 = 0, num2 = 0;
+        for (int i = 0; i < n; i++) {
+            if ((arr[i] & lowest_bit) != 0) {
+                num1 ^= arr[i];
+            } else {
+                num2 ^= arr[i];
+            }
+        }
+        if (num1 > num2) {
+            long temp = num1;
+            num1 = num2;
+            num2 = temp;
+        }
+        System.out.println(num1 + " " + num2);
+    }
+}`,
+            rust: `use std::io::{self, BufRead, Write, BufWriter};
+fn main() {
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut out = BufWriter::new(stdout.lock());
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(line)) = lines.next() {
+        let n: usize = line.trim().parse().unwrap();
+        if let Some(Ok(arr_line)) = lines.next() {
+            let arr: Vec<i64> = arr_line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+            let mut xor_sum = 0;
+            for &x in &arr {
+                xor_sum ^= x;
+            }
+            let lowest_bit = xor_sum & (-xor_sum);
+            let mut num1 = 0;
+            let mut num2 = 0;
+            for &x in &arr {
+                if (x & lowest_bit) != 0 {
+                    num1 ^= x;
+                } else {
+                    num2 ^= x;
+                }
+            }
+            if num1 > num2 {
+                let temp = num1;
+                num1 = num2;
+                num2 = temp;
+            }
+            writeln!(out, "{} {}", num1, num2).unwrap();
+        }
+    }
+}`
+        }
+    },
+
+// ==================== MEDIUM #5: XOR Queries of a Subarray ====================
+    {
+        title: "XOR Queries of a Subarray",
+        description: "Given an array arr of positive integers and a set of queries. Each query is represented by a pair `[left, right]`. For each query, calculate the bitwise XOR of elements from index `left` to `right` inclusive.\n\n**Input Format:**\n- First line: two space-separated integers n and q, the size of the array and the number of queries.\n- Second line: n space-separated integers representing the array.\n- Next q lines: two space-separated integers left and right (0-indexed).\n\n**Output Format:**\n- q lines, each containing the answer to the respective query.",
+        difficulty: "MEDIUM",
+        tags: ["bit-manipulation", "prefix-sum"],
+        constraints: "1 <= n, q <= 10^5\\n1 <= arr[i] <= 10^9\\n0 <= left <= right < n",
+        hints: "Doing a linear scan for each query is too slow (O(n * q)). Can we precompute prefix XORs in O(n) time, similar to prefix sums?",
+        editorial: "**Approach: Prefix XOR**\n\nPrecompute prefix XORs where `pref[i] = arr[0] ^ arr[1] ^ ... ^ arr[i-1]`. The query `[left, right]` can then be answered in O(1) time as `pref[right + 1] ^ pref[left]`, because the prefix XOR up to `left-1` cancels out.\n\n**Time Complexity:** O(n + q)\n**Space Complexity:** O(n)",
+        examples: [
+            { title: "Example 1", input: "4 4\n1 3 4 8\n0 1\n1 2\n0 3\n3 3", output: "2\n7\n14\n8", explanation: "Query [0,1]: 1^3 = 2. Query [1,2]: 3^4 = 7. Query [0,3]: 1^3^4^8 = 14. Query [3,3]: 8." },
+            { title: "Example 2", input: "3 2\n5 6 7\n0 2\n1 2", output: "4\n1", explanation: "Query [0,2]: 5^6^7 = 4. Query [1,2]: 6^7 = 1." }
+        ],
+        testcases: [
+            { input: "4 4\n1 3 4 8\n0 1\n1 2\n0 3\n3 3", output: "2\n7\n14\n8" },
+            { input: "3 2\n5 6 7\n0 2\n1 2", output: "4\n1" },
+            { input: "1 1\n42\n0 0", output: "42" },
+            { input: "5 5\n10 20 30 40 50\n0 4\n1 3\n2 4\n0 0\n4 4", output: "26\n34\n4\n10\n50" },
+            { input: "6 3\n1 2 3 4 5 6\n0 5\n2 4\n1 5", output: "7\n2\n6" },
+            { input: "2 2\n1000000000 5\n0 1\n1 1", output: "1000000005\n5" },
+            { input: "8 4\n4 8 16 32 64 128 256 512\n0 7\n2 5\n4 7\n3 6", output: "1020\n240\n960\n480" },
+            { input: "5 2\n1 1 1 1 1\n0 4\n2 3", output: "1\n0" },
+            { input: "4 3\n7 7 7 7\n0 2\n1 3\n0 3", output: "7\n7\n0" },
+            { input: "5 4\n1024 2048 4096 8192 16384\n0 1\n1 2\n2 3\n3 4", output: "3072\n6144\n12288\n24576" }
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read prefix XOR and queries, solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read prefix XOR and queries, solve
+    pass
+
+if __name__ == "__main__":
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read prefix XOR and queries, solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read prefix XOR and queries, solve
+}`
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n, q;
+    if (cin >> n >> q) {
+        vector<long long> pref(n + 1, 0);
+        for (int i = 0; i < n; i++) {
+            long long val;
+            cin >> val;
+            pref[i + 1] = pref[i] ^ val;
+        }
+        for (int i = 0; i < q; i++) {
+            int left, right;
+            cin >> left >> right;
+            cout << (pref[right + 1] ^ pref[left]) << "\\n";
+        }
+    }
+    return 0;
+}`,
+            python: `import sys
+def main():
+    input = sys.stdin.read
+    data = input().split()
+    if not data:
+        return
+    n = int(data[0])
+    q = int(data[1])
+    idx = 2
+    pref = [0] * (n + 1)
+    for i in range(n):
+        pref[i + 1] = pref[i] ^ int(data[idx])
+        idx += 1
+    out = []
+    for _ in range(q):
+        left = int(data[idx])
+        right = int(data[idx + 1])
+        idx += 2
+        out.append(str(pref[right + 1] ^ pref[left]))
+    print('\\n'.join(out))
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        StringTokenizer st = new StringTokenizer(line);
+        int n = Integer.parseInt(st.nextToken());
+        int q = Integer.parseInt(st.nextToken());
+        long[] pref = new long[n + 1];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            pref[i + 1] = pref[i] ^ Long.parseLong(st.nextToken());
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < q; i++) {
+            String qLine = br.readLine();
+            if (qLine == null) break;
+            st = new StringTokenizer(qLine);
+            int left = Integer.parseInt(st.nextToken());
+            int right = Integer.parseInt(st.nextToken());
+            sb.append(pref[right + 1] ^ pref[left]).append("\\n");
+        }
+        System.out.print(sb.toString());
+    }
+}`,
+            rust: `use std::io::{self, BufRead, Write, BufWriter};
+fn main() {
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut out = BufWriter::new(stdout.lock());
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(line)) = lines.next() {
+        let parts: Vec<usize> = line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+        let n = parts[0];
+        let q = parts[1];
+        if let Some(Ok(arr_line)) = lines.next() {
+            let arr: Vec<i64> = arr_line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+            let mut pref = vec![0i64; n + 1];
+            for i in 0..n {
+                pref[i + 1] = pref[i] ^ arr[i];
+            }
+            for _ in 0..q {
+                if let Some(Ok(q_line)) = lines.next() {
+                    let q_parts: Vec<usize> = q_line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+                    let left = q_parts[0];
+                    let right = q_parts[1];
+                    writeln!(out, "{}", pref[right + 1] ^ pref[left]).unwrap();
+                }
+            }
+        }
+    }
+}`
+        }
+    },
+
+// ==================== HARD #4: Maximum XOR Sum ====================
+    {
+        title: "Maximum XOR Sum",
+        description: "Given an array of n non-negative integers, select a subset of numbers such that their bitwise XOR sum is maximized. Return this maximum XOR sum.\n\n**Input Format:**\n- First line: integer n.\n- Second line: n space-separated integers representing the array.\n\n**Output Format:**\n- A single integer representing the maximum XOR sum of any subset.",
+        difficulty: "HARD",
+        tags: ["bit-manipulation", "linear-basis"],
+        constraints: "1 <= n <= 10^5\\n0 <= arr[i] <= 10^18",
+        hints: "A subset of numbers can be represented by a linear basis. Construct a linear basis of size at most 62 using the array elements, and then find the maximum XOR sum from the basis.",
+        editorial: "**Approach: Linear Basis**\n\nMaintain an array `basis` of size 62. For each number x, insert it into the basis by iterating from bit 61 down to 0: if bit i is set, either place x at `basis[i]` if empty (and stop) or update `x = x ^ basis[i]`. After inserting all elements, find the maximum XOR sum greedily starting from `ans = 0`.\n\n**Time Complexity:** O(n * 60)\n**Space Complexity:** O(60) = O(1)",
+        examples: [
+            { title: "Example 1", input: "3\n9 12 6", output: "15", explanation: "Subsets XOR sum maximized by 9 ^ 6 = 15." },
+            { title: "Example 2", input: "4\n2 4 8 16", output: "30", explanation: "2 ^ 4 ^ 8 ^ 16 = 30." }
+        ],
+        testcases: [
+            { input: "3\n9 12 6", output: "15" },
+            { input: "4\n2 4 8 16", output: "30" },
+            { input: "1\n123456789012345", output: "123456789012345" },
+            { input: "5\n0 0 0 0 0", output: "0" },
+            { input: "5\n1 2 3 4 5", output: "7" },
+            { input: "6\n10 20 30 40 50 60", output: "60" },
+            { input: "3\n1000000000000000000 100000000000000000 10000000000000000", output: "1000000000000000000" },
+            { input: "3\n288230376151711743 576460752303423487 1152921504606846975", output: "1152921504606846975" },
+            { input: "10\n1 2 4 8 16 32 64 128 256 512", output: "1023" },
+            { input: "8\n100 200 300 400 500 600 700 800", output: "1016" }
+        ],
+        codesnippets: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    // Read array and solve
+    
+    return 0;
+}`,
+            python: `def main():
+    # Read array and solve
+    pass
+
+if __name__ == "__main__":
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Read array and solve
+    }
+}`,
+            rust: `use std::io::{self, BufRead};
+
+fn main() {
+    let stdin = io::stdin();
+    // Read array and solve
+}`
+        },
+        referneceSolution: {
+            cpp: `#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n;
+    if (cin >> n) {
+        vector<unsigned long long> basis(62, 0);
+        for (int i = 0; i < n; i++) {
+            unsigned long long x;
+            cin >> x;
+            for (int bit = 61; bit >= 0; bit--) {
+                if ((x >> bit) & 1) {
+                    if (!basis[bit]) {
+                        basis[bit] = x;
+                        break;
+                    }
+                    x ^= basis[bit];
+                }
+            }
+        }
+        unsigned long long ans = 0;
+        for (int bit = 61; bit >= 0; bit--) {
+            if ((ans ^ basis[bit]) > ans) {
+                ans ^= basis[bit];
+            }
+        }
+        cout << ans << "\\n";
+    }
+    return 0;
+}`,
+            python: `import sys
+def main():
+    input = sys.stdin.read
+    data = input().split()
+    if not data:
+        return
+    n = int(data[0])
+    arr = [int(x) for x in data[1:n+1]]
+    basis = [0] * 62
+    for x in arr:
+        for bit in range(61, -1, -1):
+            if (x >> bit) & 1:
+                if not basis[bit]:
+                    basis[bit] = x
+                    break
+                x ^= basis[bit]
+    ans = 0
+    for bit in range(61, -1, -1):
+        if (ans ^ basis[bit]) > ans:
+            ans ^= basis[bit]
+    print(ans)
+if __name__ == '__main__':
+    main()`,
+            java: `import java.io.*;
+import java.util.*;
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        if (line == null) return;
+        int n = Integer.parseInt(line.trim());
+        long[] basis = new long[62];
+        StringTokenizer st = new StringTokenizer(br.readLine().trim());
+        for (int i = 0; i < n; i++) {
+            long x = Long.parseUnsignedLong(st.nextToken());
+            for (int bit = 61; bit >= 0; bit--) {
+                if (((x >>> bit) & 1) == 1) {
+                    if (basis[bit] == 0) {
+                        basis[bit] = x;
+                        break;
+                    }
+                    x ^= basis[bit];
+                }
+            }
+        }
+        long ans = 0;
+        for (int bit = 61; bit >= 0; bit--) {
+            long next = ans ^ basis[bit];
+            if (Long.compareUnsigned(next, ans) > 0) {
+                ans = next;
+            }
+        }
+        System.out.println(Long.toUnsignedString(ans));
+    }
+}`,
+            rust: `use std::io::{self, BufRead, Write, BufWriter};
+fn main() {
+    let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut out = BufWriter::new(stdout.lock());
+    let mut lines = stdin.lock().lines();
+    if let Some(Ok(line)) = lines.next() {
+        let n: usize = line.trim().parse().unwrap();
+        if let Some(Ok(arr_line)) = lines.next() {
+            let arr: Vec<u64> = arr_line.split_whitespace().map(|s| s.parse().unwrap()).collect();
+            let mut basis = vec![0u64; 62];
+            for mut x in arr {
+                for bit in (0..=61).rev() {
+                    if ((x >> bit) & 1) == 1 {
+                        if basis[bit] == 0 {
+                            basis[bit] = x;
+                            break;
+                        }
+                        x ^= basis[bit];
+                    }
+                }
+            }
+            let mut ans = 0u64;
+            for bit in (0..=61).rev() {
+                if (ans ^ basis[bit]) > ans {
+                    ans ^= basis[bit];
+                }
+            }
+            writeln!(out, "{}", ans).unwrap();
+        }
+    }
+}`
+        }
+    }
+]

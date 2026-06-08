@@ -94,7 +94,7 @@ export const createContestRoomRecord = async ({
             createdAt: now,
             startsAt: now,
             endsAt,
-        }
+        },
     })
 
     return {
@@ -116,7 +116,7 @@ export const createContestRoomRecord = async ({
 
 export const getContestRoomRecord = async (code: string): Promise<ContestRoomRecord | null> => {
     const room = await db.contestRoom.findUnique({
-        where: { code: code.toUpperCase() }
+        where: { code: code.toUpperCase() },
     })
     if (!room) return null
     return {
@@ -136,9 +136,12 @@ export const getContestRoomRecord = async (code: string): Promise<ContestRoomRec
     }
 }
 
-export const joinContestRoomRecord = async (code: string, userId: string): Promise<ContestRoomRecord> => {
+export const joinContestRoomRecord = async (
+    code: string,
+    userId: string
+): Promise<ContestRoomRecord> => {
     const room = await db.contestRoom.findUnique({
-        where: { code: code.toUpperCase() }
+        where: { code: code.toUpperCase() },
     })
 
     if (!room) {
@@ -154,10 +157,7 @@ export const joinContestRoomRecord = async (code: string, userId: string): Promi
     const standings = room.standings as unknown as Record<string, ContestStandingRecord>
 
     if (!participants.some((participant) => participant.userId === userId)) {
-        if (
-            room.maxParticipants !== null &&
-            participants.length >= Number(room.maxParticipants)
-        ) {
+        if (room.maxParticipants !== null && participants.length >= Number(room.maxParticipants)) {
             throw new Error('Contest room is full')
         }
 
@@ -176,7 +176,7 @@ export const joinContestRoomRecord = async (code: string, userId: string): Promi
         data: {
             participants: participants as any,
             standings: standings as any,
-        }
+        },
     })
 
     return {
@@ -202,7 +202,7 @@ export const recordContestProblemSolved = async (
     problemId: string
 ): Promise<ContestRoomRecord> => {
     const room = await db.contestRoom.findUnique({
-        where: { code: code.toUpperCase() }
+        where: { code: code.toUpperCase() },
     })
 
     if (!room) {
@@ -251,7 +251,7 @@ export const recordContestProblemSolved = async (
             where: { code: code.toUpperCase() },
             data: {
                 standings: standings as any,
-            }
+            },
         })
 
         return {
