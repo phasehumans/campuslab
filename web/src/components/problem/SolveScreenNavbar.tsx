@@ -19,7 +19,7 @@ export function SolveScreenNavbar({
     const navigate = useNavigate()
 
     return (
-        <nav className="flex items-center justify-between h-12 px-4 border-b border-white/10 bg-[#121212]">
+        <nav className="flex items-center justify-between h-12 px-4 border-b border-white/5 bg-[#0F0F0F] relative z-10">
             <div className="flex items-center gap-4">
                 <button
                     onClick={() => navigate(backPath)}
@@ -33,7 +33,7 @@ export function SolveScreenNavbar({
                 <button
                     onClick={handleRun}
                     disabled={isRunning || isSubmitting}
-                    className="flex items-center gap-1.5 bg-[#2C2C2C] hover:bg-[#3A3A3A] disabled:opacity-60 disabled:cursor-not-allowed text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors"
+                    className="flex items-center gap-1.5 bg-[#2A2A2A] hover:bg-[#353535] disabled:opacity-60 disabled:cursor-not-allowed text-gray-200 px-4 py-1.5 rounded-md text-sm font-medium transition-colors"
                 >
                     <Play className="h-4 w-4 text-emerald-500 fill-emerald-500" />
                     {isRunning ? 'Running...' : 'Run'}
@@ -41,7 +41,7 @@ export function SolveScreenNavbar({
                 <button
                     onClick={handleSubmit}
                     disabled={isRunning || isSubmitting}
-                    className="flex items-center gap-1.5 bg-[#1C3325] hover:bg-[#24422F] disabled:opacity-60 disabled:cursor-not-allowed text-emerald-500 px-4 py-1.5 rounded-md text-sm font-medium transition-colors"
+                    className="flex items-center gap-1.5 bg-[#3E6FC3] hover:bg-[#325a9e] disabled:opacity-60 disabled:cursor-not-allowed text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors shadow-md shadow-blue-500/10"
                 >
                     <CloudUpload className="h-4 w-4" />
                     {isSubmitting ? 'Submitting...' : 'Submit'}

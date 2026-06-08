@@ -45,15 +45,15 @@ export function CreateRoomCard({
     isCreating = false,
 }: CreateRoomCardProps) {
     return (
-        <div className="relative overflow-visible rounded-2xl border border-white/10 bg-[#161616] p-6 flex flex-col shadow-xl">
+        <div className="relative overflow-visible rounded-2xl border border-slate-100 bg-white p-6 flex flex-col shadow-[0_12px_40px_rgba(0,0,0,0.03)]">
             <div className="relative z-10 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-6 shrink-0">
-                    <div className="p-2.5 bg-white/5 border border-white/10 rounded-xl">
-                        <Plus className="h-5 w-5 text-gray-200" />
+                    <div className="p-2.5 bg-slate-50 border border-slate-150 rounded-xl">
+                        <Plus className="h-5 w-5 text-[#3E6FC3]" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-white tracking-tight">Create Room</h2>
-                        <p className="text-xs text-gray-400 mt-0.5">Host a custom contest</p>
+                        <h2 className="text-lg font-bold text-slate-800 tracking-tight">Create Room</h2>
+                        <p className="text-xs text-slate-400 mt-0.5">Host a custom contest</p>
                     </div>
                 </div>
 
@@ -62,40 +62,40 @@ export function CreateRoomCard({
                         className="flex-1 flex flex-col justify-center items-center space-y-6 text-center"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="h-14 w-14 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-2">
-                            <CheckCircle2 className="h-7 w-7 text-white" />
+                        <div className="h-14 w-14 bg-emerald-50 border border-emerald-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
+                            <CheckCircle2 className="h-7 w-7 text-emerald-500" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-white tracking-tight">
+                            <h3 className="text-lg font-bold text-slate-800 tracking-tight">
                                 Room Created!
                             </h3>
-                            <p className="text-xs text-gray-400 mt-1">
+                            <p className="text-xs text-slate-400 mt-1">
                                 Share this code with your friends
                             </p>
                         </div>
 
                         <div
-                            className="bg-[#1A1A1A] border border-white/10 rounded-xl px-6 py-4 w-full flex items-center justify-center gap-3 group cursor-pointer hover:bg-white/5 transition-colors"
+                            className="bg-slate-50 border border-slate-200 rounded-xl px-6 py-4 w-full flex items-center justify-center gap-3 group cursor-pointer hover:bg-slate-100/60 transition-colors"
                             onClick={() => navigator.clipboard.writeText(createdRoom.code)}
                         >
-                            <div className="text-2xl tracking-[0.3em] font-mono text-white font-bold">
+                            <div className="text-2xl tracking-[0.3em] font-mono text-[#3E6FC3] font-bold">
                                 {createdRoom.code}
                             </div>
-                            <Copy className="h-4 w-4 text-gray-500 group-hover:text-white transition-colors" />
+                            <Copy className="h-4 w-4 text-slate-400 group-hover:text-slate-600 transition-colors" />
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 w-full text-left text-sm">
-                            <div className="bg-[#1A1A1A] border border-white/5 rounded-lg p-3">
-                                <div className="text-gray-500 text-xs mb-1">Participants</div>
-                                <div className="text-gray-200 font-medium text-sm">
+                            <div className="bg-slate-50 border border-slate-100 rounded-lg p-3">
+                                <div className="text-slate-400 text-xs mb-1">Participants</div>
+                                <div className="text-slate-700 font-bold text-sm">
                                     {createdRoom.users === 'unlimited'
                                         ? 'Unlimited'
                                         : `${createdRoom.users} Players`}
                                 </div>
                             </div>
-                            <div className="bg-[#1A1A1A] border border-white/5 rounded-lg p-3">
-                                <div className="text-gray-500 text-xs mb-1">Time Limit</div>
-                                <div className="text-gray-200 font-medium text-sm">
+                            <div className="bg-slate-50 border border-slate-100 rounded-lg p-3">
+                                <div className="text-slate-400 text-xs mb-1">Time Limit</div>
+                                <div className="text-slate-700 font-bold text-sm">
                                     {createdRoom.time} Mins
                                 </div>
                             </div>
@@ -104,9 +104,9 @@ export function CreateRoomCard({
                 ) : (
                     <div className="space-y-5 flex-1" onClick={(e) => e.stopPropagation()}>
                         {/* Users Allowed */}
-                        <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-xs font-medium text-gray-400">
-                                <Users className="h-3.5 w-3.5" /> Max Participants
+                        <div className="space-y-2 relative z-30">
+                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                                <Users className="h-3.5 w-3.5 text-slate-400" /> Max Participants
                             </label>
                             <CustomSelect
                                 value={usersAllowed}
@@ -122,10 +122,10 @@ export function CreateRoomCard({
                         </div>
 
                         {/* Number of Questions & Time Limit */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-4 relative z-20">
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-xs font-medium text-gray-400">
-                                    <Hash className="h-3.5 w-3.5" /> Questions
+                                <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                                    <Hash className="h-3.5 w-3.5 text-slate-400" /> Questions
                                 </label>
                                 <CustomSelect
                                     value={numQuestions}
@@ -137,8 +137,8 @@ export function CreateRoomCard({
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-xs font-medium text-gray-400">
-                                    <Clock className="h-3.5 w-3.5" /> Time Limit
+                                <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                                    <Clock className="h-3.5 w-3.5 text-slate-400" /> Time Limit
                                 </label>
                                 <CustomSelect
                                     value={timeLimit}
@@ -155,9 +155,9 @@ export function CreateRoomCard({
                         </div>
 
                         {/* Topics Selection */}
-                        <div className="space-y-2.5">
-                            <label className="flex items-center gap-2 text-xs font-medium text-gray-400">
-                                <BookOpen className="h-3.5 w-3.5" /> Topics
+                        <div className="space-y-2.5 relative z-10">
+                            <label className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                                <BookOpen className="h-3.5 w-3.5 text-slate-400" /> Topics
                             </label>
                             <div className="flex flex-wrap gap-1.5">
                                 {availableTopics.map((topic) => (
@@ -165,10 +165,10 @@ export function CreateRoomCard({
                                         key={topic}
                                         onClick={() => toggleTopic(topic)}
                                         className={cn(
-                                            'px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all',
+                                            'px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all border',
                                             topics.includes(topic)
-                                                ? 'bg-white/10 text-white border border-white/20'
-                                                : 'bg-[#1A1A1A] text-gray-500 border border-white/5 hover:border-white/10 hover:text-gray-300'
+                                                ? 'bg-[#EBF3FC] text-[#3E6FC3] border-[#D5E6FA]'
+                                                : 'bg-slate-50 text-slate-500 border-slate-200/60 hover:bg-slate-100 hover:text-slate-700'
                                         )}
                                     >
                                         {topic}
@@ -182,7 +182,7 @@ export function CreateRoomCard({
                 {createdRoom ? (
                     <button
                         onClick={onEnterRoom}
-                        className="w-full mt-6 shrink-0 bg-[#F5F5F5] hover:bg-white text-black font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm"
+                        className="w-full mt-6 shrink-0 bg-[#3E6FC3] hover:bg-[#325a9e] text-white font-semibold py-3 rounded-xl transition-all shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 text-sm"
                     >
                         Enter Room <ArrowRight className="h-4 w-4" />
                     </button>
@@ -190,7 +190,7 @@ export function CreateRoomCard({
                     <button
                         onClick={handleCreateRoom}
                         disabled={isCreating}
-                        className="w-full mt-6 shrink-0 bg-[#F5F5F5] hover:bg-white disabled:bg-[#F5F5F5]/60 disabled:cursor-not-allowed text-black font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm"
+                        className="w-full mt-6 shrink-0 bg-[#3E6FC3] hover:bg-[#325a9e] disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 text-sm"
                     >
                         {isCreating ? 'Creating...' : 'Create Room'} <ArrowRight className="h-4 w-4" />
                     </button>

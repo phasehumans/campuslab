@@ -20,7 +20,7 @@ export function LandingNavbar() {
                     {/* Logo - Left */}
                     <div className="flex flex-1 items-center gap-2">
                         <Link
-                            to="/"
+                            to={isLoggedIn ? "/practice" : "/"}
                             className="flex items-center gap-2 text-xl font-bold tracking-tight transition-colors"
                         >
                             <span className="text-[#3E6FC3] font-black text-xl tracking-tight">

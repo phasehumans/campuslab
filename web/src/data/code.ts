@@ -1,6 +1,7 @@
 import { cpp } from '@codemirror/lang-cpp'
 import { python } from '@codemirror/lang-python'
 import { java } from '@codemirror/lang-java'
+import { rust } from '@codemirror/lang-rust'
 import type { EditorLanguage } from '@/lib/types'
 
 export const FALLBACK_CODE: Record<EditorLanguage, string> = {
@@ -30,10 +31,14 @@ public class Main {
         // Write your solution here.
     }
 }`,
+    rust: `fn main() {
+    // Write your solution here.
+}`,
 }
 
 export const LANGUAGES = [
     { id: 'cpp', name: 'C++', ext: cpp },
     { id: 'python', name: 'Python', ext: python },
     { id: 'java', name: 'Java', ext: java },
+    { id: 'rust', name: 'Rust', ext: rust },
 ] as const

@@ -18,6 +18,17 @@ import {
 export function LandingPage() {
     const { isLoggedIn, openModal } = useAuth()
     const navigate = useNavigate()
+
+    React.useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/practice', { replace: true })
+        }
+    }, [isLoggedIn, navigate])
+
+    if (isLoggedIn) {
+        return null
+    }
+
     return (
         <div className="min-h-screen bg-white text-gray-900 font-sans selection:bg-[#3E6FC3]/20 overflow-x-hidden">
             <LandingNavbar />
@@ -114,7 +125,7 @@ export function LandingPage() {
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
-                                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sakshi" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Sakshi" />
+                                            <img src="https://api.dicebear.com/7.x/micah/svg?seed=Sakshi" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Sakshi" />
                                             <div>
                                                 <span className="font-extrabold text-gray-900 block text-base tracking-tight mb-0.5">Sakshi</span>
                                                 <span className="text-sm text-gray-400 font-medium">Solving Problem B...</span>
@@ -125,7 +136,7 @@ export function LandingPage() {
                                     
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
-                                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Jayesh" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Jayesh" />
+                                            <img src="https://api.dicebear.com/7.x/micah/svg?seed=Jayesh" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Jayesh" />
                                             <div>
                                                 <span className="font-extrabold text-gray-900 block text-base tracking-tight mb-0.5">Jayesh</span>
                                                 <span className="text-sm text-gray-400 font-medium">Completed Problem A</span>
@@ -136,7 +147,7 @@ export function LandingPage() {
 
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
-                                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sachin" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Sachin" />
+                                            <img src="https://api.dicebear.com/7.x/micah/svg?seed=Sachin" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Sachin" />
                                             <div>
                                                 <span className="font-extrabold text-gray-900 block text-base tracking-tight mb-0.5">Sachin</span>
                                                 <span className="text-sm text-gray-400 font-medium">Completed Problem A</span>
@@ -147,7 +158,7 @@ export function LandingPage() {
 
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
-                                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Chaitanya" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Chaitanya" />
+                                            <img src="https://api.dicebear.com/7.x/micah/svg?seed=Chaitanya" className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white" alt="Chaitanya" />
                                             <div>
                                                 <span className="font-extrabold text-gray-900 block text-base tracking-tight mb-0.5">Chaitanya</span>
                                                 <span className="text-sm text-gray-400 font-medium">Reading Problem A...</span>
@@ -262,10 +273,10 @@ export function LandingPage() {
                                     This project has completely changed how we prepare for placements at RCPIT. The curated DSA tracks are exactly what product companies look for.
                                 </p>
                                 <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Student1" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                                    <img src="https://api.dicebear.com/7.x/micah/svg?seed=Student1" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
                                     <div>
-                                        <p className="font-bold text-gray-900 text-sm">TE Computer Student</p>
-                                        <p className="text-gray-500 text-xs">RCPIT Batch of 2025</p>
+                                        <p className="font-bold text-gray-900 text-sm">Digvijay Rajput</p>
+                                        <p className="text-gray-500 text-xs">RCPIT (AIML) Batch of 2027</p>
                                     </div>
                                 </div>
                             </div>
@@ -280,10 +291,10 @@ export function LandingPage() {
                                     The contest rooms are brilliant. My friends and I hop on a call, create a private room on Campus Lab, and race to solve the problem set. It makes coding social.
                                 </p>
                                 <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Student2" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                                    <img src="https://api.dicebear.com/7.x/micah/svg?seed=Student2" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
                                     <div>
-                                        <p className="font-bold text-gray-900 text-sm">BE IT Student</p>
-                                        <p className="text-gray-500 text-xs">RCPIT Batch of 2024</p>
+                                        <p className="font-bold text-gray-900 text-sm">Dnyaneshwari Girase</p>
+                                        <p className="text-gray-500 text-xs">RCPIT (AIML) Batch of 2027</p>
                                     </div>
                                 </div>
                             </div>
@@ -298,10 +309,10 @@ export function LandingPage() {
                                     Having our own campus leaderboard drives healthy competition. You can actually see who the top coders in our batch are. It's incredibly motivating and rewarding.
                                 </p>
                                 <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Student3" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                                    <img src="https://api.dicebear.com/7.x/micah/svg?seed=Student3" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
                                     <div>
-                                        <p className="font-bold text-gray-900 text-sm">SE Computer Student</p>
-                                        <p className="text-gray-500 text-xs">RCPIT Batch of 2026</p>
+                                        <p className="font-bold text-gray-900 text-sm">Gaurav Patil</p>
+                                        <p className="text-gray-500 text-xs">RCPIT (AIML) Batch of 2027</p>
                                     </div>
                                 </div>
                             </div>

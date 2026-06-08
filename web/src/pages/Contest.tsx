@@ -130,9 +130,9 @@ export function Contest() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center py-8 px-4">
+        <div className="max-w-4xl mx-auto w-full flex flex-col py-8 px-4">
             {problemsQuery.isLoading ? (
-                <div className="w-full rounded-2xl border border-white/10 bg-[#161616] p-6 text-sm text-gray-400">
+                <div className="w-full rounded-2xl border border-slate-100 bg-white p-6 text-sm text-slate-400 shadow-sm">
                     Loading contest configuration...
                 </div>
             ) : problemsQuery.isError ? (

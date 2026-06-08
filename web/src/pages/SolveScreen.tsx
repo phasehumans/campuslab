@@ -176,24 +176,42 @@ export function SolveScreen() {
 
     if (problemQuery.isLoading) {
         return (
-            <div className="flex h-screen items-center justify-center bg-[#0A0A0A] text-gray-400">
-                Loading problem...
+            <div className="flex h-screen items-center justify-center bg-[#0A0A0A] text-gray-400 relative">
+                {/* Subtle dark gridline background pattern */}
+                <div 
+                    className="absolute inset-0 pointer-events-none z-0 opacity-40" 
+                    style={{
+                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
+                        backgroundSize: '30px 30px',
+                    }}
+                />
+                <div className="relative z-10 font-semibold">Loading problem...</div>
             </div>
         )
     }
 
     if (problemQuery.isError || !problemQuery.data) {
         return (
-            <div className="flex h-screen flex-col items-center justify-center gap-4 bg-[#0A0A0A] px-6 text-center">
-                <p className="text-sm text-red-200">
-                    {getApiErrorMessage(problemQuery.error, 'Unable to load this problem')}
-                </p>
-                <button
-                    onClick={() => navigate(roomCode ? `/contest/${roomCode}` : '/')}
-                    className="rounded-xl border border-white/10 px-4 py-2 text-sm text-white hover:bg-white/5"
-                >
-                    Go back
-                </button>
+            <div className="flex h-screen flex-col items-center justify-center gap-4 bg-[#0A0A0A] px-6 text-center relative">
+                {/* Subtle dark gridline background pattern */}
+                <div 
+                    className="absolute inset-0 pointer-events-none z-0 opacity-40" 
+                    style={{
+                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
+                        backgroundSize: '30px 30px',
+                    }}
+                />
+                <div className="relative z-10 space-y-4">
+                    <p className="text-sm text-red-200">
+                        {getApiErrorMessage(problemQuery.error, 'Unable to load this problem')}
+                    </p>
+                    <button
+                        onClick={() => navigate(roomCode ? `/contest/${roomCode}` : '/')}
+                        className="rounded-xl border border-white/10 px-4 py-2 text-sm text-white hover:bg-white/5 font-semibold transition-colors"
+                    >
+                        Go back
+                    </button>
+                </div>
             </div>
         )
     }
@@ -202,148 +220,158 @@ export function SolveScreen() {
     const activeCode = codeByLanguage[language] ?? FALLBACK_CODE[language]
 
     return (
-        <div className="flex flex-col h-screen bg-[#0A0A0A] text-gray-300 font-sans overflow-hidden">
-            <SolveScreenNavbar
-                backPath={roomCode ? `/contest/${roomCode}` : '/'}
-                handleRun={handleRun}
-                handleSubmit={handleSubmit}
-                isRunning={runMutation.isPending}
-                isSubmitting={submitMutation.isPending}
+        <div className="flex flex-col h-screen bg-[#0A0A0A] text-gray-300 font-sans overflow-hidden relative">
+            {/* Subtle dark gridline background pattern */}
+            <div 
+                className="absolute inset-0 pointer-events-none z-0 opacity-45" 
+                style={{
+                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
+                    backgroundSize: '30px 30px',
+                }}
             />
 
-            <div className="flex flex-1 overflow-hidden p-2 bg-[#0A0A0A] gap-2">
-                <Group orientation="horizontal" className="flex-1 rounded-lg overflow-hidden">
-                    <Panel
-                        defaultSize={40}
-                        minSize={30}
-                        className="flex flex-col bg-[#1E1E1E] rounded-lg border border-white/5 shadow-lg"
-                    >
-                        <div className="flex items-center gap-1 bg-[#181818] px-2 pt-2 border-b border-white/5">
-                            <button
-                                onClick={() => setActiveTab('description')}
-                                className={cn(
-                                    'flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors',
-                                    activeTab === 'description'
-                                        ? 'bg-[#1E1E1E] text-white'
-                                        : 'text-gray-400 hover:text-gray-200 hover:bg-[#1E1E1E]/50'
+            <div className="relative z-10 flex flex-col h-full overflow-hidden">
+                <SolveScreenNavbar
+                    backPath={roomCode ? `/contest/${roomCode}` : '/'}
+                    handleRun={handleRun}
+                    handleSubmit={handleSubmit}
+                    isRunning={runMutation.isPending}
+                    isSubmitting={submitMutation.isPending}
+                />
+
+                <div className="flex flex-1 overflow-hidden p-2 gap-2">
+                    <Group orientation="horizontal" className="flex-1 rounded-lg overflow-hidden">
+                        <Panel
+                            defaultSize={40}
+                            minSize={30}
+                            className="flex flex-col bg-[#121212]/90 backdrop-blur-md rounded-lg border border-white/5 shadow-2xl overflow-hidden"
+                        >
+                            <div className="flex items-center gap-1 bg-[#0F0F0F] px-2 pt-2 border-b border-white/5 shrink-0">
+                                <button
+                                    onClick={() => setActiveTab('description')}
+                                    className={cn(
+                                        'flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-t-lg transition-all border-b-2 border-transparent',
+                                        activeTab === 'description'
+                                            ? 'bg-[#121212]/90 text-white border-[#3E6FC3]'
+                                            : 'text-gray-400 hover:text-gray-200 hover:bg-[#121212]/50'
+                                    )}
+                                >
+                                    <FileText className={cn("h-4 w-4", activeTab === 'description' ? 'text-[#3E6FC3]' : 'text-gray-400')} /> Description
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('solutions')}
+                                    className={cn(
+                                        'flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-t-lg transition-all border-b-2 border-transparent',
+                                        activeTab === 'solutions'
+                                            ? 'bg-[#121212]/90 text-white border-[#3E6FC3]'
+                                            : 'text-gray-400 hover:text-gray-200 hover:bg-[#121212]/50'
+                                    )}
+                                >
+                                    <FlaskConical className={cn("h-4 w-4", activeTab === 'solutions' ? 'text-[#3E6FC3]' : 'text-gray-400')} /> Solutions
+                                </button>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-6">
+                                {activeTab === 'description' ? (
+                                    <DescriptionPanel problem={problem} />
+                                ) : (
+                                    <SolutionsPanel
+                                        language={language}
+                                        copied={copied}
+                                        onCopy={handleCopySolution}
+                                        solutionCode={problem.referenceSolutions[language]}
+                                    />
                                 )}
-                            >
-                                <FileText className="h-4 w-4 text-blue-400" /> Description
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('solutions')}
-                                className={cn(
-                                    'flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors',
-                                    activeTab === 'solutions'
-                                        ? 'bg-[#1E1E1E] text-white'
-                                        : 'text-gray-400 hover:text-gray-200 hover:bg-[#1E1E1E]/50'
+                            </div>
+                        </Panel>
+
+                        <Separator className="w-2 bg-transparent hover:bg-white/5 transition-colors cursor-col-resize flex flex-col items-center justify-center gap-1 group mx-1">
+                            <div className="h-4 w-1 bg-white/10 rounded-full group-hover:bg-white/40 transition-colors" />
+                        </Separator>
+
+                        <Panel
+                            defaultSize={60}
+                            minSize={30}
+                            className="flex flex-col bg-[#121212]/90 backdrop-blur-md rounded-lg border border-white/5 shadow-2xl overflow-hidden"
+                        >
+                            <Group orientation="vertical" className="flex-1 w-full h-full">
+                                <Panel
+                                    id="editor-panel"
+                                    defaultSize={bottomPanelOpen ? 50 : 100}
+                                    minSize={30}
+                                    className="flex flex-col"
+                                >
+                                    <EditorHeader
+                                        language={language}
+                                        isLangDropdownOpen={isLangDropdownOpen}
+                                        setIsLangDropdownOpen={setIsLangDropdownOpen}
+                                        handleLanguageChange={handleLanguageChange}
+                                    />
+
+                                    <CodeEditor
+                                        code={activeCode}
+                                        setCode={(value) =>
+                                            setCodeByLanguage((current) => ({
+                                                ...current,
+                                                [language]: value,
+                                            }))
+                                        }
+                                        language={language}
+                                    />
+                                </Panel>
+
+                                {bottomPanelOpen && (
+                                    <>
+                                        <Separator className="h-2 bg-transparent hover:bg-white/5 transition-colors cursor-row-resize flex items-center justify-center group">
+                                            <div className="w-4 h-1 bg-white/10 rounded-full group-hover:bg-white/40 transition-colors" />
+                                        </Separator>
+                                        <Panel
+                                            id="testcase-panel"
+                                            defaultSize={50}
+                                            minSize={20}
+                                            className="flex flex-col bg-[#121212] border-t border-white/5"
+                                        >
+                                            <BottomPanelHeader
+                                                activeBottomTab={activeBottomTab}
+                                                setActiveBottomTab={(tab) =>
+                                                    setActiveBottomTab(tab as 'testcase' | 'testresult')
+                                                }
+                                                setBottomPanelOpen={setBottomPanelOpen}
+                                            />
+                                            <div className="flex-1 overflow-y-auto p-4 bg-[#121212]">
+                                                {activeBottomTab === 'testcase' ? (
+                                                    <TestcasePanel
+                                                        examples={problem.examples}
+                                                        activeTestCase={activeTestCase}
+                                                        setActiveTestCase={setActiveTestCase}
+                                                    />
+                                                ) : (
+                                                    <TestResultPanel
+                                                        isLoading={runMutation.isPending || submitMutation.isPending}
+                                                        title={resultTitle}
+                                                        result={executionResult}
+                                                        message={resultMessage}
+                                                    />
+                                                )}
+                                            </div>
+                                        </Panel>
+                                    </>
                                 )}
-                            >
-                                <FlaskConical className="h-4 w-4 text-purple-400" /> Solutions
-                            </button>
-                        </div>
+                            </Group>
 
-                        <div className="flex-1 overflow-y-auto p-6">
-                            {activeTab === 'description' ? (
-                                <DescriptionPanel problem={problem} />
-                            ) : (
-                                <SolutionsPanel
-                                    language={language}
-                                    copied={copied}
-                                    onCopy={handleCopySolution}
-                                    solutionCode={problem.referenceSolutions[language]}
-                                    editorial={problem.editorial}
-                                />
-                            )}
-                        </div>
-                    </Panel>
-
-                    <Separator className="w-2 bg-transparent hover:bg-white/5 transition-colors cursor-col-resize flex flex-col items-center justify-center gap-1 group mx-1">
-                        <div className="h-4 w-1 bg-white/10 rounded-full group-hover:bg-white/40 transition-colors" />
-                    </Separator>
-
-                    <Panel
-                        defaultSize={60}
-                        minSize={30}
-                        className="flex flex-col bg-[#1E1E1E] rounded-lg border border-white/5 shadow-lg overflow-hidden"
-                    >
-                        <Group orientation="vertical" className="flex-1 w-full h-full">
-                            <Panel
-                                id="editor-panel"
-                                defaultSize={bottomPanelOpen ? 50 : 100}
-                                minSize={30}
-                                className="flex flex-col"
-                            >
-                                <EditorHeader
-                                    language={language}
-                                    isLangDropdownOpen={isLangDropdownOpen}
-                                    setIsLangDropdownOpen={setIsLangDropdownOpen}
-                                    handleLanguageChange={handleLanguageChange}
-                                />
-
-                                <CodeEditor
-                                    code={activeCode}
-                                    setCode={(value) =>
-                                        setCodeByLanguage((current) => ({
-                                            ...current,
-                                            [language]: value,
-                                        }))
+                            {!bottomPanelOpen && (
+                                <BottomPanelFooter
+                                    activeBottomTab={activeBottomTab}
+                                    bottomPanelOpen={bottomPanelOpen}
+                                    toggleBottomPanel={(tab) =>
+                                        toggleBottomPanel(tab as 'testcase' | 'testresult')
                                     }
-                                    language={language}
+                                    setBottomPanelOpen={setBottomPanelOpen}
                                 />
-                            </Panel>
-
-                            {bottomPanelOpen && (
-                                <>
-                                    <Separator className="h-2 bg-transparent hover:bg-white/5 transition-colors cursor-row-resize flex items-center justify-center group">
-                                        <div className="w-4 h-1 bg-white/10 rounded-full group-hover:bg-white/40 transition-colors" />
-                                    </Separator>
-                                    <Panel
-                                        id="testcase-panel"
-                                        defaultSize={50}
-                                        minSize={20}
-                                        className="flex flex-col bg-[#1E1E1E] border-t border-white/5"
-                                    >
-                                        <BottomPanelHeader
-                                            activeBottomTab={activeBottomTab}
-                                            setActiveBottomTab={(tab) =>
-                                                setActiveBottomTab(tab as 'testcase' | 'testresult')
-                                            }
-                                            setBottomPanelOpen={setBottomPanelOpen}
-                                        />
-                                        <div className="flex-1 overflow-y-auto p-4 bg-[#1E1E1E]">
-                                            {activeBottomTab === 'testcase' ? (
-                                                <TestcasePanel
-                                                    examples={problem.examples}
-                                                    activeTestCase={activeTestCase}
-                                                    setActiveTestCase={setActiveTestCase}
-                                                />
-                                            ) : (
-                                                <TestResultPanel
-                                                    isLoading={runMutation.isPending || submitMutation.isPending}
-                                                    title={resultTitle}
-                                                    result={executionResult}
-                                                    message={resultMessage}
-                                                />
-                                            )}
-                                        </div>
-                                    </Panel>
-                                </>
                             )}
-                        </Group>
-
-                        {!bottomPanelOpen && (
-                            <BottomPanelFooter
-                                activeBottomTab={activeBottomTab}
-                                bottomPanelOpen={bottomPanelOpen}
-                                toggleBottomPanel={(tab) =>
-                                    toggleBottomPanel(tab as 'testcase' | 'testresult')
-                                }
-                                setBottomPanelOpen={setBottomPanelOpen}
-                            />
-                        )}
-                    </Panel>
-                </Group>
+                        </Panel>
+                    </Group>
+                </div>
             </div>
         </div>
     )

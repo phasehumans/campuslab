@@ -1,5 +1,5 @@
 import React from 'react'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, ChevronDown } from 'lucide-react'
 import type { ProblemDetail } from '@/lib/types'
 
 interface DescriptionPanelProps {
@@ -81,17 +81,17 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                 </section>
 
                 {problem.hints ? (
-                    <section className="space-y-2">
-                        <h2 className="text-base font-semibold text-white">Hint</h2>
-                        <p>{problem.hints}</p>
-                    </section>
-                ) : null}
-
-                {problem.editorial ? (
-                    <section className="space-y-2">
-                        <h2 className="text-base font-semibold text-white">Editorial</h2>
-                        <p>{problem.editorial}</p>
-                    </section>
+                    <details className="group border border-white/10 rounded-lg bg-white/5 p-4 [&_summary::-webkit-details-marker]:hidden">
+                        <summary className="flex items-center justify-between cursor-pointer focus:outline-none select-none">
+                            <h2 className="text-sm font-semibold text-white">Show Hint</h2>
+                            <span className="text-gray-400 group-open:rotate-180 transition-transform duration-200">
+                                <ChevronDown className="h-4 w-4" />
+                            </span>
+                        </summary>
+                        <p className="mt-3 text-sm text-gray-300 leading-relaxed border-t border-white/5 pt-3">
+                            {problem.hints}
+                        </p>
+                    </details>
                 ) : null}
             </div>
         </>

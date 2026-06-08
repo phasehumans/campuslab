@@ -16,15 +16,17 @@ export function Navbar() {
 
     return (
         <>
-            <nav className="w-full border-b border-white/5 bg-[#1A1A1A] text-white">
+            <nav className="w-full bg-white border-b border-slate-100 shadow-sm text-slate-800">
                 <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                     {/* Logo - Left */}
                     <div className="flex-1 flex items-center">
                         <Link
-                            to="/"
-                            className="text-xl font-bold tracking-tight text-white hover:text-gray-200 transition-colors"
+                            to={isLoggedIn ? "/practice" : "/"}
+                            className="flex items-center gap-2 text-xl font-bold tracking-tight transition-colors"
                         >
-                            Campus Lab
+                            <span className="text-[#3E6FC3] font-black text-xl tracking-tight">
+                                Campus Lab
+                            </span>
                         </Link>
                     </div>
 
@@ -43,16 +45,16 @@ export function Navbar() {
                                         }
                                     }}
                                     className={cn(
-                                        'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200',
+                                        'flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-200 border border-transparent',
                                         isActive
-                                            ? 'text-white bg-white/10'
-                                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                            ? 'text-[#3E6FC3] bg-[#EBF3FC] border-[#D5E6FA]/60 font-semibold shadow-[0_2px_8px_rgba(62,111,195,0.03)]'
+                                            : 'text-slate-600 hover:text-[#3E6FC3] hover:bg-slate-50'
                                     )}
                                 >
                                     <link.icon
                                         className={cn(
                                             'h-4 w-4',
-                                            isActive ? 'text-white' : 'text-gray-400'
+                                            isActive ? 'text-[#3E6FC3]' : 'text-slate-400'
                                         )}
                                     />
                                     {link.name}
@@ -66,17 +68,17 @@ export function Navbar() {
                         {isLoggedIn ? (
                             <Link
                                 to="/profile"
-                                className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white px-2 py-1.5 transition-colors"
+                                className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-[#3E6FC3] px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
                             >
-                                <User className="h-4 w-4" />
+                                <User className="h-4 w-4 text-slate-400" />
                                 Profile
                             </Link>
                         ) : (
                             <button
-                                onClick={openModal}
-                                className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white px-2 py-1.5 transition-colors"
+                                onClick={() => openModal('login')}
+                                className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-[#3E6FC3] px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
                             >
-                                <LogIn className="h-4 w-4" />
+                                <LogIn className="h-4 w-4 text-slate-400" />
                                 Login
                             </button>
                         )}

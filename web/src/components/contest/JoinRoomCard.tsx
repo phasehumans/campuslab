@@ -15,15 +15,15 @@ export function JoinRoomCard({
     isJoining = false,
 }: JoinRoomCardProps) {
     return (
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#161616] p-6 flex flex-col shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 flex flex-col shadow-[0_12px_40px_rgba(0,0,0,0.03)]">
             <div className="relative z-10 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-6 shrink-0">
-                    <div className="p-2.5 bg-white/5 border border-white/10 rounded-xl">
-                        <Play className="h-5 w-5 text-gray-200 ml-0.5" />
+                    <div className="p-2.5 bg-slate-50 border border-slate-150 rounded-xl">
+                        <Play className="h-5 w-5 text-[#3E6FC3] ml-0.5" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-white tracking-tight">Join Room</h2>
-                        <p className="text-xs text-gray-400 mt-0.5">Enter a code to compete</p>
+                        <h2 className="text-lg font-bold text-slate-800 tracking-tight">Join Room</h2>
+                        <p className="text-xs text-slate-400 mt-0.5">Enter a code to compete</p>
                     </div>
                 </div>
 
@@ -32,13 +32,13 @@ export function JoinRoomCard({
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="space-y-3 text-center">
-                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#1A1A1A] border border-white/5 mb-2">
-                            <Hash className="h-6 w-6 text-gray-500" />
+                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-slate-50 border border-slate-100 mb-2">
+                            <Hash className="h-6 w-6 text-slate-400" />
                         </div>
-                        <h3 className="text-base font-medium text-white tracking-tight">
+                        <h3 className="text-base font-semibold text-slate-700 tracking-tight">
                             Have a room code?
                         </h3>
-                        <p className="text-xs text-gray-400 max-w-[200px] mx-auto leading-relaxed">
+                        <p className="text-xs text-slate-400 max-w-[200px] mx-auto leading-relaxed font-medium">
                             Ask the host for the room code and enter it below to join the contest.
                         </p>
                     </div>
@@ -50,7 +50,7 @@ export function JoinRoomCard({
                             onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                             placeholder="ENTER CODE"
                             maxLength={6}
-                            className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3.5 text-center text-xl tracking-[0.5em] font-mono text-white placeholder:text-gray-600 focus:outline-none focus:border-white/30 transition-all uppercase shadow-inner"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-center text-xl tracking-[0.5em] font-mono text-[#3E6FC3] font-bold placeholder:text-slate-300 focus:outline-none focus:bg-white focus:border-[#3E6FC3]/40 transition-all uppercase shadow-inner"
                         />
                     </div>
                 </div>
@@ -58,7 +58,7 @@ export function JoinRoomCard({
                 <button
                     onClick={handleJoinRoom}
                     disabled={roomCode.length < 4 || isJoining}
-                    className="w-full mt-6 shrink-0 bg-[#F5F5F5] hover:bg-white disabled:bg-[#F5F5F5]/50 disabled:text-black/50 disabled:cursor-not-allowed text-black font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm"
+                    className="w-full mt-6 shrink-0 bg-[#3E6FC3] hover:bg-[#325a9e] disabled:bg-blue-300 disabled:text-white/60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all shadow-md shadow-blue-500/10 flex items-center justify-center gap-2 text-sm"
                 >
                     {isJoining ? 'Joining...' : 'Join Contest'} <ArrowRight className="h-4 w-4" />
                 </button>

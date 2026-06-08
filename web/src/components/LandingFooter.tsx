@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Github, Heart } from 'lucide-react'
+import { Github } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 
 export function LandingFooter() {
+    const { isLoggedIn, openModal } = useAuth()
     return (
         <footer className="bg-[#152A4C] text-slate-300 pt-16 pb-12 font-sans border-t border-white/10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -33,17 +35,44 @@ export function LandingFooter() {
                         </h3>
                         <ul className="space-y-2.5 text-sm font-medium">
                             <li>
-                                <Link to="/practice" className="hover:text-white transition-colors">
+                                <Link 
+                                    to="/practice" 
+                                    onClick={(e) => {
+                                        if (!isLoggedIn) {
+                                            e.preventDefault()
+                                            openModal('login')
+                                        }
+                                    }}
+                                    className="hover:text-white transition-colors"
+                                >
                                     Problem Sheets
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/contest" className="hover:text-white transition-colors">
+                                <Link 
+                                    to="/contest" 
+                                    onClick={(e) => {
+                                        if (!isLoggedIn) {
+                                            e.preventDefault()
+                                            openModal('login')
+                                        }
+                                    }}
+                                    className="hover:text-white transition-colors"
+                                >
                                     Contest Rooms
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/practice" className="hover:text-white transition-colors">
+                                <Link 
+                                    to="/practice" 
+                                    onClick={(e) => {
+                                        if (!isLoggedIn) {
+                                            e.preventDefault()
+                                            openModal('login')
+                                        }
+                                    }}
+                                    className="hover:text-white transition-colors"
+                                >
                                     Leaderboard
                                 </Link>
                             </li>
