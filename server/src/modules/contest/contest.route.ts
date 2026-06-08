@@ -3,8 +3,8 @@ import {
     createContestRoom,
     getContestRoom,
     joinContestRoom,
-} from '../controllers/contest.controller.js'
-import { authMiddleware, optionalAuthMiddleware } from '../middleware/auth.middleware.js'
+} from './contest.controller.js'
+import { authMiddleware, optionalAuthMiddleware } from '../../middleware/auth.middleware.js'
 
 const contestRouter = Router()
 

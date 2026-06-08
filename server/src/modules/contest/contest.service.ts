@@ -199,3 +199,124 @@ export const recordContestProblemSolved = async (
 
     return room
 }
+import { db } from '../../config/db.js'
+import { difficultyPoints, difficultyLabels } from './contest.utils.js'
+
+export const buildContestRoomResponse = async (room: ContestRoomRecord, currentUserId?: string) => {
+    const [problems, users] = await Promise.all([
+        db.problem.findMany({
+            where: {
+                id: {
+                    in: room.problemIds,
+                },
+            },
+            select: {
+                id: true,
+                title: true,
+                difficulty: true,
+                tags: true,
+            },
+        }),
+        db.user.findMany({
+            where: {
+                id: {
+                    in: room.participants.map((participant) => participant.userId),
+                },
+            },
+            select: {
+                id: true,
+                name: true,
+                prn: true,
+            },
+        }),
+    ])
+
+    const usersById = new Map(users.map((user) => [user.id, user]))
+    const problemsById = new Map(problems.map((problem) => [problem.id, problem]))
+    const currentStanding = currentUserId ? room.standings[currentUserId] : undefined
+    const solvedByCurrentUser = new Set(currentStanding?.solvedProblemIds ?? [])
+
+    const questions = room.problemIds
+        .map((problemId) => problemsById.get(problemId))
+        .filter(Boolean)
+        .map((problem) => ({
+            id: problem!.id,
+            title: problem!.title,
+            difficulty: difficultyLabels[problem!.difficulty],
+            tags: problem!.tags,
+            points: room.problemPoints[problem!.id] ?? difficultyPoints[problem!.difficulty],
+            solved: solvedByCurrentUser.has(problem!.id),
+        }))
+
+    const leaderboard = room.participants
+        .map((participant) => {
+            const user = usersById.get(participant.userId)
+            const standing = room.standings[participant.userId] ?? {
+                score: 0,
+                solvedProblemIds: [],
+                lastAcceptedAt: null,
+            }
+
+            return {
+                userId: participant.userId,
+                name: user?.name ?? user?.prn ?? 'Anonymous',
+                prn: user?.prn ?? '',
+                score: standing.score,
+                solved: standing.solvedProblemIds.length,
+                lastAcceptedAt: standing.lastAcceptedAt,
+                isYou: participant.userId === currentUserId,
+            }
+        })
+        .sort((left, right) => {
+            if (right.score !== left.score) {
+                return right.score - left.score
+            }
+
+            if (right.solved !== left.solved) {
+                return right.solved - left.solved
+            }
+
+            if (!left.lastAcceptedAt && !right.lastAcceptedAt) {
+                return left.name.localeCompare(right.name)
+            }
+
+            if (!left.lastAcceptedAt) {
+                return 1
+            }
+
+            if (!right.lastAcceptedAt) {
+                return -1
+            }
+
+            return (
+                new Date(left.lastAcceptedAt).getTime() - new Date(right.lastAcceptedAt).getTime()
+            )
+        })
+        .map((entry, index) => ({
+            rank: index + 1,
+            ...entry,
+        }))
+
+    return {
+        code: room.code,
+        maxParticipants: room.maxParticipants,
+        participantCount: room.participants.length,
+        questionCount: room.questionCount,
+        timeLimitMinutes: room.timeLimitMinutes,
+        topics: room.topics,
+        startsAt: room.startsAt,
+        endsAt: room.endsAt,
+        meJoined: currentUserId ? room.participants.some((p) => p.userId === currentUserId) : false,
+        participants: room.participants.map((participant) => {
+            const user = usersById.get(participant.userId)
+            return {
+                userId: participant.userId,
+                name: user?.name ?? user?.prn ?? 'Anonymous',
+                prn: user?.prn ?? '',
+                isHost: participant.userId === room.hostUserId,
+            }
+        }),
+        questions,
+        leaderboard,
+    }
+}

@@ -1,39 +1,9 @@
 import type { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { UserRole } from '../generated/prisma/enums.js'
-import { z } from 'zod'
-import { db } from '../libs/db.js'
-
-const getJwtSecret = (): string => {
-    const jwtSecret = process.env.JWT_SECRET
-    if (!jwtSecret) {
-        throw new Error('JWT_SECRET is not configured')
-    }
-    return jwtSecret
-}
-
-const getCookieOptions = () => {
-    const isProduction = process.env.NODE_ENV === 'production'
-
-    return {
-        httpOnly: true,
-        sameSite: 'lax' as const,
-        secure: isProduction,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-    }
-}
-
-const registerUserSchema = z.object({
-    name: z.string().min(1),
-    prn: z.string().min(9).max(9),
-    password: z.string().min(6),
-})
-
-const loginUserSchema = z.object({
-    prn: z.string().min(9).max(9),
-    password: z.string().min(1),
-})
+import { registerUserSchema, loginUserSchema } from './auth.schema.js'
+import { getCookieOptions, getJwtSecret } from './auth.utils.js'
+import * as authService from './auth.service.js'
 
 export const registerUser = async (req: Request, res: Response) => {
     const parseData = registerUserSchema.safeParse(req.body)
@@ -49,11 +19,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const { name, prn, password } = parseData.data
 
     try {
-        const existingUser = await db.user.findUnique({
-            where: {
-                prn,
-            },
-        })
+        const existingUser = await authService.findUserByPrn(prn)
 
         if (existingUser) {
             return res.status(400).json({
@@ -63,13 +29,10 @@ export const registerUser = async (req: Request, res: Response) => {
         }
 
         const hashPassword = await bcrypt.hash(password, 10)
-        const newUser = await db.user.create({
-            data: {
-                prn,
-                name,
-                password: hashPassword,
-                role: UserRole.USER,
-            },
+        const newUser = await authService.createUser({
+            prn,
+            name,
+            password: hashPassword,
         })
 
         const token = jwt.sign({ id: newUser.id }, getJwtSecret(), {
@@ -111,11 +74,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const { prn, password } = parseData.data
 
     try {
-        const user = await db.user.findUnique({
-            where: {
-                prn,
-            },
-        })
+        const user = await authService.findUserByPrn(prn)
 
         if (!user) {
             return res.status(401).json({
@@ -186,11 +145,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
             })
         }
 
-        const user = await db.user.findUnique({
-            where: {
-                id: userId,
-            },
-        })
+        const user = await authService.findUserById(userId)
 
         if (!user) {
             return res.status(404).json({

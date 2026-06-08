@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import { authMiddleware } from '../middleware/auth.middleware.js'
+import { authMiddleware } from '../../middleware/auth.middleware.js'
 import {
     getAllSubmissions,
     getSubmissionCountById,
     getSubmissionsById,
     submitCode,
-} from '../controllers/submission.controller.js'
+} from './submission.controller.js'
 
 const submissionRouter = Router()
 

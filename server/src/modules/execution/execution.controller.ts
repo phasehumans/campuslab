@@ -1,19 +1,6 @@
 import type { Request, Response } from 'express'
-import { z } from 'zod'
-import { executeCodeAgainstTestcases } from '../libs/codeRunner.js'
-
-const executeCodeSchema = z.object({
-    sourceCode: z.string().min(1),
-    language: z.string().min(1),
-    testcases: z
-        .array(
-            z.object({
-                input: z.string(),
-                output: z.string().optional(),
-            })
-        )
-        .nonempty(),
-})
+import { executeCodeSchema } from './execution.schema.js'
+import * as executionService from './execution.service.js'
 
 export const executeCode = async (req: Request, res: Response) => {
     const parsed = executeCodeSchema.safeParse(req.body)
@@ -34,7 +21,7 @@ export const executeCode = async (req: Request, res: Response) => {
     }
 
     try {
-        const execution = await executeCodeAgainstTestcases(parsed.data)
+        const execution = await executionService.executeCode(parsed.data)
 
         return res.status(200).json({
             success: true,

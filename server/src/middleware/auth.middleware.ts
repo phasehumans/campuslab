@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { db } from '../libs/db.js'
+import { db } from '../config/db.js'
 
 type AuthTokenPayload = {
     id: string

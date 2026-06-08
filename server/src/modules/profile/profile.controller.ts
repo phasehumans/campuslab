@@ -1,11 +1,6 @@
 import type { Request, Response } from 'express'
-import { db } from '../libs/db.js'
-
-const difficultyLabels = {
-    EASY: 'Easy',
-    MEDIUM: 'Medium',
-    HARD: 'Hard',
-} as const
+import { difficultyLabels } from './profile.utils.js'
+import * as profileService from './profile.service.js'
 
 export const getMyProfile = async (req: Request, res: Response) => {
     const userId = req.user?.id
@@ -18,49 +13,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
     }
 
     try {
-        const [user, problems, solvedProblems, recentSubmissions] = await Promise.all([
-            db.user.findUnique({
-                where: { id: userId },
-                select: {
-                    id: true,
-                    name: true,
-                    prn: true,
-                    role: true,
-                    createdAt: true,
-                },
-            }),
-            db.problem.findMany({
-                select: {
-                    id: true,
-                    difficulty: true,
-                },
-            }),
-            db.problemSolved.findMany({
-                where: { userId },
-                include: {
-                    problem: {
-                        select: {
-                            id: true,
-                            difficulty: true,
-                        },
-                    },
-                },
-            }),
-            db.submission.findMany({
-                where: { userId },
-                orderBy: { createdAt: 'desc' },
-                take: 8,
-                include: {
-                    problem: {
-                        select: {
-                            id: true,
-                            title: true,
-                            difficulty: true,
-                        },
-                    },
-                },
-            }),
-        ])
+        const [user, problems, solvedProblems, recentSubmissions] = await profileService.getUserProfileStats(userId)
 
         if (!user) {
             return res.status(404).json({

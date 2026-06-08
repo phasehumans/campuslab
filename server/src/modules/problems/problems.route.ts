@@ -3,7 +3,7 @@ import {
     authMiddleware,
     checkAdmin,
     optionalAuthMiddleware,
-} from '../middleware/auth.middleware.js'
+} from '../../middleware/auth.middleware.js'
 import {
     createProblem,
     deleteProblem,
@@ -11,7 +11,7 @@ import {
     getProblemById,
     updateProblem,
     getSolvedProblems,
-} from '../controllers/problems.controller.js'
+} from './problems.controller.js'
 
 const problemRouter = Router()
 

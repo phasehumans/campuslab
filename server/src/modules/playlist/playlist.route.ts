@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { authMiddleware } from '../middleware/auth.middleware.js'
+import { authMiddleware } from '../../middleware/auth.middleware.js'
 import {
     addProblemToPlayList,
     createPlayList,
@@ -7,7 +7,7 @@ import {
     getAllPlaylist,
     getPlayListDetails,
     removeProblemFromPlayList,
-} from '../controllers/playlist.controller.js'
+} from './playlist.controller.js'
 
 const playListRouter = Router()
 

@@ -2,14 +2,15 @@ import 'dotenv/config'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 
-import authRouter from './routes/auth.route.js'
-import problemRouter from './routes/problems.route.js'
-import executionRouter from './routes/execution.route.js'
-import submissionRouter from './routes/submission.route.js'
-import playListRouter from './routes/playlist.route.js'
-import profileRouter from './routes/profile.route.js'
-import contestRouter from './routes/contest.route.js'
-import { ensureSeedData } from './libs/bootstrap.js'
+import authRouter from './modules/auth/auth.route.js'
+import problemRouter from './modules/problems/problems.route.js'
+import executionRouter from './modules/execution/execution.route.js'
+import submissionRouter from './modules/submission/submission.route.js'
+import playListRouter from './modules/playlist/playlist.route.js'
+import profileRouter from './modules/profile/profile.route.js'
+import contestRouter from './modules/contest/contest.route.js'
+import { ensureSeedData } from './shared/bootstrap.js'
+import { globalRateLimiter } from './middleware/ratelimiter.middleware.js'
 
 const app = express()
 const clientOrigin = process.env.CLIENT_ORIGIN ?? 'http://localhost:4000'
@@ -42,6 +43,8 @@ app.get('/', (_req, res) => {
         message: 'Campus Lab backend is running',
     })
 })
+
+app.use(globalRateLimiter)
 
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/problems', problemRouter)
