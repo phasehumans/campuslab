@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { db } from '../libs/db.js'
+import { db } from '../config/db.js'
 
 type AuthTokenPayload = {
     id: string
@@ -65,11 +65,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const optionalAuthMiddleware = async (
-    req: Request,
-    _res: Response,
-    next: NextFunction
-) => {
+export const optionalAuthMiddleware = async (req: Request, _res: Response, next: NextFunction) => {
     const token = req.cookies?.jwt as string | undefined
 
     if (!token) {

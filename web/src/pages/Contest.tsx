@@ -4,12 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { CreateRoomCard } from '@/components/contest/CreateRoomCard'
 import { JoinRoomCard } from '@/components/contest/JoinRoomCard'
 import { useAuth } from '@/contexts/AuthContext'
-import {
-    createContestRoom,
-    getApiErrorMessage,
-    getProblems,
-    joinContestRoom,
-} from '@/lib/api'
+import { createContestRoom, getApiErrorMessage, getProblems, joinContestRoom } from '@/lib/api'
 
 export function Contest() {
     const navigate = useNavigate()
@@ -36,7 +31,9 @@ export function Contest() {
 
     const availableTopics = useMemo(
         () =>
-            Array.from(new Set((problemsQuery.data ?? []).flatMap((problem) => problem.tags))).sort(),
+            Array.from(
+                new Set((problemsQuery.data ?? []).flatMap((problem) => problem.tags))
+            ).sort(),
         [problemsQuery.data]
     )
 
@@ -47,7 +44,9 @@ export function Contest() {
     }, [availableTopics, topics.length])
 
     const maxQuestionCount = Math.max(1, Math.min(5, problemsQuery.data?.length ?? 1))
-    const questionOptions = Array.from({ length: maxQuestionCount }, (_, index) => String(index + 1))
+    const questionOptions = Array.from({ length: maxQuestionCount }, (_, index) =>
+        String(index + 1)
+    )
 
     useEffect(() => {
         if (!questionOptions.includes(numQuestions)) {
@@ -130,9 +129,9 @@ export function Contest() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center py-8 px-4">
+        <div className="max-w-4xl mx-auto w-full flex flex-col py-8 px-4">
             {problemsQuery.isLoading ? (
-                <div className="w-full rounded-2xl border border-white/10 bg-[#161616] p-6 text-sm text-gray-400">
+                <div className="w-full rounded-2xl border border-slate-100 bg-white p-6 text-sm text-slate-400 shadow-sm">
                     Loading contest configuration...
                 </div>
             ) : problemsQuery.isError ? (
@@ -150,7 +149,11 @@ export function Contest() {
                             availableTopics={availableTopics}
                             numQuestions={numQuestions}
                             setNumQuestions={(value) =>
-                                setNumQuestions(questionOptions.includes(value) ? value : questionOptions[0] ?? '1')
+                                setNumQuestions(
+                                    questionOptions.includes(value)
+                                        ? value
+                                        : (questionOptions[0] ?? '1')
+                                )
                             }
                             questionOptions={questionOptions}
                             timeLimit={timeLimit}

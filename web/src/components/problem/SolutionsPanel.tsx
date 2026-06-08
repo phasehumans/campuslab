@@ -10,16 +10,9 @@ interface SolutionsPanelProps {
     copied: boolean
     onCopy: () => void
     solutionCode?: string
-    editorial?: string | null
 }
 
-export function SolutionsPanel({
-    language,
-    copied,
-    onCopy,
-    solutionCode,
-    editorial,
-}: SolutionsPanelProps) {
+export function SolutionsPanel({ language, copied, onCopy, solutionCode }: SolutionsPanelProps) {
     const activeLanguage = LANGUAGES.find((item) => item.id === language)
     const code = solutionCode ?? FALLBACK_CODE[language]
 
@@ -55,12 +48,6 @@ export function SolutionsPanel({
                     }}
                 />
             </div>
-            {editorial ? (
-                <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4 text-sm text-gray-300 leading-relaxed">
-                    <h3 className="mb-2 text-white font-medium">Approach</h3>
-                    <p>{editorial}</p>
-                </div>
-            ) : null}
         </div>
     )
 }

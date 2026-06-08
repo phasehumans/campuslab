@@ -52,20 +52,14 @@ const request = async <T>(
         ...init,
     })
 
-    const payload = await response
-        .json()
-        .catch(() => null)
+    const payload = await response.json().catch(() => null)
 
     if (!response.ok) {
         if (options?.allowUnauthorized && response.status === 401) {
             return null
         }
 
-        throw new ApiError(
-            getErrorMessage(payload, 'Request failed'),
-            response.status,
-            payload
-        )
+        throw new ApiError(getErrorMessage(payload, 'Request failed'), response.status, payload)
     }
 
     return payload as T
@@ -100,11 +94,7 @@ export const loginUser = async (payload: { prn: string; password: string }) => {
     return response!.user
 }
 
-export const registerUser = async (payload: {
-    name: string
-    prn: string
-    password: string
-}) => {
+export const registerUser = async (payload: { name: string; prn: string; password: string }) => {
     const response = await request<{ user: User }>('/auth/signup', {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -155,13 +145,14 @@ export const submitCode = async (payload: {
     language: EditorLanguage
     contestCode?: string | null
 }) => {
-    const response = await request<{ submission: unknown; message: string; execution: ExecutionResponse }>(
-        '/submission/submit',
-        {
-            method: 'POST',
-            body: JSON.stringify(payload),
-        }
-    )
+    const response = await request<{
+        submission: unknown
+        message: string
+        execution: ExecutionResponse
+    }>('/submission/submit', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+    })
 
     return response!
 }

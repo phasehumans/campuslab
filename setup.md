@@ -1,4 +1,4 @@
-#### Setup
+### Setup
 
 - setup wsl
     - wsl --install

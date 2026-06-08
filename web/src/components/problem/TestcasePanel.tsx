@@ -7,11 +7,7 @@ interface TestcasePanelProps {
     setActiveTestCase: (idx: number) => void
 }
 
-export function TestcasePanel({
-    examples,
-    activeTestCase,
-    setActiveTestCase,
-}: TestcasePanelProps) {
+export function TestcasePanel({ examples, activeTestCase, setActiveTestCase }: TestcasePanelProps) {
     const currentExample = examples[activeTestCase]
 
     if (!currentExample) {

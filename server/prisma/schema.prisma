@@ -35,7 +35,6 @@ model User {
   problems       Problem[]
   submissions    Submission[]
   problemSolveds ProblemSolved[]
-  playlists      Playlist[]
 }
 
 model Problem {
@@ -57,10 +56,9 @@ model Problem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   subdmissions     Submission[]
   problemSolveds   ProblemSolved[]
-  problemPlaylists ProblemPlaylist[]
 }
 
 model Submission {
@@ -117,30 +115,18 @@ model ProblemSolved {
   @@unique([userId, problemId])
 }
 
-model Playlist {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  userId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  problems ProblemPlaylist[]
-  user     User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([name, userId])
-}
-
-model ProblemPlaylist {
-  id         String @id @default(uuid())
-  playListId String
-  problemId  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  playList Playlist @relation(fields: [playListId], references: [id], onDelete: Cascade)
-  problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
-
-  @@unique([playListId, problemId])
+model ContestRoom {
+  code              String   @id
+  hostUserId        String
+  maxParticipants   Int?
+  questionCount     Int
+  timeLimitMinutes  Int
+  topics            String[]
+  problemIds        String[]
+  problemPoints     Json     // Record<string, number>
+  participants      Json     // Array<{ userId: string, joinedAt: string }>
+  standings         Json     // Record<string, { score: number, solvedProblemIds: string[], lastAcceptedAt: string | null }>
+  createdAt         DateTime @default(now())
+  startsAt          DateTime @default(now())
+  endsAt            DateTime
 }

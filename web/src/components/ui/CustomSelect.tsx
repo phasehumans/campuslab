@@ -29,20 +29,20 @@ export function CustomSelect({ value, onChange, options }: CustomSelectProps) {
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between bg-[#1A1A1A] hover:bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition-all"
+                className="w-full flex items-center justify-between bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none transition-all font-semibold"
             >
-                <span className="font-medium">{selectedLabel}</span>
+                <span className="font-semibold">{selectedLabel}</span>
                 <ChevronDown
                     className={cn(
-                        'h-4 w-4 text-gray-500 transition-transform duration-200',
+                        'h-4 w-4 text-slate-400 transition-transform duration-200',
                         isOpen && 'rotate-180'
                     )}
                 />
             </button>
 
             {isOpen && (
-                <div className="absolute top-full left-0 mt-2 w-full bg-[#1E1E1E] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden backdrop-blur-xl">
-                    <div className="max-h-48 overflow-y-auto py-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
+                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden">
+                    <div className="max-h-48 overflow-y-auto py-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-200 [&::-webkit-scrollbar-thumb]:rounded-full">
                         {options.map((opt) => (
                             <button
                                 key={opt.value}
@@ -54,13 +54,13 @@ export function CustomSelect({ value, onChange, options }: CustomSelectProps) {
                                 className={cn(
                                     'w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between',
                                     value === opt.value
-                                        ? 'text-white bg-white/10 font-medium'
-                                        : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                        ? 'text-[#3E6FC3] bg-[#EBF3FC] hover:bg-[#D5E6FA]/65 font-bold'
+                                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'
                                 )}
                             >
                                 {opt.label}
                                 {value === opt.value && (
-                                    <CheckCircle2 className="h-4 w-4 text-white/50" />
+                                    <CheckCircle2 className="h-4 w-4 text-[#3E6FC3]" />
                                 )}
                             </button>
                         ))}

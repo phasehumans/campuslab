@@ -1,12 +1,6 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-    getApiErrorMessage,
-    getCurrentUser,
-    loginUser,
-    logoutUser,
-    registerUser,
-} from '@/lib/api'
+import { getApiErrorMessage, getCurrentUser, loginUser, logoutUser, registerUser } from '@/lib/api'
 import type { User } from '@/lib/types'
 
 type AuthMode = 'login' | 'signup'
@@ -117,7 +111,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const value: AuthContextType = {
         isLoggedIn: Boolean(currentUserQuery.data),
         isAuthLoading: currentUserQuery.isLoading,
-        isSubmitting: loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending,
+        isSubmitting:
+            loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending,
         user: currentUserQuery.data ?? null,
         isModalOpen,
         authMode,

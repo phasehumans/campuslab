@@ -8,12 +8,7 @@ interface TestResultPanelProps {
     message?: string | null
 }
 
-export function TestResultPanel({
-    isLoading,
-    title,
-    result,
-    message,
-}: TestResultPanelProps) {
+export function TestResultPanel({ isLoading, title, result, message }: TestResultPanelProps) {
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-3">
