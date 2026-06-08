@@ -32,7 +32,7 @@ export const getUserProfileStats = async (userId: string) => {
         db.submission.findMany({
             where: { userId },
             orderBy: { createdAt: 'desc' },
-            take: 8,
+            take: 10,
             include: {
                 problem: {
                     select: {

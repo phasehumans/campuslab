@@ -1,6 +1,4 @@
-import { promises as fs } from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { db } from '../../config/db.js'
 
 export type ContestParticipantRecord = {
     userId: string
@@ -29,10 +27,6 @@ export type ContestRoomRecord = {
     endsAt: string
 }
 
-type ContestStore = {
-    rooms: ContestRoomRecord[]
-}
-
 type CreateContestRoomInput = {
     hostUserId: string
     maxParticipants: number | null
@@ -41,29 +35,6 @@ type CreateContestRoomInput = {
     topics: string[]
     problemIds: string[]
     problemPoints: Record<string, number>
-}
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const storePath = path.resolve(__dirname, '../../data/contest-rooms.json')
-
-const ensureStore = async () => {
-    await fs.mkdir(path.dirname(storePath), { recursive: true })
-    try {
-        await fs.access(storePath)
-    } catch {
-        await fs.writeFile(storePath, JSON.stringify({ rooms: [] }, null, 2))
-    }
-}
-
-const readStore = async (): Promise<ContestStore> => {
-    await ensureStore()
-    const raw = await fs.readFile(storePath, 'utf-8')
-    return JSON.parse(raw) as ContestStore
-}
-
-const writeStore = async (store: ContestStore) => {
-    await fs.writeFile(storePath, JSON.stringify(store, null, 2))
 }
 
 const generateRoomCode = (existingCodes: Set<string>) => {
@@ -97,42 +68,78 @@ export const createContestRoomRecord = async ({
     topics,
     problemIds,
     problemPoints,
-}: CreateContestRoomInput) => {
-    const store = await readStore()
+}: CreateContestRoomInput): Promise<ContestRoomRecord> => {
+    const rooms = await db.contestRoom.findMany({ select: { code: true } })
+    const code = generateRoomCode(new Set(rooms.map((room) => room.code)))
     const now = new Date()
-    const code = generateRoomCode(new Set(store.rooms.map((room) => room.code)))
+    const endsAt = new Date(now.getTime() + timeLimitMinutes * 60 * 1000)
 
-    const room: ContestRoomRecord = {
-        code,
-        hostUserId,
-        maxParticipants,
-        questionCount,
-        timeLimitMinutes,
-        topics,
-        problemIds,
-        problemPoints,
-        participants: [{ userId: hostUserId, joinedAt: now.toISOString() }],
-        standings: {
-            [hostUserId]: createEmptyStanding(),
-        },
-        createdAt: now.toISOString(),
-        startsAt: now.toISOString(),
-        endsAt: new Date(now.getTime() + timeLimitMinutes * 60 * 1000).toISOString(),
+    const participants = [{ userId: hostUserId, joinedAt: now.toISOString() }]
+    const standings = {
+        [hostUserId]: createEmptyStanding(),
     }
 
-    store.rooms.push(room)
-    await writeStore(store)
-    return room
+    const room = await db.contestRoom.create({
+        data: {
+            code,
+            hostUserId,
+            maxParticipants,
+            questionCount,
+            timeLimitMinutes,
+            topics,
+            problemIds,
+            problemPoints: problemPoints as any,
+            participants: participants as any,
+            standings: standings as any,
+            createdAt: now,
+            startsAt: now,
+            endsAt,
+        }
+    })
+
+    return {
+        code: room.code,
+        hostUserId: room.hostUserId,
+        maxParticipants: room.maxParticipants,
+        questionCount: room.questionCount,
+        timeLimitMinutes: room.timeLimitMinutes,
+        topics: room.topics,
+        problemIds: room.problemIds,
+        problemPoints: room.problemPoints as Record<string, number>,
+        participants: room.participants as unknown as ContestParticipantRecord[],
+        standings: room.standings as unknown as Record<string, ContestStandingRecord>,
+        createdAt: room.createdAt.toISOString(),
+        startsAt: room.startsAt.toISOString(),
+        endsAt: room.endsAt.toISOString(),
+    }
 }
 
-export const getContestRoomRecord = async (code: string) => {
-    const store = await readStore()
-    return store.rooms.find((room) => room.code === code.toUpperCase()) ?? null
+export const getContestRoomRecord = async (code: string): Promise<ContestRoomRecord | null> => {
+    const room = await db.contestRoom.findUnique({
+        where: { code: code.toUpperCase() }
+    })
+    if (!room) return null
+    return {
+        code: room.code,
+        hostUserId: room.hostUserId,
+        maxParticipants: room.maxParticipants,
+        questionCount: room.questionCount,
+        timeLimitMinutes: room.timeLimitMinutes,
+        topics: room.topics,
+        problemIds: room.problemIds,
+        problemPoints: room.problemPoints as Record<string, number>,
+        participants: room.participants as unknown as ContestParticipantRecord[],
+        standings: room.standings as unknown as Record<string, ContestStandingRecord>,
+        createdAt: room.createdAt.toISOString(),
+        startsAt: room.startsAt.toISOString(),
+        endsAt: room.endsAt.toISOString(),
+    }
 }
 
-export const joinContestRoomRecord = async (code: string, userId: string) => {
-    const store = await readStore()
-    const room = store.rooms.find((item) => item.code === code.toUpperCase())
+export const joinContestRoomRecord = async (code: string, userId: string): Promise<ContestRoomRecord> => {
+    const room = await db.contestRoom.findUnique({
+        where: { code: code.toUpperCase() }
+    })
 
     if (!room) {
         throw new Error('Contest room not found')
@@ -143,32 +150,60 @@ export const joinContestRoomRecord = async (code: string, userId: string) => {
         throw new Error('Contest room has already ended')
     }
 
-    if (!room.participants.some((participant) => participant.userId === userId)) {
+    const participants = room.participants as unknown as ContestParticipantRecord[]
+    const standings = room.standings as unknown as Record<string, ContestStandingRecord>
+
+    if (!participants.some((participant) => participant.userId === userId)) {
         if (
             room.maxParticipants !== null &&
-            room.participants.length >= Number(room.maxParticipants)
+            participants.length >= Number(room.maxParticipants)
         ) {
             throw new Error('Contest room is full')
         }
 
-        room.participants.push({
+        participants.push({
             userId,
             joinedAt: now.toISOString(),
         })
     }
 
-    room.standings[userId] = room.standings[userId] ?? createEmptyStanding()
-    await writeStore(store)
-    return room
+    if (!standings[userId]) {
+        standings[userId] = createEmptyStanding()
+    }
+
+    const updatedRoom = await db.contestRoom.update({
+        where: { code: code.toUpperCase() },
+        data: {
+            participants: participants as any,
+            standings: standings as any,
+        }
+    })
+
+    return {
+        code: updatedRoom.code,
+        hostUserId: updatedRoom.hostUserId,
+        maxParticipants: updatedRoom.maxParticipants,
+        questionCount: updatedRoom.questionCount,
+        timeLimitMinutes: updatedRoom.timeLimitMinutes,
+        topics: updatedRoom.topics,
+        problemIds: updatedRoom.problemIds,
+        problemPoints: updatedRoom.problemPoints as Record<string, number>,
+        participants: updatedRoom.participants as unknown as ContestParticipantRecord[],
+        standings: updatedRoom.standings as unknown as Record<string, ContestStandingRecord>,
+        createdAt: updatedRoom.createdAt.toISOString(),
+        startsAt: updatedRoom.startsAt.toISOString(),
+        endsAt: updatedRoom.endsAt.toISOString(),
+    }
 }
 
 export const recordContestProblemSolved = async (
     code: string,
     userId: string,
     problemId: string
-) => {
-    const store = await readStore()
-    const room = store.rooms.find((item) => item.code === code.toUpperCase())
+): Promise<ContestRoomRecord> => {
+    const room = await db.contestRoom.findUnique({
+        where: { code: code.toUpperCase() }
+    })
 
     if (!room) {
         throw new Error('Contest room not found')
@@ -178,28 +213,80 @@ export const recordContestProblemSolved = async (
         throw new Error('Problem does not belong to this contest room')
     }
 
-    if (!room.participants.some((participant) => participant.userId === userId)) {
+    const participants = room.participants as unknown as ContestParticipantRecord[]
+    if (!participants.some((participant) => participant.userId === userId)) {
         throw new Error('You have not joined this contest room')
     }
 
     const now = new Date()
     if (new Date(room.endsAt).getTime() <= now.getTime()) {
-        return room
+        return {
+            code: room.code,
+            hostUserId: room.hostUserId,
+            maxParticipants: room.maxParticipants,
+            questionCount: room.questionCount,
+            timeLimitMinutes: room.timeLimitMinutes,
+            topics: room.topics,
+            problemIds: room.problemIds,
+            problemPoints: room.problemPoints as Record<string, number>,
+            participants: room.participants as unknown as ContestParticipantRecord[],
+            standings: room.standings as unknown as Record<string, ContestStandingRecord>,
+            createdAt: room.createdAt.toISOString(),
+            startsAt: room.startsAt.toISOString(),
+            endsAt: room.endsAt.toISOString(),
+        }
     }
 
-    const standing = room.standings[userId] ?? createEmptyStanding()
+    const standings = room.standings as unknown as Record<string, ContestStandingRecord>
+    const standing = standings[userId] ?? createEmptyStanding()
 
     if (!standing.solvedProblemIds.includes(problemId)) {
         standing.solvedProblemIds.push(problemId)
-        standing.score += room.problemPoints[problemId] ?? 0
+        const problemPoints = room.problemPoints as Record<string, number>
+        standing.score += problemPoints[problemId] ?? 0
         standing.lastAcceptedAt = now.toISOString()
-        room.standings[userId] = standing
-        await writeStore(store)
+        standings[userId] = standing
+
+        const updatedRoom = await db.contestRoom.update({
+            where: { code: code.toUpperCase() },
+            data: {
+                standings: standings as any,
+            }
+        })
+
+        return {
+            code: updatedRoom.code,
+            hostUserId: updatedRoom.hostUserId,
+            maxParticipants: updatedRoom.maxParticipants,
+            questionCount: updatedRoom.questionCount,
+            timeLimitMinutes: updatedRoom.timeLimitMinutes,
+            topics: updatedRoom.topics,
+            problemIds: updatedRoom.problemIds,
+            problemPoints: updatedRoom.problemPoints as Record<string, number>,
+            participants: updatedRoom.participants as unknown as ContestParticipantRecord[],
+            standings: updatedRoom.standings as unknown as Record<string, ContestStandingRecord>,
+            createdAt: updatedRoom.createdAt.toISOString(),
+            startsAt: updatedRoom.startsAt.toISOString(),
+            endsAt: updatedRoom.endsAt.toISOString(),
+        }
     }
 
-    return room
+    return {
+        code: room.code,
+        hostUserId: room.hostUserId,
+        maxParticipants: room.maxParticipants,
+        questionCount: room.questionCount,
+        timeLimitMinutes: room.timeLimitMinutes,
+        topics: room.topics,
+        problemIds: room.problemIds,
+        problemPoints: room.problemPoints as Record<string, number>,
+        participants: room.participants as unknown as ContestParticipantRecord[],
+        standings: room.standings as unknown as Record<string, ContestStandingRecord>,
+        createdAt: room.createdAt.toISOString(),
+        startsAt: room.startsAt.toISOString(),
+        endsAt: room.endsAt.toISOString(),
+    }
 }
-import { db } from '../../config/db.js'
 import { difficultyPoints, difficultyLabels } from './contest.utils.js'
 
 export const buildContestRoomResponse = async (room: ContestRoomRecord, currentUserId?: string) => {

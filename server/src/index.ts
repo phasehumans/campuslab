@@ -6,7 +6,6 @@ import authRouter from './modules/auth/auth.route.js'
 import problemRouter from './modules/problems/problems.route.js'
 import executionRouter from './modules/execution/execution.route.js'
 import submissionRouter from './modules/submission/submission.route.js'
-import playListRouter from './modules/playlist/playlist.route.js'
 import profileRouter from './modules/profile/profile.route.js'
 import contestRouter from './modules/contest/contest.route.js'
 import { ensureSeedData } from './shared/bootstrap.js'
@@ -50,7 +49,6 @@ app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/problems', problemRouter)
 app.use('/api/v1/code-execution', executionRouter)
 app.use('/api/v1/submission', submissionRouter)
-app.use('/api/v1/playlist', playListRouter)
 app.use('/api/v1/profile', profileRouter)
 app.use('/api/v1/contests', contestRouter)
 

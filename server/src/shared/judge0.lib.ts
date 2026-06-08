@@ -38,6 +38,11 @@ const judge0LanguageRegistry = {
         id: 62,
         label: 'Java',
     },
+    rust: {
+        aliases: ['rust', 'rs'],
+        id: 73,
+        label: 'Rust',
+    },
 } as const
 
 const getJudge0ApiUrl = () => {
