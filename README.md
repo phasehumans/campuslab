@@ -2,7 +2,7 @@
 
 **Campus Lab** is competitive programming platform purpose-built for RCPIT. It provides a complete environment where students can practice Data Structures & Algorithms problems, write and execute code in multiple languages, and compete with peers in real-time contests - all within a self-hosted, campus-friendly deployment.
 
-<video src="https://github.com/user-attachments/assets/e0617aa2-9f5e-4e7d-853c-333375083c0d" autoplay loop muted playsinline width="100%" title="Campus Lab Demo"></video>
+<video src="https://github.com/user-attachments/assets/ec509c59-f112-4805-803c-9e717b3ba0ec" autoplay loop muted playsinline width="100%" title="Campus Lab Demo"></video>
 
 The platform ships with **200+ curated DSA problems** spanning 15 topic categories (Arrays, Trees, Graphs, Dynamic Programming, and more), each with working solutions in **C++, Python, Java, and Rust**.
 
