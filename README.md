@@ -1,14 +1,10 @@
 # Campus Lab
 
-**Campus Lab** is competitive programming platform purpose-built for RCPIT (AIML branch). It provides a complete environment where students can practice Data Structures & Algorithms problems, write and execute code in multiple languages, and compete with peers in real-time contests — all within a self-hosted, campus-friendly deployment.
+**Campus Lab** is competitive programming platform purpose-built for RCPIT. It provides a complete environment where students can practice Data Structures & Algorithms problems, write and execute code in multiple languages, and compete with peers in real-time contests - all within a self-hosted, campus-friendly deployment.
+
+<video src="web/public/demo.mp4" autoplay loop muted playsinline width="100%" title="Campus Lab Demo"></video>
 
 The platform ships with **200+ curated DSA problems** spanning 15 topic categories (Arrays, Trees, Graphs, Dynamic Programming, and more), each with working solutions in **C++, Python, Java, and Rust**.
-
-
-![Campus Lab Demo](web/public/demo.gif)
-
-
-## Features
 
 - **200+ DSA Problems** -- Curated problems across 15 topics (Easy, Medium, Hard) sourced from competitive programming classics
 - **Multi-Language Code Editor** -- In-browser CodeMirror editor with syntax highlighting for C++, Python, Java, and Rust
@@ -99,94 +95,3 @@ graph LR
 - Rate limiting, error handling, and security hardening
 
 
-## Getting Started
-
-### Prerequisites
-
-| Requirement | Version |
-|---|---|
-| **WSL 2** (Windows) or Linux | Ubuntu 22.04+ |
-| **Docker** + Docker Compose | v20+ |
-| **Node.js** | v20+ |
-| **Bun** (or npm) | Latest |
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/phasehumans/campuslab.git
-cd campuslab
-```
-
-### 2. Setup Judge0 CE
-
-```bash
-# Download and extract Judge0
-wget https://github.com/judge0/judge0/releases/download/v1.13.1/judge0-v1.13.1.zip
-unzip judge0-v1.13.1.zip
-
-# Configure Judge0
-cd judge0-v1.13.1
-nano judge0.conf  # Set Redis and Postgres passwords
-
-# Start Judge0
-docker compose up -d db redis
-sleep 10
-docker compose up -d
-sleep 5
-
-# Verify Judge0 is running
-curl http://localhost:2358/languages
-```
-
-### 3. Setup Campus Lab
-
-```bash
-cd /path/to/campuslab
-
-# Start PostgreSQL
-docker compose up -d
-
-# Install dependencies
-cd server && bun install && cd ..
-cd web && bun install && cd ..
-```
-
-### 4. Configure Environment
-
-Create `server/.env`:
-
-```env
-PORT=3000
-JWT_SECRET=your-secret-key-here
-JUDGE_API_URL=http://localhost:2358
-DATABASE_URL=postgresql://myuser:mypassword@localhost:5433/campus_lab
-```
-
-### 5. Setup Database
-
-```bash
-cd server
-
-# Generate Prisma client
-npx prisma generate
-
-# Run migrations
-npx prisma migrate deploy
-
-# Seed problems (optional — auto-seeds on first startup)
-npx tsx prisma/seed.ts
-```
-
-### 6. Start the Application
-
-```bash
-# Option A: Use the start script
-./start.sh
-
-# Option B: Start manually
-# Terminal 1 -- Backend
-cd server && bun run dev
-
-# Terminal 2 -- Frontend
-cd web && bun run dev
-```
