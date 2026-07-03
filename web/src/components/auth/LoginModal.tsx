@@ -102,7 +102,7 @@ export function LoginModal() {
                                 required
                                 value={name}
                                 onChange={(event) => setName(event.target.value)}
-                                placeholder="e.g. Chaitanya Sonawane"
+                                placeholder="e.g. Chetan Sonawane"
                                 className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#3E6FC3] focus:ring-1 focus:ring-[#3E6FC3] transition-all"
                             />
                         </div>

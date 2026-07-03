@@ -136,7 +136,7 @@ export function LandingPage() {
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
                                             <img
-                                                src="https://api.dicebear.com/7.x/micah/svg?seed=Sakshi"
+                                                src="https://api.dicebear.com/10.x/glyphs/svg?seed=Sakshi"
                                                 className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white"
                                                 alt="Sakshi"
                                             />
@@ -157,7 +157,7 @@ export function LandingPage() {
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
                                             <img
-                                                src="https://api.dicebear.com/7.x/micah/svg?seed=Jayesh"
+                                                src="https://api.dicebear.com/10.x/glyphs/svg?seed=Jayesh"
                                                 className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white"
                                                 alt="Jayesh"
                                             />
@@ -178,7 +178,7 @@ export function LandingPage() {
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
                                             <img
-                                                src="https://api.dicebear.com/7.x/micah/svg?seed=Sachin"
+                                                src="https://api.dicebear.com/10.x/glyphs/svg?seed=Sachin"
                                                 className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white"
                                                 alt="Sachin"
                                             />
@@ -199,13 +199,13 @@ export function LandingPage() {
                                     <div className="flex items-center justify-between p-4 rounded-[20px] border border-[#F0F2F6] bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:border-slate-200 transition-all duration-300">
                                         <div className="flex items-center gap-4">
                                             <img
-                                                src="https://api.dicebear.com/7.x/micah/svg?seed=Chaitanya"
+                                                src="https://api.dicebear.com/10.x/glyphs/svg?seed=Chetan"
                                                 className="w-12 h-12 rounded-full object-cover border border-[#E5E9F0] bg-white"
-                                                alt="Chaitanya"
+                                                alt="Chetan"
                                             />
                                             <div>
                                                 <span className="font-extrabold text-gray-900 block text-base tracking-tight mb-0.5">
-                                                    Chaitanya
+                                                    Chetan
                                                 </span>
                                                 <span className="text-sm text-gray-400 font-medium">
                                                     Reading Problem A...
@@ -375,7 +375,7 @@ export function LandingPage() {
                                 </p>
                                 <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                                     <img
-                                        src="https://api.dicebear.com/7.x/micah/svg?seed=Student1"
+                                        src="https://api.dicebear.com/10.x/glyphs/svg?seed=Student1"
                                         alt="Student"
                                         className="w-10 h-10 rounded-full object-cover border border-gray-200"
                                     />
@@ -409,13 +409,13 @@ export function LandingPage() {
                                 </p>
                                 <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                                     <img
-                                        src="https://api.dicebear.com/7.x/micah/svg?seed=Student2"
+                                        src="https://api.dicebear.com/10.x/glyphs/svg?seed=Student2"
                                         alt="Student"
                                         className="w-10 h-10 rounded-full object-cover border border-gray-200"
                                     />
                                     <div>
                                         <p className="font-bold text-gray-900 text-sm">
-                                            Dnyaneshwari Girase
+                                            Darshan Desale
                                         </p>
                                         <p className="text-gray-500 text-xs">
                                             RCPIT (AIML) Batch of 2027
@@ -443,7 +443,7 @@ export function LandingPage() {
                                 </p>
                                 <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                                     <img
-                                        src="https://api.dicebear.com/7.x/micah/svg?seed=Student3"
+                                        src="https://api.dicebear.com/10.x/glyphs/svg?seed=Student3"
                                         alt="Student"
                                         className="w-10 h-10 rounded-full object-cover border border-gray-200"
                                     />
@@ -454,6 +454,54 @@ export function LandingPage() {
                                         <p className="text-gray-500 text-xs">
                                             RCPIT (AIML) Batch of 2027
                                         </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-[#fafcff] p-8 rounded-2xl border border-gray-100 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
+                                <div className="text-[#3E6FC3] mb-6">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M14.017 21L16.439 14.823C16.592 14.482 16.711 14.157 16.797 13.847C16.884 13.537 16.927 13.23 16.927 12.925C16.927 12.396 16.79 11.975 16.516 11.663C16.241 11.35 15.86 11.194 15.372 11.194C15.006 11.194 14.654 11.272 14.316 11.428C13.978 11.585 13.682 11.832 13.43 12.169L11.815 9.771C12.392 9.074 13.09 8.528 13.911 8.132C14.733 7.737 15.65 7.539 16.662 7.539C17.925 7.539 18.97 7.893 19.799 8.601C20.627 9.31 21.042 10.28 21.042 11.512C21.042 12.35 20.893 13.149 20.596 13.91C20.298 14.671 19.92 15.422 19.462 16.162L16.471 21H14.017ZM4.708 21L7.13 14.823C7.283 14.482 7.402 14.157 7.488 13.847C7.575 13.537 7.618 13.23 7.618 12.925C7.618 12.396 7.481 11.975 7.207 11.663C6.932 11.35 6.551 11.194 6.063 11.194C5.697 11.194 5.345 11.272 5.007 11.428C4.669 11.585 4.373 11.832 4.121 12.169L2.506 9.771C3.083 9.074 3.781 8.528 4.602 8.132C5.424 7.737 6.341 7.539 7.353 7.539C8.616 7.539 9.661 7.893 10.49 8.601C11.318 9.31 11.733 10.28 11.733 11.512C11.733 12.35 11.584 13.149 11.287 13.91C10.989 14.671 10.611 15.422 10.153 16.162L7.162 21H4.708Z" /></svg>
+                                </div>
+                                <p className="text-gray-700 mb-8 leading-relaxed flex-grow font-medium">
+                                    I love the user interface. It feels so premium and the problem sets are perfectly aligned with what is required for campus placements.
+                                </p>
+                                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                                    <img src="https://api.dicebear.com/10.x/glyphs/svg?seed=Kuldip" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                                    <div>
+                                        <p className="font-bold text-gray-900 text-sm">Kuldip Mahale</p>
+                                        <p className="text-gray-500 text-xs">RCPIT (AIML) Batch of 2027</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-[#fafcff] p-8 rounded-2xl border border-gray-100 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
+                                <div className="text-[#3E6FC3] mb-6">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M14.017 21L16.439 14.823C16.592 14.482 16.711 14.157 16.797 13.847C16.884 13.537 16.927 13.23 16.927 12.925C16.927 12.396 16.79 11.975 16.516 11.663C16.241 11.35 15.86 11.194 15.372 11.194C15.006 11.194 14.654 11.272 14.316 11.428C13.978 11.585 13.682 11.832 13.43 12.169L11.815 9.771C12.392 9.074 13.09 8.528 13.911 8.132C14.733 7.737 15.65 7.539 16.662 7.539C17.925 7.539 18.97 7.893 19.799 8.601C20.627 9.31 21.042 10.28 21.042 11.512C21.042 12.35 20.893 13.149 20.596 13.91C20.298 14.671 19.92 15.422 19.462 16.162L16.471 21H14.017ZM4.708 21L7.13 14.823C7.283 14.482 7.402 14.157 7.488 13.847C7.575 13.537 7.618 13.23 7.618 12.925C7.618 12.396 7.481 11.975 7.207 11.663C6.932 11.35 6.551 11.194 6.063 11.194C5.697 11.194 5.345 11.272 5.007 11.428C4.669 11.585 4.373 11.832 4.121 12.169L2.506 9.771C3.083 9.074 3.781 8.528 4.602 8.132C5.424 7.737 6.341 7.539 7.353 7.539C8.616 7.539 9.661 7.893 10.49 8.601C11.318 9.31 11.733 10.28 11.733 11.512C11.733 12.35 11.584 13.149 11.287 13.91C10.989 14.671 10.611 15.422 10.153 16.162L7.162 21H4.708Z" /></svg>
+                                </div>
+                                <p className="text-gray-700 mb-8 leading-relaxed flex-grow font-medium">
+                                    The AI mentor is a game-changer. It explains the core logic when I'm stuck without giving me the code directly. Very helpful!
+                                </p>
+                                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                                    <img src="https://api.dicebear.com/10.x/glyphs/svg?seed=Nilesh" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                                    <div>
+                                        <p className="font-bold text-gray-900 text-sm">Nilesh Patil</p>
+                                        <p className="text-gray-500 text-xs">RCPIT (AIML) Batch of 2027</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-[#fafcff] p-8 rounded-2xl border border-gray-100 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
+                                <div className="text-[#3E6FC3] mb-6">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M14.017 21L16.439 14.823C16.592 14.482 16.711 14.157 16.797 13.847C16.884 13.537 16.927 13.23 16.927 12.925C16.927 12.396 16.79 11.975 16.516 11.663C16.241 11.35 15.86 11.194 15.372 11.194C15.006 11.194 14.654 11.272 14.316 11.428C13.978 11.585 13.682 11.832 13.43 12.169L11.815 9.771C12.392 9.074 13.09 8.528 13.911 8.132C14.733 7.737 15.65 7.539 16.662 7.539C17.925 7.539 18.97 7.893 19.799 8.601C20.627 9.31 21.042 10.28 21.042 11.512C21.042 12.35 20.893 13.149 20.596 13.91C20.298 14.671 19.92 15.422 19.462 16.162L16.471 21H14.017ZM4.708 21L7.13 14.823C7.283 14.482 7.402 14.157 7.488 13.847C7.575 13.537 7.618 13.23 7.618 12.925C7.618 12.396 7.481 11.975 7.207 11.663C6.932 11.35 6.551 11.194 6.063 11.194C5.697 11.194 5.345 11.272 5.007 11.428C4.669 11.585 4.373 11.832 4.121 12.169L2.506 9.771C3.083 9.074 3.781 8.528 4.602 8.132C5.424 7.737 6.341 7.539 7.353 7.539C8.616 7.539 9.661 7.893 10.49 8.601C11.318 9.31 11.733 10.28 11.733 11.512C11.733 12.35 11.584 13.149 11.287 13.91C10.989 14.671 10.611 15.422 10.153 16.162L7.162 21H4.708Z" /></svg>
+                                </div>
+                                <p className="text-gray-700 mb-8 leading-relaxed flex-grow font-medium">
+                                    Finally a platform built just for us. It helps track my real-time progress and keep me accountable. Highly recommend to everyone.
+                                </p>
+                                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                                    <img src="https://api.dicebear.com/10.x/glyphs/svg?seed=Harshal" alt="Student" className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                                    <div>
+                                        <p className="font-bold text-gray-900 text-sm">Harshal Patil</p>
+                                        <p className="text-gray-500 text-xs">RCPIT (AIML) Batch of 2027</p>
                                     </div>
                                 </div>
                             </div>

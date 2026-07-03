@@ -6,7 +6,7 @@
 set -e
 
 CAMPUSLAB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-JUDGE0_DIR="${JUDGE0_DIR:-/mnt/c/Code/judge0-v1.13.1}"
+JUDGE0_DIR="${JUDGE0_DIR:-/home/chaitanya/code/judge0-v1.13.1}"
 
 echo ""
 echo "Campus Lab -- Stopping all services"

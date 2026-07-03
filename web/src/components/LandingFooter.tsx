@@ -106,7 +106,7 @@ export function LandingFooter() {
                         <p className="text-sm text-slate-300 leading-relaxed font-medium">
                             Semester Project built by{' '}
                             <span className="text-white font-semibold">
-                                Sakshi, Jayesh, Sachin & Chaitanya
+                                Sakshi, Jayesh, Sachin & Chetan
                             </span>
                             .
                         </p>

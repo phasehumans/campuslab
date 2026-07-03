@@ -8,7 +8,7 @@ interface UserInfoProps {
 }
 
 export function UserInfo({ user, handleLogout }: UserInfoProps) {
-    const avatarUrl = `https://api.dicebear.com/7.x/micah/svg?seed=${encodeURIComponent(user.name ?? user.prn)}`
+    const avatarUrl = `https://api.dicebear.com/10.x/glyphs/svg?seed=${encodeURIComponent(user.name ?? user.prn)}`
 
     return (
         <div className="md:col-span-4 space-y-6">

@@ -88,7 +88,7 @@ async function main() {
             ...triesStringsProblems,
             ...bitManipulationProblems,
             ...mathNumberTheoryProblems,
-        ]
+        ].filter(p => !!p)
 
         console.log(`\n📦 Total problems to seed: ${allProblems.length}`)
         console.log(`   Easy: ${allProblems.filter((p) => p.difficulty === 'EASY').length}`)
