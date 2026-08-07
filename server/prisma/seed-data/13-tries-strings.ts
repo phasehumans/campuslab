@@ -97,7 +97,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -275,7 +275,7 @@ fn main() {
     // Read s and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 bool isPalindrome(const string& s, int l, int r) {
@@ -478,7 +478,7 @@ fn main() {
     // Read the line and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -636,7 +636,7 @@ fn main() {
     // Solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TrieNode {
@@ -983,7 +983,7 @@ fn main() {
     // Implement WordDictionary with wildcard matching
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TrieNode {
@@ -1326,7 +1326,7 @@ fn main() {
     // Read n, k and find the common prefix
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TrieNode {
@@ -1630,7 +1630,7 @@ fn main() {
     // Sort array or search via Trie
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1858,7 +1858,7 @@ fn main() {
     // DFS with Trie tracking
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TrieNode {
@@ -2213,7 +2213,7 @@ fn main() {
     // Parse words and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 bool isPalindrome(const string& s) {
@@ -2516,7 +2516,7 @@ fn main() {
     // Build Suffix Automaton and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct State {

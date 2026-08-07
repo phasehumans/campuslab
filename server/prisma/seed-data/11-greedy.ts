@@ -109,7 +109,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -340,7 +340,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -604,7 +604,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -791,7 +791,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -995,7 +995,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1214,7 +1214,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1455,7 +1455,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1679,7 +1679,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1907,7 +1907,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2168,7 +2168,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 

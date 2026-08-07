@@ -3,13 +3,25 @@
     "module": "index.ts",
     "type": "module",
     "private": true,
+    "workspaces": [
+        "web",
+        "server"
+    ],
     "scripts": {
         "format": "prettier . --write",
-        "check-format": "prettier . --check"
+        "check-format": "prettier . --check",
+        "lint": "bun run --filter '*' lint",
+        "test": "bun run --filter '*' test"
     },
     "devDependencies": {
+        "@eslint/js": "^9.0.0",
         "@types/bun": "latest",
-        "prettier": "^3.8.1"
+        "eslint": "^9.0.0",
+        "eslint-plugin-react": "^7.37.0",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "globals": "^15.0.0",
+        "prettier": "^3.8.1",
+        "typescript-eslint": "^8.0.0"
     },
     "peerDependencies": {
         "typescript": "^5"

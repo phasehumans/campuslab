@@ -72,7 +72,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -241,7 +241,7 @@ fn main() {
     // Read two strings and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -449,7 +449,7 @@ fn main() {
     // Read n and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -632,7 +632,7 @@ fn main() {
     // Read ransomNote and magazine, and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -808,7 +808,7 @@ fn main() {
     // Read jewels and stones, and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -968,7 +968,7 @@ fn main() {
     // Read input, solve and sort
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1165,7 +1165,7 @@ fn main() {
     // Read array and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1352,7 +1352,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1533,7 +1533,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1768,7 +1768,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2015,7 +2015,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2309,7 +2309,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2614,7 +2614,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -3000,7 +3000,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -3384,7 +3384,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -3709,7 +3709,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -3889,7 +3889,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -4050,7 +4050,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -4230,7 +4230,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -4417,7 +4417,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 

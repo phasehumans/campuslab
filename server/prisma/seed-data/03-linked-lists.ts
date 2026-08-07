@@ -82,7 +82,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -312,7 +312,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -500,7 +500,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -705,7 +705,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -962,7 +962,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -1195,7 +1195,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -1465,7 +1465,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -1691,7 +1691,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -1966,7 +1966,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -2245,7 +2245,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -2486,7 +2486,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -2740,7 +2740,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -2987,7 +2987,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 class LRUCache {
@@ -3283,7 +3283,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -3665,7 +3665,7 @@ public class Main {
 fn main() {
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct Node {
@@ -4014,7 +4014,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -4289,7 +4289,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -4534,7 +4534,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -4801,7 +4801,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -5073,7 +5073,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct Node {

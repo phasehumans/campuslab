@@ -51,7 +51,7 @@ model Problem {
 
   testcases         Json
   codesnippets      Json
-  referneceSolution Json
+  referenceSolution Json
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

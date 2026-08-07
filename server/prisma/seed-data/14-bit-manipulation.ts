@@ -64,7 +64,7 @@ fn main() {
     // Read input and find single number
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -184,7 +184,7 @@ fn main() {
     // Read n and count set bits
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -285,7 +285,7 @@ fn main() {
     // Read n and check if power of two
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -386,7 +386,7 @@ fn main() {
     // Read n and reverse its 32 bits
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -501,7 +501,7 @@ fn main() {
     // Read input and generate subsets using bitmasks
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -643,7 +643,7 @@ fn main() {
     // Read left, right and compute AND of range
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -767,7 +767,7 @@ fn main() {
     // Read input and find max XOR
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -924,7 +924,7 @@ fn main() {
     // Use binary trie for max XOR
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TrieNode {
@@ -1125,7 +1125,7 @@ fn main() {
     // Read a, b, c and find minimum flips
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1275,7 +1275,7 @@ fn main() {
     }
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1427,7 +1427,7 @@ fn main() {
     // Read two integers and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1546,7 +1546,7 @@ fn main() {
     // Read n and array, solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1688,7 +1688,7 @@ fn main() {
     // Read array and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1865,7 +1865,7 @@ fn main() {
     // Read prefix XOR and queries, solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2024,7 +2024,7 @@ fn main() {
     // Read array and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {

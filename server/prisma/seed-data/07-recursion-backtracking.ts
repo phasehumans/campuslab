@@ -60,7 +60,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int fib(int n) {
@@ -176,7 +176,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 unsigned long long fact(int n) {
@@ -292,7 +292,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 long long hanoi(int n) {
@@ -408,7 +408,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 bool isPowerOfTwo(long long n) {
@@ -534,7 +534,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 long long sumDigits(long long n) {
@@ -661,7 +661,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 void backtrack(string current, int open, int close, int max_val) {
@@ -814,7 +814,7 @@ fn main() {
     // Read input and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int countSubsets(int idx, const vector<int>& arr) {
@@ -966,7 +966,7 @@ fn main() {
     // Read S and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int countPerms(string& s, vector<bool>& used) {
@@ -1136,7 +1136,7 @@ fn main() {
     // Read candidates and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int memo[35][505];
@@ -1311,7 +1311,7 @@ fn main() {
     // Read board and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int m, n;
@@ -1542,7 +1542,7 @@ fn main() {
     // Read n and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int total = 0;
@@ -1752,7 +1752,7 @@ fn main() {
     // Read 9 lines of 9 space-separated characters and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 char board[9][9];
@@ -1997,7 +1997,7 @@ fn main() {
     // Read string, dictionary size, and dictionary words. Print combinations count.
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 unordered_map<string, long long> memo;
@@ -2180,7 +2180,7 @@ fn main() {
     // Read R, C, r, c and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int R, C;
@@ -2379,7 +2379,7 @@ fn main() {
     // Read n, board and solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int n;

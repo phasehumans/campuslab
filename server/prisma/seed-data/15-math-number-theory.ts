@@ -75,7 +75,7 @@ fn main() {
     // Read n and print primes up to n
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -289,7 +289,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -456,7 +456,7 @@ fn main() {
     // Read n and output prime factors in format p^e
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -651,7 +651,7 @@ fn main() {
     // Read x, n, m and print (x^n) % m
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -828,7 +828,7 @@ fn main() {
     // Read L and R, count primes in [L, R]
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1042,7 +1042,7 @@ fn main() {
     // Read n and r and print P(n, r) % 1000000007
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1209,7 +1209,7 @@ fn main() {
     // Read n and r and print C(n, r) % 1000000007
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1474,7 +1474,7 @@ fn main() {
     // Read a and m and print modular inverse or -1
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1687,7 +1687,7 @@ fn main() {
     // Read input and solve using Chinese Remainder Theorem
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1962,7 +1962,7 @@ fn main() {
     // Read n and print derangements modulo 10^9 + 7
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2149,7 +2149,7 @@ fn main() {
     // Read n and print YES if prime, NO otherwise
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2334,7 +2334,7 @@ fn main() {
     // Read n and print the sum of its divisors
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2504,7 +2504,7 @@ fn main() {
     // Read n and print phi(n)
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2689,7 +2689,7 @@ fn main() {
     // Read G and L, and output the number of pairs
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2892,7 +2892,7 @@ fn main() {
     // Read L and R, and output the number of primes in [L, R]
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 

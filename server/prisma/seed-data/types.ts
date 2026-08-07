@@ -26,7 +26,7 @@ export type SeedProblem = {
         java: string
         rust: string
     }
-    referneceSolution: {
+    referenceSolution: {
         cpp: string
         python: string
         java: string

@@ -326,7 +326,7 @@ erDiagram
         string editorial
         json testcases
         json codesnippets
-        json referneceSolution
+        json referenceSolution
         datetime createdAt
         datetime updatedAt
     }
@@ -394,7 +394,7 @@ erDiagram
 
 ### Key Design Decisions
 
-- **JSON fields** (`examples`, `testcases`, `codesnippets`, `referneceSolution`) store structured data that doesn't need relational querying — avoids excessive normalization
+- **JSON fields** (`examples`, `testcases`, `codesnippets`, `referenceSolution`) store structured data that doesn't need relational querying — avoids excessive normalization
 - **ProblemSolved** is a denormalized tracking table with a `@@unique([userId, problemId])` constraint for fast profile lookups
 - **ContestRoom** uses JSON arrays/objects for participants and standings to support real-time contest state without complex joins
 

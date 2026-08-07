@@ -72,7 +72,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -263,7 +263,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -420,7 +420,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -666,7 +666,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -849,7 +849,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1017,7 +1017,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1241,7 +1241,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1409,7 +1409,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1568,7 +1568,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 bool isPossible(const vector<long long>& A, int n, int m, long long maxPages) {
@@ -1831,7 +1831,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2029,7 +2029,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2281,7 +2281,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2561,7 +2561,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 bool canSplit(const vector<long long>& nums, int k, long long max_sum) {
@@ -2809,7 +2809,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -3019,7 +3019,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct Element {
@@ -3266,7 +3266,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -3450,7 +3450,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -3632,7 +3632,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -3800,7 +3800,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct Interval {
@@ -4023,7 +4023,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -4296,7 +4296,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -4518,7 +4518,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -4729,7 +4729,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -4945,7 +4945,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -5157,7 +5157,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {

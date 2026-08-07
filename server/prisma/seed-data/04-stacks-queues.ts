@@ -111,7 +111,7 @@ export const stacksQueuesProblems: SeedProblem[] = [
             { input: '{[()]}(', output: 'false' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -274,7 +274,7 @@ fn main() {
             java: JAVA_QUERIES,
             rust: RUST_QUERIES,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -453,7 +453,7 @@ fn main() {
             java: JAVA_QUERIES,
             rust: RUST_QUERIES,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -636,7 +636,7 @@ fn main() {
             { input: '10\n9 8 7 3 2 1 4 5 6 10', output: '10 10 10 4 4 4 5 6 10 -1' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -767,7 +767,7 @@ fn main() {
             { input: '11\n2 3 * 5 4 * + 9 - 2 /', output: '8' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 bool is_op(const string& s) { return s == "+" || s == "-" || s == "*" || s == "/"; }
@@ -910,7 +910,7 @@ fn main() {
             { input: '8\n40 35 45 40 38 42 46 41', output: '2 1 4 2 1 1 0 0' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1047,7 +1047,7 @@ fn main() {
             { input: '3[2[1[a]]]', output: 'aaaaaa' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1209,7 +1209,7 @@ fn main() {
             { input: '8\n10 9 8 7 -7 -8 -9 -10', output: '' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1359,7 +1359,7 @@ fn main() {
             { input: '/a/b/c/d/e/../../../../f', output: '/a/f' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1487,7 +1487,7 @@ fn main() {
             { input: '8\n1000 500 600 700 800 900 1000 1100', output: '1 1 2 3 4 5 7 8' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1629,7 +1629,7 @@ fn main() {
             { input: '10\n3 5 7 9 10 8 6 4 2 1', output: '30' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1768,7 +1768,7 @@ fn main() {
             { input: '5 5\n11111\n00000\n11111\n00000\n11111', output: '5' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -1941,7 +1941,7 @@ fn main() {
             { input: '10 4\n12 1 78 90 56 89 56 120 23 10', output: '90 90 90 90 120 120 120' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2079,7 +2079,7 @@ fn main() {
             { input: '1 - ( -2 )', output: '3' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2256,7 +2256,7 @@ fn main() {
             { input: '12\n5 4 3 2 1 0 1 2 3 4 5 6', output: '25' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2397,7 +2397,7 @@ fn main() {
             { input: 'realllylongstringwithduuupppliiccattees', output: 'realylongstringwithduplas' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2520,7 +2520,7 @@ fn main() {
             { input: '10\n10 D C 20 D C 30 D C', output: '60' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2676,7 +2676,7 @@ fn main() {
             { input: '(((((((())))))))', output: '128' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2802,7 +2802,7 @@ fn main() {
             { input: '4 8\n0:start:0\n1:start:1\n2:start:2\n3:start:3\n3:end:4\n2:end:5\n1:end:6\n0:end:7', output: '2 2 2 2' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {
@@ -2999,7 +2999,7 @@ fn main() {
             { input: '()()()()()', output: '10' },
         ],
         codesnippets: { cpp: CPP_BASIC, python: PYTHON_BASIC, java: JAVA_BASIC, rust: RUST_BASIC },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 int main() {

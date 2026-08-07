@@ -69,7 +69,7 @@ fn main() {
     // Read k, n and the stream
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -263,7 +263,7 @@ fn main() {
     // Read n and the stones array, simulate
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -447,7 +447,7 @@ fn main() {
     // Read array and verify Max-Heap properties
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -642,7 +642,7 @@ fn main() {
     // Find the k-th largest element using BinaryHeap
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -809,7 +809,7 @@ fn main() {
     // Read nums, count frequencies, and sort with heap
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1050,7 +1050,7 @@ fn main() {
     // Find k smallest pairs using BinaryHeap
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1358,7 +1358,7 @@ fn main() {
     // Merge k sorted arrays using BinaryHeap
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1635,7 +1635,7 @@ fn main() {
     // Find running median formatted to 1 decimal place
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -1877,7 +1877,7 @@ fn main() {
     // Find smallest range covering elements from all k lists
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2188,7 +2188,7 @@ fn main() {
     // Find the skyline key points
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2531,7 +2531,7 @@ fn main() {
     // Read n, k and the gifts array, then solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2736,7 +2736,7 @@ fn main() {
     // Read n and the ropes array, then solve
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -2928,7 +2928,7 @@ fn main() {
     // Read matrix, find k-th smallest element
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -3183,7 +3183,7 @@ fn main() {
     // Read points, find k closest points
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -3447,7 +3447,7 @@ fn main() {
     // Read n, k, w, profits, and capital, find max capital
 }`
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 

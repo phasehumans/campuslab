@@ -91,7 +91,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -342,7 +342,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -560,7 +560,7 @@ fn main() {
     // Read two lines and compare
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -805,7 +805,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -1055,7 +1055,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -1333,7 +1333,7 @@ public class Main {
 // Read input and print level order
 fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -1560,7 +1560,7 @@ public class Main {
             rust: `use std::io::{self, BufRead};
 fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -1760,7 +1760,7 @@ public class Main {
             rust: `use std::io::{self, BufRead};
 fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -1979,7 +1979,7 @@ public class Main {
 }`,
             rust: `fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -2213,7 +2213,7 @@ public class Main {
 }`,
             rust: `fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -2459,7 +2459,7 @@ public class Main {
 }`,
             rust: `fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -2678,7 +2678,7 @@ public class Main {
 }`,
             rust: `fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -2893,7 +2893,7 @@ public class Main {
 }`,
             rust: `fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -3168,7 +3168,7 @@ public class Main {
 }`,
             rust: `fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -3466,7 +3466,7 @@ public class Main {
 }`,
             rust: `fn main() {}`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -3809,7 +3809,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -4059,7 +4059,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -4309,7 +4309,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -4593,7 +4593,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -4870,7 +4870,7 @@ fn main() {
     }
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 struct TreeNode {
@@ -5148,7 +5148,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -5418,7 +5418,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -5683,7 +5683,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -5940,7 +5940,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
@@ -6241,7 +6241,7 @@ fn main() {
     // Read input and solve
 }`,
         },
-        referneceSolution: {
+        referenceSolution: {
             cpp: `#include <bits/stdc++.h>
 using namespace std;
 
