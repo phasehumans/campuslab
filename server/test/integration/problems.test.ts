@@ -38,11 +38,12 @@ describe('Problems Module - Integration Tests', () => {
             python: 'def factorial(n):\n    pass',
             cpp: 'int factorial(int n) {\n    return 0;\n}',
         },
+        referenceSolution: {
+            python: "def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)",
+            cpp: "int factorial(int n) {\n    if (n == 0) return 1;\n    return n * factorial(n - 1);\n}",
+        },
         editorial: 'Use a loop or recursion to multiply from 1 to N.',
         hints: 'Base case for 0 is 1.',
-        referneceSolution: {
-            python: 'import math\nprint(math.factorial(int(input())))',
-        },
     };
 
     beforeAll(async () => {

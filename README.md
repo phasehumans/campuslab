@@ -1,22 +1,22 @@
 # Campus Lab
 
-**Campus Lab** is competitive programming platform purpose-built for RCPIT. It provides a complete environment where students can practice Data Structures & Algorithms problems, write and execute code in multiple languages, and compete with peers in real-time contests - all within a self-hosted, campus-friendly deployment.
+**Campus Lab** is competitive programming platform purpose-built for RCPIT. It provides a complete environment where students can practice Data Structures & Algorithms problems, write and execute code in multiple languages, and compete with peers in real-time contests.
 
 <video src="https://github.com/user-attachments/assets/ec509c59-f112-4805-803c-9e717b3ba0ec" controls preload="metadata" loop muted playsinline width="100%" title="Campus Lab Demo"></video>
 
 The platform ships with **200+ curated DSA problems** spanning 15 topic categories (Arrays, Trees, Graphs, Dynamic Programming, and more), each with working solutions in **C++, Python, Java, and Rust**.
 
-- **200+ DSA Problems** -- Curated problems across 15 topics (Easy, Medium, Hard) sourced from competitive programming classics
-- **Multi-Language Code Editor** -- In-browser CodeMirror editor with syntax highlighting for C++, Python, Java, and Rust
-- **Instant Code Execution** -- Run code against sample test cases with real-time feedback via Judge0 CE
-- **Full Submission Judging** -- Submit code against 10 hidden test cases per problem with pass/fail verdicts
-- **Live Contest Rooms** -- Create or join real-time contest rooms with customizable topics, time limits, and live leaderboards
-- **Profile Dashboard** -- Track solved problems, submission history, and progress across difficulty levels
-- **Secure Authentication** -- JWT-based auth with httpOnly cookies and bcrypt password hashing
-- **Problem Filtering** -- Filter problems by difficulty (Easy/Medium/Hard) and search by title
-- **Rich Problem Statements** -- Detailed descriptions, constraints, hints, editorials, and worked examples
-- **Dockerized Infrastructure** -- One-command setup for PostgreSQL and Judge0 via Docker Compose
-- **Auto-Seeding** -- Database automatically seeds with all problems on first server startup
+- **200+ DSA Problems** - Curated problems across 15 topics (Easy, Medium, Hard) sourced from competitive programming classics
+- **Multi-Language Code Editor** - In-browser CodeMirror editor with syntax highlighting for C++, Python, Java, and Rust
+- **Instant Code Execution** - Run code against sample test cases with real-time feedback via Judge0 CE
+- **Full Submission Judging** - Submit code against 10 hidden test cases per problem with pass/fail verdicts
+- **Live Contest Rooms** - Create or join real-time contest rooms with customizable topics, time limits, and live leaderboards
+- **Profile Dashboard** - Track solved problems, submission history, and progress across difficulty levels
+- **Secure Authentication** - JWT-based auth with httpOnly cookies and bcrypt password hashing
+- **Problem Filtering** - Filter problems by difficulty (Easy/Medium/Hard) and search by title
+- **Rich Problem Statements** - Detailed descriptions, constraints, hints, editorials, and worked examples
+- **Dockerized Infrastructure** - One-command setup for PostgreSQL and Judge0 via Docker Compose
+- **Auto-Seeding** - Database automatically seeds with all problems on first server startup
 
 
 ## Architecture Overview
@@ -45,18 +45,16 @@ graph LR
     style Data fill:#533483,stroke:#e94560,color:#fff
 ```
 
-> **For detailed architecture documentation with comprehensive diagrams, see [ARCHITECTURE.md](ARCHITECTURE.md)**
-
 
 ## Technologies Used
 
 | Category | Technologies |
 |---|---|
-| **Frontend** | React 19, Vite 6, TypeScript, TailwindCSS 4, CodeMirror 6, TanStack Query, React Router v7, Motion (Framer), Recharts |
-| **Backend** | Express 5, TypeScript, Prisma 7, Zod 4, JWT, bcrypt |
-| **Database** | PostgreSQL 16 |
+| **Frontend** | React, Vite, TypeScript, TailwindCSS, CodeMirror, TanStack Query, React Router, Motion (Framer), Recharts |
+| **Backend** | Express, TypeScript, Prisma, Zod, JWT, bcrypt |
+| **Database** | PostgreSQL |
 | **Code Judge** | Judge0 CE v1.13.1 (self-hosted) |
-| **Infrastructure** | Docker, Docker Compose, WSL 2 |
+| **Infrastructure** | Docker, Docker Compose, WSL |
 | **Languages Supported** | C++ (GCC), Python 3, Java, Rust |
 
 

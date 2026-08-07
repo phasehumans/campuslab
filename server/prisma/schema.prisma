@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -12,57 +7,42 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserRole {
-  ADMIN
-  USER
-}
-
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
-}
-
 model User {
-  id        String   @id @default(uuid())
-  name      String?
-  prn     String   @unique
-  role      UserRole @default(USER)
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id             String          @id @default(uuid())
+  name           String?
+  prn            String          @unique
+  role           UserRole        @default(USER)
+  password       String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   problems       Problem[]
-  submissions    Submission[]
   problemSolveds ProblemSolved[]
+  submissions    Submission[]
 }
 
 model Problem {
-  id          String     @id @default(uuid())
-  title       String
-  description String
-  difficulty  Difficulty
-  tags        String[]
-  userId      String
-  examples    Json
-  constraints String
-  hints       String?
-  editorial   String?
-
+  id                String          @id @default(uuid())
+  title             String
+  description       String
+  difficulty        Difficulty
+  tags              String[]
+  userId            String
+  examples          Json
+  constraints       String
+  hints             String?
+  editorial         String?
   testcases         Json
   codesnippets      Json
-  referenceSolution Json
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  subdmissions     Submission[]
-  problemSolveds   ProblemSolved[]
+  referenceSolution Json @map("referneceSolution")
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemSolveds    ProblemSolved[]
+  subdmissions      Submission[]
 }
 
 model Submission {
-  id                String   @id @default(uuid())
+  id                String           @id @default(uuid())
   userId            String
   problemId         String
   sourceCode        Json
@@ -74,16 +54,15 @@ model Submission {
   status            String
   memoryUsage       String?
   timeTaken         String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  problem   Problem          @relation(fields: [problemId], references: [id], onDelete: Cascade)
-  testcases TestCaseResult[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  problem           Problem          @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testcases         TestCaseResult[]
 }
 
 model TestCaseResult {
-  id             String   @id @default(uuid())
+  id             String     @id @default(uuid())
   submissionId   String
   testCase       String
   passed         Boolean
@@ -94,10 +73,9 @@ model TestCaseResult {
   status         String
   memoryUsage    String?
   timeTaken      String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  submission     Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   @@index([submissionId])
 }
@@ -108,25 +86,35 @@ model ProblemSolved {
   problemId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, problemId])
 }
 
 model ContestRoom {
-  code              String   @id
-  hostUserId        String
-  maxParticipants   Int?
-  questionCount     Int
-  timeLimitMinutes  Int
-  topics            String[]
-  problemIds        String[]
-  problemPoints     Json     // Record<string, number>
-  participants      Json     // Array<{ userId: string, joinedAt: string }>
-  standings         Json     // Record<string, { score: number, solvedProblemIds: string[], lastAcceptedAt: string | null }>
-  createdAt         DateTime @default(now())
-  startsAt          DateTime @default(now())
-  endsAt            DateTime
+  code             String   @id
+  hostUserId       String
+  maxParticipants  Int?
+  questionCount    Int
+  timeLimitMinutes Int
+  topics           String[]
+  problemIds       String[]
+  problemPoints    Json
+  participants     Json
+  standings        Json
+  createdAt        DateTime @default(now())
+  startsAt         DateTime @default(now())
+  endsAt           DateTime
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }
