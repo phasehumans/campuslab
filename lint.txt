@@ -1,0 +1,13 @@
+
+/home/chaitanya/code/campuslab/server/src/modules/auth/auth.controller.ts
+  121:25  error  '_maxAge' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/home/chaitanya/code/campuslab/server/src/modules/contest/contest.service.ts
+   91:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   92:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  177:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  178:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  253:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 7 problems (7 errors, 0 warnings)

@@ -1,6 +1,6 @@
 import { db } from '../../config/db.js'
 import { executeCodeAgainstTestcases } from '../../shared/codeRunner.js'
-import type { Difficulty, Prisma } from '../../generated/prisma/client.js'
+import type { Prisma } from '../../generated/prisma/client.js'
 
 export const getUserProblemMeta = async (userId?: string) => {
     if (!userId) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { LogIn, User } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { User } from 'lucide-react'
+
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 

@@ -163,7 +163,7 @@ describe('Contest Module Integration Tests', () => {
                 { id: 'p2', title: 'Problem 2', difficulty: 'MEDIUM', tags: ['arrays'] },
             ]
 
-            spyOn(mockProblem, 'findMany').mockImplementation(async (args: any) => {
+            spyOn(mockProblem, 'findMany').mockImplementation(async () => {
                 // Return problems matching query
                 return mockMatchingProblems as any
             })

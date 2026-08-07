@@ -118,6 +118,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const logoutUser = async (_req: Request, res: Response) => {
     try {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { maxAge: _maxAge, ...clearCookieOptions } = getCookieOptions()
 
         res.clearCookie('jwt', clearCookieOptions)

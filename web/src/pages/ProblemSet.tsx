@@ -9,8 +9,6 @@ import {
     BookOpen,
     Clock,
     Lightbulb,
-    Award,
-    Star,
     ArrowRight,
 } from 'lucide-react'
 import { getApiErrorMessage, getProblems } from '@/lib/api'
@@ -63,7 +61,6 @@ export function ProblemSet() {
     const solvedCount = problems.filter((p) => p.status === 'Solved').length
     const totalCount = problems.length
     const percentDone = totalCount === 0 ? 0 : Math.round((solvedCount / totalCount) * 100)
-    const totalModules = allTopics.length
 
     const handleResume = () => {
         const firstUnsolved = problems.find((p) => p.status !== 'Solved')

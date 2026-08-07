@@ -1,4 +1,5 @@
 import { db } from '../../config/db.js'
+import { Prisma } from '../../generated/prisma/client.js'
 
 export type ContestParticipantRecord = {
     userId: string
@@ -88,9 +89,9 @@ export const createContestRoomRecord = async ({
             timeLimitMinutes,
             topics,
             problemIds,
-            problemPoints: problemPoints as any,
-            participants: participants as any,
-            standings: standings as any,
+            problemPoints: problemPoints as Prisma.InputJsonValue,
+            participants: participants as Prisma.InputJsonValue,
+            standings: standings as Prisma.InputJsonValue,
             createdAt: now,
             startsAt: now,
             endsAt,
@@ -174,8 +175,8 @@ export const joinContestRoomRecord = async (
     const updatedRoom = await db.contestRoom.update({
         where: { code: code.toUpperCase() },
         data: {
-            participants: participants as any,
-            standings: standings as any,
+            participants: participants as Prisma.InputJsonValue,
+            standings: standings as Prisma.InputJsonValue,
         },
     })
 
@@ -250,7 +251,7 @@ export const recordContestProblemSolved = async (
         const updatedRoom = await db.contestRoom.update({
             where: { code: code.toUpperCase() },
             data: {
-                standings: standings as any,
+                standings: standings as Prisma.InputJsonValue,
             },
         })
 
