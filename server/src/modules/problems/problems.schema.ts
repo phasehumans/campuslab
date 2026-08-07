@@ -23,5 +23,5 @@ export const problemSchema = z.object({
     codesnippets: z.record(z.string(), z.string()),
     editorial: z.string().optional(),
     hints: z.string().optional(),
-    referneceSolution: z.record(z.string(), z.string()),
+    referenceSolution: z.record(z.string(), z.string()),
 })

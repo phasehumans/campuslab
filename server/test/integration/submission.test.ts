@@ -1,4 +1,4 @@
-import { describe, it, expect, spyOn, beforeEach } from 'bun:test'
+import { describe, it, expect, spyOn, beforeEach, afterEach } from 'bun:test'
 import request from 'supertest'
 import jwt from 'jsonwebtoken'
 import { app } from '../../src/app.js'
@@ -19,6 +19,7 @@ describe('Submission Module - Integration Tests', () => {
     let mockSubmissionDelegate: any
     let mockTestCaseResultDelegate: any
     let mockProblemSolvedDelegate: any
+    let spies: any[] = []
 
     const testUserId = 'test-user-id'
     const testAuthCookie = createAuthCookie(testUserId)
@@ -62,6 +63,11 @@ describe('Submission Module - Integration Tests', () => {
         Object.defineProperty(db, 'submission', { value: mockSubmissionDelegate, writable: true, configurable: true })
         Object.defineProperty(db, 'testCaseResult', { value: mockTestCaseResultDelegate, writable: true, configurable: true })
         Object.defineProperty(db, 'problemSolved', { value: mockProblemSolvedDelegate, writable: true, configurable: true })
+    })
+
+    afterEach(() => {
+        spies.forEach((spy) => spy.mockRestore())
+        spies = []
     })
 
     describe('Authentication Guarding (401 Unauthorized)', () => {
@@ -139,7 +145,7 @@ describe('Submission Module - Integration Tests', () => {
         })
 
         it('should return 404 when target problem is not found', async () => {
-            spyOn(submissionService, 'getProblemById').mockImplementation(async () => null)
+            spies.push(spyOn(submissionService, 'getProblemById').mockImplementation(async () => null))
 
             const res = await request(app)
                 .post('/api/v1/submission/submit')
@@ -205,12 +211,13 @@ describe('Submission Module - Integration Tests', () => {
                 ],
             }
 
-            spyOn(submissionService, 'getProblemById').mockImplementation(async () => mockProblem as any)
-            spyOn(submissionService, 'executeCode').mockImplementation(async () => mockExecution as any)
-            spyOn(submissionService, 'createSubmission').mockImplementation(async () => mockSubmission as any)
-            spyOn(submissionService, 'createTestCaseResults').mockImplementation(async () => ({ count: 1 } as any))
+            spies.push(spyOn(submissionService, 'getProblemById').mockImplementation(async () => mockProblem as any))
+            spies.push(spyOn(submissionService, 'executeCode').mockImplementation(async () => mockExecution as any))
+            spies.push(spyOn(submissionService, 'createSubmission').mockImplementation(async () => mockSubmission as any))
+            spies.push(spyOn(submissionService, 'createTestCaseResults').mockImplementation(async () => ({ count: 1 } as any)))
             const upsertSpy = spyOn(submissionService, 'upsertProblemSolved').mockImplementation(async () => ({}) as any)
-            spyOn(submissionService, 'getSubmissionWithTestcases').mockImplementation(async () => mockSubmissionWithTestcases as any)
+            spies.push(upsertSpy)
+            spies.push(spyOn(submissionService, 'getSubmissionWithTestcases').mockImplementation(async () => mockSubmissionWithTestcases as any))
 
             const res = await request(app)
                 .post('/api/v1/submission/submit')
@@ -266,12 +273,13 @@ describe('Submission Module - Integration Tests', () => {
                 status: 'Wrong Answer',
             }
 
-            spyOn(submissionService, 'getProblemById').mockImplementation(async () => mockProblem as any)
-            spyOn(submissionService, 'executeCode').mockImplementation(async () => mockExecution as any)
-            spyOn(submissionService, 'createSubmission').mockImplementation(async () => mockSubmission as any)
-            spyOn(submissionService, 'createTestCaseResults').mockImplementation(async () => ({ count: 1 } as any))
+            spies.push(spyOn(submissionService, 'getProblemById').mockImplementation(async () => mockProblem as any))
+            spies.push(spyOn(submissionService, 'executeCode').mockImplementation(async () => mockExecution as any))
+            spies.push(spyOn(submissionService, 'createSubmission').mockImplementation(async () => mockSubmission as any))
+            spies.push(spyOn(submissionService, 'createTestCaseResults').mockImplementation(async () => ({ count: 1 } as any)))
             const upsertSpy = spyOn(submissionService, 'upsertProblemSolved').mockImplementation(async () => ({}) as any)
-            spyOn(submissionService, 'getSubmissionWithTestcases').mockImplementation(async () => mockSubmission as any)
+            spies.push(upsertSpy)
+            spies.push(spyOn(submissionService, 'getSubmissionWithTestcases').mockImplementation(async () => mockSubmission as any))
 
             const res = await request(app)
                 .post('/api/v1/submission/submit')
@@ -315,13 +323,14 @@ describe('Submission Module - Integration Tests', () => {
 
             const mockSubmission = { id: 'sub-103', status: 'Accepted' }
 
-            spyOn(submissionService, 'getProblemById').mockImplementation(async () => mockProblem as any)
-            spyOn(submissionService, 'executeCode').mockImplementation(async () => mockExecution as any)
-            spyOn(submissionService, 'createSubmission').mockImplementation(async () => mockSubmission as any)
-            spyOn(submissionService, 'createTestCaseResults').mockImplementation(async () => ({ count: 1 } as any))
-            spyOn(submissionService, 'upsertProblemSolved').mockImplementation(async () => ({}) as any)
+            spies.push(spyOn(submissionService, 'getProblemById').mockImplementation(async () => mockProblem as any))
+            spies.push(spyOn(submissionService, 'executeCode').mockImplementation(async () => mockExecution as any))
+            spies.push(spyOn(submissionService, 'createSubmission').mockImplementation(async () => mockSubmission as any))
+            spies.push(spyOn(submissionService, 'createTestCaseResults').mockImplementation(async () => ({ count: 1 } as any)))
+            spies.push(spyOn(submissionService, 'upsertProblemSolved').mockImplementation(async () => ({}) as any))
             const contestSpy = spyOn(submissionService, 'handleContestSubmission').mockImplementation(async () => {})
-            spyOn(submissionService, 'getSubmissionWithTestcases').mockImplementation(async () => mockSubmission as any)
+            spies.push(contestSpy)
+            spies.push(spyOn(submissionService, 'getSubmissionWithTestcases').mockImplementation(async () => mockSubmission as any))
 
             const res = await request(app)
                 .post('/api/v1/submission/submit')
@@ -339,9 +348,9 @@ describe('Submission Module - Integration Tests', () => {
         })
 
         it('should return 500 internal server error when code execution throws', async () => {
-            spyOn(submissionService, 'getProblemById').mockImplementation(async () => {
+            spies.push(spyOn(submissionService, 'getProblemById').mockImplementation(async () => {
                 throw new Error('Database connection failed')
-            })
+            }))
 
             const res = await request(app)
                 .post('/api/v1/submission/submit')
@@ -388,7 +397,7 @@ describe('Submission Module - Integration Tests', () => {
                 },
             ]
 
-            spyOn(submissionService, 'getAllSubmissionsByUser').mockImplementation(async () => mockUserSubmissions as any)
+            spies.push(spyOn(submissionService, 'getAllSubmissionsByUser').mockImplementation(async () => mockUserSubmissions as any))
 
             const res = await request(app)
                 .get('/api/v1/submission/getallsubmissions')
@@ -418,7 +427,7 @@ describe('Submission Module - Integration Tests', () => {
                 },
             ]
 
-            spyOn(submissionService, 'getAllSubmissionsByUser').mockImplementation(async () => mockUserSubmissions as any)
+            spies.push(spyOn(submissionService, 'getAllSubmissionsByUser').mockImplementation(async () => mockUserSubmissions as any))
 
             const res = await request(app)
                 .get('/api/v1/submission/')
@@ -430,9 +439,9 @@ describe('Submission Module - Integration Tests', () => {
         })
 
         it('should return 500 when getAllSubmissionsByUser throws', async () => {
-            spyOn(submissionService, 'getAllSubmissionsByUser').mockImplementation(async () => {
+            spies.push(spyOn(submissionService, 'getAllSubmissionsByUser').mockImplementation(async () => {
                 throw new Error('Database query failure')
-            })
+            }))
 
             const res = await request(app)
                 .get('/api/v1/submission/getallsubmissions')
@@ -457,6 +466,7 @@ describe('Submission Module - Integration Tests', () => {
             ]
 
             const spy = spyOn(submissionService, 'getSubmissionsByProblemAndUser').mockImplementation(async () => mockProblemSubmissions as any)
+            spies.push(spy)
 
             const res = await request(app)
                 .get('/api/v1/submission/get-submissions/prob-1')
@@ -480,6 +490,7 @@ describe('Submission Module - Integration Tests', () => {
             ]
 
             const spy = spyOn(submissionService, 'getSubmissionsByProblemAndUser').mockImplementation(async () => mockProblemSubmissions as any)
+            spies.push(spy)
 
             const res = await request(app)
                 .get('/api/v1/submission/problem/prob-2')
@@ -492,9 +503,9 @@ describe('Submission Module - Integration Tests', () => {
         })
 
         it('should return 500 when getSubmissionsByProblemAndUser throws', async () => {
-            spyOn(submissionService, 'getSubmissionsByProblemAndUser').mockImplementation(async () => {
+            spies.push(spyOn(submissionService, 'getSubmissionsByProblemAndUser').mockImplementation(async () => {
                 throw new Error('Database error')
-            })
+            }))
 
             const res = await request(app)
                 .get('/api/v1/submission/get-submissions/prob-1')
@@ -508,6 +519,7 @@ describe('Submission Module - Integration Tests', () => {
     describe('GET /api/v1/submission/get-submission-count/:id & GET /api/v1/submission/problem/:id/count', () => {
         it('should return submission count for a problem (/get-submission-count/:id)', async () => {
             const spy = spyOn(submissionService, 'getSubmissionCountByProblemAndUser').mockImplementation(async () => 3)
+            spies.push(spy)
 
             const res = await request(app)
                 .get('/api/v1/submission/get-submission-count/prob-1')
@@ -522,6 +534,7 @@ describe('Submission Module - Integration Tests', () => {
 
         it('should return submission count via alias (/problem/:id/count)', async () => {
             const spy = spyOn(submissionService, 'getSubmissionCountByProblemAndUser').mockImplementation(async () => 7)
+            spies.push(spy)
 
             const res = await request(app)
                 .get('/api/v1/submission/problem/prob-5/count')
@@ -534,9 +547,9 @@ describe('Submission Module - Integration Tests', () => {
         })
 
         it('should return 500 when getSubmissionCountByProblemAndUser throws', async () => {
-            spyOn(submissionService, 'getSubmissionCountByProblemAndUser').mockImplementation(async () => {
+            spies.push(spyOn(submissionService, 'getSubmissionCountByProblemAndUser').mockImplementation(async () => {
                 throw new Error('Database count failure')
-            })
+            }))
 
             const res = await request(app)
                 .get('/api/v1/submission/get-submission-count/prob-1')

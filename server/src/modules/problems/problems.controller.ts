@@ -24,7 +24,7 @@ export const createProblem = async (req: Request, res: Response) => {
 
     const validation = await problemService.validateReferenceSolutions(
         parseData.data.testcases,
-        parseData.data.referneceSolution
+        parseData.data.referenceSolution
     )
 
     if ('message' in validation) {
@@ -104,7 +104,7 @@ export const getProblemById = async (req: Request, res: Response) => {
                 examples: problem.examples,
                 testcases: problem.testcases,
                 starterCodes: problem.codesnippets,
-                referenceSolutions: problem.referneceSolution,
+                referenceSolutions: problem.referenceSolution,
             },
         })
     } catch (error) {
@@ -141,7 +141,7 @@ export const updateProblem = async (req: Request, res: Response) => {
 
         const validation = await problemService.validateReferenceSolutions(
             parseData.data.testcases,
-            parseData.data.referneceSolution
+            parseData.data.referenceSolution
         )
 
         if ('message' in validation) {
