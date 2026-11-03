@@ -12,11 +12,19 @@ import { globalRateLimiter } from './middleware/ratelimiter.middleware.js'
 
 export const app = express()
 const clientOrigin = process.env.CLIENT_ORIGIN ?? 'http://localhost:4000'
+const allowedOrigins = new Set([
+    clientOrigin,
+    'http://localhost:4000',
+    'http://127.0.0.1:4000',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+])
 
 app.use((req, res, next) => {
+    console.log(`[API] ${req.method} ${req.url} (Origin: ${req.headers.origin ?? 'none'})`)
     const origin = req.headers.origin
 
-    if (origin && origin === clientOrigin) {
+    if (origin && (allowedOrigins.has(origin) || origin === clientOrigin)) {
         res.header('Access-Control-Allow-Origin', origin)
         res.header('Access-Control-Allow-Credentials', 'true')
     }
@@ -40,6 +48,11 @@ app.get('/', (_req, res) => {
         success: true,
         message: 'Campus Lab backend is running',
     })
+})
+
+app.post('/api/v1/client-log', (req, res) => {
+    console.error('>>> [BROWSER ERROR]', JSON.stringify(req.body, null, 2))
+    res.json({ success: true })
 })
 
 app.use(globalRateLimiter)

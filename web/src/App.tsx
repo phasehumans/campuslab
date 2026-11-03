@@ -8,12 +8,14 @@ import { lazy, Suspense } from 'react'
 import { Layout } from './components/Layout'
 import { LandingPage } from './pages/LandingPage'
 import { AuthProvider } from './contexts/AuthContext'
+import { ErrorBoundary } from './components/ErrorBoundary'
+
+import { SolveScreen } from './pages/SolveScreen'
 
 const ProblemSet = lazy(() => import('./pages/ProblemSet').then(m => ({ default: m.ProblemSet })))
 const Contest = lazy(() => import('./pages/Contest').then(m => ({ default: m.Contest })))
 const ContestRoom = lazy(() => import('./pages/ContestRoom').then(m => ({ default: m.ContestRoom })))
 const Profile = lazy(() => import('./pages/Profile').then(m => ({ default: m.Profile })))
-const SolveScreen = lazy(() => import('./pages/SolveScreen').then(m => ({ default: m.SolveScreen })))
 
 const Loading = () => (
     <div className="flex h-screen w-full items-center justify-center bg-slate-50">
@@ -25,18 +27,20 @@ export default function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
-                <Suspense fallback={<Loading />}>
-                    <Routes>
-                        <Route path="/" element={<LandingPage />} />
-                        <Route element={<Layout />}>
-                            <Route path="/practice" element={<ProblemSet />} />
-                            <Route path="/contest" element={<Contest />} />
-                            <Route path="/contest/:roomId" element={<ContestRoom />} />
-                            <Route path="/profile" element={<Profile />} />
-                        </Route>
-                        <Route path="/problem/:id" element={<SolveScreen />} />
-                    </Routes>
-                </Suspense>
+                <ErrorBoundary>
+                    <Suspense fallback={<Loading />}>
+                        <Routes>
+                            <Route path="/" element={<LandingPage />} />
+                            <Route element={<Layout />}>
+                                <Route path="/practice" element={<ProblemSet />} />
+                                <Route path="/contest" element={<Contest />} />
+                                <Route path="/contest/:roomId" element={<ContestRoom />} />
+                                <Route path="/profile" element={<Profile />} />
+                            </Route>
+                            <Route path="/problem/:id" element={<SolveScreen />} />
+                        </Routes>
+                    </Suspense>
+                </ErrorBoundary>
             </BrowserRouter>
         </AuthProvider>
     )

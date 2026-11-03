@@ -117,7 +117,7 @@ async function main() {
                             examples: problem.examples,
                             testcases: problem.testcases,
                             codesnippets: problem.codesnippets,
-                            referneceSolution: problem.referneceSolution,
+                            referenceSolution: (problem as any).referenceSolution ?? (problem as any).referneceSolution,
                             userId: adminUser.id,
                         },
                     })

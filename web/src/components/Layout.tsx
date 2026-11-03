@@ -9,7 +9,7 @@ export function Layout() {
         location.pathname.startsWith('/profile')
 
     return (
-        <div className="min-h-screen bg-slate-50/50 text-slate-800 font-sans relative overflow-x-hidden">
+        <div className="min-h-screen bg-slate-50 text-slate-800 font-sans relative overflow-x-hidden">
             {/* Highly visible background grid like Landing Page */}
             {!hideGrid && (
                 <div

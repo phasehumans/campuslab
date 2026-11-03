@@ -10,6 +10,7 @@
     "scripts": {
         "format": "prettier . --write",
         "check-format": "prettier . --check",
+        "seed": "bun run --filter backend seed",
         "lint": "bun run --filter '*' lint",
         "test": "bun run --filter '*' test"
     },
@@ -25,5 +26,9 @@
     },
     "peerDependencies": {
         "typescript": "^5"
+    },
+    "overrides": {
+        "@codemirror/state": "6.7.1",
+        "@codemirror/view": "6.43.8"
     }
 }

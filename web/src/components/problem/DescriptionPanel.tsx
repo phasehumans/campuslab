@@ -32,7 +32,7 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                         {problem.difficulty}
                     </span>
 
-                    {problem.tags.map((tag) => (
+                    {(problem.tags ?? []).map((tag) => (
                         <span
                             key={tag}
                             className="rounded-full bg-white/5 px-2.5 py-1 text-xs text-gray-300"
@@ -45,7 +45,7 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
 
             <div className="space-y-8 text-sm text-gray-300 leading-relaxed">
                 <section className="space-y-4">
-                    {problem.description.split('\n\n').map((paragraph, index) => (
+                    {(problem.description ?? '').split('\n\n').map((paragraph, index) => (
                         <p key={`${problem.id}-paragraph-${index}`}>{paragraph}</p>
                     ))}
                 </section>
@@ -53,7 +53,7 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                 <section className="space-y-4">
                     <h2 className="text-base font-semibold text-white">Examples</h2>
                     <div className="space-y-4">
-                        {problem.examples.map((example, index) => (
+                        {(problem.examples ?? []).map((example, index) => (
                             <div key={`${problem.id}-example-${index}`} className="space-y-2">
                                 <p className="font-bold text-white">
                                     {example.title ?? `Example ${index + 1}`}

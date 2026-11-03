@@ -94,9 +94,7 @@ export function LandingPage() {
                         className="flex flex-col sm:flex-row items-center justify-center gap-4"
                     >
                         <button
-                            onClick={() =>
-                                isLoggedIn ? navigate('/practice') : openModal('signup')
-                            }
+                            onClick={() => navigate('/practice')}
                             className="bg-[#3E6FC3] hover:bg-[#325a9e] text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-lg shadow-blue-500/25 flex items-center gap-2"
                         >
                             Start Practicing Now <ChevronRight size={18} />

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { CheckCircle2, Circle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { ProblemSummary } from '@/lib/types'
@@ -16,8 +17,9 @@ export function ProblemTable({ problems, onProblemClick }: ProblemTableProps) {
                     <tr className="border-b border-slate-100 text-slate-400 bg-slate-50/50">
                         <th className="px-5 py-3.5 font-bold w-16 text-center">Status</th>
                         <th className="px-5 py-3.5 font-bold">Title</th>
-                        <th className="px-5 py-3.5 font-bold w-[40%]">Topics</th>
-                        <th className="px-5 py-3.5 font-bold w-32">Difficulty</th>
+                        <th className="px-5 py-3.5 font-bold w-[35%]">Topics</th>
+                        <th className="px-5 py-3.5 font-bold w-28">Difficulty</th>
+                        <th className="px-5 py-3.5 font-bold w-24 text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -47,9 +49,13 @@ export function ProblemTable({ problems, onProblemClick }: ProblemTableProps) {
                                     )}
                                 </td>
                                 <td className="px-5 py-4">
-                                    <span className="font-semibold text-slate-700 group-hover:text-[#3E6FC3] transition-colors">
+                                    <Link
+                                        to={`/problem/${problem.id}`}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="font-semibold text-slate-700 hover:text-[#3E6FC3] transition-colors"
+                                    >
                                         {problem.title}
-                                    </span>
+                                    </Link>
                                 </td>
                                 <td className="px-5 py-4">
                                     <div className="flex flex-wrap gap-1.5">
@@ -78,11 +84,20 @@ export function ProblemTable({ problems, onProblemClick }: ProblemTableProps) {
                                         {problem.difficulty}
                                     </span>
                                 </td>
+                                <td className="px-5 py-4 text-right">
+                                    <Link
+                                        to={`/problem/${problem.id}`}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="inline-flex items-center gap-1 font-semibold text-xs text-[#3E6FC3] hover:text-[#325a9e] bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
+                                    >
+                                        Solve &rarr;
+                                    </Link>
+                                </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={4} className="px-5 py-12 text-center text-slate-400">
+                            <td colSpan={5} className="px-5 py-12 text-center text-slate-400">
                                 No problems found matching your criteria.
                             </td>
                         </tr>

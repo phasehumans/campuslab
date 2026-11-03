@@ -36,7 +36,7 @@ export function LandingNavbar() {
                                 key={link.name}
                                 to={link.path}
                                 onClick={(e) => {
-                                    if (!isLoggedIn) {
+                                    if (link.path === '/contest' && !isLoggedIn) {
                                         e.preventDefault()
                                         openModal('login')
                                     }

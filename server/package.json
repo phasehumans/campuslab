@@ -10,6 +10,7 @@
         "dev": "tsx watch src/index.ts",
         "build": "tsc -p tsconfig.json",
         "start": "node dist/index.js",
+        "seed": "bun run prisma/seed.ts",
         "typecheck": "tsc --noEmit -p tsconfig.json",
         "lint": "eslint .",
         "test": "bun test"
