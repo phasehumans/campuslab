@@ -1,18 +1,19 @@
 {
     "name": "campuslab",
-    "module": "index.ts",
     "type": "module",
     "private": true,
     "workspaces": [
-        "web",
-        "server"
+        "web"
     ],
     "scripts": {
+        "start": "./scripts/start.sh",
+        "stop": "./scripts/stop.sh",
+        "seed": "./scripts/seed.sh",
         "format": "prettier . --write",
         "check-format": "prettier . --check",
-        "seed": "bun run --filter backend seed",
-        "lint": "bun run --filter '*' lint",
-        "test": "bun run --filter '*' test"
+        "lint": "bun run --filter web lint",
+        "build": "bun run --filter web build",
+        "test": "./scripts/run_tests.sh"
     },
     "devDependencies": {
         "@eslint/js": "^9.0.0",

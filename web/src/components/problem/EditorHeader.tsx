@@ -1,54 +1,26 @@
-import { Code2, ChevronDown } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { LANGUAGES } from '@/data/code'
+import { Code2 } from 'lucide-react'
 
 interface EditorHeaderProps {
-    language: string
-    isLangDropdownOpen: boolean
-    setIsLangDropdownOpen: (open: boolean) => void
-    handleLanguageChange: (langId: string) => void
+    language?: string
+    isLangDropdownOpen?: boolean
+    setIsLangDropdownOpen?: (open: boolean) => void
+    handleLanguageChange?: (langId: string) => void
 }
 
-export function EditorHeader({
-    language,
-    isLangDropdownOpen,
-    setIsLangDropdownOpen,
-    handleLanguageChange,
-}: EditorHeaderProps) {
+export function EditorHeader({ language = 'cpp' }: EditorHeaderProps) {
+    const filename = `solution.${language === 'python' ? 'py' : language === 'java' ? 'java' : language === 'rust' ? 'rs' : 'cpp'}`
+    const tag = language === 'python' ? 'Python 3' : language === 'java' ? 'Java 21' : language === 'rust' ? 'Rust' : 'C++20'
+
     return (
-        <div className="flex items-center justify-between px-4 py-2 bg-[#181818] border-b border-white/5">
+        <div className="flex items-center justify-between px-3.5 py-2 bg-[#191919] border-b border-[#333333] font-mono text-xs text-[#a09f9d]">
             <div className="flex items-center gap-2">
-                <button className="flex items-center gap-1.5 text-xs font-medium text-gray-300 hover:text-white transition-colors bg-[#262626] px-3 py-1.5 rounded-md">
-                    <Code2 className="h-4 w-4 text-emerald-500" /> Code
-                </button>
+                <div className="flex items-center gap-1.5 bg-[#252423] text-[#e8e8e6] border border-[#333333] px-2.5 py-1 rounded-[2px] font-medium text-[11px]">
+                    <Code2 className="h-3.5 w-3.5 text-[#87b2f4]" />
+                    <span>{filename}</span>
+                </div>
 
-                <div className="relative">
-                    <button
-                        onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-                        className="flex items-center gap-1.5 text-xs font-medium text-gray-300 hover:text-white transition-colors bg-transparent hover:bg-white/5 px-2 py-1.5 rounded-md"
-                    >
-                        {LANGUAGES.find((l) => l.id === language)?.name}{' '}
-                        <ChevronDown className="h-3 w-3" />
-                    </button>
-
-                    {isLangDropdownOpen && (
-                        <div className="absolute top-full left-0 mt-1 w-32 bg-[#262626] border border-white/10 rounded-md shadow-xl z-50 overflow-hidden">
-                            {LANGUAGES.map((lang) => (
-                                <button
-                                    key={lang.id}
-                                    onClick={() => handleLanguageChange(lang.id)}
-                                    className={cn(
-                                        'w-full text-left px-4 py-2 text-xs font-medium transition-colors hover:bg-white/10',
-                                        language === lang.id
-                                            ? 'text-white bg-white/10'
-                                            : 'text-gray-400'
-                                    )}
-                                >
-                                    {lang.name}
-                                </button>
-                            ))}
-                        </div>
-                    )}
+                <div className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono font-medium text-[#10b981] bg-[#10b981]/10 border border-[#10b981]/30 rounded-[2px]">
+                    <span>{tag}</span>
                 </div>
             </div>
         </div>

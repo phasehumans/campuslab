@@ -1,9 +1,7 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react'
+import React, { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getApiErrorMessage, getCurrentUser, loginUser, logoutUser, registerUser } from '@/lib/api'
+import { getApiErrorMessage, getCurrentUser, logoutUser, oauthLogin } from '@/lib/api'
 import type { User } from '@/lib/types'
-
-type AuthMode = 'login' | 'signup'
 
 interface AuthContextType {
     isLoggedIn: boolean
@@ -11,13 +9,21 @@ interface AuthContextType {
     isSubmitting: boolean
     user: User | null
     isModalOpen: boolean
-    authMode: AuthMode
+    isSignoutModalOpen: boolean
     authError: string | null
-    openModal: (mode?: AuthMode) => void
+    openModal: (mode?: string) => void
     closeModal: () => void
-    setAuthMode: (mode: AuthMode) => void
-    login: (payload: { prn: string; password: string }) => Promise<void>
-    register: (payload: { name: string; prn: string; password: string }) => Promise<void>
+    openSignoutModal: () => void
+    closeSignoutModal: () => void
+    loginWithOAuth: (payload: {
+        provider: 'github' | 'google'
+        code?: string
+        credential?: string
+        redirectUri?: string
+        email?: string
+        name?: string
+        avatar?: string
+    }) => Promise<void>
     logout: () => Promise<void>
     clearAuthError: () => void
 }
@@ -29,7 +35,7 @@ const AUTH_QUERY_KEY = ['auth', 'current-user']
 export function AuthProvider({ children }: { children: ReactNode }) {
     const queryClient = useQueryClient()
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [authMode, setAuthModeState] = useState<AuthMode>('signup')
+    const [isSignoutModalOpen, setIsSignoutModalOpen] = useState(false)
     const [authError, setAuthError] = useState<string | null>(null)
 
     const currentUserQuery = useQuery({
@@ -37,21 +43,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         queryFn: getCurrentUser,
     })
 
-    const setCurrentUser = (user: User | null) => {
+    const setCurrentUser = useCallback((user: User | null) => {
         queryClient.setQueryData(AUTH_QUERY_KEY, user)
-    }
+    }, [queryClient])
 
-    const loginMutation = useMutation({
-        mutationFn: loginUser,
-        onSuccess: (user) => {
-            setCurrentUser(user)
-            setAuthError(null)
-            setIsModalOpen(false)
-        },
-    })
-
-    const registerMutation = useMutation({
-        mutationFn: registerUser,
+    const oauthMutation = useMutation({
+        mutationFn: oauthLogin,
         onSuccess: (user) => {
             setCurrentUser(user)
             setAuthError(null)
@@ -63,68 +60,92 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         mutationFn: logoutUser,
         onSettled: () => {
             setCurrentUser(null)
+            setIsSignoutModalOpen(false)
         },
     })
 
-    const openModal = (mode: AuthMode = 'signup') => {
-        setAuthModeState(mode)
+    const openModal = useCallback(() => {
         setAuthError(null)
         setIsModalOpen(true)
-    }
+    }, [])
 
-    const closeModal = () => {
+    const closeModal = useCallback(() => {
         setAuthError(null)
         setIsModalOpen(false)
-    }
+    }, [])
 
-    const setAuthMode = (mode: AuthMode) => {
-        setAuthError(null)
-        setAuthModeState(mode)
-    }
+    const openSignoutModal = useCallback(() => {
+        setIsSignoutModalOpen(true)
+    }, [])
 
-    const login = async (payload: { prn: string; password: string }) => {
+    const closeSignoutModal = useCallback(() => {
+        setIsSignoutModalOpen(false)
+    }, [])
+
+    const loginWithOAuth = useCallback(async (payload: {
+        provider: 'github' | 'google'
+        code?: string
+        credential?: string
+        redirectUri?: string
+        email?: string
+        name?: string
+        avatar?: string
+    }) => {
         try {
-            await loginMutation.mutateAsync(payload)
+            await oauthMutation.mutateAsync(payload)
         } catch (error) {
-            setAuthError(getApiErrorMessage(error, 'Unable to sign in'))
+            setAuthError(getApiErrorMessage(error, 'Unable to sign in with ' + payload.provider))
             throw error
         }
-    }
+    }, [oauthMutation])
 
-    const register = async (payload: { name: string; prn: string; password: string }) => {
-        try {
-            await registerMutation.mutateAsync(payload)
-        } catch (error) {
-            setAuthError(getApiErrorMessage(error, 'Unable to create account'))
-            throw error
-        }
-    }
-
-    const logout = async () => {
+    const logout = useCallback(async () => {
         setAuthError(null)
         await logoutMutation.mutateAsync()
         queryClient.removeQueries({
             queryKey: ['profile'],
         })
-    }
+    }, [logoutMutation, queryClient])
 
-    const value: AuthContextType = {
-        isLoggedIn: Boolean(currentUserQuery.data),
-        isAuthLoading: currentUserQuery.isLoading,
-        isSubmitting:
-            loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending,
-        user: currentUserQuery.data ?? null,
-        isModalOpen,
-        authMode,
-        authError,
-        openModal,
-        closeModal,
-        setAuthMode,
-        login,
-        register,
-        logout,
-        clearAuthError: () => setAuthError(null),
-    }
+    const clearAuthError = useCallback(() => {
+        setAuthError(null)
+    }, [])
+
+    const isSubmitting = oauthMutation.isPending || logoutMutation.isPending
+
+    const value: AuthContextType = useMemo(
+        () => ({
+            isLoggedIn: Boolean(currentUserQuery.data),
+            isAuthLoading: currentUserQuery.isLoading,
+            isSubmitting,
+            user: currentUserQuery.data ?? null,
+            isModalOpen,
+            isSignoutModalOpen,
+            authError,
+            openModal,
+            closeModal,
+            openSignoutModal,
+            closeSignoutModal,
+            loginWithOAuth,
+            logout,
+            clearAuthError,
+        }),
+        [
+            currentUserQuery.data,
+            currentUserQuery.isLoading,
+            isSubmitting,
+            isModalOpen,
+            isSignoutModalOpen,
+            authError,
+            openModal,
+            closeModal,
+            openSignoutModal,
+            closeSignoutModal,
+            loginWithOAuth,
+            logout,
+            clearAuthError,
+        ]
+    )
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

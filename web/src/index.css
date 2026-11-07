@@ -1,26 +1,164 @@
 @import 'tailwindcss';
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
-    --font-sans: 'Inter', sans-serif;
+    --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 @layer base {
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+    html.dark {
+        color-scheme: dark;
     }
-    ::-webkit-scrollbar-track {
-        background: transparent;
+    body {
+        background-color: #ffffff;
+        color: #090a0f;
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
-    ::-webkit-scrollbar-thumb {
-        background: rgba(100, 116, 139, 0.2);
-        border-radius: 10px;
+    html.dark body {
+        background-color: #141414;
+        color: #e8e8e6;
     }
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(100, 116, 139, 0.4);
+
+    button,
+    input,
+    textarea,
+    select {
+        -webkit-tap-highlight-color: transparent !important;
     }
-    * {
-        scrollbar-width: thin;
-        scrollbar-color: rgba(100, 116, 139, 0.2) transparent;
+    button:focus,
+    button:active,
+    button:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
     }
+    input:focus,
+    input:active,
+    textarea:focus,
+    textarea:active {
+        outline: none !important;
+    }
+}
+
+/* Global Sleek & Minimal Scrollbar for root html, body, and all elements */
+::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-button,
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover,
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Dark mode scrollbars for root html, body, and all descendants */
+html.dark::-webkit-scrollbar-thumb,
+html.dark body::-webkit-scrollbar-thumb,
+html.dark *::-webkit-scrollbar-thumb,
+html.dark ::-webkit-scrollbar-thumb {
+    background: #333333 !important;
+    border-radius: 9999px !important;
+}
+html.dark::-webkit-scrollbar-thumb:hover,
+html.dark body::-webkit-scrollbar-thumb:hover,
+html.dark *::-webkit-scrollbar-thumb:hover,
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #4b4b4b !important;
+}
+::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+    background: transparent !important;
+}
+
+/* Standard scrollbar for Firefox */
+html,
+body,
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+html.dark,
+html.dark body,
+html.dark * {
+    scrollbar-color: #333333 transparent !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Solve Screen & CodeMirror Ultra-Minimal Scrollbars */
+.solve-screen ::-webkit-scrollbar,
+.cm-scroller::-webkit-scrollbar,
+.cm-editor ::-webkit-scrollbar {
+    width: 3.5px !important;
+    height: 3.5px !important;
+}
+.solve-screen ::-webkit-scrollbar-button,
+.cm-scroller::-webkit-scrollbar-button,
+.cm-editor ::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+.solve-screen ::-webkit-scrollbar-track,
+.cm-scroller::-webkit-scrollbar-track,
+.cm-editor ::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+.solve-screen ::-webkit-scrollbar-thumb,
+.cm-scroller::-webkit-scrollbar-thumb,
+.cm-editor ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16) !important;
+    border-radius: 9999px !important;
+    transition: background-color 0.15s ease !important;
+}
+.solve-screen ::-webkit-scrollbar-thumb:hover,
+.cm-scroller::-webkit-scrollbar-thumb:hover,
+.cm-editor ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+.solve-screen ::-webkit-scrollbar-corner,
+.cm-scroller::-webkit-scrollbar-corner,
+.cm-editor ::-webkit-scrollbar-corner {
+    background: transparent !important;
+}
+
+.solve-screen,
+.solve-screen *,
+.cm-scroller {
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(255, 255, 255, 0.16) transparent !important;
 }

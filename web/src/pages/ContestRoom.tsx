@@ -1,66 +1,49 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Clock, Users, BookOpen, ArrowLeft } from 'lucide-react'
-import { QuestionsList } from '@/components/contest/QuestionsList'
-import { Leaderboard } from '@/components/contest/Leaderboard'
-import { useAuth } from '@/contexts/AuthContext'
-import { cn } from '@/lib/utils'
+import { ArrowLeft, Loader2, Trophy } from 'lucide-react'
 import { getApiErrorMessage, getContestRoom, joinContestRoom } from '@/lib/api'
+import { useAuth } from '@/contexts/AuthContext'
 
 export function ContestRoom() {
     const { roomId } = useParams()
     const navigate = useNavigate()
     const { isLoggedIn, openModal } = useAuth()
-    const [now, setNow] = useState(() => Date.now())
 
     const roomQuery = useQuery({
         queryKey: ['contest-room', roomId],
         queryFn: () => getContestRoom(roomId as string),
         enabled: Boolean(roomId),
-        refetchInterval: 5000,
+        refetchInterval: 3000,
     })
 
     const joinMutation = useMutation({
         mutationFn: () => joinContestRoom(roomId as string),
-        onSuccess: () => {
-            roomQuery.refetch()
+        onSuccess: (room) => {
+            if (room.questions && room.questions.length > 0) {
+                navigate(`/problem/${room.questions[0].id}?room=${room.code}`, { replace: true })
+            }
         },
     })
 
     useEffect(() => {
-        const timer = setInterval(() => setNow(Date.now()), 1000)
-        return () => clearInterval(timer)
-    }, [])
+        if (!roomQuery.data) return
+        const room = roomQuery.data
+        if (!room.questions || room.questions.length === 0) return
 
-    const timeLeft = useMemo(() => {
-        if (!roomQuery.data) {
-            return 0
+        if (room.meJoined) {
+            navigate(`/problem/${room.questions[0].id}?room=${room.code}`, { replace: true })
+        } else if (isLoggedIn && !joinMutation.isPending && !joinMutation.isSuccess && !joinMutation.isError) {
+            joinMutation.mutate()
         }
+    }, [roomQuery.data, isLoggedIn, joinMutation, navigate])
 
-        return Math.max(0, Math.floor((new Date(roomQuery.data.endsAt).getTime() - now) / 1000))
-    }, [now, roomQuery.data])
-
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60)
-        const secs = seconds % 60
-        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-    }
-
-    const handleJoin = () => {
-        if (!isLoggedIn) {
-            openModal('login')
-            return
-        }
-
-        joinMutation.mutate()
-    }
-
-    if (roomQuery.isLoading) {
+    if (roomQuery.isLoading || joinMutation.isPending) {
         return (
-            <div className="w-full max-w-5xl mx-auto">
-                <div className="rounded-2xl border border-slate-100 bg-white p-8 text-sm text-slate-400 shadow-sm">
-                    Loading contest room...
+            <div className="flex h-[60vh] w-full items-center justify-center font-mono text-xs text-[#94a3b8] dark:text-[#a09f9d]">
+                <div className="flex flex-col items-center gap-3 p-6 rounded-[3px] border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e]">
+                    <Loader2 className="h-5 w-5 animate-spin text-[#87b2f4]" />
+                    <span>Connecting to contest arena [{roomId}]...</span>
                 </div>
             </div>
         )
@@ -68,15 +51,15 @@ export function ContestRoom() {
 
     if (roomQuery.isError || !roomQuery.data) {
         return (
-            <div className="w-full max-w-5xl mx-auto space-y-4">
+            <div className="w-full max-w-md mx-auto mt-12 space-y-4">
                 <button
-                    onClick={() => navigate('/contest')}
-                    className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors text-sm font-semibold"
+                    onClick={() => navigate('/')}
+                    className="flex items-center gap-1.5 font-mono text-xs text-[#52525b] dark:text-[#a09f9d] hover:text-[#090a0f] dark:hover:text-[#e8e8e6] transition-colors cursor-pointer"
                 >
-                    <ArrowLeft className="h-4 w-4" /> Back to Contests
+                    <ArrowLeft className="h-3.5 w-3.5" /> Back to Problem Set
                 </button>
-                <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-sm text-red-200">
-                    {getApiErrorMessage(roomQuery.error, 'Unable to load contest room')}
+                <div className="rounded-[3px] border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 p-4 text-xs font-mono text-red-700 dark:text-red-400">
+                    {getApiErrorMessage(roomQuery.error, 'Unable to locate contest room')}
                 </div>
             </div>
         )
@@ -85,79 +68,49 @@ export function ContestRoom() {
     const room = roomQuery.data
 
     return (
-        <div className="w-full max-w-5xl mx-auto font-sans selection:bg-[#3E6FC3]/20">
+        <div className="w-full max-w-md mx-auto mt-12 space-y-4 font-mono text-xs">
             <button
-                onClick={() => navigate('/contest')}
-                className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors mb-8 text-sm font-semibold"
+                onClick={() => navigate('/')}
+                className="flex items-center gap-1.5 text-[#52525b] dark:text-[#a09f9d] hover:text-[#090a0f] dark:hover:text-[#e8e8e6] transition-colors cursor-pointer"
             >
-                <ArrowLeft className="h-4 w-4" /> Back to Contests
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Problem Set
             </button>
 
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 bg-white border border-slate-100 p-6 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.02)]">
-                <div>
-                    <div className="flex items-center gap-3">
-                        <div
-                            className={cn(
-                                'px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2 border shadow-sm',
-                                timeLeft > 0
-                                    ? 'bg-emerald-50 border-emerald-100 text-emerald-700'
-                                    : 'bg-slate-100 border-slate-200 text-slate-600'
-                            )}
-                        >
-                            {timeLeft > 0 && (
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                            )}
-                            {timeLeft > 0 ? 'Live' : 'Ended'}
-                        </div>
-                        <span className="text-sm font-mono text-slate-400 tracking-wider">
-                            ROOM {room.code}
-                        </span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-slate-500">
-                        <span className="flex items-center gap-1.5 font-medium">
-                            <Users className="h-4 w-4 text-slate-400" />
-                            {room.participantCount}
-                            {room.maxParticipants ? `/${room.maxParticipants}` : ''} Participants
-                        </span>
-                        <span className="text-slate-300">•</span>
-                        <span className="flex items-center gap-1.5 font-medium">
-                            <BookOpen className="h-4 w-4 text-slate-400" /> {room.topics.join(', ')}
-                        </span>
+            <div className="p-6 rounded-[3px] border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] space-y-4 text-center">
+                <div className="flex justify-center">
+                    <div className="h-10 w-10 rounded-[3px] bg-[#87b2f4]/15 border border-[#87b2f4]/30 flex items-center justify-center text-[#87b2f4]">
+                        <Trophy className="h-5 w-5" />
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-4 md:items-end">
-                    <div>
-                        <div className="text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">
-                            Time Remaining
-                        </div>
-                        <div className="text-4xl font-mono font-medium text-slate-800 tracking-tight flex items-center gap-3">
-                            <Clock className="h-6 w-6 text-slate-400" />
-                            {formatTime(timeLeft)}
-                        </div>
-                    </div>
-
-                    {!room.meJoined ? (
-                        <button
-                            onClick={handleJoin}
-                            disabled={joinMutation.isPending || timeLeft === 0}
-                            className="rounded-xl bg-[#3E6FC3] hover:bg-[#325a9e] text-white font-semibold py-2.5 px-6 text-sm transition-all shadow-md shadow-blue-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {joinMutation.isPending ? 'Joining...' : 'Join Room'}
-                        </button>
-                    ) : null}
+                <div className="space-y-1">
+                    <h2 className="text-base font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
+                        Contest Room [{room.code}]
+                    </h2>
+                    <p className="text-xs text-[#64748b] dark:text-[#a09f9d]">
+                        {room.participantCount} coder(s) active in room • 45m speed duel
+                    </p>
                 </div>
-            </div>
 
-            {joinMutation.isError ? (
-                <div className="mb-6 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-200">
-                    {getApiErrorMessage(joinMutation.error, 'Unable to join room')}
-                </div>
-            ) : null}
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <QuestionsList roomCode={room.code} questions={room.questions} />
-                <Leaderboard entries={room.leaderboard} />
+                {!isLoggedIn ? (
+                    <button
+                        onClick={() => openModal('login')}
+                        className="w-full py-2.5 px-4 bg-[#090a0f] dark:bg-white text-white dark:text-[#141414] rounded-[3px] font-semibold transition-colors cursor-pointer"
+                    >
+                        Sign in to Enter Contest
+                    </button>
+                ) : (
+                    <button
+                        onClick={() => {
+                            if (room.questions?.[0]) {
+                                navigate(`/problem/${room.questions[0].id}?room=${room.code}`)
+                            }
+                        }}
+                        className="w-full py-2.5 px-4 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] rounded-[3px] font-semibold transition-colors cursor-pointer"
+                    >
+                        Enter Contest IDE
+                    </button>
+                )}
             </div>
         </div>
     )

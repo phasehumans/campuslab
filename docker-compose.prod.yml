@@ -1,0 +1,73 @@
+services:
+    postgres:
+        image: postgres:16
+        container_name: campuslab-postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER:-myuser}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypassword}
+            POSTGRES_DB: ${POSTGRES_DB:-campus_lab}
+        ports:
+            - '127.0.0.1:5433:5432'
+        volumes:
+            - campuslab_postgres_data:/var/lib/postgresql/data
+            - ./database:/docker-entrypoint-initdb.d:ro
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER:-myuser} -d $${POSTGRES_DB:-campus_lab}']
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    redis:
+        image: redis:7-alpine
+        container_name: campuslab-redis
+        restart: unless-stopped
+        ports:
+            - '127.0.0.1:6379:6379'
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    judge:
+        image: ghcr.io/phasehumans/campuslab-judge:latest
+        container_name: campuslab-judge
+        restart: unless-stopped
+        privileged: true
+        environment:
+            REDIS_HOST: ${REDIS_HOST:-redis}
+            REDIS_PORT: ${REDIS_PORT:-6379}
+            DATABASE_URL: ${DATABASE_URL:-postgresql://myuser:mypassword@postgres:5432/campus_lab}
+            ISOLATE_BOX_ID: ${ISOLATE_BOX_ID:-1}
+        depends_on:
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+
+    api:
+        image: ghcr.io/phasehumans/campuslab-api:latest
+        container_name: campuslab-api
+        restart: unless-stopped
+        ports:
+            - '127.0.0.1:3000:3000'
+        environment:
+            PORT: 3000
+            JWT_SECRET: ${JWT_SECRET:-supersecret}
+            REDIS_HOST: ${REDIS_HOST:-redis}
+            REDIS_PORT: ${REDIS_PORT:-6379}
+            DATABASE_URL: ${DATABASE_URL:-postgresql://myuser:mypassword@postgres:5432/campus_lab}
+            CLIENT_ORIGIN: ${CLIENT_ORIGIN:-https://lab.trydecember.com}
+            GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+            GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+            GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+            GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        depends_on:
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+
+volumes:
+    campuslab_postgres_data:

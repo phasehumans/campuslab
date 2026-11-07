@@ -9,7 +9,7 @@ import type {
     User,
 } from './types'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api/v1'
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? '/api/v1'
 
 type RequestOptions = {
     allowUnauthorized?: boolean
@@ -85,19 +85,26 @@ export const getCurrentUser = async () => {
     return response?.user ?? null
 }
 
-export const loginUser = async (payload: { prn: string; password: string }) => {
-    const response = await request<{ user: User }>('/auth/login', {
+export const oauthLogin = async (payload: {
+    provider: 'github' | 'google'
+    code?: string
+    credential?: string
+    redirectUri?: string
+    email?: string
+    name?: string
+    avatar?: string
+}) => {
+    const response = await request<{ user: User }>('/auth/oauth', {
         method: 'POST',
-        body: JSON.stringify(payload),
-    })
-
-    return response!.user
-}
-
-export const registerUser = async (payload: { name: string; prn: string; password: string }) => {
-    const response = await request<{ user: User }>('/auth/signup', {
-        method: 'POST',
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+            provider: payload.provider,
+            code: payload.code,
+            credential: payload.credential,
+            redirect_uri: payload.redirectUri,
+            email: payload.email,
+            name: payload.name,
+            avatar: payload.avatar,
+        }),
     })
 
     return response!.user
@@ -151,7 +158,12 @@ export const submitCode = async (payload: {
         execution: ExecutionResponse
     }>('/submission/submit', {
         method: 'POST',
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+            problemId: payload.problemId,
+            sourceCode: payload.sourceCode,
+            language: payload.language,
+            contestCode: payload.contestCode || undefined,
+        }),
     })
 
     return response!

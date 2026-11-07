@@ -1,11 +1,13 @@
 export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 export type ProblemStatus = 'Solved' | 'Attempted' | 'Unsolved'
-export type EditorLanguage = 'cpp' | 'python' | 'java' | 'rust'
+export type EditorLanguage = 'cpp'
 
 export type User = {
     id: string
     name: string | null
-    prn: string
+    email?: string | null
+    avatar?: string | null
+    provider?: string | null
     role: 'ADMIN' | 'USER'
 }
 
@@ -96,7 +98,8 @@ export type ContestLeaderboardEntry = {
     rank: number
     userId: string
     name: string
-    prn: string
+    prn?: string | null
+    avatar?: string | null
     score: number
     solved: number
     lastAcceptedAt: string | null
@@ -106,7 +109,8 @@ export type ContestLeaderboardEntry = {
 export type ContestParticipant = {
     userId: string
     name: string
-    prn: string
+    prn?: string | null
+    avatar?: string | null
     isHost: boolean
 }
 

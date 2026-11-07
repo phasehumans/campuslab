@@ -11,6 +11,52 @@ services:
             - '5433:5432'
         volumes:
             - campuslab_postgres_data:/var/lib/postgresql/data
+            - ./database:/docker-entrypoint-initdb.d:ro
+
+    redis:
+        image: redis:7-alpine
+        container_name: campuslab-redis
+        restart: unless-stopped
+        ports:
+            - '6379:6379'
+
+    judge:
+        build:
+            context: .
+            dockerfile: judge/Dockerfile
+        container_name: campuslab-judge
+        restart: unless-stopped
+        privileged: true
+        environment:
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            DATABASE_URL: postgresql://myuser:mypassword@postgres:5432/campus_lab
+            ISOLATE_BOX_ID: 1
+        depends_on:
+            - postgres
+            - redis
+
+    api:
+        build:
+            context: .
+            dockerfile: server/Dockerfile
+        container_name: campuslab-api
+        restart: unless-stopped
+        ports:
+            - '3000:3000'
+        environment:
+            PORT: 3000
+            JWT_SECRET: supersecret
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            DATABASE_URL: postgresql://myuser:mypassword@postgres:5432/campus_lab
+            GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+            GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+            GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+            GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        depends_on:
+            - postgres
+            - redis
 
 volumes:
     campuslab_postgres_data:

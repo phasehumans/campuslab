@@ -12,51 +12,52 @@ export function TestcasePanel({ examples, activeTestCase, setActiveTestCase }: T
 
     if (!currentExample) {
         return (
-            <div className="flex h-full items-center justify-center text-sm text-gray-500">
-                No examples available for this problem.
+            <div className="flex h-full items-center justify-center font-mono text-xs text-[#a09f9d]">
+                No testcases available for this problem.
             </div>
         )
     }
 
     return (
-        <div className="space-y-4">
-            <div className="flex gap-2">
+        <div className="space-y-3.5 font-mono text-xs">
+            {/* Case selector tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
                 {examples.map((_, idx) => (
                     <button
                         key={idx}
+                        type="button"
                         onClick={() => setActiveTestCase(idx)}
                         className={cn(
-                            'px-3 py-1.5 text-xs font-medium rounded-md transition-colors',
+                            'px-2.5 py-1 text-xs rounded-[2px] border transition-colors cursor-pointer shrink-0',
                             activeTestCase === idx
-                                ? 'bg-white/10 text-white'
-                                : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                                ? 'bg-[#252423] text-[#e8e8e6] border-[#333333] font-medium shadow-xs'
+                                : 'bg-transparent text-[#a09f9d] border-transparent hover:text-[#e8e8e6] hover:bg-[#252423]/50'
                         )}
                     >
                         Case {idx + 1}
                     </button>
                 ))}
             </div>
+
+            {/* Testcase details */}
             <div className="space-y-3">
-                <div>
-                    <p className="text-xs text-gray-400 mb-1">Input</p>
-                    <pre className="whitespace-pre-wrap bg-white/5 border border-white/5 rounded-md px-3 py-2 text-sm font-mono text-gray-300">
+                <div className="space-y-1">
+                    <span className="text-[10px] uppercase tracking-wider text-[#a09f9d] block">
+                        Input
+                    </span>
+                    <pre className="whitespace-pre-wrap bg-[#141414] border border-[#333333] rounded-[3px] p-2.5 text-xs font-mono text-[#e8e8e6] leading-relaxed overflow-x-auto">
                         {currentExample.input}
                     </pre>
                 </div>
-                <div>
-                    <p className="text-xs text-gray-400 mb-1">Expected Output</p>
-                    <pre className="whitespace-pre-wrap bg-white/5 border border-white/5 rounded-md px-3 py-2 text-sm font-mono text-gray-300">
+
+                <div className="space-y-1">
+                    <span className="text-[10px] uppercase tracking-wider text-[#a09f9d] block">
+                        Expected Output
+                    </span>
+                    <pre className="whitespace-pre-wrap bg-[#141414] border border-[#333333] rounded-[3px] p-2.5 text-xs font-mono text-[#10b981] leading-relaxed overflow-x-auto">
                         {currentExample.output}
                     </pre>
                 </div>
-                {currentExample.explanation ? (
-                    <div>
-                        <p className="text-xs text-gray-400 mb-1">Explanation</p>
-                        <div className="bg-white/5 border border-white/5 rounded-md px-3 py-2 text-sm text-gray-300">
-                            {currentExample.explanation}
-                        </div>
-                    </div>
-                ) : null}
             </div>
         </div>
     )

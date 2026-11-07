@@ -33,12 +33,6 @@ export default [
     },
   },
   {
-    files: ['server/test/**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off'
-    }
-  },
-  {
-    ignores: ['**/dist/**', '**/node_modules/**', 'server/src/generated/**', 'server/prisma/seed-data/**'],
+    ignores: ['**/dist/**', '**/node_modules/**', 'build/**'],
   },
 ]
