@@ -67,41 +67,41 @@ export function CodeEditor({ code, setCode, language }: CodeEditorProps) {
     return (
         <CodeEditorErrorBoundary code={code} setCode={setCode}>
             <div className="flex-1 min-h-0 overflow-auto bg-[#1E1E1E]">
-            <CodeMirror
-                value={code}
-                onChange={(val) => setCode(val)}
-                height="100%"
-                theme={vscodeDark}
-                extensions={extensions}
-                className="h-full text-sm"
-                basicSetup={{
-                    lineNumbers: true,
-                    highlightActiveLineGutter: true,
-                    highlightSpecialChars: true,
-                    history: true,
-                    foldGutter: true,
-                    drawSelection: true,
-                    dropCursor: true,
-                    allowMultipleSelections: true,
-                    indentOnInput: true,
-                    syntaxHighlighting: true,
-                    bracketMatching: true,
-                    closeBrackets: true,
-                    autocompletion: true,
-                    rectangularSelection: true,
-                    crosshairCursor: true,
-                    highlightActiveLine: true,
-                    highlightSelectionMatches: true,
-                    closeBracketsKeymap: true,
-                    defaultKeymap: true,
-                    searchKeymap: true,
-                    historyKeymap: true,
-                    foldKeymap: true,
-                    completionKeymap: true,
-                    lintKeymap: true,
-                }}
-            />
-        </div>
+                <CodeMirror
+                    value={code}
+                    onChange={(val) => setCode(val)}
+                    height="100%"
+                    theme={vscodeDark}
+                    extensions={extensions}
+                    className="h-full text-sm"
+                    basicSetup={{
+                        lineNumbers: true,
+                        highlightActiveLineGutter: true,
+                        highlightSpecialChars: true,
+                        history: true,
+                        foldGutter: true,
+                        drawSelection: true,
+                        dropCursor: true,
+                        allowMultipleSelections: true,
+                        indentOnInput: true,
+                        syntaxHighlighting: true,
+                        bracketMatching: true,
+                        closeBrackets: true,
+                        autocompletion: true,
+                        rectangularSelection: true,
+                        crosshairCursor: true,
+                        highlightActiveLine: true,
+                        highlightSelectionMatches: true,
+                        closeBracketsKeymap: true,
+                        defaultKeymap: true,
+                        searchKeymap: true,
+                        historyKeymap: true,
+                        foldKeymap: true,
+                        completionKeymap: true,
+                        lintKeymap: true,
+                    }}
+                />
+            </div>
         </CodeEditorErrorBoundary>
     )
 }

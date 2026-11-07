@@ -45,7 +45,7 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
         if (!roomCode.trim()) return
 
         if (!isLoggedIn) {
-            openModal('login')
+            openModal()
             return
         }
 
@@ -56,7 +56,8 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
     const profile = profileQuery.data
     const totalSolved = profile?.stats.totalSolved ?? 0
     const targetCount = totalProblemsCount || 100
-    const percentDone = targetCount > 0 ? Math.min(100, Math.round((totalSolved / targetCount) * 100)) : 0
+    const percentDone =
+        targetCount > 0 ? Math.min(100, Math.round((totalSolved / targetCount) * 100)) : 0
 
     return (
         <aside className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0 lg:block lg:space-y-4">
@@ -133,11 +134,12 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                 ) : (
                     <div className="space-y-3 py-1">
                         <p className="text-xs text-[#52525b] dark:text-[#a09f9d] leading-relaxed">
-                            Sign in with your GitHub or Google account to track your solves and compete in live contests.
+                            Sign in with your GitHub or Google account to track your solves and
+                            compete in live contests.
                         </p>
                         <button
                             type="button"
-                            onClick={() => openModal('login')}
+                            onClick={openModal}
                             className="w-full flex items-center justify-center gap-1.5 bg-[#090a0f] dark:bg-white text-white dark:text-[#141414] hover:bg-[#27272a] dark:hover:bg-[#e8e8e6] font-mono text-xs py-2 px-3 rounded-[3px] transition-colors cursor-pointer"
                         >
                             <span>Sign in</span>
@@ -150,9 +152,7 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
             {/* Contest Center */}
             <div className="border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] p-4 rounded-[3px] shadow-[0_1px_2px_rgba(0,0,0,0.02)] space-y-3 transition-colors">
                 <div className="flex items-center justify-between font-mono text-[11px] text-[#64748b] dark:text-[#a09f9d] border-b border-[#f0f2f5] dark:border-[#272727] pb-2">
-                    <span className="uppercase tracking-wider font-medium">
-                        [Contests]
-                    </span>
+                    <span className="uppercase tracking-wider font-medium">[Contests]</span>
                     <span className="text-[#94a3b8] dark:text-[#a09f9d] text-[10px]">live</span>
                 </div>
 

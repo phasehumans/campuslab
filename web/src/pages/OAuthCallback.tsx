@@ -36,9 +36,11 @@ export function OAuthCallback({
 
         executedRef.current = true
 
-        const redirectUri = customRedirectUri || (provider === 'google'
-            ? window.location.origin
-            : `${window.location.origin}/auth/callback/github`)
+        const redirectUri =
+            customRedirectUri ||
+            (provider === 'google'
+                ? window.location.origin
+                : `${window.location.origin}/auth/callback/github`)
 
         loginWithOAuth({
             provider,
@@ -52,7 +54,8 @@ export function OAuthCallback({
                 navigate('/', { replace: true })
             })
             .catch((err: unknown) => {
-                const message = err instanceof Error ? err.message : 'Authentication failed. Please try again.'
+                const message =
+                    err instanceof Error ? err.message : 'Authentication failed. Please try again.'
                 setError(message)
             })
     }, [searchParams, provider, customRedirectUri, loginWithOAuth, navigate])

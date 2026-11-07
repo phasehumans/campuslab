@@ -2,7 +2,18 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { X, Loader2, Trophy, Copy, Check, Users, Clock, Zap, ArrowRight, ShieldCheck } from 'lucide-react'
+import {
+    X,
+    Loader2,
+    Trophy,
+    Copy,
+    Check,
+    Users,
+    Clock,
+    Zap,
+    ArrowRight,
+    ShieldCheck,
+} from 'lucide-react'
 import { createContestRoom, getApiErrorMessage } from '@/lib/api'
 import { useAuth } from '@/contexts/AuthContext'
 import type { ContestRoom } from '@/lib/types'
@@ -10,7 +21,6 @@ import type { ContestRoom } from '@/lib/types'
 interface ContestActionModalProps {
     isOpen: boolean
     onClose: () => void
-    initialTab?: string
 }
 
 export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps) {
@@ -159,7 +169,8 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                             </div>
 
                             <p className="text-[11px] text-[#64748b] dark:text-[#a09f9d] leading-relaxed max-w-[320px] mx-auto">
-                                Share this code with competitors. Everyone solves the same random problem in real-time. First to pass all testcases wins!
+                                Share this code with competitors. Everyone solves the same random
+                                problem in real-time. First to pass all testcases wins!
                             </p>
                         </div>
 

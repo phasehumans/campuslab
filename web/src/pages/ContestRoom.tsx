@@ -33,7 +33,12 @@ export function ContestRoom() {
 
         if (room.meJoined) {
             navigate(`/problem/${room.questions[0].id}?room=${room.code}`, { replace: true })
-        } else if (isLoggedIn && !joinMutation.isPending && !joinMutation.isSuccess && !joinMutation.isError) {
+        } else if (
+            isLoggedIn &&
+            !joinMutation.isPending &&
+            !joinMutation.isSuccess &&
+            !joinMutation.isError
+        ) {
             joinMutation.mutate()
         }
     }, [roomQuery.data, isLoggedIn, joinMutation, navigate])
@@ -94,7 +99,7 @@ export function ContestRoom() {
 
                 {!isLoggedIn ? (
                     <button
-                        onClick={() => openModal('login')}
+                        onClick={openModal}
                         className="w-full py-2.5 px-4 bg-[#090a0f] dark:bg-white text-white dark:text-[#141414] rounded-[3px] font-semibold transition-colors cursor-pointer"
                     >
                         Sign in to Enter Contest

@@ -39,9 +39,7 @@ export function SolveScreen() {
     const contestRoom = contestRoomQuery.data
     const winner = contestRoom?.leaderboard?.find((entry) => entry.solved >= 1)
     const hasWinner = Boolean(winner)
-    const isWinner = Boolean(
-        winner && (winner.isYou || (user && winner.userId === user.id))
-    )
+    const isWinner = Boolean(winner && (winner.isYou || (user && winner.userId === user.id)))
 
     const [language, setLanguage] = useState<EditorLanguage>('cpp')
     const [codeByLanguage, setCodeByLanguage] =
@@ -59,8 +57,8 @@ export function SolveScreen() {
     const [isDraggingH, setIsDraggingH] = useState(false)
     const [isDraggingV, setIsDraggingV] = useState(false)
     const [mobileTab, setMobileTab] = useState<'problem' | 'editor'>('problem')
-    const [isMobile, setIsMobile] = useState(
-        () => typeof window !== 'undefined' ? window.innerWidth < 768 : false
+    const [isMobile, setIsMobile] = useState(() =>
+        typeof window !== 'undefined' ? window.innerWidth < 768 : false
     )
 
     useEffect(() => {
@@ -205,18 +203,6 @@ export function SolveScreen() {
         },
     })
 
-    const handleLanguageChange = (langId: string) => {
-        const nextLanguage = langId as EditorLanguage
-        setLanguage(nextLanguage)
-        setCodeByLanguage((current) => ({
-            ...current,
-            [nextLanguage]:
-                current[nextLanguage] ??
-                problemQuery.data?.starterCodes?.[nextLanguage] ??
-                FALLBACK_CODE[nextLanguage],
-        }))
-    }
-
     const toggleBottomPanel = (tab: 'testcase' | 'testresult') => {
         if (bottomPanelOpen && activeBottomTab === tab) {
             setBottomPanelOpen(false)
@@ -231,7 +217,7 @@ export function SolveScreen() {
             return true
         }
 
-        openModal('login')
+        openModal()
         return false
     }
 
@@ -259,8 +245,7 @@ export function SolveScreen() {
 
     const handleResetCode = () => {
         if (!problemQuery.data) return
-        const defaultCode =
-            problemQuery.data.starterCodes?.[language] ?? FALLBACK_CODE[language]
+        const defaultCode = problemQuery.data.starterCodes?.[language] ?? FALLBACK_CODE[language]
         setCodeByLanguage((current) => ({
             ...current,
             [language]: defaultCode,
@@ -365,7 +350,9 @@ export function SolveScreen() {
                                         <Swords className="h-3.5 w-3.5" /> Contest Concluded
                                     </span>
                                     <span className="text-[#a09f9d]">
-                                        Won by <strong className="text-[#e8e8e6]">{winner?.name}</strong> • Practice mode active
+                                        Won by{' '}
+                                        <strong className="text-[#e8e8e6]">{winner?.name}</strong> •
+                                        Practice mode active
                                     </span>
                                 </>
                             )}
@@ -412,7 +399,10 @@ export function SolveScreen() {
                     </div>
                 </div>
 
-                <div ref={horizontalContainerRef} className="flex flex-1 min-h-0 overflow-hidden p-1.5 sm:p-2 gap-1.5 bg-[#141414]">
+                <div
+                    ref={horizontalContainerRef}
+                    className="flex flex-1 min-h-0 overflow-hidden p-1.5 sm:p-2 gap-1.5 bg-[#141414]"
+                >
                     {/* Left Panel: Dedicated Problem Description */}
                     {(!isMobile || mobileTab === 'problem') && (
                         <div
@@ -447,239 +437,258 @@ export function SolveScreen() {
                     {(!isMobile || mobileTab === 'editor') && (
                         <div
                             ref={verticalContainerRef}
-                            style={{ width: isMobile ? '100%' : `calc(${100 - splitWidth}% - 8px)` }}
+                            style={{
+                                width: isMobile ? '100%' : `calc(${100 - splitWidth}% - 8px)`,
+                            }}
                             className="flex flex-col h-full bg-[#191919] rounded-[3px] border border-[#333333] overflow-hidden min-w-0 md:min-w-[320px]"
                         >
-                        {/* Editor Section */}
-                        <div
-                            style={
-                                bottomPanelOpen
-                                    ? { height: `calc(${100 - bottomHeight}% - 8px)` }
-                                    : { flex: '1 1 0%', minHeight: 0 }
-                            }
-                            className="flex flex-col overflow-hidden min-h-[140px]"
-                        >
-                            <EditorHeader
-                                language={language}
-                                handleLanguageChange={handleLanguageChange}
-                            />
-
-                            <CodeEditor
-                                code={activeCode}
-                                setCode={(value) =>
-                                    setCodeByLanguage((current) => ({
-                                        ...current,
-                                        [language]: value,
-                                    }))
+                            {/* Editor Section */}
+                            <div
+                                style={
+                                    bottomPanelOpen
+                                        ? { height: `calc(${100 - bottomHeight}% - 8px)` }
+                                        : { flex: '1 1 0%', minHeight: 0 }
                                 }
-                                language={language}
-                            />
-                        </div>
+                                className="flex flex-col overflow-hidden min-h-[140px]"
+                            >
+                                <EditorHeader language={language} />
 
-                        {bottomPanelOpen && (
-                            <>
-                                {/* Vertical Divider */}
-                                <div
-                                    onMouseDown={onStartDragV}
-                                    className="h-1.5 hover:bg-[#87b2f4]/30 active:bg-[#87b2f4]/50 transition-colors cursor-row-resize flex items-center justify-center group select-none shrink-0"
-                                    title="Drag to resize"
-                                >
-                                    <div className="w-6 h-0.5 bg-[#333333] rounded-full group-hover:bg-[#87b2f4]" />
-                                </div>
+                                <CodeEditor
+                                    code={activeCode}
+                                    setCode={(value) =>
+                                        setCodeByLanguage((current) => ({
+                                            ...current,
+                                            [language]: value,
+                                        }))
+                                    }
+                                    language={language}
+                                />
+                            </div>
 
-                                {/* Bottom Panel */}
-                                <div
-                                    style={{ height: `${bottomHeight}%` }}
-                                    className="flex flex-col bg-[#191919] border-t border-[#333333] overflow-hidden min-h-[120px]"
-                                >
-                                    <BottomPanelHeader
-                                        activeBottomTab={activeBottomTab}
-                                        setActiveBottomTab={(tab) =>
-                                            setActiveBottomTab(
-                                                tab as 'testcase' | 'testresult'
-                                            )
-                                        }
-                                        setBottomPanelOpen={setBottomPanelOpen}
-                                    />
-                                    <div className="flex-1 overflow-y-auto p-4 bg-[#191919]">
-                                        {activeBottomTab === 'testcase' ? (
-                                            <TestcasePanel
-                                                examples={problem.examples ?? []}
-                                                activeTestCase={activeTestCase}
-                                                setActiveTestCase={setActiveTestCase}
-                                            />
-                                        ) : (
-                                            <TestResultPanel
-                                                isLoading={
-                                                    runMutation.isPending ||
-                                                    submitMutation.isPending
-                                                }
-                                                title={resultTitle}
-                                                result={executionResult}
-                                                message={resultMessage}
-                                                totalTestcases={problem.testcases?.length ?? 10}
-                                            />
-                                        )}
+                            {bottomPanelOpen && (
+                                <>
+                                    {/* Vertical Divider */}
+                                    <div
+                                        onMouseDown={onStartDragV}
+                                        className="h-1.5 hover:bg-[#87b2f4]/30 active:bg-[#87b2f4]/50 transition-colors cursor-row-resize flex items-center justify-center group select-none shrink-0"
+                                        title="Drag to resize"
+                                    >
+                                        <div className="w-6 h-0.5 bg-[#333333] rounded-full group-hover:bg-[#87b2f4]" />
                                     </div>
-                                </div>
-                            </>
-                        )}
 
-                        {!bottomPanelOpen && (
-                            <BottomPanelFooter
-                                activeBottomTab={activeBottomTab}
-                                bottomPanelOpen={bottomPanelOpen}
-                                toggleBottomPanel={(tab) =>
-                                    toggleBottomPanel(tab as 'testcase' | 'testresult')
-                                }
-                                setBottomPanelOpen={setBottomPanelOpen}
-                            />
-                        )}
-                    </div>
+                                    {/* Bottom Panel */}
+                                    <div
+                                        style={{ height: `${bottomHeight}%` }}
+                                        className="flex flex-col bg-[#191919] border-t border-[#333333] overflow-hidden min-h-[120px]"
+                                    >
+                                        <BottomPanelHeader
+                                            activeBottomTab={activeBottomTab}
+                                            setActiveBottomTab={(tab) =>
+                                                setActiveBottomTab(tab as 'testcase' | 'testresult')
+                                            }
+                                            setBottomPanelOpen={setBottomPanelOpen}
+                                        />
+                                        <div className="flex-1 overflow-y-auto p-4 bg-[#191919]">
+                                            {activeBottomTab === 'testcase' ? (
+                                                <TestcasePanel
+                                                    examples={problem.examples ?? []}
+                                                    activeTestCase={activeTestCase}
+                                                    setActiveTestCase={setActiveTestCase}
+                                                />
+                                            ) : (
+                                                <TestResultPanel
+                                                    isLoading={
+                                                        runMutation.isPending ||
+                                                        submitMutation.isPending
+                                                    }
+                                                    title={resultTitle}
+                                                    result={executionResult}
+                                                    message={resultMessage}
+                                                    totalTestcases={problem.testcases?.length ?? 10}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            {!bottomPanelOpen && (
+                                <BottomPanelFooter
+                                    activeBottomTab={activeBottomTab}
+                                    bottomPanelOpen={bottomPanelOpen}
+                                    toggleBottomPanel={(tab) =>
+                                        toggleBottomPanel(tab as 'testcase' | 'testresult')
+                                    }
+                                    setBottomPanelOpen={setBottomPanelOpen}
+                                />
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
 
             {/* Contest Victory / Defeat Overlay Modal */}
-            {hasWinner && !dismissedContestResult && createPortal(
-                <div
-                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 transition-all"
-                    role="dialog"
-                    aria-modal="true"
-                >
-                    <div className="w-full max-w-[440px] rounded-[4px] border border-[#333333] bg-[#1e1e1e] text-[#e8e8e6] shadow-2xl p-6 relative font-mono space-y-5 transition-all">
-                        {/* Dismiss Button */}
-                        <button
-                            type="button"
-                            onClick={() => setDismissedContestResult(true)}
-                            className="absolute top-4 right-4 text-[#94a3b8] hover:text-white transition-colors p-1 cursor-pointer"
-                            aria-label="Close"
-                        >
-                            <X className="h-4 w-4" />
-                        </button>
+            {hasWinner &&
+                !dismissedContestResult &&
+                createPortal(
+                    <div
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 transition-all"
+                        role="dialog"
+                        aria-modal="true"
+                    >
+                        <div className="w-full max-w-[440px] rounded-[4px] border border-[#333333] bg-[#1e1e1e] text-[#e8e8e6] shadow-2xl p-6 relative font-mono space-y-5 transition-all">
+                            {/* Dismiss Button */}
+                            <button
+                                type="button"
+                                onClick={() => setDismissedContestResult(true)}
+                                className="absolute top-4 right-4 text-[#94a3b8] hover:text-white transition-colors p-1 cursor-pointer"
+                                aria-label="Close"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
 
-                        {isWinner ? (
-                            /* VICTORY CARD FOR WINNER */
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="h-11 w-11 rounded-[3px] bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 shadow-xs">
-                                        <Trophy className="h-6 w-6" />
-                                    </div>
-                                    <div>
-                                        <div className="text-[10px] text-emerald-400 uppercase tracking-widest font-semibold">
-                                            Contest Concluded
+                            {isWinner ? (
+                                /* VICTORY CARD FOR WINNER */
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-11 w-11 rounded-[3px] bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 shadow-xs">
+                                            <Trophy className="h-6 w-6" />
                                         </div>
-                                        <h2 className="text-lg font-bold text-[#e8e8e6] tracking-tight">
-                                            Victory! First to Solve!
-                                        </h2>
-                                    </div>
-                                </div>
-
-                                <div className="p-3.5 rounded-[3px] border border-[#333333] bg-[#18181b] space-y-2 text-xs">
-                                    <div className="flex items-center justify-between pb-1.5 border-b border-[#272727]">
-                                        <span className="text-[#a09f9d]">Problem</span>
-                                        <span className="text-[#e8e8e6] font-medium truncate max-w-[200px]">{problem.title}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between pb-1.5 border-b border-[#272727]">
-                                        <span className="text-[#a09f9d]">Verdict</span>
-                                        <span className="text-emerald-400 font-semibold">Accepted (100% Passed)</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-[#a09f9d]">Participants</span>
-                                        <span className="text-[#e8e8e6]">{contestRoom?.participantCount} Coders</span>
-                                    </div>
-                                </div>
-
-                                <p className="text-xs text-[#a09f9d] leading-relaxed">
-                                    Congratulations! Your submission passed all test cases first, winning this match.
-                                </p>
-
-                                <div className="flex items-center gap-2 pt-1 border-t border-[#272727]">
-                                    <button
-                                        type="button"
-                                        onClick={() => setDismissedContestResult(true)}
-                                        className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#a09f9d] hover:text-white text-xs py-2.5 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
-                                    >
-                                        Stay in IDE
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => navigate('/')}
-                                        className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-2.5 px-3 rounded-[3px] font-semibold transition-colors cursor-pointer text-center shadow-xs"
-                                    >
-                                        Back to Problems
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            /* DEFEAT / CONCLUDED CARD FOR OTHER PARTICIPANTS */
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="h-11 w-11 rounded-[3px] bg-red-500/15 border border-red-500/40 flex items-center justify-center text-red-400 shrink-0 shadow-xs">
-                                        <Swords className="h-6 w-6" />
-                                    </div>
-                                    <div>
-                                        <div className="text-[10px] text-red-400 uppercase tracking-widest font-semibold">
-                                            Match Concluded
-                                        </div>
-                                        <h2 className="text-lg font-bold text-[#e8e8e6] tracking-tight">
-                                            Contest Over
-                                        </h2>
-                                    </div>
-                                </div>
-
-                                {/* Winner Basic Profile Card */}
-                                {winner && (
-                                    <div className="p-3.5 rounded-[3px] border border-amber-500/30 bg-amber-500/5 space-y-2.5">
-                                        <div className="text-[10px] uppercase tracking-wider text-amber-400 font-semibold flex items-center gap-1">
-                                            <Trophy className="h-3 w-3" /> Winner Details
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <div className="h-10 w-10 rounded-full bg-[#252423] border border-amber-500/40 flex items-center justify-center text-sm font-bold text-amber-400 overflow-hidden shrink-0">
-                                                {winner.avatar ? (
-                                                    <img src={winner.avatar} alt={winner.name} className="h-full w-full object-cover" />
-                                                ) : (
-                                                    <span>{(winner.name || winner.prn || 'W')[0].toUpperCase()}</span>
-                                                )}
+                                        <div>
+                                            <div className="text-[10px] text-emerald-400 uppercase tracking-widest font-semibold">
+                                                Contest Concluded
                                             </div>
-                                            <div className="min-w-0 flex-1">
-                                                <div className="text-xs font-semibold text-[#e8e8e6] truncate">
-                                                    {winner.name || 'Participant'}
+                                            <h2 className="text-lg font-bold text-[#e8e8e6] tracking-tight">
+                                                Victory! First to Solve!
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-3.5 rounded-[3px] border border-[#333333] bg-[#18181b] space-y-2 text-xs">
+                                        <div className="flex items-center justify-between pb-1.5 border-b border-[#272727]">
+                                            <span className="text-[#a09f9d]">Problem</span>
+                                            <span className="text-[#e8e8e6] font-medium truncate max-w-[200px]">
+                                                {problem.title}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between pb-1.5 border-b border-[#272727]">
+                                            <span className="text-[#a09f9d]">Verdict</span>
+                                            <span className="text-emerald-400 font-semibold">
+                                                Accepted (100% Passed)
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[#a09f9d]">Participants</span>
+                                            <span className="text-[#e8e8e6]">
+                                                {contestRoom?.participantCount} Coders
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-xs text-[#a09f9d] leading-relaxed">
+                                        Congratulations! Your submission passed all test cases
+                                        first, winning this match.
+                                    </p>
+
+                                    <div className="flex items-center gap-2 pt-1 border-t border-[#272727]">
+                                        <button
+                                            type="button"
+                                            onClick={() => setDismissedContestResult(true)}
+                                            className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#a09f9d] hover:text-white text-xs py-2.5 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
+                                        >
+                                            Stay in IDE
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate('/')}
+                                            className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-2.5 px-3 rounded-[3px] font-semibold transition-colors cursor-pointer text-center shadow-xs"
+                                        >
+                                            Back to Problems
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                /* DEFEAT / CONCLUDED CARD FOR OTHER PARTICIPANTS */
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-11 w-11 rounded-[3px] bg-red-500/15 border border-red-500/40 flex items-center justify-center text-red-400 shrink-0 shadow-xs">
+                                            <Swords className="h-6 w-6" />
+                                        </div>
+                                        <div>
+                                            <div className="text-[10px] text-red-400 uppercase tracking-widest font-semibold">
+                                                Match Concluded
+                                            </div>
+                                            <h2 className="text-lg font-bold text-[#e8e8e6] tracking-tight">
+                                                Contest Over
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    {/* Winner Basic Profile Card */}
+                                    {winner && (
+                                        <div className="p-3.5 rounded-[3px] border border-amber-500/30 bg-amber-500/5 space-y-2.5">
+                                            <div className="text-[10px] uppercase tracking-wider text-amber-400 font-semibold flex items-center gap-1">
+                                                <Trophy className="h-3 w-3" /> Winner Details
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-10 w-10 rounded-full bg-[#252423] border border-amber-500/40 flex items-center justify-center text-sm font-bold text-amber-400 overflow-hidden shrink-0">
+                                                    {winner.avatar ? (
+                                                        <img
+                                                            src={winner.avatar}
+                                                            alt={winner.name}
+                                                            className="h-full w-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <span>
+                                                            {(winner.name ||
+                                                                winner.prn ||
+                                                                'W')[0].toUpperCase()}
+                                                        </span>
+                                                    )}
                                                 </div>
-                                                <div className="text-[11px] text-[#a09f9d] truncate">
-                                                    {winner.prn ? `@${winner.prn}` : 'Contestant'} • Solved First
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="text-xs font-semibold text-[#e8e8e6] truncate">
+                                                        {winner.name || 'Participant'}
+                                                    </div>
+                                                    <div className="text-[11px] text-[#a09f9d] truncate">
+                                                        {winner.prn
+                                                            ? `@${winner.prn}`
+                                                            : 'Contestant'}{' '}
+                                                        • Solved First
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    )}
+
+                                    <p className="text-xs text-[#a09f9d] leading-relaxed">
+                                        Another participant solved the problem and passed all test
+                                        cases first. You can keep writing and testing your code to
+                                        finish this challenge for practice!
+                                    </p>
+
+                                    <div className="flex items-center gap-2 pt-1 border-t border-[#272727]">
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate('/')}
+                                            className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#a09f9d] hover:text-white text-xs py-2.5 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
+                                        >
+                                            Exit Contest
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setDismissedContestResult(true)}
+                                            className="flex-1 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] text-xs py-2.5 px-3 rounded-[3px] font-semibold transition-colors cursor-pointer text-center shadow-xs"
+                                        >
+                                            Keep Solving
+                                        </button>
                                     </div>
-                                )}
-
-                                <p className="text-xs text-[#a09f9d] leading-relaxed">
-                                    Another participant solved the problem and passed all test cases first. You can keep writing and testing your code to finish this challenge for practice!
-                                </p>
-
-                                <div className="flex items-center gap-2 pt-1 border-t border-[#272727]">
-                                    <button
-                                        type="button"
-                                        onClick={() => navigate('/')}
-                                        className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#a09f9d] hover:text-white text-xs py-2.5 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
-                                    >
-                                        Exit Contest
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setDismissedContestResult(true)}
-                                        className="flex-1 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] text-xs py-2.5 px-3 rounded-[3px] font-semibold transition-colors cursor-pointer text-center shadow-xs"
-                                    >
-                                        Keep Solving
-                                    </button>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                </div>,
-                document.body
-            )}
+                            )}
+                        </div>
+                    </div>,
+                    document.body
+                )}
 
             <LoginModal forceDark />
             <SignoutModal forceDark />

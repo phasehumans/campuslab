@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/lib/utils'
 
-export interface TooltipProps {
+interface TooltipProps {
     children: React.ReactNode
     content: React.ReactNode
     position?: 'top' | 'bottom' | 'left' | 'right'
@@ -22,7 +22,9 @@ export function Tooltip({
     className,
 }: TooltipProps) {
     const [isVisible, setIsVisible] = useState(false)
-    const [coords, setCoords] = useState<{ top: number; left: number; transform: string } | null>(null)
+    const [coords, setCoords] = useState<{ top: number; left: number; transform: string } | null>(
+        null
+    )
     const triggerRef = useRef<HTMLDivElement | null>(null)
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 

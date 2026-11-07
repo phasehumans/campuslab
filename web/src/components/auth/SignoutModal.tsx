@@ -83,7 +83,11 @@ export function SignoutModal({ forceDark = false }: SignoutModalProps) {
                     <div className="flex items-center gap-2.5 p-2.5 mb-4 rounded-[3px] border border-[#e2e8f0] dark:border-[#2f2e2d] bg-[#f8fafc] dark:bg-[#18181b]/60">
                         <div className="h-7 w-7 rounded-full bg-[#e2e8f0] dark:bg-[#333333] flex items-center justify-center text-[11px] font-semibold text-[#090a0f] dark:text-[#e8e8e6] overflow-hidden shrink-0">
                             {user.avatar ? (
-                                <img src={user.avatar} alt="avatar" className="h-full w-full object-cover" />
+                                <img
+                                    src={user.avatar}
+                                    alt="avatar"
+                                    className="h-full w-full object-cover"
+                                />
                             ) : (
                                 <span>{(user.name || user.email || 'U')[0].toUpperCase()}</span>
                             )}
@@ -100,7 +104,8 @@ export function SignoutModal({ forceDark = false }: SignoutModalProps) {
                 )}
 
                 <p className="text-xs text-[#52525b] dark:text-[#a09f9d] leading-relaxed mb-6">
-                    Are you sure you want to sign out? You will need to sign in again to submit code solutions and participate in live contests.
+                    Are you sure you want to sign out? You will need to sign in again to submit code
+                    solutions and participate in live contests.
                 </p>
 
                 <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#f0f2f5] dark:border-[#272727]">

@@ -21,17 +21,6 @@ export class ErrorBoundary extends Component<Props, State> {
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         console.error('ErrorBoundary caught error:', error, errorInfo)
-        fetch('http://localhost:3000/api/v1/client-log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                type: 'react_error_boundary',
-                message: error.message,
-                stack: error.stack,
-                componentStack: errorInfo.componentStack,
-                url: window.location.href,
-            }),
-        }).catch(() => {})
     }
 
     render() {
@@ -44,7 +33,8 @@ export class ErrorBoundary extends Component<Props, State> {
                         </div>
                         <h2 className="text-xl font-bold">Something went wrong</h2>
                         <p className="text-sm text-gray-400">
-                            {this.state.error?.message || 'An unexpected error occurred while rendering this page.'}
+                            {this.state.error?.message ||
+                                'An unexpected error occurred while rendering this page.'}
                         </p>
                         <div className="flex justify-center gap-3 pt-4">
                             <button

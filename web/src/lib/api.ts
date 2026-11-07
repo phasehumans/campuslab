@@ -15,7 +15,7 @@ type RequestOptions = {
     allowUnauthorized?: boolean
 }
 
-export class ApiError extends Error {
+class ApiError extends Error {
     status: number
     data: unknown
 

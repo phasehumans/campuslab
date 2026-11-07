@@ -1,4 +1,13 @@
-import { CheckCircle2, XCircle, Loader2, TerminalSquare, Clock, Cpu, Code2, ShieldAlert } from 'lucide-react'
+import {
+    CheckCircle2,
+    XCircle,
+    Loader2,
+    TerminalSquare,
+    Clock,
+    Cpu,
+    Code2,
+    ShieldAlert,
+} from 'lucide-react'
 import type { ExecutionResponse } from '@/lib/types'
 
 interface TestResultPanelProps {
@@ -144,7 +153,11 @@ export function TestResultPanel({
                         <div className="flex items-center justify-between text-[11px] text-[#a09f9d]">
                             <span>Testcases Passed</span>
                             <span className="font-semibold text-[#e8e8e6]">
-                                <span className={result.allPassed ? 'text-[#10b981]' : 'text-[#ef4444]'}>
+                                <span
+                                    className={
+                                        result.allPassed ? 'text-[#10b981]' : 'text-[#ef4444]'
+                                    }
+                                >
                                     {effectivePassed}
                                 </span>{' '}
                                 / {effectiveTotal} Passed
@@ -167,9 +180,7 @@ export function TestResultPanel({
                                 <Clock className="h-3 w-3 text-[#87b2f4]" />
                                 <span>Time</span>
                             </div>
-                            <div className="text-xs font-semibold text-[#e8e8e6]">
-                                {maxTime}
-                            </div>
+                            <div className="text-xs font-semibold text-[#e8e8e6]">{maxTime}</div>
                         </div>
 
                         <div className="rounded-[2px] bg-[#141414] border border-[#272727] p-2.5 space-y-1">
@@ -177,9 +188,7 @@ export function TestResultPanel({
                                 <Cpu className="h-3 w-3 text-purple-400" />
                                 <span>Memory</span>
                             </div>
-                            <div className="text-xs font-semibold text-[#e8e8e6]">
-                                {maxMemory}
-                            </div>
+                            <div className="text-xs font-semibold text-[#e8e8e6]">{maxMemory}</div>
                         </div>
 
                         <div className="rounded-[2px] bg-[#141414] border border-[#272727] p-2.5 space-y-1">
@@ -231,7 +240,8 @@ export function TestResultPanel({
                     <div className="pt-2 border-t border-[#272727] flex items-center gap-2 text-[11px] text-[#888888]">
                         <ShieldAlert className="h-3.5 w-3.5 text-[#555555] shrink-0" />
                         <span>
-                            Hidden test cases and expected outputs are confidential to prevent hardcoded solutions and maintain competitive integrity.
+                            Hidden test cases and expected outputs are confidential to prevent
+                            hardcoded solutions and maintain competitive integrity.
                         </span>
                     </div>
                 </div>

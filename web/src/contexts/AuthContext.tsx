@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react'
+import React, {
+    createContext,
+    useContext,
+    useState,
+    useCallback,
+    useMemo,
+    type ReactNode,
+} from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getApiErrorMessage, getCurrentUser, logoutUser, oauthLogin } from '@/lib/api'
 import type { User } from '@/lib/types'
@@ -11,7 +18,7 @@ interface AuthContextType {
     isModalOpen: boolean
     isSignoutModalOpen: boolean
     authError: string | null
-    openModal: (mode?: string) => void
+    openModal: () => void
     closeModal: () => void
     openSignoutModal: () => void
     closeSignoutModal: () => void
@@ -43,9 +50,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         queryFn: getCurrentUser,
     })
 
-    const setCurrentUser = useCallback((user: User | null) => {
-        queryClient.setQueryData(AUTH_QUERY_KEY, user)
-    }, [queryClient])
+    const setCurrentUser = useCallback(
+        (user: User | null) => {
+            queryClient.setQueryData(AUTH_QUERY_KEY, user)
+        },
+        [queryClient]
+    )
 
     const oauthMutation = useMutation({
         mutationFn: oauthLogin,
@@ -82,22 +92,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsSignoutModalOpen(false)
     }, [])
 
-    const loginWithOAuth = useCallback(async (payload: {
-        provider: 'github' | 'google'
-        code?: string
-        credential?: string
-        redirectUri?: string
-        email?: string
-        name?: string
-        avatar?: string
-    }) => {
-        try {
-            await oauthMutation.mutateAsync(payload)
-        } catch (error) {
-            setAuthError(getApiErrorMessage(error, 'Unable to sign in with ' + payload.provider))
-            throw error
-        }
-    }, [oauthMutation])
+    const loginWithOAuth = useCallback(
+        async (payload: {
+            provider: 'github' | 'google'
+            code?: string
+            credential?: string
+            redirectUri?: string
+            email?: string
+            name?: string
+            avatar?: string
+        }) => {
+            try {
+                await oauthMutation.mutateAsync(payload)
+            } catch (error) {
+                setAuthError(
+                    getApiErrorMessage(error, 'Unable to sign in with ' + payload.provider)
+                )
+                throw error
+            }
+        },
+        [oauthMutation]
+    )
 
     const logout = useCallback(async () => {
         setAuthError(null)

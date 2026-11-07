@@ -21,7 +21,9 @@ export function ProblemTable({ problems, onProblemClick, startIndex = 1 }: Probl
                             <th className="px-2.5 sm:px-4 py-2.5">Problem Title</th>
                             <th className="px-4 py-2.5 hidden md:table-cell w-[30%]">Topics</th>
                             <th className="px-2.5 sm:px-4 py-2.5 w-20 sm:w-24">Difficulty</th>
-                            <th className="px-4 py-2.5 w-20 text-right hidden sm:table-cell">Action</th>
+                            <th className="px-4 py-2.5 w-20 text-right hidden sm:table-cell">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-[#f0f2f5] dark:divide-[#272727] text-xs font-sans">
@@ -39,11 +41,17 @@ export function ProblemTable({ problems, onProblemClick, startIndex = 1 }: Probl
                                         </td>
                                         <td className="px-2 sm:px-4 py-3 text-center font-mono text-[11px]">
                                             {problem.status === 'Solved' ? (
-                                                <span className="text-[#10b981] font-medium">[done]</span>
+                                                <span className="text-[#10b981] font-medium">
+                                                    [done]
+                                                </span>
                                             ) : problem.status === 'Attempted' ? (
-                                                <span className="text-[#f59e0b] font-medium">[try]</span>
+                                                <span className="text-[#f59e0b] font-medium">
+                                                    [try]
+                                                </span>
                                             ) : (
-                                                <span className="text-[#cbd5e1] dark:text-[#333333]">[-]</span>
+                                                <span className="text-[#cbd5e1] dark:text-[#333333]">
+                                                    [-]
+                                                </span>
                                             )}
                                         </td>
                                         <td className="px-2.5 sm:px-4 py-3">
@@ -76,9 +84,12 @@ export function ProblemTable({ problems, onProblemClick, startIndex = 1 }: Probl
                                             <span
                                                 className={cn(
                                                     'font-medium',
-                                                    problem.difficulty === 'Easy' && 'text-[#10b981]',
-                                                    problem.difficulty === 'Medium' && 'text-[#f59e0b]',
-                                                    problem.difficulty === 'Hard' && 'text-[#ef4444]'
+                                                    problem.difficulty === 'Easy' &&
+                                                        'text-[#10b981]',
+                                                    problem.difficulty === 'Medium' &&
+                                                        'text-[#f59e0b]',
+                                                    problem.difficulty === 'Hard' &&
+                                                        'text-[#ef4444]'
                                                 )}
                                             >
                                                 {problem.difficulty}
@@ -98,7 +109,10 @@ export function ProblemTable({ problems, onProblemClick, startIndex = 1 }: Probl
                             })
                         ) : (
                             <tr>
-                                <td colSpan={6} className="px-4 py-12 text-center font-mono text-xs text-[#94a3b8] dark:text-[#a09f9d]">
+                                <td
+                                    colSpan={6}
+                                    className="px-4 py-12 text-center font-mono text-xs text-[#94a3b8] dark:text-[#a09f9d]"
+                                >
                                     No problems found matching the criteria.
                                 </td>
                             </tr>

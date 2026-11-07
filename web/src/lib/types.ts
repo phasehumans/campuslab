@@ -1,5 +1,5 @@
-export type Difficulty = 'Easy' | 'Medium' | 'Hard'
-export type ProblemStatus = 'Solved' | 'Attempted' | 'Unsolved'
+type Difficulty = 'Easy' | 'Medium' | 'Hard'
+type ProblemStatus = 'Solved' | 'Attempted' | 'Unsolved'
 export type EditorLanguage = 'cpp'
 
 export type User = {
@@ -18,7 +18,7 @@ export type ProblemExample = {
     explanation?: string
 }
 
-export type ProblemTestcase = {
+type ProblemTestcase = {
     input: string
     output: string
 }
@@ -43,7 +43,7 @@ export type ProblemDetail = ProblemSummary & {
     referenceSolutions: Partial<Record<EditorLanguage, string>>
 }
 
-export type ExecutionResult = {
+type ExecutionResult = {
     testcase: number
     input: string
     stdout: string
@@ -62,7 +62,7 @@ export type ExecutionResponse = {
     results: ExecutionResult[]
 }
 
-export type SubmissionRecord = {
+type SubmissionRecord = {
     id: string
     problemId: string
     title?: string
@@ -85,7 +85,7 @@ export type ProfileResponse = {
     recentSubmissions: SubmissionRecord[]
 }
 
-export type ContestQuestion = {
+type ContestQuestion = {
     id: string
     title: string
     difficulty: Difficulty
@@ -94,7 +94,7 @@ export type ContestQuestion = {
     solved: boolean
 }
 
-export type ContestLeaderboardEntry = {
+type ContestLeaderboardEntry = {
     rank: number
     userId: string
     name: string
@@ -106,7 +106,7 @@ export type ContestLeaderboardEntry = {
     isYou: boolean
 }
 
-export type ContestParticipant = {
+type ContestParticipant = {
     userId: string
     name: string
     prn?: string | null

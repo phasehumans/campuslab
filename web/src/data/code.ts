@@ -14,6 +14,4 @@ int main() {
 }`,
 }
 
-export const LANGUAGES = [
-    { id: 'cpp', name: 'C++ (GCC 13 / C++20)', ext: cpp },
-] as const
+export const LANGUAGES = [{ id: 'cpp', name: 'C++ (GCC 13 / C++20)', ext: cpp }] as const

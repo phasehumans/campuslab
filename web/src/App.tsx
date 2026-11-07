@@ -13,7 +13,9 @@ import { SolveScreen } from './pages/SolveScreen'
 import { OAuthCallback } from './pages/OAuthCallback'
 
 const ProblemSet = lazy(() => import('./pages/ProblemSet').then((m) => ({ default: m.ProblemSet })))
-const ContestRoom = lazy(() => import('./pages/ContestRoom').then((m) => ({ default: m.ContestRoom })))
+const ContestRoom = lazy(() =>
+    import('./pages/ContestRoom').then((m) => ({ default: m.ContestRoom }))
+)
 
 function HomeRoute() {
     const [searchParams] = useSearchParams()
@@ -48,10 +50,16 @@ export default function App() {
                                 <Route element={<Layout />}>
                                     <Route path="/" element={<HomeRoute />} />
                                     <Route path="/contest/:roomId" element={<ContestRoom />} />
-                                    
+
                                     {/* OAuth Callbacks */}
-                                    <Route path="/auth/callback/github" element={<OAuthCallback provider="github" />} />
-                                    <Route path="/auth/callback/google" element={<OAuthCallback provider="google" />} />
+                                    <Route
+                                        path="/auth/callback/github"
+                                        element={<OAuthCallback provider="github" />}
+                                    />
+                                    <Route
+                                        path="/auth/callback/google"
+                                        element={<OAuthCallback provider="google" />}
+                                    />
 
                                     {/* Redirect legacy routes directly to root */}
                                     <Route path="/login" element={<Navigate to="/" replace />} />

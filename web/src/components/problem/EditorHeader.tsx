@@ -2,14 +2,11 @@ import { Code2 } from 'lucide-react'
 
 interface EditorHeaderProps {
     language?: string
-    isLangDropdownOpen?: boolean
-    setIsLangDropdownOpen?: (open: boolean) => void
-    handleLanguageChange?: (langId: string) => void
 }
 
 export function EditorHeader({ language = 'cpp' }: EditorHeaderProps) {
-    const filename = `solution.${language === 'python' ? 'py' : language === 'java' ? 'java' : language === 'rust' ? 'rs' : 'cpp'}`
-    const tag = language === 'python' ? 'Python 3' : language === 'java' ? 'Java 21' : language === 'rust' ? 'Rust' : 'C++20'
+    const filename = language === 'cpp' ? 'solution.cpp' : `solution.${language}`
+    const tag = language === 'cpp' ? 'C++20' : language
 
     return (
         <div className="flex items-center justify-between px-3.5 py-2 bg-[#191919] border-b border-[#333333] font-mono text-xs text-[#a09f9d]">

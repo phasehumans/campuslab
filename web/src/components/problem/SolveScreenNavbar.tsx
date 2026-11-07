@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { cn } from '@/lib/utils'
 
-export interface ContestInfo {
+interface ContestInfo {
     roomCode: string
     participantCount: number
     endsAt?: string
@@ -61,7 +61,10 @@ export function SolveScreenNavbar({
     useEffect(() => {
         if (!contestInfo?.endsAt) return
         const updateTimer = () => {
-            const left = Math.max(0, Math.floor((new Date(contestInfo.endsAt!).getTime() - Date.now()) / 1000))
+            const left = Math.max(
+                0,
+                Math.floor((new Date(contestInfo.endsAt!).getTime() - Date.now()) / 1000)
+            )
             setContestSecondsLeft(left)
         }
         updateTimer()
@@ -140,11 +143,16 @@ export function SolveScreenNavbar({
                     <div className="flex items-center gap-1.5 shrink-0">
                         <div className="flex items-center gap-1.5 px-2 py-1 rounded-[3px] border border-amber-500/30 bg-amber-500/10 text-amber-400 font-mono text-[11px] shrink-0">
                             <Trophy className="h-3 w-3 shrink-0" />
-                            <span className="font-semibold tracking-wider">ROOM [{contestInfo.roomCode}]</span>
+                            <span className="font-semibold tracking-wider">
+                                ROOM [{contestInfo.roomCode}]
+                            </span>
                         </div>
                         <div className="flex items-center gap-1 px-2 py-1 rounded-[3px] border border-[#333333] bg-[#252423] text-[#e8e8e6] font-mono text-[11px] shrink-0">
                             <Users className="h-3 w-3 text-[#87b2f4] shrink-0" />
-                            <span>{contestInfo.participantCount} {contestInfo.participantCount === 1 ? 'coder' : 'coders'}</span>
+                            <span>
+                                {contestInfo.participantCount}{' '}
+                                {contestInfo.participantCount === 1 ? 'coder' : 'coders'}
+                            </span>
                         </div>
                     </div>
                 ) : (
@@ -158,8 +166,20 @@ export function SolveScreenNavbar({
                 {/* Mobile Timer: Displays neatly on the left beside Home on < md screens */}
                 {contestInfo ? (
                     <div className="flex md:hidden items-center gap-1.5 px-2 py-1 rounded-[3px] border border-[#333333] bg-[#252423] text-[#e8e8e6] text-[11px] select-none shadow-xs shrink-0">
-                        <Clock className={cn("h-3 w-3 shrink-0", contestSecondsLeft < 300 ? "text-red-400 animate-pulse" : "text-[#87b2f4]")} />
-                        <span className={cn("font-mono font-medium tracking-wider text-[#e8e8e6]", contestSecondsLeft < 300 && "text-red-400 font-bold")}>
+                        <Clock
+                            className={cn(
+                                'h-3 w-3 shrink-0',
+                                contestSecondsLeft < 300
+                                    ? 'text-red-400 animate-pulse'
+                                    : 'text-[#87b2f4]'
+                            )}
+                        />
+                        <span
+                            className={cn(
+                                'font-mono font-medium tracking-wider text-[#e8e8e6]',
+                                contestSecondsLeft < 300 && 'text-red-400 font-bold'
+                            )}
+                        >
                             {formatTimer(contestSecondsLeft)}
                         </span>
                     </div>
@@ -238,18 +258,34 @@ export function SolveScreenNavbar({
                 {contestInfo ? (
                     <div className="flex items-center gap-2">
                         {contestInfo.hasWinner && (
-                            <div className={cn(
-                                "flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] text-[11px] font-mono border",
-                                contestInfo.isWinner
-                                    ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400 font-semibold"
-                                    : "bg-red-500/15 border-red-500/30 text-red-400 font-semibold"
-                            )}>
-                                {contestInfo.isWinner ? '🏆 Won Match' : `⚔️ Won by ${contestInfo.winnerName || 'Peer'}`}
+                            <div
+                                className={cn(
+                                    'flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] text-[11px] font-mono border',
+                                    contestInfo.isWinner
+                                        ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400 font-semibold'
+                                        : 'bg-red-500/15 border-red-500/30 text-red-400 font-semibold'
+                                )}
+                            >
+                                {contestInfo.isWinner
+                                    ? '🏆 Won Match'
+                                    : `⚔️ Won by ${contestInfo.winnerName || 'Peer'}`}
                             </div>
                         )}
                         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] border border-[#333333] bg-[#252423] text-[#e8e8e6] text-[11px] select-none shadow-xs">
-                            <Clock className={cn("h-3.5 w-3.5", contestSecondsLeft < 300 ? "text-red-400 animate-pulse" : "text-[#87b2f4]")} />
-                            <span className={cn("font-mono font-medium tracking-wider", contestSecondsLeft < 300 && "text-red-400 font-bold")}>
+                            <Clock
+                                className={cn(
+                                    'h-3.5 w-3.5',
+                                    contestSecondsLeft < 300
+                                        ? 'text-red-400 animate-pulse'
+                                        : 'text-[#87b2f4]'
+                                )}
+                            />
+                            <span
+                                className={cn(
+                                    'font-mono font-medium tracking-wider',
+                                    contestSecondsLeft < 300 && 'text-red-400 font-bold'
+                                )}
+                            >
                                 {formatTimer(contestSecondsLeft)}
                             </span>
                             <span className="text-[10px] text-[#94a3b8] uppercase">rem</span>
@@ -259,7 +295,11 @@ export function SolveScreenNavbar({
                     /* Desktop Solve Timer */
                     <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] border border-[#333333] bg-[#252423] text-[#e8e8e6] text-[11px] select-none shadow-xs">
                         <Tooltip
-                            content={isTimerRunning ? 'Timer running (click to pause)' : 'Timer paused (click to resume)'}
+                            content={
+                                isTimerRunning
+                                    ? 'Timer running (click to pause)'
+                                    : 'Timer paused (click to resume)'
+                            }
                             position="bottom"
                         >
                             <button
@@ -270,7 +310,9 @@ export function SolveScreenNavbar({
                                 <span
                                     className={cn(
                                         'h-1.5 w-1.5 rounded-full shrink-0 transition-colors',
-                                        isTimerRunning ? 'bg-emerald-400 animate-pulse' : 'bg-[#a09f9d]'
+                                        isTimerRunning
+                                            ? 'bg-emerald-400 animate-pulse'
+                                            : 'bg-[#a09f9d]'
                                     )}
                                 />
                                 <span className="font-mono font-medium tracking-wider text-[#e8e8e6]">
@@ -280,7 +322,10 @@ export function SolveScreenNavbar({
                         </Tooltip>
 
                         <div className="flex items-center gap-0.5 ml-1 border-l border-[#333333] pl-1.5">
-                            <Tooltip content={isTimerRunning ? 'Pause Timer' : 'Resume Timer'} position="bottom">
+                            <Tooltip
+                                content={isTimerRunning ? 'Pause Timer' : 'Resume Timer'}
+                                position="bottom"
+                            >
                                 <button
                                     type="button"
                                     onClick={() => setIsTimerRunning((r) => !r)}

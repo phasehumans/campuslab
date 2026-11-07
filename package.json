@@ -20,7 +20,6 @@
         "@types/bun": "latest",
         "eslint": "^9.0.0",
         "eslint-plugin-react": "^7.37.0",
-        "eslint-plugin-react-hooks": "^5.0.0",
         "globals": "^15.0.0",
         "prettier": "^3.8.1",
         "typescript-eslint": "^8.0.0"
