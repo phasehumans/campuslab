@@ -64,19 +64,41 @@ export function SubmissionsPanel({
         enabled: Boolean(expandedCodeId),
     })
 
-    // Fire celebratory confetti when latest submission is Accepted
+    // Fire celebratory confetti from both bottom corners when latest submission is Accepted
     useEffect(() => {
-        if (latestExecution?.allPassed) {
+        if (!latestExecution?.allPassed) return
+
+        const colors = ['#34d399', '#87b2f4', '#fcd34d', '#fda4af', '#ffffff']
+
+        const fireDualConfetti = () => {
             try {
+                // Lower-left cannon (aimed inward at 60°)
                 confetti({
-                    particleCount: 50,
-                    spread: 60,
-                    origin: { y: 0.65 },
+                    particleCount: 55,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.95 },
+                    colors,
+                    zIndex: 1000,
+                })
+
+                // Lower-right cannon (aimed inward at 120°)
+                confetti({
+                    particleCount: 55,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.95 },
+                    colors,
+                    zIndex: 1000,
                 })
             } catch {
                 // Ignore if canvas-confetti fails in test environment
             }
         }
+
+        fireDualConfetti()
+        const timer = setTimeout(fireDualConfetti, 250)
+        return () => clearTimeout(timer)
     }, [latestExecution])
 
     const handleCopyCode = (code: string) => {

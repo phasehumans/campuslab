@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { getApiErrorMessage, getProfile, joinContestRoom } from '@/lib/api'
 import { ContestActionModal } from '@/components/contest/ContestActionModal'
 import { Tooltip } from '@/components/ui/Tooltip'
-import { cn } from '@/lib/utils'
+import { cn, formatRelativeTime } from '@/lib/utils'
 
 interface SidelinePanelProps {
     totalProblemsCount?: number
@@ -128,6 +128,43 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                        )}
+
+                        {/* Recent Submissions (Max 3, Minimalist List) */}
+                        {profile?.recentSubmissions && profile.recentSubmissions.length > 0 && (
+                            <div className="space-y-1.5 pt-2.5 border-t border-[#f0f2f5] dark:border-[#272727] font-mono">
+                                <div className="flex items-center justify-between text-[10px] text-[#64748b] dark:text-[#777777] uppercase tracking-wider">
+                                    <span>Recent Submissions</span>
+                                </div>
+                                <div className="space-y-1">
+                                    {profile.recentSubmissions.slice(0, 3).map((sub) => {
+                                        const isAccepted = sub.status === 'Accepted'
+                                        return (
+                                            <div
+                                                key={sub.id}
+                                                onClick={() => navigate(`/problem/${sub.problemId}`)}
+                                                className="flex items-center justify-between gap-2 py-0.5 text-[11px] cursor-pointer group hover:bg-[#f8fafc] dark:hover:bg-[#252423] px-1 rounded-[2px] transition-colors"
+                                                title={`Open ${sub.title || 'problem'} (${sub.status})`}
+                                            >
+                                                <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                                                    <span
+                                                        className={cn(
+                                                            'h-1.5 w-1.5 rounded-full shrink-0',
+                                                            isAccepted ? 'bg-emerald-400' : 'bg-rose-400'
+                                                        )}
+                                                    />
+                                                    <span className="text-[#334155] dark:text-[#cccccc] group-hover:text-[#090a0f] dark:group-hover:text-white truncate">
+                                                        {sub.title || 'Problem'}
+                                                    </span>
+                                                </div>
+                                                <span className="text-[10px] text-[#94a3b8] dark:text-[#777777] shrink-0">
+                                                    {formatRelativeTime(sub.createdAt)}
+                                                </span>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         )}
                     </div>
