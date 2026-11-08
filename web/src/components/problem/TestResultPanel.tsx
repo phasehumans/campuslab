@@ -66,7 +66,7 @@ export function TestResultPanel({
         verdict = 'Accepted'
     } else if (failedItem) {
         const failedIndex = result.results.findIndex((item) => !item.passed)
-        const testNum = failedIndex !== -1 ? failedIndex + 1 : (failedItem.testcase + 1)
+        const testNum = failedIndex !== -1 ? failedIndex + 1 : failedItem.testcase + 1
         const rawStatus = failedItem.status || 'Wrong Answer'
 
         if (rawStatus === 'Time Limit Exceeded') {
@@ -93,7 +93,7 @@ export function TestResultPanel({
     // -------------------------------------------------------------
     if (isSubmission) {
         const failedIndex = result.results.findIndex((item) => !item.passed)
-        const failedTestNum = failedIndex !== -1 ? failedIndex + 1 : ((failedItem?.testcase ?? 0) + 1)
+        const failedTestNum = failedIndex !== -1 ? failedIndex + 1 : (failedItem?.testcase ?? 0) + 1
         const isCodeforcesHidden = failedTestNum > Math.max(sampleCount, 1)
 
         return (
@@ -133,7 +133,10 @@ export function TestResultPanel({
                         )}
                         {userSolveTime != null && (
                             <span>
-                                Solve Time: <span className="text-[#e8e8e6]">{formatDuration(userSolveTime)}</span>
+                                Solve Time:{' '}
+                                <span className="text-[#e8e8e6]">
+                                    {formatDuration(userSolveTime)}
+                                </span>
                             </span>
                         )}
                         {onViewSubmissions && (
@@ -177,8 +180,11 @@ export function TestResultPanel({
                     <div>
                         {isCodeforcesHidden ? (
                             <div className="rounded-[3px] border border-[#2a2a2a] bg-[#141414] p-3 text-xs text-[#888888]">
-                                <span className="text-[#e8e8e6] font-medium">System Test #{failedTestNum} (Hidden):</span>{' '}
-                                Test data is hidden for system testcases to maintain competitive programming integrity.
+                                <span className="text-[#e8e8e6] font-medium">
+                                    System Test #{failedTestNum} (Hidden):
+                                </span>{' '}
+                                Test data is hidden for system testcases to maintain competitive
+                                programming integrity.
                             </div>
                         ) : (
                             <div className="space-y-2 pt-1">
@@ -187,21 +193,27 @@ export function TestResultPanel({
                                 </div>
                                 {failedItem.input && (
                                     <div>
-                                        <div className="text-[10px] uppercase text-[#777777] mb-0.5">Input</div>
+                                        <div className="text-[10px] uppercase text-[#777777] mb-0.5">
+                                            Input
+                                        </div>
                                         <div className="bg-[#141414] rounded-[3px] px-3 py-1.5 text-[#e8e8e6] whitespace-pre-wrap select-text">
                                             {failedItem.input}
                                         </div>
                                     </div>
                                 )}
                                 <div>
-                                    <div className="text-[10px] uppercase text-[#777777] mb-0.5">Your Output</div>
+                                    <div className="text-[10px] uppercase text-[#777777] mb-0.5">
+                                        Your Output
+                                    </div>
                                     <div className="bg-[#141414] rounded-[3px] px-3 py-1.5 text-rose-300 whitespace-pre-wrap select-text">
                                         {failedItem.stdout || '(empty output)'}
                                     </div>
                                 </div>
                                 {failedItem.expectedOutput && (
                                     <div>
-                                        <div className="text-[10px] uppercase text-[#777777] mb-0.5">Expected Output</div>
+                                        <div className="text-[10px] uppercase text-[#777777] mb-0.5">
+                                            Expected Output
+                                        </div>
                                         <div className="bg-[#141414] rounded-[3px] px-3 py-1.5 text-emerald-300 whitespace-pre-wrap select-text">
                                             {failedItem.expectedOutput}
                                         </div>

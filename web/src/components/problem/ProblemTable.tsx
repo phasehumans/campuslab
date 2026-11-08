@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { cn } from '@/lib/utils'
+import { getProblem } from '@/lib/api'
 import type { ProblemSummary } from '@/lib/types'
 
 interface ProblemTableProps {
@@ -15,6 +17,16 @@ export function ProblemTable({
     startIndex = 1,
     footer,
 }: ProblemTableProps) {
+    const queryClient = useQueryClient()
+
+    const handlePrefetch = (id: string) => {
+        queryClient.prefetchQuery({
+            queryKey: ['problem', id],
+            queryFn: () => getProblem(id),
+            staleTime: 60_000,
+        })
+    }
+
     return (
         <div className="border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] rounded-[3px] overflow-hidden transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)] w-full">
             <div className="w-full overflow-x-hidden sm:overflow-x-auto">
@@ -38,6 +50,7 @@ export function ProblemTable({
                                     <tr
                                         key={problem.id}
                                         onClick={() => onProblemClick(problem.id)}
+                                        onMouseEnter={() => handlePrefetch(problem.id)}
                                         className="h-11 sm:h-[48px] hover:bg-[#f9fafb] dark:hover:bg-[#252423] transition-colors group cursor-pointer"
                                     >
                                         <td className="px-2 sm:px-4 py-2.5 text-center font-mono text-[11px] text-[#94a3b8] dark:text-[#a09f9d] align-middle">
@@ -62,6 +75,7 @@ export function ProblemTable({
                                             <Link
                                                 to={`/problem/${problem.id}`}
                                                 onClick={(e) => e.stopPropagation()}
+                                                onMouseEnter={() => handlePrefetch(problem.id)}
                                                 className="font-medium text-xs sm:text-[13px] text-[#090a0f] dark:text-[#e8e8e6] group-hover:text-[#87b2f4] group-hover:underline transition-colors block truncate"
                                             >
                                                 {problem.title}
@@ -92,8 +106,7 @@ export function ProblemTable({
                                                         'text-[#34d399]',
                                                     problem.difficulty === 'Medium' &&
                                                         'text-[#fcd34d]',
-                                                    problem.difficulty === 'Hard' &&
-                                                        'text-rose-300'
+                                                    problem.difficulty === 'Hard' && 'text-rose-300'
                                                 )}
                                             >
                                                 {problem.difficulty}

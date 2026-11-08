@@ -21,7 +21,10 @@ describe('Web Utilities', () => {
         const nowPg = new Date().toISOString().replace('T', ' ').replace('Z', '')
         expect(formatRelativeTime(nowPg)).toBe('just now')
 
-        const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString().replace('T', ' ').replace('Z', '')
+        const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000)
+            .toISOString()
+            .replace('T', ' ')
+            .replace('Z', '')
         expect(formatRelativeTime(fiveMinAgo)).toBe('5m ago')
 
         expect(formatRelativeTime(null)).toBe('recently')

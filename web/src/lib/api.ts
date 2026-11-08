@@ -270,6 +270,14 @@ export const joinContestRoom = async (roomCode: string) => {
     return response!.room
 }
 
+export const leaveContestRoom = async (roomCode: string) => {
+    const response = await request<{ room?: ContestRoom }>(`/contests/rooms/${roomCode}/leave`, {
+        method: 'POST',
+    })
+
+    return response?.room
+}
+
 export const getContestRoom = async (roomCode: string) => {
     const response = await request<{ room: ContestRoom }>(`/contests/rooms/${roomCode}`)
     return response!.room

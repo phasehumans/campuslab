@@ -103,6 +103,36 @@ public:
             }
         });
 
+        // POST /api/v1/contests/rooms/:code/leave
+        CROW_ROUTE(app, "/api/v1/contests/rooms/<string>/leave").methods(crow::HTTPMethod::POST)([this](const crow::request& req, const std::string& raw_code) {
+            auto auth = AuthMiddleware::get_auth_context(req, jwt_secret_);
+            if (!auth.is_authenticated) {
+                return crow::response(401, json({{"success", false}, {"message", "Unauthorized"}}).dump());
+            }
+
+            std::string code = raw_code;
+            std::transform(code.begin(), code.end(), code.begin(), ::toupper);
+
+            try {
+                auto res = contest_service_.leave_room(auth.user_id, code);
+                if (!res.success) {
+                    return crow::response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
+                }
+
+                json out = {
+                    {"success", true},
+                    {"message", res.message},
+                    {"room", res.room.has_value() ? res.room->to_json() : nullptr}
+                };
+
+                crow::response response(res.status_code, out.dump());
+                response.add_header("Content-Type", "application/json");
+                return response;
+            } catch (const std::exception& e) {
+                return crow::response(500, json({{"success", false}, {"message", e.what()}}).dump());
+            }
+        });
+
         // GET /api/v1/contests/rooms/:code
         CROW_ROUTE(app, "/api/v1/contests/rooms/<string>").methods(crow::HTTPMethod::GET)([this](const crow::request& req, const std::string& raw_code) {
             auto auth = AuthMiddleware::get_auth_context(req, jwt_secret_);

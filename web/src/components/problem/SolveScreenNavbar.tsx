@@ -15,6 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { cn, parseUtcDate } from '@/lib/utils'
+import { leaveContestRoom } from '@/lib/api'
 
 interface ContestParticipantInfo {
     userId: string
@@ -58,6 +59,7 @@ export function SolveScreenNavbar({
     contestInfo,
 }: SolveScreenNavbarProps) {
     const navigate = useNavigate()
+    const [isExiting, setIsExiting] = useState(false)
 
     // Contest Countdown Timer State
     const [contestSecondsLeft, setContestSecondsLeft] = useState(() => {
@@ -294,10 +296,16 @@ export function SolveScreenNavbar({
                         <div
                             className={cn(
                                 'flex md:hidden items-center px-2 py-1 rounded-[3px] border border-[#333333] bg-[#222120] text-[11px] font-mono font-medium tracking-wider select-none shadow-xs shrink-0',
-                                contestSecondsLeft < 300 || contestInfo.isEnded ? 'text-rose-300' : 'text-[#e8e8e6]'
+                                contestSecondsLeft < 300 || contestInfo.isEnded
+                                    ? 'text-rose-300'
+                                    : 'text-[#e8e8e6]'
                             )}
                         >
-                            <span>{contestSecondsLeft === 0 || contestInfo.isEnded ? '00:00' : formatTimer(contestSecondsLeft)}</span>
+                            <span>
+                                {contestSecondsLeft === 0 || contestInfo.isEnded
+                                    ? '00:00'
+                                    : formatTimer(contestSecondsLeft)}
+                            </span>
                         </div>
                     ) : (
                         <button
@@ -379,11 +387,21 @@ export function SolveScreenNavbar({
                             <div
                                 className={cn(
                                     'px-2.5 py-1 rounded-[3px] border border-[#333333] bg-[#222120] font-mono text-[11px] font-medium tracking-wider select-none shadow-xs',
-                                    contestSecondsLeft < 300 || contestInfo.isEnded ? 'text-rose-300' : 'text-[#e8e8e6]'
+                                    contestSecondsLeft < 300 || contestInfo.isEnded
+                                        ? 'text-rose-300'
+                                        : 'text-[#e8e8e6]'
                                 )}
-                                title={contestSecondsLeft === 0 || contestInfo.isEnded ? 'Contest has concluded' : `Contest time remaining: ${formatTimer(contestSecondsLeft)}`}
+                                title={
+                                    contestSecondsLeft === 0 || contestInfo.isEnded
+                                        ? 'Contest has concluded'
+                                        : `Contest time remaining: ${formatTimer(contestSecondsLeft)}`
+                                }
                             >
-                                <span>{contestSecondsLeft === 0 || contestInfo.isEnded ? '00:00' : formatTimer(contestSecondsLeft)}</span>
+                                <span>
+                                    {contestSecondsLeft === 0 || contestInfo.isEnded
+                                        ? '00:00'
+                                        : formatTimer(contestSecondsLeft)}
+                                </span>
                             </div>
                         </div>
                     ) : (
@@ -512,12 +530,24 @@ export function SolveScreenNavbar({
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => {
+                                    disabled={isExiting}
+                                    onClick={async () => {
+                                        if (contestInfo?.roomCode) {
+                                            setIsExiting(true)
+                                            try {
+                                                await leaveContestRoom(contestInfo.roomCode)
+                                            } catch (err) {
+                                                console.error('Failed to leave contest room:', err)
+                                            } finally {
+                                                setIsExiting(false)
+                                            }
+                                        }
                                         setShowExitModal(false)
                                         navigate(backPath || '/')
                                     }}
-                                    className="px-3.5 py-2 bg-rose-500/80 hover:bg-rose-500 text-white font-medium rounded-[3px] transition-colors cursor-pointer"
+                                    className="px-3.5 py-2 bg-rose-500/80 hover:bg-rose-500 text-white font-medium rounded-[3px] transition-colors cursor-pointer flex items-center gap-1.5"
                                 >
+                                    {isExiting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                                     {contestInfo ? 'Exit Contest' : 'Exit Problem'}
                                 </button>
                             </div>

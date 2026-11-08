@@ -26,7 +26,8 @@ export function parseUtcDate(dateStr?: string | null): number | null {
     if (!dateStr) return null
     const trimmed = dateStr.trim()
     if (!trimmed) return null
-    const iso = trimmed.includes('Z') || trimmed.includes('+') ? trimmed : trimmed.replace(' ', 'T') + 'Z'
+    const iso =
+        trimmed.includes('Z') || trimmed.includes('+') ? trimmed : trimmed.replace(' ', 'T') + 'Z'
     const ms = new Date(iso).getTime()
     return isNaN(ms) ? null : ms
 }

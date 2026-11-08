@@ -3,6 +3,7 @@
 #include <string>
 #include <chrono>
 #include <algorithm>
+#include <vector>
 #include <pqxx/pqxx>
 #include "crow_all.h"
 #include "json.hpp"
@@ -66,163 +67,393 @@ int main() {
     controller.register_routes(app);
     app.validate();
 
+    auto post_resp = [&](const std::string& path, const std::string& body, const std::string& token = "") {
+        auto req = make_post_req(path, body, token);
+        crow::response res;
+        app.handle_full(req, res);
+        return res;
+    };
+
+    auto get_resp = [&](const std::string& path, const std::string& token = "") {
+        auto req = make_get_req(path, token);
+        crow::response res;
+        app.handle_full(req, res);
+        return res;
+    };
+
     int64_t ts = std::chrono::system_clock::now().time_since_epoch().count();
-    OAuthUser host_user, player2_user, player3_user;
+    OAuthUser host_user, player2_user, player3_user, player4_user;
     {
         auto g = pool.acquire();
         host_user = UserRepository::find_or_create_oauth_user(g.get(), "host_ct_" + std::to_string(ts) + "@test.dev", "Host CT", "", "github");
         player2_user = UserRepository::find_or_create_oauth_user(g.get(), "p2_ct_" + std::to_string(ts) + "@test.dev", "Player Two CT", "", "github");
         player3_user = UserRepository::find_or_create_oauth_user(g.get(), "p3_ct_" + std::to_string(ts) + "@test.dev", "Player Three CT", "", "github");
+        player4_user = UserRepository::find_or_create_oauth_user(g.get(), "p4_ct_" + std::to_string(ts) + "@test.dev", "Player Four CT", "", "github");
     }
     std::string host_tok = AuthHelper::sign_jwt(host_user.id, host_user.role, cfg.jwt_secret);
     std::string p2_tok = AuthHelper::sign_jwt(player2_user.id, player2_user.role, cfg.jwt_secret);
     std::string p3_tok = AuthHelper::sign_jwt(player3_user.id, player3_user.role, cfg.jwt_secret);
+    std::string p4_tok = AuthHelper::sign_jwt(player4_user.id, player4_user.role, cfg.jwt_secret);
 
     // -------------------------------------------------------------
-    // 1. POST /api/v1/contests/rooms - Validation & Boundary Rejections
+    // Part 1: POST /api/v1/contests/rooms - Validation & Boundary Rejections
     // -------------------------------------------------------------
     std::cout << "\n[1] Testing POST /api/v1/contests/rooms Validation & Error Paths..." << std::endl;
     {
-        // 1a. Unauthenticated creation -> 401
-        auto r_unauth = make_post_req("/api/v1/contests/rooms", "{\"questionCount\":3}");
-        crow::response res_unauth;
-        app.handle_full(r_unauth, res_unauth);
-        TEST_ASSERT(res_unauth.code == 401, "Unauthenticated room creation returns 401");
+        // 1.1 Unauthenticated creation
+        auto r_unauth = post_resp("/api/v1/contests/rooms", "{\"questionCount\":3}");
+        TEST_ASSERT(r_unauth.code == 401, "Unauthenticated room creation returns 401");
+        auto b_unauth = json::parse(r_unauth.body);
+        TEST_ASSERT(b_unauth["message"] == "Unauthorized", "Message confirms Unauthorized");
 
-        // 1b. Malformed JSON -> 400
-        auto r_malformed = make_post_req("/api/v1/contests/rooms", "{bad_json", host_tok);
-        crow::response res_malformed;
-        app.handle_full(r_malformed, res_malformed);
-        TEST_ASSERT(res_malformed.code == 400, "Malformed JSON payload returns 400");
+        // 1.2 Invalid Bearer token
+        auto r_inv_tok = post_resp("/api/v1/contests/rooms", "{\"questionCount\":3}", "bad_token_123");
+        TEST_ASSERT(r_inv_tok.code == 401, "Invalid token room creation returns 401");
 
-        // 1c. questionCount < 1 -> 400
-        auto r_q0 = make_post_req("/api/v1/contests/rooms", "{\"questionCount\":0}", host_tok);
-        crow::response res_q0;
-        app.handle_full(r_q0, res_q0);
-        TEST_ASSERT(res_q0.code == 400, "questionCount < 1 returns 400");
-        TEST_ASSERT(json::parse(res_q0.body)["message"].get<std::string>().find("between 1 and 20") != std::string::npos, "Message cites bounds 1-20");
+        // 1.3 Empty body
+        auto r_empty_b = post_resp("/api/v1/contests/rooms", "", host_tok);
+        TEST_ASSERT(r_empty_b.code == 400, "Empty payload returns 400");
+        auto b_empty = json::parse(r_empty_b.body);
+        TEST_ASSERT(b_empty["message"] == "Invalid JSON payload", "Confirms invalid JSON payload");
 
-        // 1d. questionCount > 20 -> 400
-        auto r_q21 = make_post_req("/api/v1/contests/rooms", "{\"questionCount\":21}", host_tok);
-        crow::response res_q21;
-        app.handle_full(r_q21, res_q21);
-        TEST_ASSERT(res_q21.code == 400, "questionCount > 20 returns 400");
+        // 1.4 Malformed JSON
+        auto r_malformed = post_resp("/api/v1/contests/rooms", "{bad_json", host_tok);
+        TEST_ASSERT(r_malformed.code == 400, "Malformed JSON returns 400");
 
-        // 1e. timeLimitMinutes < 5 -> 400
-        auto r_t4 = make_post_req("/api/v1/contests/rooms", "{\"questionCount\":3,\"timeLimitMinutes\":4}", host_tok);
-        crow::response res_t4;
-        app.handle_full(r_t4, res_t4);
-        TEST_ASSERT(res_t4.code == 400, "timeLimitMinutes < 5 returns 400");
+        // 1.5 Non-object JSON string
+        auto r_str_json = post_resp("/api/v1/contests/rooms", "\"some_string\"", host_tok);
+        TEST_ASSERT(r_str_json.code == 400 || r_str_json.code == 500, "String JSON handled safely");
 
-        // 1f. timeLimitMinutes > 300 -> 400
-        auto r_t301 = make_post_req("/api/v1/contests/rooms", "{\"questionCount\":3,\"timeLimitMinutes\":301}", host_tok);
-        crow::response res_t301;
-        app.handle_full(r_t301, res_t301);
-        TEST_ASSERT(res_t301.code == 400, "timeLimitMinutes > 300 returns 400");
+        // 1.6 Non-object JSON array
+        auto r_arr_json = post_resp("/api/v1/contests/rooms", "[]", host_tok);
+        TEST_ASSERT(r_arr_json.code == 400 || r_arr_json.code == 500, "Array JSON handled safely");
 
-        // 1g. maxParticipants < 1 -> 400
-        auto r_mp0 = make_post_req("/api/v1/contests/rooms", "{\"questionCount\":3,\"maxParticipants\":0}", host_tok);
-        crow::response res_mp0;
-        app.handle_full(r_mp0, res_mp0);
-        TEST_ASSERT(res_mp0.code == 400, "maxParticipants < 1 returns 400");
+        // 1.7-1.9 questionCount boundary checks
+        auto r_q0 = post_resp("/api/v1/contests/rooms", "{\"questionCount\":0}", host_tok);
+        TEST_ASSERT(r_q0.code == 400, "questionCount=0 returns 400");
+        auto b_q0 = json::parse(r_q0.body);
+        TEST_ASSERT(b_q0["message"] == "Question count must be between 1 and 20", "Validation msg for questionCount=0");
 
-        // 1h. Non-existent topic -> 400
-        auto r_topic = make_post_req("/api/v1/contests/rooms", "{\"questionCount\":3,\"topics\":[\"non_existent_topic_xyz\"]}", host_tok);
-        crow::response res_topic;
-        app.handle_full(r_topic, res_topic);
-        TEST_ASSERT(res_topic.code == 400, "Non-existent topic returns 400");
+        auto r_q_neg = post_resp("/api/v1/contests/rooms", "{\"questionCount\":-5}", host_tok);
+        TEST_ASSERT(r_q_neg.code == 400, "questionCount=-5 returns 400");
+
+        auto r_q21 = post_resp("/api/v1/contests/rooms", "{\"questionCount\":21}", host_tok);
+        TEST_ASSERT(r_q21.code == 400, "questionCount=21 returns 400");
+
+        auto r_q100 = post_resp("/api/v1/contests/rooms", "{\"questionCount\":100}", host_tok);
+        TEST_ASSERT(r_q100.code == 400, "questionCount=100 returns 400");
+
+        // 1.10-1.13 timeLimitMinutes boundary checks
+        auto r_t4 = post_resp("/api/v1/contests/rooms", "{\"timeLimitMinutes\":4}", host_tok);
+        TEST_ASSERT(r_t4.code == 400, "timeLimitMinutes=4 returns 400");
+        auto b_t4 = json::parse(r_t4.body);
+        TEST_ASSERT(b_t4["message"] == "Time limit must be between 5 and 300 minutes", "Validation msg for timeLimitMinutes=4");
+
+        auto r_t0 = post_resp("/api/v1/contests/rooms", "{\"timeLimitMinutes\":0}", host_tok);
+        TEST_ASSERT(r_t0.code == 400, "timeLimitMinutes=0 returns 400");
+
+        auto r_t_neg = post_resp("/api/v1/contests/rooms", "{\"timeLimitMinutes\":-10}", host_tok);
+        TEST_ASSERT(r_t_neg.code == 400, "timeLimitMinutes=-10 returns 400");
+
+        auto r_t301 = post_resp("/api/v1/contests/rooms", "{\"timeLimitMinutes\":301}", host_tok);
+        TEST_ASSERT(r_t301.code == 400, "timeLimitMinutes=301 returns 400");
+
+        // 1.14-1.16 maxParticipants boundary checks
+        auto r_mp0 = post_resp("/api/v1/contests/rooms", "{\"maxParticipants\":0}", host_tok);
+        TEST_ASSERT(r_mp0.code == 400, "maxParticipants=0 returns 400");
+        auto b_mp0 = json::parse(r_mp0.body);
+        TEST_ASSERT(b_mp0["message"] == "Max participants must be between 1 and 100", "Validation msg for maxParticipants=0");
+
+        auto r_mp_neg = post_resp("/api/v1/contests/rooms", "{\"maxParticipants\":-2}", host_tok);
+        TEST_ASSERT(r_mp_neg.code == 400, "maxParticipants=-2 returns 400");
+
+        auto r_mp101 = post_resp("/api/v1/contests/rooms", "{\"maxParticipants\":101}", host_tok);
+        TEST_ASSERT(r_mp101.code == 400, "maxParticipants=101 returns 400");
+
+        // 1.17 Topics array containing non-existent topic where not enough problems exist
+        json no_prob_topics = {
+            {"questionCount", 5},
+            {"topics", json::array({"completely_nonexistent_topic_12345"})}
+        };
+        auto r_notopics = post_resp("/api/v1/contests/rooms", no_prob_topics.dump(), host_tok);
+        TEST_ASSERT(r_notopics.code == 400, "Non-existent topics return 400");
+        auto b_notopics = json::parse(r_notopics.body);
+        TEST_ASSERT(b_notopics["message"].get<std::string>().find("problems available") != std::string::npos, "Message mentions problems available");
     }
 
     // -------------------------------------------------------------
-    // 2. Room Creation, Capacity Enforcement & Lifecycle
+    // Part 2: POST /api/v1/contests/rooms - Successful Room Creations
     // -------------------------------------------------------------
-    std::cout << "\n[2] Testing Room Creation & Capacity Limits (maxParticipants = 2)..." << std::endl;
-    std::string room_code;
+    std::string room_code_1;
+    std::cout << "\n[2] Testing Successful Room Creations..." << std::endl;
     {
-        // 2a. Create room with maxParticipants = 2
-        json create_body = {
-            {"questionCount", 3},
+        // 2.1 Default options room creation
+        json default_room_payload = {{"questionCount", 3}, {"timeLimitMinutes", 45}};
+        auto r_c1 = post_resp("/api/v1/contests/rooms", default_room_payload.dump(), host_tok);
+        TEST_ASSERT(r_c1.code == 201, "Default room creation returns 201 Created");
+        auto b_c1 = json::parse(r_c1.body);
+        TEST_ASSERT(b_c1["success"] == true, "success is true");
+        TEST_ASSERT(b_c1["message"] == "Contest room created successfully", "Message confirmed");
+        room_code_1 = b_c1["room"]["code"].get<std::string>();
+        TEST_ASSERT(room_code_1.size() == 6, "Room code is 6 characters");
+        TEST_ASSERT(b_c1["room"]["meJoined"] == true, "Host meJoined is true");
+        TEST_ASSERT(b_c1["room"]["questionCount"] == 3, "questionCount is 3");
+        TEST_ASSERT(b_c1["room"]["timeLimitMinutes"] == 45, "timeLimitMinutes is 45");
+        TEST_ASSERT(b_c1["room"]["questions"].size() == 3, "3 questions selected");
+        TEST_ASSERT(b_c1["room"]["participants"].size() == 1, "Host is the first participant");
+        TEST_ASSERT(b_c1["room"]["leaderboard"].size() == 1, "Leaderboard has 1 entry");
+        TEST_ASSERT(b_c1["room"]["isEnded"] == false, "New room isEnded is false");
+        TEST_ASSERT(r_c1.get_header_value("Content-Type") == "application/json", "Header is application/json");
+
+        // 2.2 Custom topics room creation (e.g. topic "dynamic-programming", maxParticipants 2)
+        json custom_room_payload = {
+            {"questionCount", 2},
             {"timeLimitMinutes", 30},
             {"maxParticipants", 2},
-            {"topics", {"array"}}
+            {"topics", json::array({"dynamic-programming"})}
         };
-        auto r_create = make_post_req("/api/v1/contests/rooms", create_body.dump(), host_tok);
-        crow::response res_create;
-        app.handle_full(r_create, res_create);
-        TEST_ASSERT(res_create.code == 201, "Room created successfully with 201 Created");
-        auto body_create = json::parse(res_create.body);
-        TEST_ASSERT(body_create["success"] == true, "Success is true");
-        room_code = body_create["room"]["code"].get<std::string>();
-        TEST_ASSERT(room_code.length() == 6, "Room code length is 6");
-        TEST_ASSERT(body_create["room"]["participantCount"] == 1, "Initial count is 1 (host)");
-        TEST_ASSERT(body_create["room"]["meJoined"] == true, "Host meJoined is true");
+        auto r_c2 = post_resp("/api/v1/contests/rooms", custom_room_payload.dump(), host_tok);
+        TEST_ASSERT(r_c2.code == 201, "Custom topics room created with 201 Created");
+        auto b_c2 = json::parse(r_c2.body);
+        TEST_ASSERT(b_c2["room"]["maxParticipants"] == 2, "maxParticipants is 2");
+        TEST_ASSERT(b_c2["room"]["questions"].size() == 2, "2 questions selected");
 
-        // 2b. Player 2 joins room -> reaches capacity (2/2)
-        auto r_j2 = make_post_req("/api/v1/contests/rooms/" + room_code + "/join", "", p2_tok);
-        crow::response res_j2;
-        app.handle_full(r_j2, res_j2);
-        TEST_ASSERT(res_j2.code == 200, "Player 2 successfully joined with 200 OK");
-        auto body_j2 = json::parse(res_j2.body);
-        TEST_ASSERT(body_j2["room"]["participantCount"] == 2, "Participant count reached max (2)");
+        // 2.3 Minimal allowed parameters: questionCount=1, timeLimitMinutes=5, maxParticipants=1
+        json min_payload = {
+            {"questionCount", 1},
+            {"timeLimitMinutes", 5},
+            {"maxParticipants", 1}
+        };
+        auto r_c3 = post_resp("/api/v1/contests/rooms", min_payload.dump(), host_tok);
+        TEST_ASSERT(r_c3.code == 201, "Minimal boundary room created with 201");
+        auto b_c3 = json::parse(r_c3.body);
+        TEST_ASSERT(b_c3["room"]["questionCount"] == 1, "questionCount is 1");
+        TEST_ASSERT(b_c3["room"]["timeLimitMinutes"] == 5, "timeLimitMinutes is 5");
 
-        // 2c. Player 2 rejoins (Idempotency) -> remains 2/2
-        auto r_rejoin = make_post_req("/api/v1/contests/rooms/" + room_code + "/join", "", p2_tok);
-        crow::response res_rejoin;
-        app.handle_full(r_rejoin, res_rejoin);
-        TEST_ASSERT(res_rejoin.code == 200, "Player 2 idempotent rejoin returns 200 OK");
-        auto body_rejoin = json::parse(res_rejoin.body);
-        TEST_ASSERT(body_rejoin["room"]["participantCount"] == 2, "Participant count unchanged on duplicate join");
-
-        // 2d. Player 3 attempts to join full room -> rejected with 400
-        auto r_j3 = make_post_req("/api/v1/contests/rooms/" + room_code + "/join", "", p3_tok);
-        crow::response res_j3;
-        app.handle_full(r_j3, res_j3);
-        TEST_ASSERT(res_j3.code == 400, "Player 3 rejected when room is full");
-        TEST_ASSERT(json::parse(res_j3.body)["message"] == "Contest room is full", "Error confirms 'Contest room is full'");
+        // 2.4 Maximal allowed parameters: questionCount=20, timeLimitMinutes=300, maxParticipants=100
+        json max_payload = {
+            {"questionCount", 20},
+            {"timeLimitMinutes", 300},
+            {"maxParticipants", 100}
+        };
+        auto r_c4 = post_resp("/api/v1/contests/rooms", max_payload.dump(), host_tok);
+        TEST_ASSERT(r_c4.code == 201, "Maximal boundary room created with 201");
+        auto b_c4 = json::parse(r_c4.body);
+        TEST_ASSERT(b_c4["room"]["questionCount"] == 20, "questionCount is 20");
+        TEST_ASSERT(b_c4["room"]["timeLimitMinutes"] == 300, "timeLimitMinutes is 300");
     }
 
     // -------------------------------------------------------------
-    // 3. GET & JOIN /api/v1/contests/rooms/:code - Expired Room & 404
+    // Part 3: POST /api/v1/contests/rooms/:code/join - Join Operations & Capacity
     // -------------------------------------------------------------
-    std::cout << "\n[3] Testing Non-Existent & Expired Contest Rooms..." << std::endl;
+    std::cout << "\n[3] Testing Join Operations, Capacity Limits & Re-joins..." << std::endl;
     {
-        // 3a. GET non-existent room code -> 404
-        auto r_non = make_get_req("/api/v1/contests/rooms/NONEX9");
-        crow::response res_non;
-        app.handle_full(r_non, res_non);
-        TEST_ASSERT(res_non.code == 404, "GET non-existent room returns 404");
+        // Create a dedicated 2-person capacity room for join testing
+        json cap2_payload = {{"questionCount", 2}, {"timeLimitMinutes", 30}, {"maxParticipants", 2}};
+        auto r_cap2 = post_resp("/api/v1/contests/rooms", cap2_payload.dump(), host_tok);
+        TEST_ASSERT(r_cap2.code == 201, "Capacity 2 room created");
+        auto b_cap2 = json::parse(r_cap2.body);
+        std::string cap2_code = b_cap2["room"]["code"].get<std::string>();
 
-        // 3b. POST join non-existent room code -> 404
-        auto r_join_non = make_post_req("/api/v1/contests/rooms/NONEX9/join", "", p3_tok);
-        crow::response res_join_non;
-        app.handle_full(r_join_non, res_join_non);
-        TEST_ASSERT(res_join_non.code == 404, "JOIN non-existent room returns 404");
+        // 3.1 Unauthenticated join
+        auto r_j_unauth = post_resp("/api/v1/contests/rooms/" + cap2_code + "/join", "{}");
+        TEST_ASSERT(r_j_unauth.code == 401, "Unauthenticated join returns 401");
 
-        // 3c. Mutate room to expired state and attempt join -> 400
+        // 3.2 Non-existent room join
+        auto r_j_none = post_resp("/api/v1/contests/rooms/XYZ999/join", "{}", p2_tok);
+        TEST_ASSERT(r_j_none.code == 404, "Non-existent room join returns 404");
+        auto b_j_none = json::parse(r_j_none.body);
+        TEST_ASSERT(b_j_none["message"] == "Contest room not found", "Message confirms not found");
+
+        // 3.3 SQLi room code join
+        auto r_j_sqli = post_resp("/api/v1/contests/rooms/'%20OR%201=1%20--/join", "{}", p2_tok);
+        TEST_ASSERT(r_j_sqli.code == 404, "SQLi room code join safely returns 404");
+
+        // 3.4 Lowercase room code normalization join
+        std::string lower_code = cap2_code;
+        std::transform(lower_code.begin(), lower_code.end(), lower_code.begin(), ::tolower);
+        auto r_j_p2 = post_resp("/api/v1/contests/rooms/" + lower_code + "/join", "{}", p2_tok);
+        TEST_ASSERT(r_j_p2.code == 200, "Player 2 joins via lowercase code with 200 OK");
+        auto b_j_p2 = json::parse(r_j_p2.body);
+        TEST_ASSERT(b_j_p2["success"] == true, "Join success is true");
+        TEST_ASSERT(b_j_p2["room"]["participants"].size() == 2, "Room now has 2 participants");
+        TEST_ASSERT(b_j_p2["room"]["leaderboard"].size() == 2, "Leaderboard now has 2 entries");
+
+        // 3.5 Duplicate join by Player 2 (idempotent)
+        auto r_j_p2_again = post_resp("/api/v1/contests/rooms/" + cap2_code + "/join", "{}", p2_tok);
+        TEST_ASSERT(r_j_p2_again.code == 200, "Duplicate join by player 2 succeeds idempotently");
+        auto b_j_p2_again = json::parse(r_j_p2_again.body);
+        TEST_ASSERT(b_j_p2_again["room"]["participants"].size() == 2, "Participant count remains 2");
+
+        // 3.6 Re-join by Host
+        auto r_j_host = post_resp("/api/v1/contests/rooms/" + cap2_code + "/join", "{}", host_tok);
+        TEST_ASSERT(r_j_host.code == 200, "Re-join by host succeeds with 200 OK");
+
+        // 3.7 Player 3 joins room when capacity (2) is full -> 400
+        auto r_j_p3 = post_resp("/api/v1/contests/rooms/" + cap2_code + "/join", "{}", p3_tok);
+        TEST_ASSERT(r_j_p3.code == 400, "Player 3 rejected from full room with 400 Bad Request");
+        auto b_j_p3 = json::parse(r_j_p3.body);
+        TEST_ASSERT(b_j_p3["message"] == "Contest room is full", "Message confirms room is full");
+
+        // 3.8 Player 4 joins room when capacity is full -> 400
+        auto r_j_p4 = post_resp("/api/v1/contests/rooms/" + cap2_code + "/join", "{}", p4_tok);
+        TEST_ASSERT(r_j_p4.code == 400, "Player 4 rejected from full room with 400");
+    }
+
+    // -------------------------------------------------------------
+    // Part 4: GET /api/v1/contests/rooms/:code - Retrieval & Schema
+    // -------------------------------------------------------------
+    std::cout << "\n[4] Testing GET /api/v1/contests/rooms/:code Room Details..." << std::endl;
+    {
+        // 4.1 Unauthenticated fetch of room_code_1
+        auto r_g1 = get_resp("/api/v1/contests/rooms/" + room_code_1);
+        TEST_ASSERT(r_g1.code == 200, "Unauthenticated room fetch returns 200 OK");
+        auto b_g1 = json::parse(r_g1.body);
+        TEST_ASSERT(b_g1["success"] == true, "success is true");
+        TEST_ASSERT(b_g1["room"]["code"] == room_code_1, "Room code matches");
+        TEST_ASSERT(b_g1["room"]["meJoined"] == false, "Unauthenticated meJoined is false");
+        TEST_ASSERT(b_g1["room"]["questions"].size() == 3, "Questions array has 3 items");
+        TEST_ASSERT(b_g1["room"]["participants"].size() == 1, "Participants array has 1 item");
+        TEST_ASSERT(r_g1.get_header_value("Content-Type") == "application/json", "Header is application/json");
+
+        // 4.2 Authenticated fetch by Host
+        auto r_g_host = get_resp("/api/v1/contests/rooms/" + room_code_1, host_tok);
+        TEST_ASSERT(r_g_host.code == 200, "Host fetch returns 200 OK");
+        auto b_g_host = json::parse(r_g_host.body);
+        TEST_ASSERT(b_g_host["room"]["meJoined"] == true, "Host meJoined is true");
+
+        // 4.3 Lowercase code fetch
+        std::string lower_code1 = room_code_1;
+        std::transform(lower_code1.begin(), lower_code1.end(), lower_code1.begin(), ::tolower);
+        auto r_g_lower = get_resp("/api/v1/contests/rooms/" + lower_code1);
+        TEST_ASSERT(r_g_lower.code == 200, "Lowercase room code returns 200 OK");
+
+        // 4.4 Non-existent room code
+        auto r_g_none = get_resp("/api/v1/contests/rooms/NONEX9");
+        TEST_ASSERT(r_g_none.code == 404, "Non-existent room returns 404 Not Found");
+        auto b_g_none = json::parse(r_g_none.body);
+        TEST_ASSERT(b_g_none["message"] == "Contest room not found", "Message confirms not found");
+
+        // 4.5 SQLi in room code
+        auto r_g_sqli = get_resp("/api/v1/contests/rooms/'%20OR%201=1%20--");
+        TEST_ASSERT(r_g_sqli.code == 404, "SQLi room code returns 404 safely");
+
+        // 4.6 Path traversal attempt
+        auto r_g_trav = get_resp("/api/v1/contests/rooms/..%2F..%2Fetc");
+        TEST_ASSERT(r_g_trav.code == 404, "Path traversal returns 404 safely");
+
+        // 4.7 Long string code
+        auto r_g_long = get_resp("/api/v1/contests/rooms/A_VERY_LONG_STRING_THAT_IS_NOT_A_CODE");
+        TEST_ASSERT(r_g_long.code == 404, "Long string code returns 404");
+    }
+
+    // -------------------------------------------------------------
+    // Part 5: Expired Contest Rooms & Ending Behavior
+    // -------------------------------------------------------------
+    std::cout << "\n[5] Testing Expired Contest Rooms & Ending Behavior..." << std::endl;
+    {
+        // Create an expired contest room directly in DB (startsAt 2 hours ago, endsAt 1 hour ago)
+        std::string exp_code = "EXP" + std::to_string(ts % 1000);
         {
+            json exp_participants = json::array({{{"userId", host_user.id}, {"joinedAt", "2020-01-01T00:00:00Z"}}});
+            json exp_standings = {{host_user.id, {{"score", 100}, {"solvedProblemIds", json::array()}, {"lastAcceptedAt", nullptr}}}};
+
             auto g = pool.acquire();
             pqxx::work txn(g.get());
-            txn.exec_params("UPDATE \"ContestRoom\" SET \"endsAt\" = NOW() - INTERVAL '30 minutes' WHERE code = $1", room_code);
+            txn.exec_params(
+                "INSERT INTO \"ContestRoom\" ("
+                "\"code\", \"hostUserId\", \"maxParticipants\", \"questionCount\", \"timeLimitMinutes\", "
+                "\"topics\", \"problemIds\", \"problemPoints\", \"participants\", \"standings\", "
+                "\"createdAt\", \"startsAt\", \"endsAt\""
+                ") VALUES ("
+                "$1, $2, 10, 1, 5, "
+                "'{}'::text[], '{}'::text[], '{}'::jsonb, "
+                "$3::jsonb, $4::jsonb, "
+                "NOW() - INTERVAL '2 hours', NOW() - INTERVAL '2 hours', NOW() - INTERVAL '1 hour'"
+                ")",
+                exp_code, host_user.id, exp_participants.dump(), exp_standings.dump()
+            );
             txn.commit();
         }
 
-        auto r_join_exp = make_post_req("/api/v1/contests/rooms/" + room_code + "/join", "", p3_tok);
-        crow::response res_join_exp;
-        app.handle_full(r_join_exp, res_join_exp);
-        TEST_ASSERT(res_join_exp.code == 400, "Joining expired contest rejected with 400");
-        TEST_ASSERT(json::parse(res_join_exp.body)["message"] == "Contest room has already ended", "Error confirms room has ended");
+        // 5.1 GET expired room -> isEnded is true
+        auto r_exp_g = get_resp("/api/v1/contests/rooms/" + exp_code);
+        TEST_ASSERT(r_exp_g.code == 200, "Expired room retrieval returns 200 OK");
+        auto b_exp_g = json::parse(r_exp_g.body);
+        TEST_ASSERT(b_exp_g["room"]["isEnded"] == true, "isEnded is true for expired room");
 
-        // 3d. GET expired room -> shows isEnded == true
-        auto r_get_exp = make_get_req("/api/v1/contests/rooms/" + room_code, host_tok);
-        crow::response res_get_exp;
-        app.handle_full(r_get_exp, res_get_exp);
-        TEST_ASSERT(res_get_exp.code == 200, "GET expired room returns 200");
-        auto body_exp = json::parse(res_get_exp.body);
-        TEST_ASSERT(body_exp["room"]["isEnded"] == true, "Room isEnded is true");
+        // 5.2 Join expired room -> 400 "Contest room has already ended"
+        auto r_exp_j = post_resp("/api/v1/contests/rooms/" + exp_code + "/join", "{}", p2_tok);
+        TEST_ASSERT(r_exp_j.code == 400, "Join expired room returns 400 Bad Request");
+        auto b_exp_j = json::parse(r_exp_j.body);
+        TEST_ASSERT(b_exp_j["message"] == "Contest room has already ended", "Message confirms contest has ended");
+    }
+
+    // -------------------------------------------------------------
+    // Part 6: POST /api/v1/contests/rooms/:code/leave & Auto-Close
+    // -------------------------------------------------------------
+    std::cout << "\n[6] Testing POST /api/v1/contests/rooms/:code/leave & Room Auto-Close..." << std::endl;
+    {
+        // 6.1 Unauthenticated leave -> 401
+        auto r_lv_unauth = post_resp("/api/v1/contests/rooms/SOMECD/leave", "{}");
+        TEST_ASSERT(r_lv_unauth.code == 401, "Unauthenticated leave returns 401");
+
+        // 6.2 Leave non-existent room -> 404
+        auto r_lv_none = post_resp("/api/v1/contests/rooms/NOTFND/leave", "{}", host_tok);
+        TEST_ASSERT(r_lv_none.code == 404, "Leave non-existent room returns 404");
+
+        // 6.3 Create a room with Host and Player 2
+        auto r_cr_multi = post_resp("/api/v1/contests/rooms", "{\"questionCount\":2,\"timeLimitMinutes\":20}", host_tok);
+        TEST_ASSERT(r_cr_multi.code == 201, "Multi-player room created");
+        std::string multi_code = json::parse(r_cr_multi.body)["room"]["code"];
+
+        auto r_j2 = post_resp("/api/v1/contests/rooms/" + multi_code + "/join", "{}", p2_tok);
+        TEST_ASSERT(r_j2.code == 200, "Player 2 joined");
+
+        // 6.4 Non-participant (Player 3) tries to leave -> 400
+        auto r_lv_p3 = post_resp("/api/v1/contests/rooms/" + multi_code + "/leave", "{}", p3_tok);
+        TEST_ASSERT(r_lv_p3.code == 400, "Non-participant leave rejected with 400");
+        TEST_ASSERT(json::parse(r_lv_p3.body)["message"] == "User is not a participant in this contest room", "Message matches not participant");
+
+        // 6.5 Host leaves while Player 2 remains -> Host transferred to Player 2, room remains open
+        auto r_lv_host = post_resp("/api/v1/contests/rooms/" + multi_code + "/leave", "{}", host_tok);
+        TEST_ASSERT(r_lv_host.code == 200, "Host leaves successfully");
+        auto b_lv_host = json::parse(r_lv_host.body);
+        TEST_ASSERT(b_lv_host["success"] == true, "Leave success is true");
+        TEST_ASSERT(b_lv_host["room"]["participantCount"] == 1, "Remaining participants count is 1");
+        TEST_ASSERT(b_lv_host["room"]["isEnded"] == false, "Contest is still active because Player 2 remains");
+        TEST_ASSERT(b_lv_host["room"]["participants"][0]["userId"] == player2_user.id, "Player 2 is the remaining participant");
+        TEST_ASSERT(b_lv_host["room"]["participants"][0]["isHost"] == true, "Player 2 became the new host");
+
+        // 6.6 Player 2 (last remaining participant) leaves -> Contest room automatically closes
+        auto r_lv_p2 = post_resp("/api/v1/contests/rooms/" + multi_code + "/leave", "{}", p2_tok);
+        TEST_ASSERT(r_lv_p2.code == 200, "Last member leaves successfully");
+        auto b_lv_p2 = json::parse(r_lv_p2.body);
+        TEST_ASSERT(b_lv_p2["room"]["participantCount"] == 0, "Participant count dropped to 0");
+        TEST_ASSERT(b_lv_p2["room"]["isEnded"] == true, "Contest automatically closed (isEnded is true) when last member exited");
+
+        // 6.7 Verify via GET that contest is closed
+        auto r_g_closed = get_resp("/api/v1/contests/rooms/" + multi_code);
+        TEST_ASSERT(r_g_closed.code == 200, "Closed contest retrieval returns 200");
+        TEST_ASSERT(json::parse(r_g_closed.body)["room"]["isEnded"] == true, "GET confirms isEnded is true");
+
+        // 6.8 Verify that joining a closed contest is rejected
+        auto r_rejoin = post_resp("/api/v1/contests/rooms/" + multi_code + "/join", "{}", host_tok);
+        TEST_ASSERT(r_rejoin.code == 400, "Join closed contest rejected with 400");
+        TEST_ASSERT(json::parse(r_rejoin.body)["message"] == "Contest room has already ended", "Message confirms room has ended");
+
+        // 6.9 Solo contestant (single-player room) exits -> Immediately closed
+        auto r_cr_solo = post_resp("/api/v1/contests/rooms", "{\"questionCount\":1,\"timeLimitMinutes\":10}", host_tok);
+        TEST_ASSERT(r_cr_solo.code == 201, "Solo room created");
+        std::string solo_code = json::parse(r_cr_solo.body)["room"]["code"];
+
+        auto r_lv_solo = post_resp("/api/v1/contests/rooms/" + solo_code + "/leave", "{}", host_tok);
+        TEST_ASSERT(r_lv_solo.code == 200, "Solo participant leaves successfully");
+        TEST_ASSERT(json::parse(r_lv_solo.body)["room"]["isEnded"] == true, "Solo contest immediately closed when last member leaves");
     }
 
     std::cout << "\n==========================================================" << std::endl;
-    std::cout << "  ALL CONTEST FEATURE & ROUTE UNIT TESTS PASSED (100%)!   " << std::endl;
+    std::cout << " ALL CONTEST FEATURE & ROUTE UNIT TESTS PASSED (100%)!    " << std::endl;
     std::cout << "==========================================================" << std::endl;
     return 0;
 }

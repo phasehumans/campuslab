@@ -215,6 +215,65 @@ public:
         return {true, 200, "Joined contest room successfully", room_resp};
     }
 
+    ContestResult leave_room(const std::string& user_id, const std::string& code) {
+        auto conn_guard = db_pool_.acquire();
+        pqxx::work txn(conn_guard.get());
+
+        auto row_opt = ContestRepository::find_by_code(txn, code);
+        if (!row_opt.has_value()) {
+            return {false, 404, "Contest room not found", std::nullopt};
+        }
+
+        const auto& r = *row_opt;
+        json participants = json::parse(r["participants"].as<std::string>());
+        json new_participants = json::array();
+        bool found = false;
+
+        for (const auto& p : participants) {
+            if (p.value("userId", "") == user_id) {
+                found = true;
+            } else {
+                new_participants.push_back(p);
+            }
+        }
+
+        if (!found) {
+            return {false, 400, "User is not a participant in this contest room", std::nullopt};
+        }
+
+        std::string host_user_id = r["host_user_id"].as<std::string>();
+
+        if (new_participants.empty()) {
+            // Last remaining participant exited: close contest room immediately
+            txn.exec_params(
+                "UPDATE \"ContestRoom\" SET participants = $1, \"endsAt\" = NOW() - INTERVAL '1 second' WHERE code = $2",
+                new_participants.dump(), code
+            );
+        } else if (host_user_id == user_id) {
+            // Host exited, transfer host role to the next participant
+            std::string next_host = new_participants[0]["userId"].get<std::string>();
+            txn.exec_params(
+                "UPDATE \"ContestRoom\" SET participants = $1, \"hostUserId\" = $2 WHERE code = $3",
+                new_participants.dump(), next_host, code
+            );
+        } else {
+            // Non-host participant exited
+            txn.exec_params(
+                "UPDATE \"ContestRoom\" SET participants = $1 WHERE code = $2",
+                new_participants.dump(), code
+            );
+        }
+
+        auto updated_opt = ContestRepository::find_by_code(txn, code);
+        std::optional<ContestRoomResponse> room_resp = std::nullopt;
+        if (updated_opt.has_value()) {
+            room_resp = ContestRepository::build_response(txn, *updated_opt, user_id);
+        }
+        txn.commit();
+
+        return {true, 200, "Left contest room successfully", room_resp};
+    }
+
     std::optional<ContestRoomResponse> get_room(const std::string& code, const std::string& user_id = "") {
         auto conn_guard = db_pool_.acquire();
         pqxx::work txn(conn_guard.get());

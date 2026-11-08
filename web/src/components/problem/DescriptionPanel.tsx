@@ -162,7 +162,9 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                                         </span>
                                         <button
                                             type="button"
-                                            onClick={() => handleCopy(example.output, `out-${index}`)}
+                                            onClick={() =>
+                                                handleCopy(example.output, `out-${index}`)
+                                            }
                                             className="group flex items-center gap-1 text-[10px] text-[#777777] hover:text-[#e8e8e6] px-1.5 py-0.5 rounded-[2px] hover:bg-[#252423] transition-colors cursor-pointer select-none"
                                             title="Copy output"
                                         >

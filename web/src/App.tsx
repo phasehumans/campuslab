@@ -9,10 +9,10 @@ import { Layout } from './components/Layout'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { ProblemSet } from './pages/ProblemSet'
 import { SolveScreen } from './pages/SolveScreen'
 import { OAuthCallback } from './pages/OAuthCallback'
 
-const ProblemSet = lazy(() => import('./pages/ProblemSet').then((m) => ({ default: m.ProblemSet })))
 const ContestRoom = lazy(() =>
     import('./pages/ContestRoom').then((m) => ({ default: m.ContestRoom }))
 )

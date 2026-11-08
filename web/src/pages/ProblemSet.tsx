@@ -4,6 +4,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Search } from 'lucide-react'
 import { getApiErrorMessage, getProblems } from '@/lib/api'
 import { ProblemTable } from '@/components/problem/ProblemTable'
+import { ProblemTableSkeleton } from '@/components/problem/ProblemTableSkeleton'
 import { ProblemPagination } from '@/components/problem/ProblemPagination'
 import { SidelinePanel } from '@/components/home/SidelinePanel'
 
@@ -216,9 +217,7 @@ export function ProblemSet() {
 
                     {/* Problem Table with Integrated Pagination Footer */}
                     {problemsQuery.isLoading ? (
-                        <div className="border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] p-8 text-center font-mono text-xs text-[#94a3b8] dark:text-[#a09f9d] rounded-[3px]">
-                            Loading problem database...
-                        </div>
+                        <ProblemTableSkeleton rowCount={10} />
                     ) : problemsQuery.isError ? (
                         <div className="border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 p-4 text-xs font-mono text-red-700 dark:text-red-400 rounded-[3px]">
                             {getApiErrorMessage(problemsQuery.error, 'Unable to load problems')}

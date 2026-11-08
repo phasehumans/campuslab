@@ -12,6 +12,81 @@ interface SidelinePanelProps {
     totalProblemsCount?: number
 }
 
+function ProfileSkeleton({ userName, userEmail }: { userName?: string; userEmail?: string }) {
+    return (
+        <div className="space-y-3 animate-pulse">
+            <div className="space-y-1">
+                {userName ? (
+                    <div className="text-xs font-medium text-[#090a0f] dark:text-[#e8e8e6] truncate">
+                        {userName}
+                    </div>
+                ) : (
+                    <div className="h-3.5 w-24 bg-[#e2e8f0] dark:bg-[#282828] rounded-[2px]" />
+                )}
+                {userEmail ? (
+                    <div className="font-mono text-[10px] text-[#94a3b8] dark:text-[#a09f9d] truncate">
+                        {userEmail}
+                    </div>
+                ) : (
+                    <div className="h-2.5 w-32 bg-[#f1f5f9] dark:bg-[#242424] rounded-[2px]" />
+                )}
+            </div>
+
+            {/* Progress Bar Skeleton */}
+            <div className="space-y-1.5 pt-1 font-mono text-[11px]">
+                <div className="flex justify-between items-center">
+                    <span className="text-[#52525b] dark:text-[#a09f9d]">Solved</span>
+                    <div className="h-2.5 w-16 bg-[#e2e8f0] dark:bg-[#282828] rounded-[2px]" />
+                </div>
+                <div className="h-1.5 w-full bg-[#f1f5f9] dark:bg-[#252423] rounded-full overflow-hidden border border-[#e2e8f0] dark:border-[#333333]">
+                    <div className="h-full w-1/4 bg-[#e2e8f0] dark:bg-[#2e2e2e] rounded-full" />
+                </div>
+            </div>
+
+            {/* By Difficulty stats Skeleton */}
+            <div className="grid grid-cols-3 gap-1 pt-1 font-mono text-[10px]">
+                {[
+                    { label: 'Easy', color: 'text-[#34d399]' },
+                    { label: 'Medium', color: 'text-[#fcd34d]' },
+                    { label: 'Hard', color: 'text-rose-300' },
+                ].map((item) => (
+                    <div
+                        key={item.label}
+                        className="p-1.5 bg-[#f9fafb] dark:bg-[#252423] border border-[#e2e8f0] dark:border-[#333333] rounded-[2px] flex flex-col items-center gap-1"
+                    >
+                        <span className={cn('font-medium', item.color)}>{item.label}</span>
+                        <div className="h-3 w-4 bg-[#e2e8f0] dark:bg-[#333333] rounded-[2px]" />
+                    </div>
+                ))}
+            </div>
+
+            {/* Recent Submissions Skeleton */}
+            <div className="space-y-1.5 pt-2.5 border-t border-[#f0f2f5] dark:border-[#272727] font-mono">
+                <div className="flex items-center justify-between text-[10px] text-[#64748b] dark:text-[#777777] uppercase tracking-wider">
+                    <span>Recent Submissions</span>
+                </div>
+                <div className="space-y-1.5 pt-0.5">
+                    {[65, 48, 80].map((width, idx) => (
+                        <div
+                            key={idx}
+                            className="flex items-center justify-between gap-2 py-0.5 px-1"
+                        >
+                            <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#cbd5e1] dark:bg-[#333333] shrink-0" />
+                                <div
+                                    className="h-2.5 bg-[#f1f5f9] dark:bg-[#252423] rounded-[2px]"
+                                    style={{ width: `${width}%` }}
+                                />
+                            </div>
+                            <div className="h-2 w-7 bg-[#f1f5f9] dark:bg-[#252423] rounded-[2px] shrink-0" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
     const navigate = useNavigate()
     const { isLoggedIn, user, openModal, openSignoutModal } = useAuth()
@@ -79,95 +154,103 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                 </div>
 
                 {isLoggedIn ? (
-                    <div className="space-y-3">
-                        <div className="space-y-0.5">
-                            <div className="text-xs font-medium text-[#090a0f] dark:text-[#e8e8e6] truncate">
-                                {user?.name || 'Developer'}
-                            </div>
-                            <div className="font-mono text-[10px] text-[#94a3b8] dark:text-[#a09f9d] truncate">
-                                {user?.email || 'signed in'}
-                            </div>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="space-y-1 pt-1 font-mono text-[11px]">
-                            <div className="flex justify-between text-[#52525b] dark:text-[#a09f9d]">
-                                <span>Solved</span>
-                                <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6]">
-                                    {totalSolved} / {targetCount} ({percentDone}%)
-                                </span>
-                            </div>
-                            <div className="h-1.5 w-full bg-[#f1f5f9] dark:bg-[#252423] rounded-full overflow-hidden border border-[#e2e8f0] dark:border-[#333333]">
-                                <div
-                                    className="h-full bg-[#10b981] transition-all duration-500"
-                                    style={{ width: `${percentDone}%` }}
-                                />
-                            </div>
-                        </div>
-
-                        {/* By Difficulty stats */}
-                        {profile?.stats.byDifficulty && (
-                            <div className="grid grid-cols-3 gap-1 pt-1 font-mono text-[10px] text-center">
-                                {profile.stats.byDifficulty.map((diff) => (
-                                    <div
-                                        key={diff.name}
-                                        className="p-1.5 bg-[#f9fafb] dark:bg-[#252423] border border-[#e2e8f0] dark:border-[#333333] rounded-[2px]"
-                                    >
-                                        <div
-                                            className={cn(
-                                                'font-medium',
-                                                diff.name === 'Easy' && 'text-[#34d399]',
-                                                diff.name === 'Medium' && 'text-[#fcd34d]',
-                                                diff.name === 'Hard' && 'text-rose-300'
-                                            )}
-                                        >
-                                            {diff.name}
-                                        </div>
-                                        <div className="text-[#090a0f] dark:text-[#e8e8e6] font-semibold mt-0.5">
-                                            {diff.value}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Recent Submissions (Max 3, Minimalist List) */}
-                        {profile?.recentSubmissions && profile.recentSubmissions.length > 0 && (
-                            <div className="space-y-1.5 pt-2.5 border-t border-[#f0f2f5] dark:border-[#272727] font-mono">
-                                <div className="flex items-center justify-between text-[10px] text-[#64748b] dark:text-[#777777] uppercase tracking-wider">
-                                    <span>Recent Submissions</span>
+                    profileQuery.isLoading ? (
+                        <ProfileSkeleton userName={user?.name} userEmail={user?.email} />
+                    ) : (
+                        <div className="space-y-3">
+                            <div className="space-y-0.5">
+                                <div className="text-xs font-medium text-[#090a0f] dark:text-[#e8e8e6] truncate">
+                                    {user?.name || 'Developer'}
                                 </div>
-                                <div className="space-y-1">
-                                    {profile.recentSubmissions.slice(0, 3).map((sub) => {
-                                        const isAccepted = sub.status === 'Accepted'
-                                        return (
+                                <div className="font-mono text-[10px] text-[#94a3b8] dark:text-[#a09f9d] truncate">
+                                    {user?.email || 'signed in'}
+                                </div>
+                            </div>
+
+                            {/* Progress Bar */}
+                            <div className="space-y-1 pt-1 font-mono text-[11px]">
+                                <div className="flex justify-between text-[#52525b] dark:text-[#a09f9d]">
+                                    <span>Solved</span>
+                                    <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6]">
+                                        {totalSolved} / {targetCount} ({percentDone}%)
+                                    </span>
+                                </div>
+                                <div className="h-1.5 w-full bg-[#f1f5f9] dark:bg-[#252423] rounded-full overflow-hidden border border-[#e2e8f0] dark:border-[#333333]">
+                                    <div
+                                        className="h-full bg-[#10b981] transition-all duration-500"
+                                        style={{ width: `${percentDone}%` }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* By Difficulty stats */}
+                            {profile?.stats.byDifficulty && (
+                                <div className="grid grid-cols-3 gap-1 pt-1 font-mono text-[10px] text-center">
+                                    {profile.stats.byDifficulty.map((diff) => (
+                                        <div
+                                            key={diff.name}
+                                            className="p-1.5 bg-[#f9fafb] dark:bg-[#252423] border border-[#e2e8f0] dark:border-[#333333] rounded-[2px]"
+                                        >
                                             <div
-                                                key={sub.id}
-                                                onClick={() => navigate(`/problem/${sub.problemId}`)}
-                                                className="flex items-center justify-between gap-2 py-0.5 text-[11px] cursor-pointer group hover:bg-[#f8fafc] dark:hover:bg-[#252423] px-1 rounded-[2px] transition-colors"
-                                                title={`Open ${sub.title || 'problem'} (${sub.status})`}
+                                                className={cn(
+                                                    'font-medium',
+                                                    diff.name === 'Easy' && 'text-[#34d399]',
+                                                    diff.name === 'Medium' && 'text-[#fcd34d]',
+                                                    diff.name === 'Hard' && 'text-rose-300'
+                                                )}
                                             >
-                                                <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                                                    <span
-                                                        className={cn(
-                                                            'h-1.5 w-1.5 rounded-full shrink-0',
-                                                            isAccepted ? 'bg-emerald-400' : 'bg-rose-400'
-                                                        )}
-                                                    />
-                                                    <span className="text-[#334155] dark:text-[#cccccc] group-hover:text-[#090a0f] dark:group-hover:text-white truncate">
-                                                        {sub.title || 'Problem'}
+                                                {diff.name}
+                                            </div>
+                                            <div className="text-[#090a0f] dark:text-[#e8e8e6] font-semibold mt-0.5">
+                                                {diff.value}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Recent Submissions (Max 3, Minimalist List) */}
+                            {profile?.recentSubmissions && profile.recentSubmissions.length > 0 && (
+                                <div className="space-y-1.5 pt-2.5 border-t border-[#f0f2f5] dark:border-[#272727] font-mono">
+                                    <div className="flex items-center justify-between text-[10px] text-[#64748b] dark:text-[#777777] uppercase tracking-wider">
+                                        <span>Recent Submissions</span>
+                                    </div>
+                                    <div className="space-y-1">
+                                        {profile.recentSubmissions.slice(0, 3).map((sub) => {
+                                            const isAccepted = sub.status === 'Accepted'
+                                            return (
+                                                <div
+                                                    key={sub.id}
+                                                    onClick={() =>
+                                                        navigate(`/problem/${sub.problemId}`)
+                                                    }
+                                                    className="flex items-center justify-between gap-2 py-0.5 text-[11px] cursor-pointer group hover:bg-[#f8fafc] dark:hover:bg-[#252423] px-1 rounded-[2px] transition-colors"
+                                                    title={`Open ${sub.title || 'problem'} (${sub.status})`}
+                                                >
+                                                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                                                        <span
+                                                            className={cn(
+                                                                'h-1.5 w-1.5 rounded-full shrink-0',
+                                                                isAccepted
+                                                                    ? 'bg-emerald-400'
+                                                                    : 'bg-rose-400'
+                                                            )}
+                                                        />
+                                                        <span className="text-[#334155] dark:text-[#cccccc] group-hover:text-[#090a0f] dark:group-hover:text-white truncate">
+                                                            {sub.title || 'Problem'}
+                                                        </span>
+                                                    </div>
+                                                    <span className="text-[10px] text-[#94a3b8] dark:text-[#777777] shrink-0">
+                                                        {formatRelativeTime(sub.createdAt)}
                                                     </span>
                                                 </div>
-                                                <span className="text-[10px] text-[#94a3b8] dark:text-[#777777] shrink-0">
-                                                    {formatRelativeTime(sub.createdAt)}
-                                                </span>
-                                            </div>
-                                        )
-                                    })}
+                                            )
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )
                 ) : (
                     <div className="space-y-3 py-1">
                         <p className="text-xs text-[#52525b] dark:text-[#a09f9d] leading-relaxed">

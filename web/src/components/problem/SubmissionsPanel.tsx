@@ -97,8 +97,6 @@ export function SubmissionsPanel({
         }
 
         fireDualConfetti()
-        const timer = setTimeout(fireDualConfetti, 250)
-        return () => clearTimeout(timer)
     }, [latestExecution])
 
     const handleCopyCode = (code: string) => {
@@ -139,8 +137,7 @@ export function SubmissionsPanel({
         verdictIcon = <CheckCircle2 className="h-5 w-5 text-emerald-400" />
         verdictColor = 'text-emerald-400'
     } else if (failedItem) {
-        failedTestNum =
-            failedItem.testcase < 1 ? failedItem.testcase + 1 : failedItem.testcase
+        failedTestNum = failedItem.testcase < 1 ? failedItem.testcase + 1 : failedItem.testcase
         const rawStatus = failedItem.status || 'Wrong Answer'
 
         // Check if failed on a system (hidden) testcase beyond the public examples
@@ -206,7 +203,12 @@ export function SubmissionsPanel({
                             <div className="flex items-center gap-2.5">
                                 {verdictIcon}
                                 <div>
-                                    <div className={cn('text-sm font-semibold tracking-tight', verdictColor)}>
+                                    <div
+                                        className={cn(
+                                            'text-sm font-semibold tracking-tight',
+                                            verdictColor
+                                        )}
+                                    >
                                         {verdictStatus}
                                     </div>
                                     <div className="text-[11px] text-[#888888] mt-0.5">
@@ -236,27 +238,35 @@ export function SubmissionsPanel({
                             )}
                         >
                             <div className="bg-[#121212] border border-[#262626] rounded-[3px] p-2 text-center">
-                                <div className="text-[10px] uppercase text-[#777777] mb-0.5">Runtime</div>
+                                <div className="text-[10px] uppercase text-[#777777] mb-0.5">
+                                    Runtime
+                                </div>
                                 <div className="text-xs font-semibold text-[#e8e8e6]">
                                     {maxTime || '—'}
                                 </div>
                             </div>
                             {latestSubmission?.userSolveTime != null && (
                                 <div className="bg-[#121212] border border-[#262626] rounded-[3px] p-2 text-center">
-                                    <div className="text-[10px] uppercase text-[#777777] mb-0.5">Solve Time</div>
+                                    <div className="text-[10px] uppercase text-[#777777] mb-0.5">
+                                        Solve Time
+                                    </div>
                                     <div className="text-xs font-semibold text-[#87b2f4]">
                                         {formatDuration(latestSubmission.userSolveTime)}
                                     </div>
                                 </div>
                             )}
                             <div className="bg-[#121212] border border-[#262626] rounded-[3px] p-2 text-center">
-                                <div className="text-[10px] uppercase text-[#777777] mb-0.5">Memory</div>
+                                <div className="text-[10px] uppercase text-[#777777] mb-0.5">
+                                    Memory
+                                </div>
                                 <div className="text-xs font-semibold text-[#e8e8e6]">
                                     {maxMemory || '—'}
                                 </div>
                             </div>
                             <div className="bg-[#121212] border border-[#262626] rounded-[3px] p-2 text-center">
-                                <div className="text-[10px] uppercase text-[#777777] mb-0.5">Language</div>
+                                <div className="text-[10px] uppercase text-[#777777] mb-0.5">
+                                    Language
+                                </div>
                                 <div className="text-xs font-semibold text-[#e8e8e6] truncate">
                                     {latestExecution.language || 'C++ (GCC 13)'}
                                 </div>
@@ -298,9 +308,9 @@ export function SubmissionsPanel({
                                             <span>System Test #{failedTestNum} (Hidden)</span>
                                         </div>
                                         <p className="text-[11px] text-[#777777] leading-relaxed">
-                                            Test data is hidden for system testcases to maintain competitive
-                                            programming integrity. Check boundary conditions, integer overflow,
-                                            or edge cases.
+                                            Test data is hidden for system testcases to maintain
+                                            competitive programming integrity. Check boundary
+                                            conditions, integer overflow, or edge cases.
                                         </p>
                                     </div>
                                 ) : (
@@ -347,8 +357,8 @@ export function SubmissionsPanel({
                     </div>
                 ) : (
                     <div className="rounded-[4px] border border-[#262626] bg-[#161616] p-4 font-mono text-xs text-[#777777] text-center">
-                        Click <strong className="text-[#e8e8e6]">Submit</strong> in the top bar to run your code
-                        against full hidden system testcases.
+                        Click <strong className="text-[#e8e8e6]">Submit</strong> in the top bar to
+                        run your code against full hidden system testcases.
                     </div>
                 )}
             </div>
@@ -411,9 +421,15 @@ export function SubmissionsPanel({
                                 <thead>
                                     <tr className="border-b border-[#262626] text-[10px] uppercase text-[#777777] bg-[#131313]">
                                         <th className="py-2 px-3 font-medium">Status</th>
-                                        <th className="py-2 px-3 font-medium hidden sm:table-cell">Language</th>
-                                        <th className="py-2 px-3 font-medium">Runtime / Solve Time</th>
-                                        <th className="py-2 px-3 font-medium hidden sm:table-cell">Memory</th>
+                                        <th className="py-2 px-3 font-medium hidden sm:table-cell">
+                                            Language
+                                        </th>
+                                        <th className="py-2 px-3 font-medium">
+                                            Runtime / Solve Time
+                                        </th>
+                                        <th className="py-2 px-3 font-medium hidden sm:table-cell">
+                                            Memory
+                                        </th>
                                         <th className="py-2 px-3 font-medium text-right">Time</th>
                                     </tr>
                                 </thead>
@@ -442,7 +458,9 @@ export function SubmissionsPanel({
                                                         <span
                                                             className={cn(
                                                                 'font-semibold',
-                                                                isAccepted ? 'text-emerald-400' : 'text-rose-300'
+                                                                isAccepted
+                                                                    ? 'text-emerald-400'
+                                                                    : 'text-rose-300'
                                                             )}
                                                         >
                                                             {item.status}
@@ -457,7 +475,9 @@ export function SubmissionsPanel({
                                                         <span>{item.timeTaken || '—'}</span>
                                                         {item.userSolveTime != null && (
                                                             <span className="text-[11px] text-[#888888]">
-                                                                ({formatDuration(item.userSolveTime)})
+                                                                (
+                                                                {formatDuration(item.userSolveTime)}
+                                                                )
                                                             </span>
                                                         )}
                                                     </div>
@@ -481,12 +501,16 @@ export function SubmissionsPanel({
                                 <div className="flex items-center justify-between text-[#888888] border-b border-[#262626] pb-2">
                                     <div className="flex items-center gap-2">
                                         <Code2 className="h-4 w-4 text-[#87b2f4]" />
-                                        <span className="text-[#e8e8e6] font-medium">Submitted Code</span>
+                                        <span className="text-[#e8e8e6] font-medium">
+                                            Submitted Code
+                                        </span>
                                     </div>
                                     {expandedDetail?.sourceCode && (
                                         <button
                                             type="button"
-                                            onClick={() => handleCopyCode(expandedDetail.sourceCode || '')}
+                                            onClick={() =>
+                                                handleCopyCode(expandedDetail.sourceCode || '')
+                                            }
                                             className="flex items-center gap-1 text-[11px] text-[#777777] hover:text-[#e8e8e6] transition-colors cursor-pointer"
                                         >
                                             {copiedCode ? (

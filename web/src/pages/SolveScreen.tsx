@@ -17,8 +17,16 @@ import { EditorHeader } from '@/components/problem/EditorHeader'
 import { BottomPanelHeader } from '@/components/problem/BottomPanelHeader'
 import { BottomPanelFooter } from '@/components/problem/BottomPanelFooter'
 import { SolveScreenNavbar } from '@/components/problem/SolveScreenNavbar'
+import { SolveScreenSkeleton } from '@/components/problem/SolveScreenSkeleton'
 import { CodeEditor } from '@/components/problem/CodeEditor'
-import { getApiErrorMessage, getProblem, getContestRoom, runCode, submitCode } from '@/lib/api'
+import {
+    getApiErrorMessage,
+    getProblem,
+    getContestRoom,
+    leaveContestRoom,
+    runCode,
+    submitCode,
+} from '@/lib/api'
 import type { EditorLanguage, ExecutionResponse, SubmissionItem } from '@/lib/types'
 
 export function SolveScreen() {
@@ -44,14 +52,25 @@ export function SolveScreen() {
     const isWinner = Boolean(winner && (winner.isYou || (user && winner.userId === user.id)))
     const isContestTimeout = Boolean(
         contestRoom &&
-            (contestRoom.isEnded ||
-                (contestRoom.endsAt && (parseUtcDate(contestRoom.endsAt) ?? Infinity) <= Date.now())) &&
-            !hasWinner
+        (contestRoom.isEnded ||
+            (contestRoom.endsAt && (parseUtcDate(contestRoom.endsAt) ?? Infinity) <= Date.now())) &&
+        !hasWinner
     )
 
-    // Blast confetti from lower-left and lower-right when someone wins
+    const handleExitContest = async () => {
+        if (roomCode) {
+            try {
+                await leaveContestRoom(roomCode)
+            } catch (err) {
+                console.error('Failed to leave contest room:', err)
+            }
+        }
+        navigate('/')
+    }
+
+    // Blast confetti from lower-left and lower-right only when the current user wins
     useEffect(() => {
-        if (!hasWinner || dismissedContestResult) return
+        if (!isWinner || dismissedContestResult) return
 
         const blast = () => {
             // Lower-left blast
@@ -75,9 +94,7 @@ export function SolveScreen() {
         }
 
         blast()
-        const timer = setTimeout(blast, 280)
-        return () => clearTimeout(timer)
-    }, [hasWinner, dismissedContestResult])
+    }, [isWinner, dismissedContestResult])
 
     const [language, setLanguage] = useState<EditorLanguage>('cpp')
     const [codeByLanguage, setCodeByLanguage] =
@@ -288,7 +305,9 @@ export function SolveScreen() {
             return
         }
 
-        const elapsed = explicitSeconds ?? Math.max(1, Math.floor((Date.now() - solveStartTimeRef.current) / 1000))
+        const elapsed =
+            explicitSeconds ??
+            Math.max(1, Math.floor((Date.now() - solveStartTimeRef.current) / 1000))
         setActiveLeftTab('submissions')
         if (isMobile) setMobileTab('problem')
         submitMutation.mutate({ solveDurationSeconds: elapsed })
@@ -320,11 +339,7 @@ export function SolveScreen() {
     }, [codeByLanguage, language, problemQuery.data])
 
     if (problemQuery.isLoading) {
-        return (
-            <div className="flex h-screen items-center justify-center bg-[#141414] text-[#a09f9d] font-mono text-xs">
-                <div>Loading problem database...</div>
-            </div>
-        )
+        return <SolveScreenSkeleton backPath={roomCode ? `/contest/${roomCode}` : '/'} />
     }
 
     if (problemQuery.isError || !problemQuery.data) {
@@ -489,14 +504,17 @@ export function SolveScreen() {
                                     >
                                         <History className="h-3.5 w-3.5 text-emerald-400" />
                                         <span>Submissions</span>
-                                        {executionResult && resultTitle.toLowerCase().includes('submission') && (
-                                            <span
-                                                className={cn(
-                                                    'h-1.5 w-1.5 rounded-full shrink-0',
-                                                    executionResult.allPassed ? 'bg-emerald-400' : 'bg-rose-300'
-                                                )}
-                                            />
-                                        )}
+                                        {executionResult &&
+                                            resultTitle.toLowerCase().includes('submission') && (
+                                                <span
+                                                    className={cn(
+                                                        'h-1.5 w-1.5 rounded-full shrink-0',
+                                                        executionResult.allPassed
+                                                            ? 'bg-emerald-400'
+                                                            : 'bg-rose-300'
+                                                    )}
+                                                />
+                                            )}
                                     </button>
                                 </div>
                             </div>
@@ -616,7 +634,9 @@ export function SolveScreen() {
                                                     totalTestcases={problem.testcases?.length ?? 30}
                                                     sampleCount={problem.examples?.length ?? 0}
                                                     userSolveTime={
-                                                        resultTitle.toLowerCase().includes('submission')
+                                                        resultTitle
+                                                            .toLowerCase()
+                                                            .includes('submission')
                                                             ? latestSubmission?.userSolveTime
                                                             : null
                                                     }
@@ -714,7 +734,7 @@ export function SolveScreen() {
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => navigate('/')}
+                                            onClick={handleExitContest}
                                             className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center shadow-xs"
                                         >
                                             Back to Problems
@@ -769,7 +789,7 @@ export function SolveScreen() {
                                     <div className="flex items-center gap-2 pt-2">
                                         <button
                                             type="button"
-                                            onClick={() => navigate('/')}
+                                            onClick={handleExitContest}
                                             className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#888888] hover:text-white text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
                                         >
                                             Exit Contest
@@ -817,13 +837,15 @@ export function SolveScreen() {
                                     </div>
 
                                     <p className="text-xs text-[#888888] leading-relaxed">
-                                        The contest time limit has concluded. Contest submissions are now closed, but you can keep writing and testing your code in practice mode!
+                                        The contest time limit has concluded. Contest submissions
+                                        are now closed, but you can keep writing and testing your
+                                        code in practice mode!
                                     </p>
 
                                     <div className="flex items-center gap-2 pt-2">
                                         <button
                                             type="button"
-                                            onClick={() => navigate('/')}
+                                            onClick={handleExitContest}
                                             className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#888888] hover:text-white text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
                                         >
                                             Exit Contest

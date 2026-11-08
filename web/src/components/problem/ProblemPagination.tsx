@@ -91,7 +91,8 @@ export function ProblemPagination({
 
                 {/* Mobile compact page indicator */}
                 <span className="sm:hidden text-xs text-[#52525b] dark:text-[#a09f9d] px-2 select-none">
-                    Page <strong className="text-[#090a0f] dark:text-[#e8e8e6]">{currentPage}</strong> of{' '}
+                    Page{' '}
+                    <strong className="text-[#090a0f] dark:text-[#e8e8e6]">{currentPage}</strong> of{' '}
                     {totalPages}
                 </span>
 
