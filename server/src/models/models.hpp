@@ -94,6 +94,24 @@ struct ProblemDetailModel {
     }
 };
 
+struct ProblemQueryOptions {
+    int page = 1;
+    int limit = 25;
+    std::string search;
+    std::string difficulty;
+    std::string topic;
+    std::string status;
+};
+
+struct PaginatedProblemsResult {
+    std::vector<ProblemSummaryModel> problems;
+    int total = 0;
+    int page = 1;
+    int limit = 25;
+    int total_pages = 1;
+    std::vector<std::string> all_tags;
+};
+
 // -------------------------------------------------------------
 // CONTEST MODELS
 // -------------------------------------------------------------
@@ -150,6 +168,7 @@ struct ContestRoomResponse {
     std::vector<std::string> topics;
     std::string starts_at;
     std::string ends_at;
+    bool is_ended = false;
     bool me_joined = false;
     json participants = json::array();
     std::vector<ContestQuestionItem> questions;
@@ -171,6 +190,7 @@ struct ContestRoomResponse {
             {"topics", topics},
             {"startsAt", starts_at},
             {"endsAt", ends_at},
+            {"isEnded", is_ended},
             {"meJoined", me_joined},
             {"participants", participants},
             {"questions", qs},

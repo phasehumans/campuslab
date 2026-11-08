@@ -35,6 +35,7 @@ public:
         resp.time_limit_minutes = r["time_limit_minutes"].as<int>();
         resp.starts_at = r["starts_at"].as<std::string>();
         resp.ends_at = r["ends_at"].as<std::string>();
+        resp.is_ended = r["is_ended"].as<bool>();
 
         resp.topics = ProblemRepository::parse_pg_array(r["topics"].as<std::string>());
         std::vector<std::string> pids = ProblemRepository::parse_pg_array(r["problem_ids"].as<std::string>());

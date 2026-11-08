@@ -32,15 +32,22 @@ export type ProblemSummary = {
     submissionCount: number
 }
 
+export type ProblemsResponse = {
+    problems: ProblemSummary[]
+    total: number
+    count: number
+    page: number
+    limit: number
+    totalPages: number
+    allTags: string[]
+}
+
 export type ProblemDetail = ProblemSummary & {
     description: string
     constraints: string
-    hints?: string | null
-    editorial?: string | null
     examples: ProblemExample[]
     testcases: ProblemTestcase[]
     starterCodes: Partial<Record<EditorLanguage, string>>
-    referenceSolutions: Partial<Record<EditorLanguage, string>>
 }
 
 type ExecutionResult = {
@@ -62,7 +69,32 @@ export type ExecutionResponse = {
     results: ExecutionResult[]
 }
 
-type SubmissionRecord = {
+export type SubmissionItem = {
+    id: string
+    userId: string
+    problemId: string
+    status: string
+    language: string
+    timeTaken?: string | null
+    memoryUsage?: string | null
+    userSolveTime?: number | null
+    createdAt: string
+}
+
+export type SubmissionDetail = SubmissionItem & {
+    sourceCode?: string | null
+    testcases?: Array<{
+        testCase: string
+        passed: boolean
+        stdout?: string | null
+        expectedOutput?: string | null
+        status: string
+        timeTaken?: string | null
+        memoryUsage?: string | null
+    }>
+}
+
+export type SubmissionRecord = {
     id: string
     problemId: string
     title?: string
@@ -98,7 +130,6 @@ type ContestLeaderboardEntry = {
     rank: number
     userId: string
     name: string
-    prn?: string | null
     avatar?: string | null
     score: number
     solved: number
@@ -109,7 +140,6 @@ type ContestLeaderboardEntry = {
 type ContestParticipant = {
     userId: string
     name: string
-    prn?: string | null
     avatar?: string | null
     isHost: boolean
 }
@@ -123,6 +153,7 @@ export type ContestRoom = {
     topics: string[]
     startsAt: string
     endsAt: string
+    isEnded?: boolean
     meJoined: boolean
     participants: ContestParticipant[]
     questions: ContestQuestion[]

@@ -36,6 +36,9 @@ services:
 
     judge:
         image: ghcr.io/phasehumans/campuslab-judge:latest
+        build:
+            context: .
+            dockerfile: judge/Dockerfile
         container_name: campuslab-judge
         restart: unless-stopped
         privileged: true
@@ -52,6 +55,9 @@ services:
 
     api:
         image: ghcr.io/phasehumans/campuslab-api:latest
+        build:
+            context: .
+            dockerfile: server/Dockerfile
         container_name: campuslab-api
         restart: unless-stopped
         ports:

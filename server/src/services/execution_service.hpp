@@ -93,7 +93,7 @@ public:
         return {true, 200, "Code executed successfully", exec_data};
     }
 
-    SubmitResult submit_code(const std::string& user_id, const std::string& problem_id, const std::string& source_code, const std::string& contest_code) {
+    SubmitResult submit_code(const std::string& user_id, const std::string& problem_id, const std::string& source_code, const std::string& contest_code, std::optional<int> user_solve_time = std::nullopt) {
         if (problem_id.empty() || source_code.empty()) {
             return {false, 400, "Missing problemId or sourceCode", nullptr, nullptr};
         }
@@ -126,7 +126,7 @@ public:
         std::string submission_id;
         {
             auto conn_guard = db_pool_.acquire();
-            submission_id = SubmissionRepository::create_submission(conn_guard.get(), user_id, problem_id, source_code);
+            submission_id = SubmissionRepository::create_submission(conn_guard.get(), user_id, problem_id, source_code, user_solve_time);
         }
 
         JudgeJob job;
@@ -174,7 +174,7 @@ public:
             pqxx::work fetch_txn(conn_guard.get());
 
             auto s_rows = fetch_txn.exec_params(
-                "SELECT id, \"userId\" AS user_id, \"problemId\" AS problem_id, status, \"timeTaken\" AS time_taken, \"memoryUsage\" AS memory_usage, \"createdAt\"::text AS created_at "
+                "SELECT id, \"userId\" AS user_id, \"problemId\" AS problem_id, status, \"timeTaken\" AS time_taken, \"memoryUsage\" AS memory_usage, \"userSolveTime\" AS user_solve_time, \"createdAt\"::text AS created_at "
                 "FROM \"Submission\" WHERE id = $1",
                 submission_id
             );
@@ -205,11 +205,11 @@ public:
             if (accepted && !contest_code.empty()) {
                 try {
                     auto c_rows = fetch_txn.exec_params(
-                        "SELECT standings, \"endsAt\"::text AS ends_at, \"problemPoints\" AS problem_points "
+                        "SELECT standings, \"endsAt\"::text AS ends_at, \"problemPoints\" AS problem_points, NOW() > \"endsAt\" AS is_ended "
                         "FROM \"ContestRoom\" WHERE code = $1",
                         contest_code
                     );
-                    if (!c_rows.empty()) {
+                    if (!c_rows.empty() && !c_rows[0]["is_ended"].as<bool>()) {
                         auto standings_json = json::parse(c_rows[0]["standings"].as<std::string>());
                         auto points_json = json::parse(c_rows[0]["problem_points"].as<std::string>());
 
@@ -259,6 +259,7 @@ public:
 
             std::string time_taken_val = (!s_rows.empty() && !s_rows[0]["time_taken"].is_null()) ? s_rows[0]["time_taken"].as<std::string>() : "";
             std::string mem_val = (!s_rows.empty() && !s_rows[0]["memory_usage"].is_null()) ? s_rows[0]["memory_usage"].as<std::string>() : "";
+            std::optional<int> user_solve_time_val = (!s_rows.empty() && !s_rows[0]["user_solve_time"].is_null()) ? std::make_optional(s_rows[0]["user_solve_time"].as<int>()) : std::nullopt;
 
             submission_data = {
                 {"id", submission_id},
@@ -267,6 +268,7 @@ public:
                 {"status", status},
                 {"timeTaken", time_taken_val.empty() ? nullptr : json(time_taken_val)},
                 {"memoryUsage", mem_val.empty() ? nullptr : json(mem_val)},
+                {"userSolveTime", user_solve_time_val.has_value() ? json(*user_solve_time_val) : nullptr},
                 {"testcases", testcases_arr}
             };
         }

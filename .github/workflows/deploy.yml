@@ -1,7 +1,9 @@
 name: Deploy to Production EC2
 
 on:
-    workflow_dispatch: # Manual trigger only: will never run automatically on git push
+    push:
+        branches: [main]
+    workflow_dispatch:
 
 concurrency:
     group: deploy-production

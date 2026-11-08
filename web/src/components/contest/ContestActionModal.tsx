@@ -2,18 +2,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import {
-    X,
-    Loader2,
-    Trophy,
-    Copy,
-    Check,
-    Users,
-    Clock,
-    Zap,
-    ArrowRight,
-    ShieldCheck,
-} from 'lucide-react'
+import { X, Loader2, Copy, Check } from 'lucide-react'
 import { createContestRoom, getApiErrorMessage } from '@/lib/api'
 import { useAuth } from '@/contexts/AuthContext'
 import type { ContestRoom } from '@/lib/types'
@@ -130,7 +119,6 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                 {/* Header */}
                 <div className="flex items-center justify-between pb-3 border-b border-[#f0f2f5] dark:border-[#272727]">
                     <div className="flex items-center gap-2">
-                        <Trophy className="h-4 w-4 text-[#87b2f4]" />
                         <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#87b2f4]">
                             [Contest Room Creation]
                         </span>
@@ -200,8 +188,7 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                                 onClick={handleEnterContest}
                                 className="flex-1 flex items-center justify-center gap-1.5 bg-[#87b2f4] hover:bg-[#729ee0] text-[#090a0f] font-mono text-xs font-medium py-2.5 px-3 rounded-[3px] transition-colors cursor-pointer"
                             >
-                                <span>Join Contest</span>
-                                <ArrowRight className="h-3.5 w-3.5" />
+                                <span>Join Contest &rarr;</span>
                             </button>
                         </div>
                     </div>
@@ -220,9 +207,8 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                         {/* Match Specifications Grid */}
                         <div className="grid grid-cols-2 gap-2 text-xs">
                             <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="flex items-center gap-1.5 text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    <Clock className="h-3 w-3 text-[#87b2f4]" />
-                                    <span>Duration</span>
+                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
+                                    Duration
                                 </div>
                                 <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
                                     45 Minutes
@@ -230,9 +216,8 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                             </div>
 
                             <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="flex items-center gap-1.5 text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    <Zap className="h-3 w-3 text-amber-500" />
-                                    <span>Challenge</span>
+                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
+                                    Challenge
                                 </div>
                                 <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
                                     1 Random Problem
@@ -240,9 +225,8 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                             </div>
 
                             <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="flex items-center gap-1.5 text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    <Users className="h-3 w-3 text-[#87b2f4]" />
-                                    <span>Competitors</span>
+                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
+                                    Competitors
                                 </div>
                                 <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
                                     Unlimited
@@ -250,9 +234,8 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                             </div>
 
                             <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="flex items-center gap-1.5 text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    <ShieldCheck className="h-3 w-3 text-emerald-500" />
-                                    <span>Win Rule</span>
+                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
+                                    Win Rule
                                 </div>
                                 <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
                                     First AC Wins
@@ -273,10 +256,7 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                                         <span>Generating Contest Room...</span>
                                     </>
                                 ) : (
-                                    <>
-                                        <Trophy className="h-3.5 w-3.5 text-[#87b2f4]" />
-                                        <span>Create Contest Room</span>
-                                    </>
+                                    <span>Create Contest Room</span>
                                 )}
                             </button>
                         </div>

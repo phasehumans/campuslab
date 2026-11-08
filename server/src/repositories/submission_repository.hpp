@@ -11,11 +11,14 @@ namespace campuslab {
 
 class SubmissionRepository {
 public:
-    static std::string create_submission(pqxx::connection& conn, const std::string& user_id, const std::string& problem_id, const std::string& source_code) {
+    static std::string create_submission(pqxx::connection& conn, const std::string& user_id, const std::string& problem_id, const std::string& source_code, std::optional<int> user_solve_time = std::nullopt) {
         pqxx::work txn(conn);
+        std::string time_col = user_solve_time.has_value() ? ", \"userSolveTime\"" : "";
+        std::string time_val = user_solve_time.has_value() ? ", " + std::to_string(*user_solve_time) : "";
+
         auto rows = txn.exec_params(
-            "INSERT INTO \"Submission\" (\"id\", \"userId\", \"problemId\", \"sourceCode\", \"language\", \"status\", \"createdAt\", \"updatedAt\") "
-            "VALUES (gen_random_uuid(), $1, $2, $3, 'C++ (GCC 13)', 'Pending', NOW(), NOW()) "
+            "INSERT INTO \"Submission\" (\"id\", \"userId\", \"problemId\", \"sourceCode\", \"language\", \"status\"" + time_col + ", \"createdAt\", \"updatedAt\") "
+            "VALUES (gen_random_uuid(), $1, $2, $3, 'C++ (GCC 13)', 'Pending'" + time_val + ", NOW(), NOW()) "
             "RETURNING id",
             user_id, problem_id, json(source_code).dump()
         );
@@ -26,7 +29,7 @@ public:
     static json get_submission_by_id(pqxx::connection& conn, const std::string& submission_id) {
         pqxx::work txn(conn);
         auto rows = txn.exec_params(
-            "SELECT id, \"userId\" AS user_id, \"problemId\" AS problem_id, status, \"timeTaken\" AS time_taken, \"memoryUsage\" AS memory_usage, \"createdAt\"::text AS created_at "
+            "SELECT id, \"userId\" AS user_id, \"problemId\" AS problem_id, status, language, \"sourceCode\" AS source_code, \"timeTaken\" AS time_taken, \"memoryUsage\" AS memory_usage, \"userSolveTime\" AS user_solve_time, \"createdAt\"::text AS created_at "
             "FROM \"Submission\" WHERE id = $1",
             submission_id
         );
@@ -53,14 +56,28 @@ public:
 
         std::string time_taken_val = rows[0]["time_taken"].is_null() ? "" : rows[0]["time_taken"].as<std::string>();
         std::string mem_val = rows[0]["memory_usage"].is_null() ? "" : rows[0]["memory_usage"].as<std::string>();
+        std::string source_code_val = rows[0]["source_code"].is_null() ? "" : rows[0]["source_code"].as<std::string>();
+        std::optional<int> user_solve_time_val = (!rows[0]["user_solve_time"].is_null()) ? std::make_optional(rows[0]["user_solve_time"].as<int>()) : std::nullopt;
+
+        std::string raw_source_code = source_code_val;
+        try {
+            auto parsed = json::parse(source_code_val);
+            if (parsed.is_string()) {
+                raw_source_code = parsed.get<std::string>();
+            }
+        } catch (...) {}
 
         return {
             {"id", rows[0]["id"].as<std::string>()},
             {"userId", rows[0]["user_id"].as<std::string>()},
             {"problemId", rows[0]["problem_id"].as<std::string>()},
             {"status", rows[0]["status"].as<std::string>()},
+            {"language", rows[0]["language"].as<std::string>()},
+            {"sourceCode", raw_source_code},
             {"timeTaken", time_taken_val.empty() ? nullptr : json(time_taken_val)},
             {"memoryUsage", mem_val.empty() ? nullptr : json(mem_val)},
+            {"userSolveTime", user_solve_time_val.has_value() ? json(*user_solve_time_val) : nullptr},
+            {"createdAt", rows[0]["created_at"].as<std::string>()},
             {"testcases", tc_arr}
         };
     }
@@ -68,19 +85,25 @@ public:
     static json get_user_submissions_for_problem(pqxx::connection& conn, const std::string& user_id, const std::string& problem_id, int limit = 20) {
         pqxx::work txn(conn);
         auto rows = txn.exec_params(
-            "SELECT id, \"userId\" AS user_id, \"problemId\" AS problem_id, status, language, \"createdAt\"::text AS created_at "
+            "SELECT id, \"userId\" AS user_id, \"problemId\" AS problem_id, status, language, \"timeTaken\" AS time_taken, \"memoryUsage\" AS memory_usage, \"userSolveTime\" AS user_solve_time, \"createdAt\"::text AS created_at "
             "FROM \"Submission\" WHERE \"userId\" = $1 AND \"problemId\" = $2 ORDER BY \"createdAt\" DESC LIMIT $3",
             user_id, problem_id, limit
         );
 
         json list = json::array();
         for (const auto& r : rows) {
+            std::string time_taken = r["time_taken"].is_null() ? "" : r["time_taken"].as<std::string>();
+            std::string mem = r["memory_usage"].is_null() ? "" : r["memory_usage"].as<std::string>();
+            std::optional<int> user_solve_time = (!r["user_solve_time"].is_null()) ? std::make_optional(r["user_solve_time"].as<int>()) : std::nullopt;
             list.push_back({
                 {"id", r["id"].as<std::string>()},
                 {"userId", r["user_id"].as<std::string>()},
                 {"problemId", r["problem_id"].as<std::string>()},
                 {"status", r["status"].as<std::string>()},
                 {"language", r["language"].as<std::string>()},
+                {"timeTaken", time_taken.empty() ? nullptr : json(time_taken)},
+                {"memoryUsage", mem.empty() ? nullptr : json(mem)},
+                {"userSolveTime", user_solve_time.has_value() ? json(*user_solve_time) : nullptr},
                 {"createdAt", r["created_at"].as<std::string>()}
             });
         }

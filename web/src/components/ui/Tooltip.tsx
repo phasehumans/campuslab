@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/lib/utils'
 
 interface TooltipProps {
-    children: React.ReactNode
-    content: React.ReactNode
+    children: ReactNode
+    content: ReactNode
     position?: 'top' | 'bottom' | 'left' | 'right'
     align?: 'start' | 'center' | 'end'
     shortcut?: string

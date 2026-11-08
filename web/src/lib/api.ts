@@ -4,12 +4,39 @@ import type {
     ExecutionResponse,
     ProblemDetail,
     ProblemExample,
-    ProblemSummary,
+    ProblemsResponse,
     ProfileResponse,
+    SubmissionDetail,
+    SubmissionItem,
     User,
 } from './types'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? '/api/v1'
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1'
+const TOKEN_STORAGE_KEY = 'auth_token'
+
+export const getAuthToken = (): string | null => {
+    try {
+        return localStorage.getItem(TOKEN_STORAGE_KEY)
+    } catch {
+        return null
+    }
+}
+
+export const setAuthToken = (token: string): void => {
+    try {
+        localStorage.setItem(TOKEN_STORAGE_KEY, token)
+    } catch {
+        // ignore storage errors
+    }
+}
+
+export const clearAuthToken = (): void => {
+    try {
+        localStorage.removeItem(TOKEN_STORAGE_KEY)
+    } catch {
+        // ignore storage errors
+    }
+}
 
 type RequestOptions = {
     allowUnauthorized?: boolean
@@ -43,10 +70,14 @@ const request = async <T>(
     init?: RequestInit,
     options?: RequestOptions
 ): Promise<T | null> => {
+    const token = getAuthToken()
+    const authHeaders: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {}
+
     const response = await fetch(`${API_BASE_URL}${path}`, {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
+            ...authHeaders,
             ...(init?.headers ?? {}),
         },
         ...init,
@@ -56,6 +87,7 @@ const request = async <T>(
 
     if (!response.ok) {
         if (options?.allowUnauthorized && response.status === 401) {
+            clearAuthToken()
             return null
         }
 
@@ -88,37 +120,59 @@ export const getCurrentUser = async () => {
 export const oauthLogin = async (payload: {
     provider: 'github' | 'google'
     code?: string
-    credential?: string
     redirectUri?: string
-    email?: string
-    name?: string
-    avatar?: string
 }) => {
-    const response = await request<{ user: User }>('/auth/oauth', {
+    const response = await request<{ user: User; token: string }>('/auth/oauth', {
         method: 'POST',
         body: JSON.stringify({
             provider: payload.provider,
             code: payload.code,
-            credential: payload.credential,
             redirect_uri: payload.redirectUri,
-            email: payload.email,
-            name: payload.name,
-            avatar: payload.avatar,
         }),
     })
+
+    if (response?.token) {
+        setAuthToken(response.token)
+    }
 
     return response!.user
 }
 
 export const logoutUser = async () => {
+    clearAuthToken()
     await request('/auth/logout', {
         method: 'POST',
-    })
+    }).catch(() => null)
 }
 
-export const getProblems = async () => {
-    const response = await request<{ problems: ProblemSummary[] }>('/problems')
-    return response!.problems
+export type GetProblemsParams = {
+    page?: number
+    limit?: number
+    search?: string
+    difficulty?: string
+    topic?: string
+    status?: string
+}
+
+export const getProblems = async (params?: GetProblemsParams): Promise<ProblemsResponse> => {
+    const searchParams = new URLSearchParams()
+    if (params?.page) searchParams.set('page', String(params.page))
+    if (params?.limit) searchParams.set('limit', String(params.limit))
+    if (params?.search && params.search.trim()) searchParams.set('search', params.search.trim())
+    if (params?.difficulty && params.difficulty !== 'All') {
+        searchParams.set('difficulty', params.difficulty)
+    }
+    if (params?.topic && params.topic !== 'All') {
+        searchParams.set('topic', params.topic)
+    }
+    if (params?.status && params.status !== 'All') {
+        searchParams.set('status', params.status)
+    }
+
+    const query = searchParams.toString()
+    const endpoint = query ? `/problems?${query}` : '/problems'
+    const response = await request<ProblemsResponse>(endpoint)
+    return response!
 }
 
 export const getProblem = async (problemId: string) => {
@@ -151,6 +205,7 @@ export const submitCode = async (payload: {
     sourceCode: string
     language: EditorLanguage
     contestCode?: string | null
+    solveDurationSeconds?: number
 }) => {
     const response = await request<{
         submission: unknown
@@ -163,10 +218,29 @@ export const submitCode = async (payload: {
             sourceCode: payload.sourceCode,
             language: payload.language,
             contestCode: payload.contestCode || undefined,
+            solveDurationSeconds: payload.solveDurationSeconds,
         }),
     })
 
     return response!
+}
+
+export const getProblemSubmissions = async (problemId: string): Promise<SubmissionItem[]> => {
+    const response = await request<{ submissions: SubmissionItem[] }>(
+        `/submission/problem/${problemId}`,
+        undefined,
+        { allowUnauthorized: true }
+    )
+    return response?.submissions ?? []
+}
+
+export const getSubmissionById = async (submissionId: string): Promise<SubmissionDetail | null> => {
+    const response = await request<{ submission: SubmissionDetail }>(
+        `/submission/${submissionId}`,
+        undefined,
+        { allowUnauthorized: true }
+    )
+    return response?.submission ?? null
 }
 
 export const getProfile = async () => {

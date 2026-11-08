@@ -63,7 +63,7 @@ export function SignoutModal({ forceDark = false }: SignoutModalProps) {
                 </button>
 
                 <div className="flex items-center gap-3 mb-4">
-                    <div className="h-9 w-9 rounded-[3px] bg-red-50 dark:bg-red-950/40 border border-red-200/80 dark:border-red-900/50 flex items-center justify-center text-red-600 dark:text-red-400 shrink-0">
+                    <div className="h-9 w-9 rounded-[3px] bg-rose-50 dark:bg-rose-950/30 border border-rose-200/60 dark:border-rose-900/30 flex items-center justify-center text-rose-500 dark:text-rose-300 shrink-0">
                         <LogOut className="h-4 w-4" />
                     </div>
                     <div>
@@ -121,7 +121,7 @@ export function SignoutModal({ forceDark = false }: SignoutModalProps) {
                         type="button"
                         disabled={isSubmitting}
                         onClick={handleConfirm}
-                        className="bg-red-600 hover:bg-red-700 text-white font-mono text-xs py-2 px-3.5 rounded-[3px] font-medium transition-colors disabled:opacity-60 cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+                        className="bg-rose-500/85 hover:bg-rose-500 text-white font-mono text-xs py-2 px-3.5 rounded-[3px] font-medium transition-colors disabled:opacity-60 cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
                     >
                         {isSubmitting ? (
                             <>

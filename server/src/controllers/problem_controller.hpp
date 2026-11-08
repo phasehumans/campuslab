@@ -20,15 +20,50 @@ public:
         CROW_ROUTE(app, "/api/v1/problems").methods(crow::HTTPMethod::GET)([this](const crow::request& req) {
             auto auth = AuthMiddleware::get_auth_context(req, jwt_secret_);
             try {
-                auto problems = problem_service_.get_all_problems(auth.user_id);
+                ProblemQueryOptions opts;
+                opts.page = 1;
+                opts.limit = 25;
+
+                if (const char* p = req.url_params.get("page")) {
+                    try { opts.page = std::stoi(p); } catch (...) {}
+                }
+                if (const char* l = req.url_params.get("limit")) {
+                    try {
+                        std::string l_str(l);
+                        if (l_str == "all") {
+                            opts.limit = 10000;
+                        } else {
+                            opts.limit = std::stoi(l_str);
+                        }
+                    } catch (...) {}
+                }
+                if (const char* s = req.url_params.get("search")) {
+                    opts.search = s;
+                }
+                if (const char* d = req.url_params.get("difficulty")) {
+                    opts.difficulty = d;
+                }
+                if (const char* t = req.url_params.get("topic")) {
+                    opts.topic = t;
+                }
+                if (const char* st = req.url_params.get("status")) {
+                    opts.status = st;
+                }
+
+                auto result = problem_service_.get_problems_paginated(opts, auth.user_id);
                 json arr = json::array();
-                for (const auto& p : problems) {
+                for (const auto& p : result.problems) {
                     arr.push_back(p.to_json());
                 }
 
                 json res_json = {
                     {"success", true},
                     {"count", arr.size()},
+                    {"total", result.total},
+                    {"page", result.page},
+                    {"limit", result.limit},
+                    {"totalPages", result.total_pages},
+                    {"allTags", result.all_tags},
                     {"problems", arr}
                 };
 

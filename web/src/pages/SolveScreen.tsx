@@ -1,14 +1,16 @@
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState, useRef, useCallback, type MouseEvent as ReactMouseEvent } from 'react'
 import { createPortal } from 'react-dom'
+import confetti from 'canvas-confetti'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { FileText, Trophy, Swords, X } from 'lucide-react'
+import { FileText, History, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { FALLBACK_CODE, LANGUAGES } from '@/data/code'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { SignoutModal } from '@/components/auth/SignoutModal'
 import { DescriptionPanel } from '@/components/problem/DescriptionPanel'
+import { SubmissionsPanel } from '@/components/problem/SubmissionsPanel'
 import { TestcasePanel } from '@/components/problem/TestcasePanel'
 import { TestResultPanel } from '@/components/problem/TestResultPanel'
 import { EditorHeader } from '@/components/problem/EditorHeader'
@@ -17,7 +19,7 @@ import { BottomPanelFooter } from '@/components/problem/BottomPanelFooter'
 import { SolveScreenNavbar } from '@/components/problem/SolveScreenNavbar'
 import { CodeEditor } from '@/components/problem/CodeEditor'
 import { getApiErrorMessage, getProblem, getContestRoom, runCode, submitCode } from '@/lib/api'
-import type { EditorLanguage, ExecutionResponse } from '@/lib/types'
+import type { EditorLanguage, ExecutionResponse, SubmissionItem } from '@/lib/types'
 
 export function SolveScreen() {
     const { id } = useParams()
@@ -40,16 +42,55 @@ export function SolveScreen() {
     const winner = contestRoom?.leaderboard?.find((entry) => entry.solved >= 1)
     const hasWinner = Boolean(winner)
     const isWinner = Boolean(winner && (winner.isYou || (user && winner.userId === user.id)))
+    const isContestTimeout = Boolean(
+        contestRoom &&
+            (contestRoom.isEnded ||
+                (contestRoom.endsAt && (parseUtcDate(contestRoom.endsAt) ?? Infinity) <= Date.now())) &&
+            !hasWinner
+    )
+
+    // Blast confetti from lower-left and lower-right when someone wins
+    useEffect(() => {
+        if (!hasWinner || dismissedContestResult) return
+
+        const blast = () => {
+            // Lower-left blast
+            confetti({
+                particleCount: 65,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.95 },
+                colors: ['#34d399', '#87b2f4', '#fcd34d', '#fda4af', '#ffffff'],
+                zIndex: 1000,
+            })
+            // Lower-right blast
+            confetti({
+                particleCount: 65,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.95 },
+                colors: ['#34d399', '#87b2f4', '#fcd34d', '#fda4af', '#ffffff'],
+                zIndex: 1000,
+            })
+        }
+
+        blast()
+        const timer = setTimeout(blast, 280)
+        return () => clearTimeout(timer)
+    }, [hasWinner, dismissedContestResult])
 
     const [language, setLanguage] = useState<EditorLanguage>('cpp')
     const [codeByLanguage, setCodeByLanguage] =
         useState<Record<EditorLanguage, string>>(FALLBACK_CODE)
+    const [activeLeftTab, setActiveLeftTab] = useState<'description' | 'submissions'>('description')
     const [bottomPanelOpen, setBottomPanelOpen] = useState(false)
     const [activeBottomTab, setActiveBottomTab] = useState<'testcase' | 'testresult'>('testcase')
     const [activeTestCase, setActiveTestCase] = useState(0)
     const [resultTitle, setResultTitle] = useState('Run Results')
     const [resultMessage, setResultMessage] = useState<string | null>(null)
     const [executionResult, setExecutionResult] = useState<ExecutionResponse | null>(null)
+    const [latestSubmission, setLatestSubmission] = useState<SubmissionItem | null>(null)
+    const solveStartTimeRef = useRef<number>(Date.now())
 
     // Split panel sizing & drag states
     const [splitWidth, setSplitWidth] = useState(45) // percent for left panel
@@ -70,7 +111,7 @@ export function SolveScreen() {
     const horizontalContainerRef = useRef<HTMLDivElement>(null)
     const verticalContainerRef = useRef<HTMLDivElement>(null)
 
-    const onStartDragH = useCallback((e: React.MouseEvent) => {
+    const onStartDragH = useCallback((e: ReactMouseEvent) => {
         e.preventDefault()
         setIsDraggingH(true)
     }, [])
@@ -97,7 +138,7 @@ export function SolveScreen() {
         }
     }, [isDraggingH])
 
-    const onStartDragV = useCallback((e: React.MouseEvent) => {
+    const onStartDragV = useCallback((e: ReactMouseEvent) => {
         e.preventDefault()
         setIsDraggingV(true)
     }, [])
@@ -142,8 +183,11 @@ export function SolveScreen() {
 
         setCodeByLanguage(nextCodes)
         setActiveTestCase(0)
+        setActiveLeftTab('description')
         setExecutionResult(null)
+        setLatestSubmission(null)
         setResultMessage(null)
+        solveStartTimeRef.current = Date.now()
 
         const defaultLanguage =
             LANGUAGES.find((item) => problemQuery.data?.starterCodes?.[item.id])?.id ?? 'cpp'
@@ -172,22 +216,28 @@ export function SolveScreen() {
     })
 
     const submitMutation = useMutation({
-        mutationFn: () =>
+        mutationFn: (variables?: { solveDurationSeconds?: number }) =>
             submitCode({
                 problemId: id as string,
                 sourceCode: codeByLanguage[language],
                 language,
-                contestCode: roomCode,
+                contestCode: isContestTimeout ? undefined : roomCode,
+                solveDurationSeconds: variables?.solveDurationSeconds,
             }),
         onSuccess: async (response) => {
             setResultTitle('Submission Results')
             setExecutionResult(response.execution)
             setResultMessage(response.message)
+            if (response.submission) {
+                setLatestSubmission(response.submission as SubmissionItem)
+            }
+            setActiveLeftTab('submissions')
 
             await Promise.all([
                 queryClient.invalidateQueries({ queryKey: ['problems'] }),
                 queryClient.invalidateQueries({ queryKey: ['problem', id] }),
                 queryClient.invalidateQueries({ queryKey: ['profile'] }),
+                queryClient.invalidateQueries({ queryKey: ['problem-submissions', id] }),
                 roomCode
                     ? queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
                     : Promise.resolve(),
@@ -200,6 +250,7 @@ export function SolveScreen() {
             setResultTitle('Submission Results')
             setExecutionResult(null)
             setResultMessage(getApiErrorMessage(error, 'Unable to submit code'))
+            setActiveLeftTab('submissions')
         },
     })
 
@@ -232,15 +283,15 @@ export function SolveScreen() {
         runMutation.mutate()
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (explicitSeconds?: number) => {
         if (!problemQuery.data || !ensureAuthenticated()) {
             return
         }
 
-        setBottomPanelOpen(true)
-        setActiveBottomTab('testresult')
-        if (isMobile) setMobileTab('editor')
-        submitMutation.mutate()
+        const elapsed = explicitSeconds ?? Math.max(1, Math.floor((Date.now() - solveStartTimeRef.current) / 1000))
+        setActiveLeftTab('submissions')
+        if (isMobile) setMobileTab('problem')
+        submitMutation.mutate({ solveDurationSeconds: elapsed })
     }
 
     const handleResetCode = () => {
@@ -279,7 +330,7 @@ export function SolveScreen() {
     if (problemQuery.isError || !problemQuery.data) {
         return (
             <div className="flex h-screen flex-col items-center justify-center gap-4 bg-[#141414] px-6 text-center font-mono text-xs">
-                <p className="text-red-400">
+                <p className="text-rose-300">
                     {getApiErrorMessage(problemQuery.error, 'Unable to load this problem')}
                 </p>
                 <button
@@ -307,7 +358,7 @@ export function SolveScreen() {
                 />
             )}
 
-            <div className="relative z-10 flex flex-col h-full overflow-hidden bg-[#141414]">
+            <div className="dark relative z-10 flex flex-col h-full overflow-hidden bg-[#141414] text-[#e8e8e6]">
                 <SolveScreenNavbar
                     backPath="/"
                     handleRun={handleRun}
@@ -323,9 +374,11 @@ export function SolveScreen() {
                                   roomCode,
                                   participantCount: contestRoom.participantCount,
                                   endsAt: contestRoom.endsAt,
+                                  isEnded: contestRoom.isEnded || isContestTimeout,
                                   hasWinner,
                                   winnerName: winner?.name,
                                   isWinner,
+                                  participants: contestRoom.participants || [],
                               }
                             : undefined
                     }
@@ -337,8 +390,8 @@ export function SolveScreen() {
                         <div className="flex items-center gap-2">
                             {isWinner ? (
                                 <>
-                                    <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                                        <Trophy className="h-3.5 w-3.5" /> Contest Won!
+                                    <span className="text-emerald-400 font-medium">
+                                        Contest Won!
                                     </span>
                                     <span className="text-[#a09f9d]">
                                         You solved this challenge first.
@@ -346,8 +399,8 @@ export function SolveScreen() {
                                 </>
                             ) : (
                                 <>
-                                    <span className="text-red-400 font-semibold flex items-center gap-1">
-                                        <Swords className="h-3.5 w-3.5" /> Contest Concluded
+                                    <span className="text-rose-300 font-medium">
+                                        Contest Concluded
                                     </span>
                                     <span className="text-[#a09f9d]">
                                         Won by{' '}
@@ -403,21 +456,77 @@ export function SolveScreen() {
                     ref={horizontalContainerRef}
                     className="flex flex-1 min-h-0 overflow-hidden p-1.5 sm:p-2 gap-1.5 bg-[#141414]"
                 >
-                    {/* Left Panel: Dedicated Problem Description */}
+                    {/* Left Panel: Dedicated Problem Description & Submissions */}
                     {(!isMobile || mobileTab === 'problem') && (
                         <div
                             style={{ width: isMobile ? '100%' : `${splitWidth}%` }}
                             className="flex flex-col h-full bg-[#191919] rounded-[3px] border border-[#333333] overflow-hidden min-w-0 md:min-w-[280px]"
                         >
-                            <div className="flex items-center justify-between bg-[#191919] px-3.5 py-2 border-b border-[#333333] font-mono text-xs shrink-0">
-                                <div className="flex items-center gap-1.5 text-[#e8e8e6] font-medium">
-                                    <FileText className="h-3.5 w-3.5 text-[#87b2f4]" />
-                                    <span>Problem Description</span>
+                            <div className="flex items-center justify-between bg-[#191919] px-2.5 py-1.5 border-b border-[#333333] font-mono text-xs shrink-0 select-none">
+                                <div className="flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveLeftTab('description')}
+                                        className={cn(
+                                            'flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] transition-colors cursor-pointer',
+                                            activeLeftTab === 'description'
+                                                ? 'bg-[#252423] text-[#e8e8e6] font-medium border border-[#333333]'
+                                                : 'text-[#888888] hover:text-[#e8e8e6] hover:bg-[#202020]'
+                                        )}
+                                    >
+                                        <FileText className="h-3.5 w-3.5 text-[#87b2f4]" />
+                                        <span>Description</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveLeftTab('submissions')}
+                                        className={cn(
+                                            'flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] transition-colors cursor-pointer',
+                                            activeLeftTab === 'submissions'
+                                                ? 'bg-[#252423] text-[#e8e8e6] font-medium border border-[#333333]'
+                                                : 'text-[#888888] hover:text-[#e8e8e6] hover:bg-[#202020]'
+                                        )}
+                                    >
+                                        <History className="h-3.5 w-3.5 text-emerald-400" />
+                                        <span>Submissions</span>
+                                        {executionResult && resultTitle.toLowerCase().includes('submission') && (
+                                            <span
+                                                className={cn(
+                                                    'h-1.5 w-1.5 rounded-full shrink-0',
+                                                    executionResult.allPassed ? 'bg-emerald-400' : 'bg-rose-300'
+                                                )}
+                                            />
+                                        )}
+                                    </button>
                                 </div>
                             </div>
 
                             <div className="flex-1 overflow-y-auto p-4 sm:p-5 bg-[#191919]">
-                                <DescriptionPanel problem={problem} />
+                                {activeLeftTab === 'description' ? (
+                                    <DescriptionPanel problem={problem} />
+                                ) : (
+                                    <SubmissionsPanel
+                                        problemId={problem.id}
+                                        sampleCount={problem.examples?.length ?? 0}
+                                        totalTestcases={problem.testcases?.length ?? 30}
+                                        isLoading={submitMutation.isPending}
+                                        latestExecution={
+                                            resultTitle.toLowerCase().includes('submission')
+                                                ? executionResult
+                                                : null
+                                        }
+                                        latestSubmission={
+                                            resultTitle.toLowerCase().includes('submission')
+                                                ? latestSubmission
+                                                : null
+                                        }
+                                        submissionMessage={
+                                            resultTitle.toLowerCase().includes('submission')
+                                                ? resultMessage
+                                                : null
+                                        }
+                                    />
+                                )}
                             </div>
                         </div>
                     )}
@@ -504,7 +613,17 @@ export function SolveScreen() {
                                                     title={resultTitle}
                                                     result={executionResult}
                                                     message={resultMessage}
-                                                    totalTestcases={problem.testcases?.length ?? 10}
+                                                    totalTestcases={problem.testcases?.length ?? 30}
+                                                    sampleCount={problem.examples?.length ?? 0}
+                                                    userSolveTime={
+                                                        resultTitle.toLowerCase().includes('submission')
+                                                            ? latestSubmission?.userSolveTime
+                                                            : null
+                                                    }
+                                                    onViewSubmissions={() => {
+                                                        setActiveLeftTab('submissions')
+                                                        if (isMobile) setMobileTab('problem')
+                                                    }}
                                                 />
                                             )}
                                         </div>
@@ -527,12 +646,12 @@ export function SolveScreen() {
                 </div>
             </div>
 
-            {/* Contest Victory / Defeat Overlay Modal */}
-            {hasWinner &&
+            {/* Contest Victory / Defeat / Timeout Overlay Modal */}
+            {(hasWinner || isContestTimeout) &&
                 !dismissedContestResult &&
                 createPortal(
                     <div
-                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 transition-all"
+                        className="dark fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 transition-all"
                         role="dialog"
                         aria-modal="true"
                     >
@@ -547,138 +666,172 @@ export function SolveScreen() {
                                 <X className="h-4 w-4" />
                             </button>
 
-                            {isWinner ? (
+                            {hasWinner && isWinner ? (
                                 /* VICTORY CARD FOR WINNER */
                                 <div className="space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-11 w-11 rounded-[3px] bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 shadow-xs">
-                                            <Trophy className="h-6 w-6" />
+                                    <div className="space-y-1">
+                                        <div className="text-[10px] text-emerald-400 uppercase tracking-widest font-semibold">
+                                            Contest Concluded
                                         </div>
-                                        <div>
-                                            <div className="text-[10px] text-emerald-400 uppercase tracking-widest font-semibold">
-                                                Contest Concluded
-                                            </div>
-                                            <h2 className="text-lg font-bold text-[#e8e8e6] tracking-tight">
-                                                Victory! First to Solve!
-                                            </h2>
-                                        </div>
+                                        <h2 className="text-base font-bold text-[#e8e8e6] tracking-tight">
+                                            Victory! First to Solve!
+                                        </h2>
                                     </div>
 
-                                    <div className="p-3.5 rounded-[3px] border border-[#333333] bg-[#18181b] space-y-2 text-xs">
-                                        <div className="flex items-center justify-between pb-1.5 border-b border-[#272727]">
-                                            <span className="text-[#a09f9d]">Problem</span>
+                                    <div className="space-y-2 text-xs py-1">
+                                        <div className="flex items-center justify-between text-[#888888]">
+                                            <span>Problem</span>
                                             <span className="text-[#e8e8e6] font-medium truncate max-w-[200px]">
                                                 {problem.title}
                                             </span>
                                         </div>
-                                        <div className="flex items-center justify-between pb-1.5 border-b border-[#272727]">
-                                            <span className="text-[#a09f9d]">Verdict</span>
-                                            <span className="text-emerald-400 font-semibold">
+                                        <div className="flex items-center justify-between text-[#888888]">
+                                            <span>Verdict</span>
+                                            <span className="text-emerald-400 font-medium">
                                                 Accepted (100% Passed)
                                             </span>
                                         </div>
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[#a09f9d]">Participants</span>
+                                        <div className="flex items-center justify-between text-[#888888]">
+                                            <span>Participants</span>
                                             <span className="text-[#e8e8e6]">
                                                 {contestRoom?.participantCount} Coders
                                             </span>
                                         </div>
                                     </div>
 
-                                    <p className="text-xs text-[#a09f9d] leading-relaxed">
+                                    <p className="text-xs text-[#888888] leading-relaxed">
                                         Congratulations! Your submission passed all test cases
                                         first, winning this match.
                                     </p>
 
-                                    <div className="flex items-center gap-2 pt-1 border-t border-[#272727]">
+                                    <div className="flex items-center gap-2 pt-2">
                                         <button
                                             type="button"
                                             onClick={() => setDismissedContestResult(true)}
-                                            className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#a09f9d] hover:text-white text-xs py-2.5 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
+                                            className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#888888] hover:text-white text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
                                         >
                                             Stay in IDE
                                         </button>
                                         <button
                                             type="button"
                                             onClick={() => navigate('/')}
-                                            className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-2.5 px-3 rounded-[3px] font-semibold transition-colors cursor-pointer text-center shadow-xs"
+                                            className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center shadow-xs"
                                         >
                                             Back to Problems
                                         </button>
                                     </div>
                                 </div>
-                            ) : (
+                            ) : hasWinner ? (
                                 /* DEFEAT / CONCLUDED CARD FOR OTHER PARTICIPANTS */
                                 <div className="space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-11 w-11 rounded-[3px] bg-red-500/15 border border-red-500/40 flex items-center justify-center text-red-400 shrink-0 shadow-xs">
-                                            <Swords className="h-6 w-6" />
+                                    <div className="space-y-1">
+                                        <div className="text-[10px] text-rose-300 uppercase tracking-widest font-semibold">
+                                            Match Concluded
                                         </div>
-                                        <div>
-                                            <div className="text-[10px] text-red-400 uppercase tracking-widest font-semibold">
-                                                Match Concluded
-                                            </div>
-                                            <h2 className="text-lg font-bold text-[#e8e8e6] tracking-tight">
-                                                Contest Over
-                                            </h2>
-                                        </div>
+                                        <h2 className="text-base font-bold text-[#e8e8e6] tracking-tight">
+                                            Contest Over
+                                        </h2>
                                     </div>
 
-                                    {/* Winner Basic Profile Card */}
+                                    {/* Winner Basic Profile */}
                                     {winner && (
-                                        <div className="p-3.5 rounded-[3px] border border-amber-500/30 bg-amber-500/5 space-y-2.5">
-                                            <div className="text-[10px] uppercase tracking-wider text-amber-400 font-semibold flex items-center gap-1">
-                                                <Trophy className="h-3 w-3" /> Winner Details
+                                        <div className="flex items-center gap-3 py-1">
+                                            <div className="h-9 w-9 rounded-full bg-[#252423] border border-[#333333] flex items-center justify-center text-xs font-medium text-[#e8e8e6] overflow-hidden shrink-0">
+                                                {winner.avatar ? (
+                                                    <img
+                                                        src={winner.avatar}
+                                                        alt={winner.name}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <span>
+                                                        {(winner.name || 'W')[0].toUpperCase()}
+                                                    </span>
+                                                )}
                                             </div>
-                                            <div className="flex items-center gap-3">
-                                                <div className="h-10 w-10 rounded-full bg-[#252423] border border-amber-500/40 flex items-center justify-center text-sm font-bold text-amber-400 overflow-hidden shrink-0">
-                                                    {winner.avatar ? (
-                                                        <img
-                                                            src={winner.avatar}
-                                                            alt={winner.name}
-                                                            className="h-full w-full object-cover"
-                                                        />
-                                                    ) : (
-                                                        <span>
-                                                            {(winner.name ||
-                                                                winner.prn ||
-                                                                'W')[0].toUpperCase()}
-                                                        </span>
-                                                    )}
+                                            <div className="min-w-0 flex-1">
+                                                <div className="text-xs font-medium text-[#e8e8e6] truncate">
+                                                    {winner.name || 'Participant'}
                                                 </div>
-                                                <div className="min-w-0 flex-1">
-                                                    <div className="text-xs font-semibold text-[#e8e8e6] truncate">
-                                                        {winner.name || 'Participant'}
-                                                    </div>
-                                                    <div className="text-[11px] text-[#a09f9d] truncate">
-                                                        {winner.prn
-                                                            ? `@${winner.prn}`
-                                                            : 'Contestant'}{' '}
-                                                        • Solved First
-                                                    </div>
+                                                <div className="text-[11px] text-[#888888] truncate">
+                                                    Solved first • Match ended
                                                 </div>
                                             </div>
                                         </div>
                                     )}
 
-                                    <p className="text-xs text-[#a09f9d] leading-relaxed">
+                                    <p className="text-xs text-[#888888] leading-relaxed">
                                         Another participant solved the problem and passed all test
                                         cases first. You can keep writing and testing your code to
                                         finish this challenge for practice!
                                     </p>
 
-                                    <div className="flex items-center gap-2 pt-1 border-t border-[#272727]">
+                                    <div className="flex items-center gap-2 pt-2">
                                         <button
                                             type="button"
                                             onClick={() => navigate('/')}
-                                            className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#a09f9d] hover:text-white text-xs py-2.5 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
+                                            className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#888888] hover:text-white text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
                                         >
                                             Exit Contest
                                         </button>
                                         <button
                                             type="button"
                                             onClick={() => setDismissedContestResult(true)}
-                                            className="flex-1 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] text-xs py-2.5 px-3 rounded-[3px] font-semibold transition-colors cursor-pointer text-center shadow-xs"
+                                            className="flex-1 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center shadow-xs"
+                                        >
+                                            Keep Solving
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                /* TIME EXPIRED CARD WHEN NO ONE SOLVED IN TIME */
+                                <div className="space-y-4">
+                                    <div className="space-y-1">
+                                        <div className="text-[10px] text-rose-300 uppercase tracking-widest font-semibold">
+                                            Contest Concluded
+                                        </div>
+                                        <h2 className="text-base font-bold text-[#e8e8e6] tracking-tight">
+                                            Time&apos;s Up!
+                                        </h2>
+                                    </div>
+
+                                    <div className="space-y-2 text-xs py-1">
+                                        <div className="flex items-center justify-between text-[#888888]">
+                                            <span>Problem</span>
+                                            <span className="text-[#e8e8e6] font-medium truncate max-w-[200px]">
+                                                {problem.title}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-[#888888]">
+                                            <span>Duration</span>
+                                            <span className="text-[#e8e8e6] font-medium">
+                                                {contestRoom?.timeLimitMinutes || 45} mins expired
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-[#888888]">
+                                            <span>Participants</span>
+                                            <span className="text-[#e8e8e6]">
+                                                {contestRoom?.participantCount} Coders
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-xs text-[#888888] leading-relaxed">
+                                        The contest time limit has concluded. Contest submissions are now closed, but you can keep writing and testing your code in practice mode!
+                                    </p>
+
+                                    <div className="flex items-center gap-2 pt-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate('/')}
+                                            className="flex-1 border border-[#333333] hover:bg-[#252423] text-[#888888] hover:text-white text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center"
+                                        >
+                                            Exit Contest
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setDismissedContestResult(true)}
+                                            className="flex-1 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] text-xs py-2 px-3 rounded-[3px] font-medium transition-colors cursor-pointer text-center shadow-xs"
                                         >
                                             Keep Solving
                                         </button>

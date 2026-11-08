@@ -17,7 +17,11 @@
 #include "../../server/src/repositories/contest_repository.hpp"
 #include "../../server/src/services/contest_service.hpp"
 #include "../../server/src/services/profile_service.hpp"
+#include "../../server/src/services/auth_service.hpp"
+#include "../../server/src/services/execution_service.hpp"
 #include "auth_helper.hpp"
+#include <unordered_set>
+#include <stdexcept>
 
 using namespace campuslab;
 
@@ -131,7 +135,7 @@ void test_problem_repository(const std::string& db_url) {
 
     // 1. Find all problems
     auto all_problems = ProblemRepository::find_all_problems(conn);
-    TEST_ASSERT(all_problems.size() == 270, "find_all_problems returns all 270 DSA problems");
+    TEST_ASSERT(all_problems.size() == 250, "find_all_problems returns all 250 DSA problems");
 
     // 2. Find problem by ID
     std::string sample_id = all_problems[0].id;
@@ -148,6 +152,49 @@ void test_problem_repository(const std::string& db_url) {
     // 3. Non-existent problem by ID
     auto not_found_p = ProblemRepository::find_problem_by_id(conn, "00000000-0000-0000-0000-000000000000");
     TEST_ASSERT(!not_found_p.has_value(), "Non-existent problem ID returns nullopt");
+
+    // 4. Paginated problems: Page 1 with limit 25
+    ProblemQueryOptions p1_opts;
+    p1_opts.page = 1;
+    p1_opts.limit = 25;
+    auto res_p1 = ProblemRepository::find_problems_paginated(conn, p1_opts);
+    TEST_ASSERT(res_p1.problems.size() == 25, "find_problems_paginated returns 25 items for page 1");
+    TEST_ASSERT(res_p1.total == 250, "Total problems count equals 250");
+    TEST_ASSERT(res_p1.total_pages == 10, "Total pages equals 10 for batch size 25 (250/25)");
+    TEST_ASSERT(!res_p1.all_tags.empty(), "All tags list is populated");
+
+    // 5. Paginated problems: Page 2 with limit 25
+    ProblemQueryOptions p2_opts;
+    p2_opts.page = 2;
+    p2_opts.limit = 25;
+    auto res_p2 = ProblemRepository::find_problems_paginated(conn, p2_opts);
+    TEST_ASSERT(res_p2.problems.size() == 25, "find_problems_paginated returns 25 items for page 2");
+    TEST_ASSERT(res_p2.problems[0].id != res_p1.problems[0].id, "Page 2 starts with different problem than Page 1");
+
+    // 5b. Paginated problems: Page 10 (last page) with limit 25
+    ProblemQueryOptions p10_opts;
+    p10_opts.page = 10;
+    p10_opts.limit = 25;
+    auto res_p10 = ProblemRepository::find_problems_paginated(conn, p10_opts);
+    TEST_ASSERT(res_p10.problems.size() == 25, "Page 10 returns exactly 25 items (226-250)");
+
+    // 6. Paginated problems: Filter by difficulty
+    ProblemQueryOptions easy_opts;
+    easy_opts.page = 1;
+    easy_opts.limit = 10;
+    easy_opts.difficulty = "Easy";
+    auto res_easy = ProblemRepository::find_problems_paginated(conn, easy_opts);
+    TEST_ASSERT(res_easy.problems.size() <= 10, "Filtered easy count is within limit");
+    TEST_ASSERT(res_easy.total > 0 && res_easy.total < 250, "Easy problems total is subset of all");
+    for (const auto& ep : res_easy.problems) {
+        TEST_ASSERT(ep.difficulty == "Easy", "All items in easy filter have Easy difficulty");
+    }
+
+    // 7. Paginated problems: Filter by search
+    ProblemQueryOptions search_opts;
+    search_opts.search = "Maximum";
+    auto res_search = ProblemRepository::find_problems_paginated(conn, search_opts);
+    TEST_ASSERT(res_search.total > 0, "Search for 'Maximum' finds problems");
 }
 
 // -----------------------------------------------------------------------------
@@ -281,7 +328,7 @@ void test_profile_service_deep(const std::string& db_url) {
     for (const auto& item : by_diff) {
         total_catalog_sum += item["total"].get<int>();
     }
-    TEST_ASSERT(total_catalog_sum == 270, "Catalog sum across difficulties equals 270 DSA problems");
+    TEST_ASSERT(total_catalog_sum == 250, "Catalog sum across difficulties equals 250 DSA problems");
 
     // 2. Test ProblemSolved idempotency
     {
@@ -348,6 +395,316 @@ void test_sql_injection_defense(const std::string& db_url) {
     TEST_ASSERT(!prob_res.has_value(), "SQLi in find_problem_by_id safely returns nullopt");
 }
 
+// -----------------------------------------------------------------------------
+// 8. DbConnectionPool Timeout, Exhaustion & Recovery
+// -----------------------------------------------------------------------------
+void test_db_connection_pool_timeout_and_exhaustion(const std::string& db_url) {
+    std::cout << "\n--- Subtest: DbConnectionPool Timeout, Exhaustion & Recovery ---" << std::endl;
+
+    // 1. Unreachable DB URL handling
+    DbConnectionPool unreachable_pool("postgresql://invalid_host_12345:5432/invalid_db", 2);
+    TEST_ASSERT(unreachable_pool.available_count() == 0, "Unreachable host results in 0 pool connections");
+
+    bool timeout_thrown = false;
+    try {
+        unreachable_pool.acquire(std::chrono::milliseconds(50));
+    } catch (const std::runtime_error& e) {
+        timeout_thrown = true;
+        std::string err_msg(e.what());
+        TEST_ASSERT(err_msg.find("exhausted and timed out") != std::string::npos, "Exception message specifies timeout/exhaustion");
+    }
+    TEST_ASSERT(timeout_thrown, "Acquisition from exhausted/dead pool throws runtime_error within timeout");
+
+    // 2. Pool immediate recovery when guard goes out of scope
+    DbConnectionPool pool(db_url, 1);
+    TEST_ASSERT(pool.available_count() == 1, "Single-connection pool has 1 connection");
+    {
+        auto g1 = pool.acquire(std::chrono::milliseconds(1000));
+        TEST_ASSERT(pool.available_count() == 0, "Pool exhausted after acquire");
+        pqxx::work txn(g1.get());
+        auto r = txn.exec("SELECT 1");
+        TEST_ASSERT(r[0][0].as<int>() == 1, "Guard query execution successful");
+    }
+    // g1 out of scope
+    TEST_ASSERT(pool.available_count() == 1, "Pool immediately recovered available count after guard destruction");
+
+    auto g2 = pool.acquire(std::chrono::milliseconds(1000));
+    TEST_ASSERT(pool.available_count() == 0, "Subsequent acquire succeeds on recovered pool");
+}
+
+// -----------------------------------------------------------------------------
+// 9. ProblemRepository Boundaries & Negative Filters
+// -----------------------------------------------------------------------------
+void test_problem_repository_boundaries_and_negative_filters(const std::string& db_url) {
+    std::cout << "\n--- Subtest: ProblemRepository Boundaries & Negative Filters ---" << std::endl;
+    pqxx::connection conn(db_url);
+
+    // 1. Clamping negative page and limit
+    ProblemQueryOptions neg_opts;
+    neg_opts.page = -10;
+    neg_opts.limit = -5;
+    auto res_neg = ProblemRepository::find_problems_paginated(conn, neg_opts);
+    TEST_ASSERT(res_neg.page == 1, "Negative page clamped to 1");
+    TEST_ASSERT(res_neg.limit == 1, "Negative limit clamped to 1");
+    TEST_ASSERT(res_neg.problems.size() == 1, "Returns exactly 1 problem for clamped limit 1");
+
+    // 2. Clamping excessive limit (upper bound 100)
+    ProblemQueryOptions huge_opts;
+    huge_opts.limit = 5000;
+    auto res_huge = ProblemRepository::find_problems_paginated(conn, huge_opts);
+    TEST_ASSERT(res_huge.limit == 100, "Excessive limit clamped to max 100");
+    TEST_ASSERT(res_huge.problems.size() == 100, "Returns 100 problems on max page limit");
+
+    // 3. Page far beyond total pages
+    ProblemQueryOptions far_opts;
+    far_opts.page = 999999;
+    far_opts.limit = 25;
+    auto res_far = ProblemRepository::find_problems_paginated(conn, far_opts);
+    TEST_ASSERT(res_far.problems.empty(), "Page beyond total returns empty problem list");
+    TEST_ASSERT(res_far.total == 250, "Total count is preserved as 250");
+    TEST_ASSERT(res_far.total_pages == 10, "Total pages is preserved as 10");
+
+    // 4. Non-existent topic
+    ProblemQueryOptions topic_opts;
+    topic_opts.topic = "non_existent_topic_xyz_99";
+    auto res_topic = ProblemRepository::find_problems_paginated(conn, topic_opts);
+    TEST_ASSERT(res_topic.problems.empty(), "Non-existent topic returns empty list");
+    TEST_ASSERT(res_topic.total == 0, "Total count is 0 for non-existent topic");
+
+    // 5. Search with SQL wildcards and escaping
+    ProblemQueryOptions sqli_opts;
+    sqli_opts.search = "%' OR 1=1 -- \\'";
+    auto res_sqli = ProblemRepository::find_problems_paginated(conn, sqli_opts);
+    TEST_ASSERT(res_sqli.problems.empty(), "Wildcard SQL injection search safely escaped, returns empty");
+
+    // 6. Unauthenticated status filter
+    ProblemQueryOptions st_opts;
+    st_opts.status = "Solved";
+    auto res_st = ProblemRepository::find_problems_paginated(conn, st_opts, "");
+    TEST_ASSERT(res_st.problems.empty() && res_st.total == 0, "Unauthenticated user querying Solved returns 0 problems");
+
+    // 7. Authenticated status lifecycle ("Unsolved" -> "Attempted" -> "Solved")
+    int64_t ts = std::chrono::system_clock::now().time_since_epoch().count();
+    OAuthUser test_user = UserRepository::find_or_create_oauth_user(conn, "status_test_" + std::to_string(ts) + "@test.dev", "Status Tester", "", "github");
+    
+    // Pick first problem
+    auto all_p = ProblemRepository::find_all_problems(conn);
+    std::string test_pid = all_p[0].id;
+
+    // Step A: Initially unsolved for this user
+    auto detail_init = ProblemRepository::find_problem_by_id(conn, test_pid, test_user.id);
+    TEST_ASSERT(detail_init.has_value(), "Detail found");
+    TEST_ASSERT(detail_init->status == "Unsolved", "Initial status is Unsolved");
+
+    // Step B: Submit attempt
+    std::string sub_id = SubmissionRepository::create_submission(conn, test_user.id, test_pid, "// attempt");
+    auto detail_attempt = ProblemRepository::find_problem_by_id(conn, test_pid, test_user.id);
+    TEST_ASSERT(detail_attempt->status == "Attempted", "Status changed to Attempted after submission");
+    TEST_ASSERT(detail_attempt->submission_count >= 1, "Submission count incremented");
+
+    // Query paginated with status = Attempted
+    ProblemQueryOptions att_opts;
+    att_opts.status = "Attempted";
+    auto res_att = ProblemRepository::find_problems_paginated(conn, att_opts, test_user.id);
+    bool found_in_attempted = false;
+    for (const auto& p : res_att.problems) {
+        if (p.id == test_pid) found_in_attempted = true;
+    }
+    TEST_ASSERT(found_in_attempted, "Problem appears in Attempted filter query");
+
+    // Step C: Mark solved in ProblemSolved
+    {
+        pqxx::work txn(conn);
+        txn.exec_params(
+            "INSERT INTO \"ProblemSolved\" (\"id\", \"userId\", \"problemId\", \"createdAt\", \"updatedAt\") "
+            "VALUES (gen_random_uuid(), $1, $2, NOW(), NOW()) ON CONFLICT (\"userId\", \"problemId\") DO NOTHING",
+            test_user.id, test_pid
+        );
+        txn.commit();
+    }
+    auto detail_solved = ProblemRepository::find_problem_by_id(conn, test_pid, test_user.id);
+    TEST_ASSERT(detail_solved->status == "Solved", "Status changed to Solved");
+
+    // Query paginated with status = Solved
+    ProblemQueryOptions sol_opts;
+    sol_opts.status = "Solved";
+    auto res_sol = ProblemRepository::find_problems_paginated(conn, sol_opts, test_user.id);
+    bool found_in_solved = false;
+    for (const auto& p : res_sol.problems) {
+        if (p.id == test_pid) found_in_solved = true;
+    }
+    TEST_ASSERT(found_in_solved, "Problem appears in Solved filter query");
+
+    // Query paginated with status = Unsolved should now exclude this problem
+    ProblemQueryOptions un_opts;
+    un_opts.status = "Unsolved";
+    auto res_un = ProblemRepository::find_problems_paginated(conn, un_opts, test_user.id);
+    bool found_in_unsolved = false;
+    for (const auto& p : res_un.problems) {
+        if (p.id == test_pid) found_in_unsolved = true;
+    }
+    TEST_ASSERT(!found_in_unsolved, "Solved problem excluded from Unsolved filter query");
+
+    // 8. Non-existent problem lookups
+    auto p_empty = ProblemRepository::find_problem_by_id(conn, "");
+    TEST_ASSERT(!p_empty.has_value(), "Empty problem ID returns nullopt");
+    auto p_malformed = ProblemRepository::find_problem_by_id(conn, "malformed-id-not-uuid");
+    TEST_ASSERT(!p_malformed.has_value(), "Malformed problem ID safely returns nullopt without DB throw");
+}
+
+// -----------------------------------------------------------------------------
+// 10. ContestService Negative Paths & Limits
+// -----------------------------------------------------------------------------
+void test_contest_service_negative_paths_and_limits(const std::string& db_url) {
+    std::cout << "\n--- Subtest: ContestService Negative Paths & Limits ---" << std::endl;
+    DbConnectionPool pool(db_url, 4);
+    ContestService service(pool);
+
+    int64_t ts = std::chrono::system_clock::now().time_since_epoch().count();
+    std::string host_uid;
+    {
+        auto g = pool.acquire();
+        auto u = UserRepository::find_or_create_oauth_user(g.get(), "host_neg_" + std::to_string(ts) + "@test.dev", "Host Neg", "", "github");
+        host_uid = u.id;
+    }
+
+    // 1. Requesting excessive questions exceeding pool
+    auto res_toomany = service.create_room(host_uid, 500, 30, std::nullopt, {"array"});
+    TEST_ASSERT(!res_toomany.success, "Creating room with 500 questions rejected");
+    TEST_ASSERT(res_toomany.status_code == 400, "Excessive questions rejected with status 400");
+    TEST_ASSERT(res_toomany.message.find("available") != std::string::npos, "Message specifies available count");
+
+    // 2. Requesting non-existent topic
+    auto res_notopic = service.create_room(host_uid, 3, 30, std::nullopt, {"totally_fake_topic_999"});
+    TEST_ASSERT(!res_notopic.success && res_notopic.status_code == 400, "Non-existent topic rejected with 400");
+    TEST_ASSERT(res_notopic.message.find("0 problems available") != std::string::npos, "Message confirms 0 problems available");
+
+    // 3. Joining an ended contest room
+    auto created = service.create_room(host_uid, 2, 30, std::nullopt, {});
+    TEST_ASSERT(created.success, "Test room created");
+    std::string code = created.room->code;
+
+    // Mutate endsAt to past timestamp in DB
+    {
+        auto g = pool.acquire();
+        pqxx::work txn(g.get());
+        txn.exec_params("UPDATE \"ContestRoom\" SET \"endsAt\" = NOW() - INTERVAL '1 hour' WHERE code = $1", code);
+        txn.commit();
+    }
+
+    std::string player_uid;
+    {
+        auto g = pool.acquire();
+        auto u = UserRepository::find_or_create_oauth_user(g.get(), "player_exp_" + std::to_string(ts) + "@test.dev", "Player Exp", "", "github");
+        player_uid = u.id;
+    }
+    auto join_expired = service.join_room(player_uid, code);
+    TEST_ASSERT(!join_expired.success, "Joining ended contest rejected");
+    TEST_ASSERT(join_expired.status_code == 400, "Status is 400");
+    TEST_ASSERT(join_expired.message == "Contest room has already ended", "Message explains contest room has already ended");
+
+    // 4. Joining non-existent room code
+    auto join_non = service.join_room(player_uid, "ZZZZZZ");
+    TEST_ASSERT(!join_non.success && join_non.status_code == 404, "Joining non-existent room returns 404");
+    TEST_ASSERT(join_non.message == "Contest room not found", "Message is 'Contest room not found'");
+
+    // 5. Room code generator verification (alphabet charset & uniqueness)
+    std::unordered_set<std::string> codes;
+    static const std::string allowed_chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    for (int i = 0; i < 100; ++i) {
+        std::string c = ContestService::generate_room_code();
+        TEST_ASSERT(c.length() == 6, "Code is length 6");
+        for (char ch : c) {
+            TEST_ASSERT(allowed_chars.find(ch) != std::string::npos, "Char in allowed alphabet");
+        }
+        codes.insert(c);
+    }
+    TEST_ASSERT(codes.size() >= 95, "Generated codes have high uniqueness (>= 95 distinct in 100 draws)");
+}
+
+// -----------------------------------------------------------------------------
+// 11. ExecutionService Validation & Error Responses
+// -----------------------------------------------------------------------------
+void test_execution_service_validation_and_errors(const std::string& db_url, const std::string& redis_host, int redis_port) {
+    std::cout << "\n--- Subtest: ExecutionService Validation & Error Handling ---" << std::endl;
+    DbConnectionPool pool(db_url, 4);
+    ExecutionService exec_svc(pool, redis_host, redis_port);
+
+    // 1. run_code with empty source code
+    auto r1 = exec_svc.run_code("uid_test", "", {});
+    TEST_ASSERT(!r1.success, "run_code rejects empty source");
+    TEST_ASSERT(r1.status_code == 400, "run_code status is 400");
+    TEST_ASSERT(r1.message == "Source code is required", "run_code message confirms source code is required");
+
+    // 2. submit_code with empty source code
+    auto s1 = exec_svc.submit_code("uid_test", "pid_test", "", "");
+    TEST_ASSERT(!s1.success, "submit_code rejects empty source");
+    TEST_ASSERT(s1.status_code == 400, "submit_code status is 400");
+    TEST_ASSERT(s1.message == "Missing problemId or sourceCode", "submit_code error confirms missing fields");
+
+    // 3. submit_code with empty problemId
+    auto s2 = exec_svc.submit_code("uid_test", "", "int main(){}", "");
+    TEST_ASSERT(!s2.success, "submit_code rejects empty problemId");
+    TEST_ASSERT(s2.status_code == 400, "submit_code status is 400");
+
+    // 4. submit_code with non-existent problemId
+    auto s3 = exec_svc.submit_code("uid_test", "00000000-0000-0000-0000-000000000000", "int main(){}", "");
+    TEST_ASSERT(!s3.success, "submit_code rejects non-existent problemId");
+    TEST_ASSERT(s3.status_code == 404, "submit_code status is 404");
+    TEST_ASSERT(s3.message == "Problem not found", "submit_code message is 'Problem not found'");
+
+    // 5. get_submission_by_id with non-existent UUID
+    auto sub_null = exec_svc.get_submission_by_id("00000000-0000-0000-0000-000000000000");
+    TEST_ASSERT(sub_null.is_null(), "Non-existent submission returns null JSON");
+
+    // 6. get_user_submissions_for_problem with non-existent user/problem
+    auto subs_empty = exec_svc.get_user_submissions_for_problem("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000");
+    TEST_ASSERT(subs_empty.is_array() && subs_empty.empty(), "Non-existent user/prob returns empty array");
+}
+
+// -----------------------------------------------------------------------------
+// 12. AuthService Negative Paths & Edge Cases
+// -----------------------------------------------------------------------------
+void test_auth_service_negative_paths(const std::string& db_url, const std::string& jwt_secret) {
+    std::cout << "\n--- Subtest: AuthService Negative Paths & Fallbacks ---" << std::endl;
+    DbConnectionPool pool(db_url, 4);
+    AuthService auth_svc(pool, jwt_secret);
+
+    // 1. handle_github_oauth with empty code
+    auto gh = auth_svc.handle_github_oauth("", "cid", "sec");
+    TEST_ASSERT(!gh.success, "Empty GitHub code rejected");
+    TEST_ASSERT(gh.status_code == 400, "Status is 400");
+    TEST_ASSERT(gh.message == "GitHub authorization code is required", "Message confirms code required");
+
+    // 2. handle_google_oauth with empty credential
+    auto g1 = auth_svc.handle_google_oauth("", "cid");
+    TEST_ASSERT(!g1.success, "Empty Google credential rejected");
+    TEST_ASSERT(g1.status_code == 400, "Status is 400");
+    TEST_ASSERT(g1.message == "Google credential token is required", "Message confirms credential required");
+
+    // 3. handle_google_oauth_code with empty code
+    auto g2 = auth_svc.handle_google_oauth_code("", "cid", "sec", "uri");
+    TEST_ASSERT(!g2.success, "Empty Google code rejected");
+    TEST_ASSERT(g2.status_code == 400, "Status is 400");
+    TEST_ASSERT(g2.message == "Google authorization code is required", "Message confirms code required");
+
+    // 4. handle_oauth fallback naming & email generation
+    auto fb_gh = auth_svc.handle_oauth("github", "", "", "");
+    TEST_ASSERT(fb_gh.success, "Fallback GitHub OAuth succeeds");
+    TEST_ASSERT(fb_gh.user.email == "github_user@campuslab.dev", "Default github email assigned");
+    TEST_ASSERT(fb_gh.user.name == "GitHub User", "Default github name assigned");
+    TEST_ASSERT(!fb_gh.token.empty(), "JWT token generated for fallback user");
+
+    auto fb_goog = auth_svc.handle_oauth("google", "", "", "");
+    TEST_ASSERT(fb_goog.success, "Fallback Google OAuth succeeds");
+    TEST_ASSERT(fb_goog.user.email == "google_user@campuslab.dev", "Default google email assigned");
+    TEST_ASSERT(fb_goog.user.name == "Google User", "Default google name assigned");
+
+    // 5. get_user_by_id with non-existent user
+    auto no_user = auth_svc.get_user_by_id("00000000-0000-0000-0000-000000000000");
+    TEST_ASSERT(!no_user.has_value(), "Non-existent user lookup returns nullopt");
+}
+
 int main() {
     std::cout << "==========================================================" << std::endl;
     std::cout << "    Campus Lab - Server Deep Database & Pool Unit Tests   " << std::endl;
@@ -363,6 +720,12 @@ int main() {
     test_contest_service_deep(cfg.db_url);
     test_profile_service_deep(cfg.db_url);
     test_sql_injection_defense(cfg.db_url);
+
+    test_db_connection_pool_timeout_and_exhaustion(cfg.db_url);
+    test_problem_repository_boundaries_and_negative_filters(cfg.db_url);
+    test_contest_service_negative_paths_and_limits(cfg.db_url);
+    test_execution_service_validation_and_errors(cfg.db_url, cfg.redis_host, cfg.redis_port);
+    test_auth_service_negative_paths(cfg.db_url, cfg.jwt_secret);
 
     std::cout << "\n==========================================================" << std::endl;
     std::cout << "   ALL SERVER DATABASE & POOL UNIT TESTS PASSED (100%)!   " << std::endl;

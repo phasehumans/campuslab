@@ -1,11 +1,4 @@
-import React, {
-    createContext,
-    useContext,
-    useState,
-    useCallback,
-    useMemo,
-    type ReactNode,
-} from 'react'
+import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getApiErrorMessage, getCurrentUser, logoutUser, oauthLogin } from '@/lib/api'
 import type { User } from '@/lib/types'
@@ -25,11 +18,7 @@ interface AuthContextType {
     loginWithOAuth: (payload: {
         provider: 'github' | 'google'
         code?: string
-        credential?: string
         redirectUri?: string
-        email?: string
-        name?: string
-        avatar?: string
     }) => Promise<void>
     logout: () => Promise<void>
     clearAuthError: () => void
@@ -93,15 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, [])
 
     const loginWithOAuth = useCallback(
-        async (payload: {
-            provider: 'github' | 'google'
-            code?: string
-            credential?: string
-            redirectUri?: string
-            email?: string
-            name?: string
-            avatar?: string
-        }) => {
+        async (payload: { provider: 'github' | 'google'; code?: string; redirectUri?: string }) => {
             try {
                 await oauthMutation.mutateAsync(payload)
             } catch (error) {

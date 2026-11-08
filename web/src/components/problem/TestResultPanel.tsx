@@ -1,13 +1,6 @@
-import {
-    CheckCircle2,
-    XCircle,
-    Loader2,
-    TerminalSquare,
-    Clock,
-    Cpu,
-    Code2,
-    ShieldAlert,
-} from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Loader2 } from 'lucide-react'
+import { cn, formatDuration } from '@/lib/utils'
 import type { ExecutionResponse } from '@/lib/types'
 
 interface TestResultPanelProps {
@@ -16,6 +9,9 @@ interface TestResultPanelProps {
     result: ExecutionResponse | null
     message?: string | null
     totalTestcases?: number
+    sampleCount?: number
+    userSolveTime?: number | null
+    onViewSubmissions?: () => void
 }
 
 export function TestResultPanel({
@@ -23,22 +19,32 @@ export function TestResultPanel({
     title,
     result,
     message,
-    totalTestcases = 10,
+    totalTestcases = 30,
+    sampleCount = 0,
+    userSolveTime,
+    onViewSubmissions,
 }: TestResultPanelProps) {
+    const [activeRunCase, setActiveRunCase] = useState(0)
+
+    useEffect(() => {
+        if (!result) return
+        const firstFail = result.results.findIndex((r) => !r.passed)
+        setActiveRunCase(firstFail !== -1 ? firstFail : 0)
+    }, [result])
+
     if (isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-[#a09f9d] space-y-3 font-mono text-xs">
-                <Loader2 className="h-5 w-5 animate-spin text-[#87b2f4]" />
-                <p>Executing testcases in sandbox...</p>
+            <div className="flex items-center gap-2 py-6 text-[#888888] font-mono text-xs">
+                <Loader2 className="h-4 w-4 animate-spin text-[#87b2f4]" />
+                <span>Executing testcases in sandbox...</span>
             </div>
         )
     }
 
     if (!result) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-[#a09f9d] space-y-2 font-mono text-xs text-center">
-                <TerminalSquare className="h-5 w-5 text-[#555555]" />
-                <p>{message ?? 'Click Run or Submit to verify your code against testcases.'}</p>
+            <div className="py-6 text-[#888888] font-mono text-xs">
+                {message ?? 'Click Run or Submit to verify your code against testcases.'}
             </div>
         )
     }
@@ -52,332 +58,285 @@ export function TestResultPanel({
     )
     const failedItem = result.results.find((item) => !item.passed)
 
-    // Codeforces-style verdict computation
+    // Compute verdict
     let verdict = 'Accepted'
-    let verdictColor = 'text-emerald-500'
-    let verdictBg = 'bg-emerald-500/10 border-emerald-500/30'
-    let verdictIcon = <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-
     if (compileErrorItem || result.results.some((r) => r.compileOutput)) {
         verdict = 'Compilation Error'
-        verdictColor = 'text-amber-500'
-        verdictBg = 'bg-amber-500/10 border-amber-500/30'
-        verdictIcon = <XCircle className="h-4 w-4 text-amber-500" />
     } else if (result.allPassed) {
         verdict = 'Accepted'
-        verdictColor = 'text-emerald-500'
-        verdictBg = 'bg-emerald-500/10 border-emerald-500/30'
-        verdictIcon = <CheckCircle2 className="h-4 w-4 text-emerald-500" />
     } else if (failedItem) {
-        // 1-based testcase number
-        const testNum =
-            failedItem.testcase === 0 || failedItem.testcase < 1
-                ? failedItem.testcase + 1
-                : failedItem.testcase
+        const failedIndex = result.results.findIndex((item) => !item.passed)
+        const testNum = failedIndex !== -1 ? failedIndex + 1 : (failedItem.testcase + 1)
         const rawStatus = failedItem.status || 'Wrong Answer'
 
         if (rawStatus === 'Time Limit Exceeded') {
             verdict = `Time Limit Exceeded on test ${testNum}`
-            verdictColor = 'text-amber-400'
-            verdictBg = 'bg-amber-400/10 border-amber-400/30'
-            verdictIcon = <Clock className="h-4 w-4 text-amber-400" />
         } else if (rawStatus === 'Runtime Error') {
             verdict = `Runtime Error on test ${testNum}`
-            verdictColor = 'text-rose-400'
-            verdictBg = 'bg-rose-400/10 border-rose-400/30'
-            verdictIcon = <XCircle className="h-4 w-4 text-rose-400" />
         } else {
             verdict = `Wrong Answer on test ${testNum}`
-            verdictColor = 'text-rose-500'
-            verdictBg = 'bg-rose-500/10 border-rose-500/30'
-            verdictIcon = <XCircle className="h-4 w-4 text-rose-500" />
         }
     } else {
         verdict = 'Failed'
-        verdictColor = 'text-rose-500'
-        verdictBg = 'bg-rose-500/10 border-rose-500/30'
-        verdictIcon = <XCircle className="h-4 w-4 text-rose-500" />
     }
 
-    // Determine total tests count for submission
     const effectiveTotal = result.allPassed
         ? Math.max(totalTestcases, result.results.length)
-        : Math.max(totalTestcases, result.results.length, 10)
+        : Math.max(totalTestcases, result.results.length, 30)
     const effectivePassed = result.allPassed ? effectiveTotal : passedCount
-    const progressPercent = Math.min(100, Math.round((effectivePassed / effectiveTotal) * 100))
 
-    // Max runtime and memory
-    const maxTime = result.results.reduce((max, r) => {
-        if (!r.time) return max
-        return r.time
-    }, '0.00s')
-    const maxMemory = result.results.reduce((max, r) => {
-        if (!r.memory) return max
-        return r.memory
-    }, '0.0 MB')
+    const maxTime = result.results.reduce((max, r) => (r.time ? r.time : max), '')
+    const maxMemory = result.results.reduce((max, r) => (r.memory ? r.memory : max), '')
 
     // -------------------------------------------------------------
-    // SUBMISSION VIEW: Codeforces-Style Verdict & Hidden Testcases
+    // SUBMISSION VIEW: Clean Verdict & Codeforces-Style Details
     // -------------------------------------------------------------
     if (isSubmission) {
+        const failedIndex = result.results.findIndex((item) => !item.passed)
+        const failedTestNum = failedIndex !== -1 ? failedIndex + 1 : ((failedItem?.testcase ?? 0) + 1)
+        const isCodeforcesHidden = failedTestNum > Math.max(sampleCount, 1)
+
         return (
-            <div className="space-y-4 font-mono text-xs">
-                {/* Header Banner */}
-                <div className="flex items-center justify-between border-b border-[#333333] pb-3">
-                    <span className="uppercase tracking-wider text-[10px] text-[#a09f9d]">
-                        [{title}]
+            <div className="space-y-3.5 font-mono text-xs">
+                {/* Header Verdict & Stats Row */}
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#282828] pb-2.5">
+                    <span
+                        className={cn(
+                            'text-sm font-semibold',
+                            result.allPassed ? 'text-emerald-400' : 'text-rose-300'
+                        )}
+                    >
+                        {verdict}
                     </span>
-                    <span className="text-[11px] text-[#a09f9d]">
-                        Evaluated with GCC 13 (Isolate Sandbox)
-                    </span>
-                </div>
-
-                {/* Verdict Card */}
-                <div className="rounded-[3px] border border-[#333333] bg-[#1e1e1e] p-4 space-y-4">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div className="flex items-center gap-2.5">
-                            {verdictIcon}
-                            <span className={`text-base font-bold tracking-tight ${verdictColor}`}>
-                                {verdict}
-                            </span>
-                        </div>
-                        <div
-                            className={`px-2.5 py-1 rounded-[2px] text-xs font-semibold border ${verdictBg} ${verdictColor}`}
-                        >
-                            {result.allPassed ? 'Accepted' : 'Failed'}
-                        </div>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="space-y-1.5 pt-1">
-                        <div className="flex items-center justify-between text-[11px] text-[#a09f9d]">
-                            <span>Testcases Passed</span>
-                            <span className="font-semibold text-[#e8e8e6]">
-                                <span
-                                    className={
-                                        result.allPassed ? 'text-[#10b981]' : 'text-[#ef4444]'
-                                    }
-                                >
-                                    {effectivePassed}
-                                </span>{' '}
-                                / {effectiveTotal} Passed
-                            </span>
-                        </div>
-                        <div className="w-full bg-[#141414] rounded-full h-2 overflow-hidden border border-[#272727]">
-                            <div
-                                className={`h-full transition-all duration-500 rounded-full ${
-                                    result.allPassed ? 'bg-[#10b981]' : 'bg-[#ef4444]'
-                                }`}
-                                style={{ width: `${progressPercent}%` }}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Execution Stats Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
-                        <div className="rounded-[2px] bg-[#141414] border border-[#272727] p-2.5 space-y-1">
-                            <div className="flex items-center gap-1.5 text-[10px] text-[#888888] uppercase tracking-wider">
-                                <Clock className="h-3 w-3 text-[#87b2f4]" />
-                                <span>Time</span>
-                            </div>
-                            <div className="text-xs font-semibold text-[#e8e8e6]">{maxTime}</div>
-                        </div>
-
-                        <div className="rounded-[2px] bg-[#141414] border border-[#272727] p-2.5 space-y-1">
-                            <div className="flex items-center gap-1.5 text-[10px] text-[#888888] uppercase tracking-wider">
-                                <Cpu className="h-3 w-3 text-purple-400" />
-                                <span>Memory</span>
-                            </div>
-                            <div className="text-xs font-semibold text-[#e8e8e6]">{maxMemory}</div>
-                        </div>
-
-                        <div className="rounded-[2px] bg-[#141414] border border-[#272727] p-2.5 space-y-1">
-                            <div className="flex items-center gap-1.5 text-[10px] text-[#888888] uppercase tracking-wider">
-                                <Code2 className="h-3 w-3 text-emerald-400" />
-                                <span>Language</span>
-                            </div>
-                            <div className="text-xs font-semibold text-[#e8e8e6]">
-                                {result.language || 'C++ (GCC 13)'}
-                            </div>
-                        </div>
-
-                        <div className="rounded-[2px] bg-[#141414] border border-[#272727] p-2.5 space-y-1">
-                            <div className="flex items-center gap-1.5 text-[10px] text-[#888888] uppercase tracking-wider">
-                                <ShieldAlert className="h-3 w-3 text-amber-400" />
-                                <span>Judge Strategy</span>
-                            </div>
-                            <div className="text-xs font-semibold text-[#e8e8e6]">
-                                Short-Circuit
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Compilation Output if present */}
-                    {compileErrorItem?.compileOutput && (
-                        <div className="space-y-1.5 pt-2">
-                            <span className="text-[10px] text-amber-400 uppercase tracking-wider block">
-                                Compilation Output
-                            </span>
-                            <pre className="whitespace-pre-wrap rounded-[2px] bg-amber-950/20 border border-amber-900/50 p-3 text-xs text-amber-200 overflow-x-auto max-h-56">
-                                {compileErrorItem.compileOutput}
-                            </pre>
-                        </div>
-                    )}
-
-                    {/* Stderr Output if present and not compile error */}
-                    {failedItem?.stderr && !compileErrorItem && (
-                        <div className="space-y-1.5 pt-2">
-                            <span className="text-[10px] text-red-400 uppercase tracking-wider block">
-                                Runtime Diagnostics
-                            </span>
-                            <pre className="whitespace-pre-wrap rounded-[2px] bg-red-950/20 border border-red-900/50 p-3 text-xs text-red-300 overflow-x-auto max-h-48">
-                                {failedItem.stderr}
-                            </pre>
-                        </div>
-                    )}
-
-                    {/* Hidden Testcases Integrity Notice */}
-                    <div className="pt-2 border-t border-[#272727] flex items-center gap-2 text-[11px] text-[#888888]">
-                        <ShieldAlert className="h-3.5 w-3.5 text-[#555555] shrink-0" />
+                    <div className="flex items-center gap-3 text-xs text-[#888888]">
                         <span>
-                            Hidden test cases and expected outputs are confidential to prevent
-                            hardcoded solutions and maintain competitive integrity.
+                            Passed:{' '}
+                            <strong
+                                className={
+                                    result.allPassed
+                                        ? 'text-emerald-400 font-semibold'
+                                        : 'text-rose-300 font-semibold'
+                                }
+                            >
+                                {effectivePassed}/{effectiveTotal}
+                            </strong>
                         </span>
+                        {maxTime && (
+                            <span>
+                                Time: <span className="text-[#e8e8e6]">{maxTime}</span>
+                            </span>
+                        )}
+                        {maxMemory && (
+                            <span>
+                                Memory: <span className="text-[#e8e8e6]">{maxMemory}</span>
+                            </span>
+                        )}
+                        {userSolveTime != null && (
+                            <span>
+                                Solve Time: <span className="text-[#e8e8e6]">{formatDuration(userSolveTime)}</span>
+                            </span>
+                        )}
+                        {onViewSubmissions && (
+                            <button
+                                type="button"
+                                onClick={onViewSubmissions}
+                                className="text-[11px] text-[#87b2f4] hover:underline cursor-pointer"
+                            >
+                                View in Submissions tab &rarr;
+                            </button>
+                        )}
                     </div>
                 </div>
+
+                {/* Compilation Output if present */}
+                {compileErrorItem?.compileOutput && (
+                    <div className="space-y-1">
+                        <div className="text-[10px] text-amber-200 uppercase tracking-wider">
+                            Compilation Output
+                        </div>
+                        <pre className="whitespace-pre-wrap rounded-[3px] bg-[#141414] p-3 text-xs text-amber-100/90 overflow-x-auto max-h-56 select-text leading-relaxed">
+                            {compileErrorItem.compileOutput}
+                        </pre>
+                    </div>
+                )}
+
+                {/* Stderr Output if present and not compile error */}
+                {failedItem?.stderr && !compileErrorItem && (
+                    <div className="space-y-1">
+                        <div className="text-[10px] text-rose-300 uppercase tracking-wider">
+                            Runtime Error / Diagnostics
+                        </div>
+                        <pre className="whitespace-pre-wrap rounded-[3px] bg-[#141414] p-3 text-xs text-rose-200/90 overflow-x-auto max-h-48 select-text leading-relaxed">
+                            {failedItem.stderr}
+                        </pre>
+                    </div>
+                )}
+
+                {/* Testcase Failure Details */}
+                {failedItem && !compileErrorItem && (
+                    <div>
+                        {isCodeforcesHidden ? (
+                            <div className="rounded-[3px] border border-[#2a2a2a] bg-[#141414] p-3 text-xs text-[#888888]">
+                                <span className="text-[#e8e8e6] font-medium">System Test #{failedTestNum} (Hidden):</span>{' '}
+                                Test data is hidden for system testcases to maintain competitive programming integrity.
+                            </div>
+                        ) : (
+                            <div className="space-y-2 pt-1">
+                                <div className="text-[10px] uppercase text-[#888888]">
+                                    Sample Test #{failedTestNum} Failure
+                                </div>
+                                {failedItem.input && (
+                                    <div>
+                                        <div className="text-[10px] uppercase text-[#777777] mb-0.5">Input</div>
+                                        <div className="bg-[#141414] rounded-[3px] px-3 py-1.5 text-[#e8e8e6] whitespace-pre-wrap select-text">
+                                            {failedItem.input}
+                                        </div>
+                                    </div>
+                                )}
+                                <div>
+                                    <div className="text-[10px] uppercase text-[#777777] mb-0.5">Your Output</div>
+                                    <div className="bg-[#141414] rounded-[3px] px-3 py-1.5 text-rose-300 whitespace-pre-wrap select-text">
+                                        {failedItem.stdout || '(empty output)'}
+                                    </div>
+                                </div>
+                                {failedItem.expectedOutput && (
+                                    <div>
+                                        <div className="text-[10px] uppercase text-[#777777] mb-0.5">Expected Output</div>
+                                        <div className="bg-[#141414] rounded-[3px] px-3 py-1.5 text-emerald-300 whitespace-pre-wrap select-text">
+                                            {failedItem.expectedOutput}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         )
     }
 
     // -------------------------------------------------------------
-    // RUN VIEW: Sample Testcase Debugging (2 Public Testcases)
+    // RUN VIEW: Tabbed Sample Cases with Flat IO
     // -------------------------------------------------------------
+    const currentCase = result.results[activeRunCase] || result.results[0]
     const sampleTotal = result.results.length
 
     return (
-        <div className="space-y-4 font-mono text-xs">
-            {/* Top Summary Banner */}
-            <div className="flex items-center justify-between border-b border-[#333333] pb-3">
-                <div className="flex items-center gap-2">
-                    <span className="uppercase tracking-wider text-[10px] text-[#a09f9d]">
-                        [{title}]
-                    </span>
-                    <span
-                        className={`px-2 py-0.5 rounded-[2px] text-[11px] font-semibold border ${
-                            result.allPassed
-                                ? 'bg-[#10b981]/15 text-[#10b981] border-[#10b981]/40'
-                                : 'bg-[#ef4444]/15 text-[#ef4444] border-[#ef4444]/40'
-                        }`}
-                    >
-                        {result.allPassed ? 'Accepted' : 'Failed'}
-                    </span>
-                </div>
-                <div className="text-[11px] text-[#a09f9d]">
-                    Sample Cases Passed:{' '}
-                    <span
-                        className={
-                            result.allPassed
-                                ? 'text-[#10b981] font-semibold'
-                                : 'text-[#ef4444] font-semibold'
-                        }
-                    >
-                        {passedCount}/{sampleTotal}
-                    </span>
-                </div>
-            </div>
-
-            {/* Sample Testcase Results with full I/O grid */}
-            <div className="space-y-3">
-                {result.results.map((item, idx) => {
-                    const testNum = item.testcase < 1 ? idx + 1 : item.testcase
-                    return (
-                        <div
-                            key={`result-${idx}`}
-                            className="rounded-[3px] border border-[#333333] bg-[#1e1e1e] p-3 space-y-2.5 transition-colors"
+        <div className="space-y-3 font-mono text-xs">
+            {/* Top Summary Header */}
+            <div className="flex items-center justify-between border-b border-[#282828] pb-2.5">
+                <span
+                    className={cn(
+                        'text-sm font-semibold',
+                        result.allPassed ? 'text-emerald-400' : 'text-rose-300'
+                    )}
+                >
+                    {result.allPassed ? 'Accepted' : 'Wrong Answer'}
+                </span>
+                <div className="flex items-center gap-3 text-xs text-[#888888]">
+                    <span>
+                        Passed:{' '}
+                        <strong
+                            className={
+                                result.allPassed
+                                    ? 'text-emerald-400 font-semibold'
+                                    : 'text-rose-300 font-semibold'
+                            }
                         >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-xs font-medium text-[#e8e8e6]">
-                                    {item.passed ? (
-                                        <CheckCircle2 className="h-3.5 w-3.5 text-[#10b981]" />
-                                    ) : (
-                                        <XCircle className="h-3.5 w-3.5 text-[#ef4444]" />
-                                    )}
-                                    <span>Case {testNum}</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-[10px] text-[#a09f9d]">
-                                    {item.time && <span>{item.time}</span>}
-                                    {item.memory && <span>{item.memory}</span>}
-                                    <span
-                                        className={`px-1.5 py-0.5 rounded-[2px] font-medium border ${
-                                            item.passed
-                                                ? 'text-[#10b981] bg-[#10b981]/10 border-[#10b981]/30'
-                                                : 'text-[#ef4444] bg-[#ef4444]/10 border-[#ef4444]/30'
-                                        }`}
-                                    >
-                                        {item.status}
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* IO Grid */}
-                            <div className="grid gap-2.5 sm:grid-cols-3">
-                                <div className="space-y-1">
-                                    <span className="text-[10px] text-[#888888] uppercase tracking-wider block">
-                                        Input
-                                    </span>
-                                    <pre className="whitespace-pre-wrap rounded-[2px] bg-[#141414] border border-[#272727] p-2 text-xs text-[#e8e8e6] overflow-x-auto">
-                                        {item.input || '(empty)'}
-                                    </pre>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <span className="text-[10px] text-[#888888] uppercase tracking-wider block">
-                                        Your Output
-                                    </span>
-                                    <pre
-                                        className={`whitespace-pre-wrap rounded-[2px] bg-[#141414] border border-[#272727] p-2 text-xs overflow-x-auto ${
-                                            item.passed ? 'text-[#10b981]' : 'text-[#ef4444]'
-                                        }`}
-                                    >
-                                        {item.stdout || '(empty output)'}
-                                    </pre>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <span className="text-[10px] text-[#888888] uppercase tracking-wider block">
-                                        Expected
-                                    </span>
-                                    <pre className="whitespace-pre-wrap rounded-[2px] bg-[#141414] border border-[#272727] p-2 text-xs text-[#10b981] overflow-x-auto">
-                                        {item.expectedOutput ?? '(not compared)'}
-                                    </pre>
-                                </div>
-                            </div>
-
-                            {item.stderr ? (
-                                <div className="space-y-1 pt-1">
-                                    <span className="text-[10px] text-red-400 uppercase tracking-wider block">
-                                        Runtime Error / Stderr
-                                    </span>
-                                    <pre className="whitespace-pre-wrap rounded-[2px] bg-red-950/20 border border-red-900/50 p-2 text-xs text-red-300 overflow-x-auto">
-                                        {item.stderr}
-                                    </pre>
-                                </div>
-                            ) : null}
-
-                            {item.compileOutput ? (
-                                <div className="space-y-1 pt-1">
-                                    <span className="text-[10px] text-amber-400 uppercase tracking-wider block">
-                                        Compiler Output
-                                    </span>
-                                    <pre className="whitespace-pre-wrap rounded-[2px] bg-amber-950/20 border border-amber-900/50 p-2 text-xs text-amber-200 overflow-x-auto">
-                                        {item.compileOutput}
-                                    </pre>
-                                </div>
-                            ) : null}
-                        </div>
-                    )
-                })}
+                            {passedCount}/{sampleTotal}
+                        </strong>
+                    </span>
+                    {maxTime && (
+                        <span>
+                            Time: <span className="text-[#e8e8e6]">{maxTime}</span>
+                        </span>
+                    )}
+                </div>
             </div>
+
+            {/* Case selector tabs with status dots */}
+            <div className="flex items-center gap-1 overflow-x-auto pb-0.5 select-none">
+                {result.results.map((item, idx) => (
+                    <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setActiveRunCase(idx)}
+                        className={cn(
+                            'flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-[3px] transition-colors cursor-pointer shrink-0 font-mono',
+                            activeRunCase === idx
+                                ? 'bg-[#252423] text-[#e8e8e6] font-medium border border-[#333333]'
+                                : 'text-[#888888] hover:text-[#e8e8e6] hover:bg-[#202020]'
+                        )}
+                    >
+                        <span
+                            className={cn(
+                                'h-1.5 w-1.5 rounded-full shrink-0',
+                                item.passed ? 'bg-emerald-400' : 'bg-rose-300'
+                            )}
+                        />
+                        <span>Case {idx + 1}</span>
+                    </button>
+                ))}
+            </div>
+
+            {/* Selected Case Flat Details */}
+            {currentCase && (
+                <div className="space-y-3 pt-0.5">
+                    <div>
+                        <div className="text-[10px] uppercase tracking-wider text-[#888888] mb-1">
+                            Input
+                        </div>
+                        <div className="bg-[#141414] rounded-[3px] px-3 py-2 text-[#e8e8e6] whitespace-pre-wrap select-text leading-relaxed">
+                            {currentCase.input || '(empty)'}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="text-[10px] uppercase tracking-wider text-[#888888] mb-1">
+                            Output
+                        </div>
+                        <div
+                            className={cn(
+                                'bg-[#141414] rounded-[3px] px-3 py-2 whitespace-pre-wrap select-text leading-relaxed',
+                                currentCase.passed ? 'text-[#e8e8e6]' : 'text-rose-300'
+                            )}
+                        >
+                            {currentCase.stdout || '(empty output)'}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="text-[10px] uppercase tracking-wider text-[#888888] mb-1">
+                            Expected Output
+                        </div>
+                        <div className="bg-[#141414] rounded-[3px] px-3 py-2 text-[#e8e8e6] whitespace-pre-wrap select-text leading-relaxed">
+                            {currentCase.expectedOutput ?? '(not compared)'}
+                        </div>
+                    </div>
+
+                    {currentCase.stderr && (
+                        <div>
+                            <div className="text-[10px] uppercase tracking-wider text-rose-300 mb-1">
+                                Runtime Error / Stderr
+                            </div>
+                            <pre className="bg-[#141414] rounded-[3px] px-3 py-2 text-xs text-rose-200/90 whitespace-pre-wrap select-text leading-relaxed overflow-x-auto">
+                                {currentCase.stderr}
+                            </pre>
+                        </div>
+                    )}
+
+                    {currentCase.compileOutput && (
+                        <div>
+                            <div className="text-[10px] uppercase tracking-wider text-amber-200 mb-1">
+                                Compilation Output
+                            </div>
+                            <pre className="bg-[#141414] rounded-[3px] px-3 py-2 text-xs text-amber-100/90 whitespace-pre-wrap select-text leading-relaxed overflow-x-auto">
+                                {currentCase.compileOutput}
+                            </pre>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     )
 }

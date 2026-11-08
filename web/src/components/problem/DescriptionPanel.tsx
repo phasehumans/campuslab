@@ -1,3 +1,5 @@
+import { useState, type ComponentPropsWithoutRef } from 'react'
+import { Check, Copy } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import type { ProblemDetail } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -7,6 +9,15 @@ interface DescriptionPanelProps {
 }
 
 export function DescriptionPanel({ problem }: DescriptionPanelProps) {
+    const [copiedKey, setCopiedKey] = useState<string | null>(null)
+
+    const handleCopy = (text: string, key: string) => {
+        if (!text) return
+        navigator.clipboard.writeText(text)
+        setCopiedKey(key)
+        setTimeout(() => setCopiedKey(null), 1800)
+    }
+
     return (
         <div className="space-y-6 text-xs text-[#a09f9d] leading-relaxed font-sans">
             {/* Header: Title & Clean Metadata Row (No badges, no box highlights) */}
@@ -19,9 +30,9 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                     <span
                         className={cn(
                             'font-medium',
-                            problem.difficulty === 'Easy' && 'text-[#10b981]',
-                            problem.difficulty === 'Medium' && 'text-[#f59e0b]',
-                            problem.difficulty === 'Hard' && 'text-[#ef4444]'
+                            problem.difficulty === 'Easy' && 'text-[#34d399]',
+                            problem.difficulty === 'Medium' && 'text-[#fcd34d]',
+                            problem.difficulty === 'Hard' && 'text-rose-300'
                         )}
                     >
                         {problem.difficulty}
@@ -64,7 +75,7 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                             </ol>
                         ),
                         li: ({ children }) => <li className="leading-relaxed">{children}</li>,
-                        code: ({ children, ...props }: React.ComponentPropsWithoutRef<'code'>) => {
+                        code: ({ children, ...props }: ComponentPropsWithoutRef<'code'>) => {
                             return (
                                 <code
                                     className="bg-[#222222] text-[#e8e8e6] font-mono text-[11px] px-1.5 py-0.5 rounded-[2px] border border-[#333333]"
@@ -100,62 +111,113 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                 </ReactMarkdown>
             </div>
 
-            {/* Examples (Clean neutral presentation without green highlights) */}
+            {/* Examples (No outer card container, clean input/output boxes with copy buttons) */}
             {(problem.examples ?? []).length > 0 && (
-                <div className="space-y-3 pt-1">
-                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#a09f9d] font-medium">
-                        Examples
-                    </div>
-                    <div className="space-y-3">
-                        {problem.examples.map((example, index) => (
-                            <div
-                                key={`${problem.id}-example-${index}`}
-                                className="border border-[#2a2a2a] bg-[#161616] p-3.5 rounded-[3px] space-y-3 font-mono text-xs"
-                            >
-                                <div className="text-[#888888] font-mono text-[11px] uppercase tracking-wider font-medium">
-                                    {example.title ?? `Example ${index + 1}`}
-                                </div>
-                                <div className="space-y-2.5">
-                                    <div className="space-y-1">
-                                        <span className="text-[#666666] text-[10px] font-mono uppercase tracking-wider block">
+                <div className="space-y-6 pt-2">
+                    {problem.examples.map((example, index) => (
+                        <div
+                            key={`${problem.id}-example-${index}`}
+                            className="space-y-3 font-mono text-xs"
+                        >
+                            <div className="text-xs font-semibold text-[#e8e8e6] tracking-tight">
+                                {example.title ?? `Example ${index + 1}:`}
+                            </div>
+
+                            <div className="space-y-3">
+                                {/* Input Box */}
+                                <div className="space-y-1.5">
+                                    <div className="flex items-center justify-between text-[11px]">
+                                        <span className="text-[#888888] uppercase tracking-wider font-medium">
                                             Input:
                                         </span>
-                                        <pre className="whitespace-pre-wrap bg-[#1c1c1c] p-2.5 rounded-[2px] border border-[#2a2a2a] text-[#e8e8e6] overflow-x-auto leading-relaxed">
-                                            {example.input}
-                                        </pre>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleCopy(example.input, `in-${index}`)}
+                                            className="group flex items-center gap-1 text-[10px] text-[#777777] hover:text-[#e8e8e6] px-1.5 py-0.5 rounded-[2px] hover:bg-[#252423] transition-colors cursor-pointer select-none"
+                                            title="Copy input"
+                                        >
+                                            {copiedKey === `in-${index}` ? (
+                                                <>
+                                                    <Check className="h-3 w-3 text-emerald-400" />
+                                                    <span className="text-emerald-400">Copied</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Copy className="h-3 w-3" />
+                                                    <span>Copy</span>
+                                                </>
+                                            )}
+                                        </button>
                                     </div>
-                                    <div className="space-y-1">
-                                        <span className="text-[#666666] text-[10px] font-mono uppercase tracking-wider block">
+                                    <pre className="whitespace-pre-wrap bg-[#161616] border border-[#2a2a2a] p-2.5 rounded-[3px] text-[#e8e8e6] overflow-x-auto leading-relaxed select-text font-mono text-xs">
+                                        {example.input}
+                                    </pre>
+                                </div>
+
+                                {/* Output Box */}
+                                <div className="space-y-1.5">
+                                    <div className="flex items-center justify-between text-[11px]">
+                                        <span className="text-[#888888] uppercase tracking-wider font-medium">
                                             Output:
                                         </span>
-                                        <pre className="whitespace-pre-wrap bg-[#1c1c1c] p-2.5 rounded-[2px] border border-[#2a2a2a] text-[#e8e8e6] overflow-x-auto leading-relaxed">
-                                            {example.output}
-                                        </pre>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleCopy(example.output, `out-${index}`)}
+                                            className="group flex items-center gap-1 text-[10px] text-[#777777] hover:text-[#e8e8e6] px-1.5 py-0.5 rounded-[2px] hover:bg-[#252423] transition-colors cursor-pointer select-none"
+                                            title="Copy output"
+                                        >
+                                            {copiedKey === `out-${index}` ? (
+                                                <>
+                                                    <Check className="h-3 w-3 text-emerald-400" />
+                                                    <span className="text-emerald-400">Copied</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Copy className="h-3 w-3" />
+                                                    <span>Copy</span>
+                                                </>
+                                            )}
+                                        </button>
                                     </div>
-                                    {example.explanation && (
-                                        <div className="space-y-1 pt-0.5 font-sans text-xs leading-relaxed">
-                                            <span className="text-[#666666] font-mono text-[10px] uppercase tracking-wider block">
-                                                Explanation:
-                                            </span>
-                                            <p className="text-[#a09f9d]">{example.explanation}</p>
-                                        </div>
-                                    )}
+                                    <pre className="whitespace-pre-wrap bg-[#161616] border border-[#2a2a2a] p-2.5 rounded-[3px] text-[#e8e8e6] overflow-x-auto leading-relaxed select-text font-mono text-xs">
+                                        {example.output}
+                                    </pre>
                                 </div>
+
+                                {/* Explanation */}
+                                {example.explanation && (
+                                    <div className="space-y-1 pt-0.5 font-sans text-xs leading-relaxed">
+                                        <span className="text-[#888888] font-mono text-[11px] uppercase tracking-wider font-medium block">
+                                            Explanation:
+                                        </span>
+                                        <p className="text-[#a09f9d]">{example.explanation}</p>
+                                    </div>
+                                )}
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
             )}
 
-            {/* Constraints */}
+            {/* Constraints (No outer box, clean bulleted list) */}
             {problem.constraints && (
-                <div className="space-y-2 pt-1">
-                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#a09f9d] font-medium">
-                        Constraints
+                <div className="space-y-2 pt-2 border-t border-[#262626]">
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#e8e8e6] font-medium">
+                        Constraints:
                     </div>
-                    <div className="border border-[#2a2a2a] bg-[#161616] p-3 rounded-[3px] font-mono text-xs text-[#d6d5d4] leading-relaxed whitespace-pre-wrap">
-                        {problem.constraints}
-                    </div>
+                    <ul className="list-disc list-inside space-y-1.5 text-xs font-mono text-[#d6d5d4] leading-relaxed pl-1">
+                        {problem.constraints
+                            .split('\n')
+                            .map((line) => line.trim().replace(/^[-*•]\s*/, ''))
+                            .filter(Boolean)
+                            .map((constraintLine, idx) => (
+                                <li key={idx} className="text-[#d6d5d4]">
+                                    <code className="bg-[#202020] text-[#e8e8e6] font-mono text-[11px] px-1.5 py-0.5 rounded-[2px] border border-[#2e2e2e]">
+                                        {constraintLine}
+                                    </code>
+                                </li>
+                            ))}
+                    </ul>
                 </div>
             )}
         </div>

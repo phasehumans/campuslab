@@ -52,7 +52,7 @@ public:
         // POST /api/v1/auth/logout
         CROW_ROUTE(app, "/api/v1/auth/logout").methods(crow::HTTPMethod::POST)([](const crow::request&) {
             crow::response response(200, json({{"success", true}, {"message", "Logged out successfully"}}).dump());
-            response.add_header("Set-Cookie", "token=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0");
+            response.add_header("Set-Cookie", "token=; Path=/; Domain=.trydecember.com; HttpOnly; Secure; SameSite=None; Max-Age=0");
             response.add_header("Content-Type", "application/json");
             return response;
         });
@@ -123,7 +123,7 @@ public:
                 };
 
                 crow::response response(res.status_code, res_json.dump());
-                response.add_header("Set-Cookie", "token=" + res.token + "; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800");
+                response.add_header("Set-Cookie", "token=" + res.token + "; Path=/; Domain=.trydecember.com; HttpOnly; Secure; SameSite=None; Max-Age=604800");
                 response.add_header("Content-Type", "application/json");
                 return response;
             } catch (const json::parse_error& e) {

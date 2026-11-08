@@ -12,26 +12,26 @@ export function TestcasePanel({ examples, activeTestCase, setActiveTestCase }: T
 
     if (!currentExample) {
         return (
-            <div className="flex h-full items-center justify-center font-mono text-xs text-[#a09f9d]">
+            <div className="py-6 font-mono text-xs text-[#888888]">
                 No testcases available for this problem.
             </div>
         )
     }
 
     return (
-        <div className="space-y-3.5 font-mono text-xs">
+        <div className="space-y-3 font-mono text-xs">
             {/* Case selector tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+            <div className="flex items-center gap-1 overflow-x-auto pb-0.5 select-none">
                 {examples.map((_, idx) => (
                     <button
                         key={idx}
                         type="button"
                         onClick={() => setActiveTestCase(idx)}
                         className={cn(
-                            'px-2.5 py-1 text-xs rounded-[2px] border transition-colors cursor-pointer shrink-0',
+                            'px-2.5 py-1 text-xs rounded-[3px] transition-colors cursor-pointer shrink-0',
                             activeTestCase === idx
-                                ? 'bg-[#252423] text-[#e8e8e6] border-[#333333] font-medium shadow-xs'
-                                : 'bg-transparent text-[#a09f9d] border-transparent hover:text-[#e8e8e6] hover:bg-[#252423]/50'
+                                ? 'bg-[#252423] text-[#e8e8e6] font-medium border border-[#333333]'
+                                : 'text-[#888888] hover:text-[#e8e8e6] hover:bg-[#202020]'
                         )}
                     >
                         Case {idx + 1}
@@ -40,23 +40,23 @@ export function TestcasePanel({ examples, activeTestCase, setActiveTestCase }: T
             </div>
 
             {/* Testcase details */}
-            <div className="space-y-3">
-                <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-wider text-[#a09f9d] block">
+            <div className="space-y-3 pt-0.5">
+                <div>
+                    <div className="text-[10px] uppercase tracking-wider text-[#888888] mb-1">
                         Input
-                    </span>
-                    <pre className="whitespace-pre-wrap bg-[#141414] border border-[#333333] rounded-[3px] p-2.5 text-xs font-mono text-[#e8e8e6] leading-relaxed overflow-x-auto">
+                    </div>
+                    <div className="bg-[#141414] rounded-[3px] px-3 py-2 text-[#e8e8e6] whitespace-pre-wrap select-text leading-relaxed">
                         {currentExample.input}
-                    </pre>
+                    </div>
                 </div>
 
-                <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-wider text-[#a09f9d] block">
+                <div>
+                    <div className="text-[10px] uppercase tracking-wider text-[#888888] mb-1">
                         Expected Output
-                    </span>
-                    <pre className="whitespace-pre-wrap bg-[#141414] border border-[#333333] rounded-[3px] p-2.5 text-xs font-mono text-[#10b981] leading-relaxed overflow-x-auto">
+                    </div>
+                    <div className="bg-[#141414] rounded-[3px] px-3 py-2 text-[#e8e8e6] whitespace-pre-wrap select-text leading-relaxed">
                         {currentExample.output}
-                    </pre>
+                    </div>
                 </div>
             </div>
         </div>

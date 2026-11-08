@@ -18,6 +18,7 @@
     "devDependencies": {
         "@eslint/js": "^9.0.0",
         "@types/bun": "latest",
+        "@types/canvas-confetti": "^1.9.0",
         "eslint": "^9.0.0",
         "eslint-plugin-react": "^7.37.0",
         "globals": "^15.0.0",
@@ -30,5 +31,8 @@
     "overrides": {
         "@codemirror/state": "6.7.1",
         "@codemirror/view": "6.43.8"
+    },
+    "dependencies": {
+        "canvas-confetti": "^1.9.4"
     }
 }

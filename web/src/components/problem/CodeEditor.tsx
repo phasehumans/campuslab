@@ -1,4 +1,4 @@
-import React, { Component, useMemo, type ReactNode } from 'react'
+import { Component, useMemo, type ReactNode } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { cpp } from '@codemirror/lang-cpp'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
@@ -35,7 +35,7 @@ class CodeEditorErrorBoundary extends Component<BoundaryProps, BoundaryState> {
         if (this.state.hasError) {
             return (
                 <div className="flex-1 min-h-0 flex flex-col p-4 bg-[#1E1E1E]">
-                    <div className="text-xs text-yellow-400 mb-2 font-mono flex items-center justify-between">
+                    <div className="text-xs text-amber-200 mb-2 font-mono flex items-center justify-between">
                         <span>Editor Fallback Mode</span>
                         <button
                             onClick={() => this.setState({ hasError: false })}

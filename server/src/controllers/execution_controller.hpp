@@ -115,11 +115,18 @@ public:
                 std::string source_code = get_str(body, "sourceCode");
                 std::string contest_code = get_str(body, "contestCode");
 
+                std::optional<int> user_solve_time = std::nullopt;
+                if (body.contains("solveDurationSeconds") && body["solveDurationSeconds"].is_number_integer()) {
+                    user_solve_time = body["solveDurationSeconds"].get<int>();
+                } else if (body.contains("userSolveTime") && body["userSolveTime"].is_number_integer()) {
+                    user_solve_time = body["userSolveTime"].get<int>();
+                }
+
                 if (source_code.size() > 65536) {
                     return crow::response(413, json({{"success", false}, {"message", "Source code exceeds maximum allowed size of 64KB"}}).dump());
                 }
 
-                auto res = execution_service_.submit_code(auth.user_id, problem_id, source_code, contest_code);
+                auto res = execution_service_.submit_code(auth.user_id, problem_id, source_code, contest_code, user_solve_time);
                 if (!res.success) {
                     return crow::response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
                 }

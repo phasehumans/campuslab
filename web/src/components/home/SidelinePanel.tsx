@@ -55,7 +55,7 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
 
     const profile = profileQuery.data
     const totalSolved = profile?.stats.totalSolved ?? 0
-    const targetCount = totalProblemsCount || 100
+    const targetCount = totalProblemsCount || 250
     const percentDone =
         targetCount > 0 ? Math.min(100, Math.round((totalSolved / targetCount) * 100)) : 0
 
@@ -116,9 +116,9 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                                         <div
                                             className={cn(
                                                 'font-medium',
-                                                diff.name === 'Easy' && 'text-[#10b981]',
-                                                diff.name === 'Medium' && 'text-[#f59e0b]',
-                                                diff.name === 'Hard' && 'text-[#ef4444]'
+                                                diff.name === 'Easy' && 'text-[#34d399]',
+                                                diff.name === 'Medium' && 'text-[#fcd34d]',
+                                                diff.name === 'Hard' && 'text-rose-300'
                                             )}
                                         >
                                             {diff.name}

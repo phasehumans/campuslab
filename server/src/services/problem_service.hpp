@@ -18,6 +18,11 @@ public:
         return ProblemRepository::find_all_problems(conn_guard.get(), user_id);
     }
 
+    PaginatedProblemsResult get_problems_paginated(const ProblemQueryOptions& opts, const std::string& user_id = "") {
+        auto conn_guard = db_pool_.acquire();
+        return ProblemRepository::find_problems_paginated(conn_guard.get(), opts, user_id);
+    }
+
     std::optional<ProblemDetailModel> get_problem_by_id(const std::string& problem_id, const std::string& user_id = "") {
         auto conn_guard = db_pool_.acquire();
         return ProblemRepository::find_problem_by_id(conn_guard.get(), problem_id, user_id);

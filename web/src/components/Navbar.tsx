@@ -1,18 +1,16 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, LogOut, Sun, Moon } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
-import { useTheme } from '@/contexts/ThemeContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { SignoutModal } from '@/components/auth/SignoutModal'
 import { Tooltip } from '@/components/ui/Tooltip'
 
 export function Navbar() {
-    const { isLoggedIn, user, openModal, openSignoutModal } = useAuth()
-    const { theme, toggleTheme } = useTheme()
+    const { isLoggedIn, user, openModal } = useAuth()
 
     return (
         <>
-            <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#141414]/95 backdrop-blur-xs transition-colors">
+            <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-xs transition-colors">
                 <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-4 sm:px-6 md:px-8">
                     {/* Brand (Left): CampusLab with byline */}
                     <div className="flex items-center gap-2 sm:gap-2.5">
@@ -20,16 +18,16 @@ export function Navbar() {
                             to="/"
                             className="flex items-center font-mono text-xs sm:text-sm hover:opacity-80 transition-opacity"
                         >
-                            <span className="font-semibold text-[#090a0f] dark:text-[#e8e8e6] tracking-tight">
+                            <span className="font-semibold text-[#090a0f] tracking-tight">
                                 CampusLab
                             </span>
                         </Link>
-                        <span className="hidden sm:inline text-[11px] font-mono text-[#94a3b8] dark:text-[#a09f9d] select-none">
+                        <span className="hidden sm:inline text-[11px] font-mono text-[#94a3b8] select-none">
                             a project by jayesh, sachin, sakshi, chaitanya
                         </span>
                     </div>
 
-                    {/* Right Area: GitHub, Theme Switcher, and Auth */}
+                    {/* Right Area: GitHub and Auth */}
                     <div className="flex items-center gap-2 sm:gap-2.5 font-mono text-xs">
                         {/* GitHub Link */}
                         <Tooltip content="GitHub Repository" position="bottom">
@@ -37,9 +35,9 @@ export function Navbar() {
                                 href="https://github.com/phasehumans/campuslab"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-1.5 text-[#64748b] dark:text-[#a09f9d] hover:text-[#090a0f] dark:hover:text-[#e8e8e6] border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] hover:bg-[#f1f5f9] dark:hover:bg-[#2f2e2d] rounded-[3px] transition-colors cursor-pointer inline-flex items-center justify-center"
+                                className="p-1 text-[#64748b] hover:text-[#090a0f] dark:text-[#a09f9d] dark:hover:text-[#e8e8e6] transition-colors cursor-pointer inline-flex items-center justify-center"
                             >
-                                <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                                <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
                                     <path
                                         fillRule="evenodd"
                                         clipRule="evenodd"
@@ -49,50 +47,18 @@ export function Navbar() {
                             </a>
                         </Tooltip>
 
-                        {/* Theme Switcher */}
-                        <Tooltip
-                            content={
-                                theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-                            }
-                            position="bottom"
-                        >
-                            <button
-                                type="button"
-                                onClick={toggleTheme}
-                                className="p-1.5 text-[#64748b] dark:text-[#a09f9d] hover:text-[#090a0f] dark:hover:text-[#e8e8e6] border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] hover:bg-[#f1f5f9] dark:hover:bg-[#2f2e2d] rounded-[3px] transition-colors cursor-pointer"
-                            >
-                                {theme === 'dark' ? (
-                                    <Sun className="h-3.5 w-3.5 text-[#e8e8e6]" />
-                                ) : (
-                                    <Moon className="h-3.5 w-3.5 text-[#090a0f]" />
-                                )}
-                            </button>
-                        </Tooltip>
-
                         {/* User or Sign In Modal trigger */}
                         {isLoggedIn ? (
-                            <div className="flex items-center gap-2">
-                                <div className="flex items-center border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] px-2.5 py-1 rounded-[3px]">
-                                    <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6] max-w-[140px] truncate">
-                                        {user?.name || user?.email?.split('@')[0] || 'User'}
-                                    </span>
-                                </div>
-
-                                <Tooltip content="Sign out" position="bottom" align="end">
-                                    <button
-                                        type="button"
-                                        onClick={openSignoutModal}
-                                        className="p-1.5 text-[#94a3b8] dark:text-[#a09f9d] hover:text-[#ef4444] border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] hover:bg-[#f1f5f9] dark:hover:bg-[#2f2e2d] rounded-[3px] transition-colors cursor-pointer"
-                                    >
-                                        <LogOut className="h-3.5 w-3.5" />
-                                    </button>
-                                </Tooltip>
+                            <div className="flex items-center border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] px-2.5 py-1 rounded-[3px]">
+                                <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6] max-w-[140px] truncate">
+                                    {user?.name || user?.email?.split('@')[0] || 'User'}
+                                </span>
                             </div>
                         ) : (
                             <button
                                 type="button"
                                 onClick={openModal}
-                                className="inline-flex items-center gap-1.5 bg-[#090a0f] dark:bg-white text-white dark:text-[#141414] hover:bg-[#27272a] dark:hover:bg-[#e8e8e6] text-xs font-mono font-medium px-3 sm:px-3.5 py-1.5 rounded-[3px] transition-colors cursor-pointer"
+                                className="inline-flex items-center gap-1.5 bg-[#090a0f] text-white hover:bg-[#27272a] text-xs font-mono font-medium px-3 sm:px-3.5 py-1.5 rounded-[3px] transition-colors cursor-pointer"
                             >
                                 <span>Sign in</span>
                                 <ArrowRight className="h-3 w-3 opacity-70" />

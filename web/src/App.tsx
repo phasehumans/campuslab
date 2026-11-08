@@ -60,12 +60,6 @@ export default function App() {
                                         path="/auth/callback/google"
                                         element={<OAuthCallback provider="google" />}
                                     />
-
-                                    {/* Redirect legacy routes directly to root */}
-                                    <Route path="/login" element={<Navigate to="/" replace />} />
-                                    <Route path="/practice" element={<Navigate to="/" replace />} />
-                                    <Route path="/contest" element={<Navigate to="/" replace />} />
-                                    <Route path="/profile" element={<Navigate to="/" replace />} />
                                 </Route>
 
                                 {/* Fullscreen Code Editor IDE */}

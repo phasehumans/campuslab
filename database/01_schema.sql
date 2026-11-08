@@ -128,6 +128,7 @@ CREATE TABLE public."Submission" (
     status text NOT NULL,
     "memoryUsage" text,
     "timeTaken" text,
+    "userSolveTime" integer,
     "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "updatedAt" timestamp(3) without time zone NOT NULL
 );

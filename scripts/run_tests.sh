@@ -18,7 +18,7 @@ docker compose run --rm -v "$ROOT_DIR:/workspace" -w /workspace api bash -c \
 # 2. Run Deep Server Database, Repositories & Pool Unit Tests
 echo -e "\n\033[1;34m[2/3] Running Server DB & Pool Unit Tests...\033[0m"
 docker compose run --rm -v "$ROOT_DIR:/workspace" -w /workspace api bash -c \
-    "g++ -O2 -std=c++17 -I common -I common/third_party -I server/src tests/unit/test_server_deep.cpp -lcrypt -lssl -lcrypto -lpqxx -lpq -lpthread -o /tmp/test_server_deep && /tmp/test_server_deep"
+    "g++ -O2 -std=c++17 -I common -I common/third_party -I server/src tests/unit/test_server_deep.cpp -lcrypt -lssl -lcrypto -lpqxx -lpq -lhiredis -lcurl -lpthread -o /tmp/test_server_deep && /tmp/test_server_deep"
 
 # 3. Run Deep Judge Sandbox, Compiler, Signals & Queue Unit Tests in Privileged Worker
 echo -e "\n\033[1;34m[3/3] Running Judge Sandbox & Compiler Unit Tests...\033[0m"
