@@ -16,7 +16,7 @@ echo ""
 # Step 1: Start PostgreSQL, Redis, C++ Judge, and C++ API via Docker Compose
 echo "[1/2] Starting Backend Services (PostgreSQL, Redis, C++ Judge, C++ API)..."
 cd "$CAMPUSLAB_DIR"
-docker compose up -d
+docker compose up -d --build
 echo "  Done -- Backend services are running!"
 echo "    PostgreSQL   -> localhost:5433"
 echo "    Redis        -> localhost:6379"
