@@ -24,6 +24,7 @@ interface ContestParticipantInfo {
     isHost?: boolean
     isDisqualified?: boolean
     disqualifiedReason?: string
+    remark?: string
 }
 
 interface ContestInfo {
@@ -243,7 +244,7 @@ export function SolveScreenNavbar({
 
                                 {/* Joined Coders Dropdown Menu */}
                                 {showCodersDropdown && (
-                                    <div className="absolute left-0 top-full mt-1.5 w-56 bg-[#181818] border border-[#333333] rounded-[3px] shadow-xl z-50 text-[11px] font-mono p-2 space-y-1.5">
+                                    <div className="absolute left-0 top-full mt-1.5 w-64 bg-[#181818] border border-[#333333] rounded-[3px] shadow-xl z-50 text-[11px] font-mono p-2 space-y-1.5">
                                         <div className="flex items-center justify-between text-[#888888] pb-1.5 border-b border-[#282828] px-1">
                                             <span className="uppercase tracking-wider text-[10px] font-medium">
                                                 Coders (
@@ -263,29 +264,41 @@ export function SolveScreenNavbar({
                                             </button>
                                         </div>
 
-                                        <div className="max-h-48 overflow-y-auto py-0.5 space-y-0.5 overscroll-contain">
+                                        <div className="max-h-56 overflow-y-auto py-0.5 space-y-1 overscroll-contain">
                                             {contestInfo.participants &&
                                             contestInfo.participants.length > 0 ? (
                                                 contestInfo.participants.map((p, idx) => (
                                                     <div
                                                         key={p.userId || idx}
-                                                        className="flex items-center justify-between px-1.5 py-1 text-[#e8e8e6] hover:bg-[#222222] rounded-[2px] transition-colors"
+                                                        className="px-2 py-1.5 hover:bg-[#222222] rounded-[2px] transition-colors border-b border-[#242424] last:border-b-0 space-y-1"
                                                     >
-                                                        <span className="truncate max-w-[130px]">
-                                                            {p.name || 'Anonymous Coder'}
-                                                        </span>
-                                                        <div className="flex items-center gap-1 shrink-0">
-                                                            {p.isDisqualified ? (
-                                                                <span className="text-[9px] text-red-400 font-mono uppercase bg-red-950/70 border border-red-900/80 px-1 py-0.5 rounded-[2px]">
-                                                                    [DISQUALIFIED]
-                                                                </span>
-                                                            ) : p.isHost ? (
+                                                        <div className="flex items-center justify-between text-[#e8e8e6]">
+                                                            <span className="truncate max-w-[150px] font-medium">
+                                                                {p.name || 'Anonymous Coder'}
+                                                            </span>
+                                                            {p.isHost && (
                                                                 <span className="text-[10px] text-[#87b2f4] lowercase font-normal ml-1 shrink-0">
                                                                     host
                                                                 </span>
+                                                            )}
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                            {p.isDisqualified ? (
+                                                                <span className="text-[9px] text-red-400 font-mono uppercase bg-red-950/70 border border-red-900/80 px-1.5 py-0.5 rounded-[2px] truncate max-w-full">
+                                                                    [DISQUALIFIED:{' '}
+                                                                    {p.disqualifiedReason ||
+                                                                        'Tab switch'}
+                                                                    ]
+                                                                </span>
+                                                            ) : p.remark &&
+                                                              p.remark !== 'ACTIVE' &&
+                                                              p.remark !== 'HOST' ? (
+                                                                <span className="text-[9px] text-amber-300 font-mono uppercase bg-[#292212] border border-amber-800/80 px-1.5 py-0.5 rounded-[2px] truncate max-w-full">
+                                                                    [{p.remark}]
+                                                                </span>
                                                             ) : (
-                                                                <span className="text-[9px] text-emerald-400/80 font-mono ml-1 shrink-0">
-                                                                    [active]
+                                                                <span className="text-[9px] text-emerald-400/80 font-mono">
+                                                                    [ACTIVE]
                                                                 </span>
                                                             )}
                                                         </div>
@@ -491,22 +504,35 @@ export function SolveScreenNavbar({
             {liveAlert && (
                 <div
                     className={cn(
-                        'flex items-center justify-between px-3 py-1.5 font-mono text-xs border-b select-none z-30 shrink-0 transition-colors',
+                        'fixed top-14 left-4 z-[100] max-w-xs sm:max-w-sm rounded-[3px] p-3 font-mono text-xs shadow-2xl border transition-all select-none pointer-events-auto',
                         liveAlert.type === 'disqualified'
-                            ? 'bg-red-950/90 text-red-200 border-red-800'
-                            : 'bg-[#292212] text-amber-200 border-amber-800/80'
+                            ? 'bg-[#181818]/95 border-red-800 text-red-200 shadow-red-950/40'
+                            : 'bg-[#181818]/95 border-amber-700/80 text-amber-200 shadow-amber-950/40'
                     )}
                 >
-                    <span className="font-semibold tracking-wide truncate mr-2">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-1.5 mb-1.5">
+                        <span
+                            className={cn(
+                                'text-[10px] font-bold tracking-wider uppercase',
+                                liveAlert.type === 'disqualified'
+                                    ? 'text-red-400'
+                                    : 'text-amber-400'
+                            )}
+                        >
+                            [CONTEST ALERT]
+                        </span>
+                        <button
+                            type="button"
+                            onClick={onDismissLiveAlert}
+                            className="text-[10px] uppercase font-mono px-1 py-0.5 text-[#888888] hover:text-white cursor-pointer ml-3"
+                            aria-label="Dismiss alert"
+                        >
+                            [x]
+                        </button>
+                    </div>
+                    <p className="text-[11px] leading-relaxed text-[#e8e8e6] break-words">
                         {liveAlert.message}
-                    </span>
-                    <button
-                        type="button"
-                        onClick={onDismissLiveAlert}
-                        className="text-[10px] uppercase font-mono px-1.5 py-0.5 border border-current opacity-80 hover:opacity-100 rounded-[2px] cursor-pointer shrink-0"
-                    >
-                        [DISMISS]
-                    </button>
+                    </p>
                 </div>
             )}
 

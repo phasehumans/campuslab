@@ -65,6 +65,7 @@ export function SolveScreen() {
     const [isDisqualified, setIsDisqualified] = useState(false)
     const [disqualifiedReason, setDisqualifiedReason] = useState('')
     const [hasEnteredFullscreen, setHasEnteredFullscreen] = useState(false)
+    const [userRemarks, setUserRemarks] = useState<Record<string, string>>({})
     const [liveAlert, setLiveAlert] = useState<{
         id: string
         message: string
@@ -119,6 +120,10 @@ export function SolveScreen() {
                                 message: `[ALERT] ${data.userName} has been DISQUALIFIED (${data.reason})`,
                                 type: 'disqualified',
                             })
+                            setUserRemarks((prev) => ({
+                                ...prev,
+                                [data.userId]: `DISQUALIFIED: ${data.reason}`,
+                            }))
                             queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
                         } else if (data.type === 'PEER_PASTE_ATTEMPT') {
                             setLiveAlert({
@@ -126,6 +131,10 @@ export function SolveScreen() {
                                 message: `[ALERT] ${data.userName} attempted paste (${data.chars} chars blocked)`,
                                 type: 'paste',
                             })
+                            setUserRemarks((prev) => ({
+                                ...prev,
+                                [data.userId]: `PASTED ${data.chars} CHARS (BLOCKED)`,
+                            }))
                         }
                     } catch (e) {
                         console.error('Failed to parse WS message:', e)
@@ -154,13 +163,12 @@ export function SolveScreen() {
         }
     }, [roomCode, isLoggedIn, queryClient])
 
-    // Auto-dismiss live alerts after a timeout
+    // Auto-dismiss live alerts after exactly 5 seconds
     useEffect(() => {
         if (!liveAlert) return
-        const timer = setTimeout(
-            () => setLiveAlert(null),
-            liveAlert.type === 'disqualified' ? 7000 : 4500
-        )
+        const timer = setTimeout(() => {
+            setLiveAlert(null)
+        }, 5000)
         return () => clearTimeout(timer)
     }, [liveAlert])
 
@@ -171,6 +179,13 @@ export function SolveScreen() {
             setIsDisqualified(true)
             setDisqualifiedReason(reason)
 
+            if (user?.id) {
+                setUserRemarks((prev) => ({
+                    ...prev,
+                    [user.id]: `DISQUALIFIED: ${reason}`,
+                }))
+            }
+
             try {
                 await reportContestIntegrityEvent(roomCode, 'DISQUALIFIED', { reason })
             } catch (err) {
@@ -179,7 +194,7 @@ export function SolveScreen() {
 
             queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
         },
-        [roomCode, isDisqualified, contestRoom?.isEnded, queryClient]
+        [roomCode, isDisqualified, contestRoom?.isEnded, user?.id, queryClient]
     )
 
     // Window focus, tab switch, and fullscreen watchdog (Contest mode only)
@@ -228,13 +243,19 @@ export function SolveScreen() {
                 message: `[BLOCKED] Direct paste is disabled in contest arena (${chars} chars)`,
                 type: 'paste',
             })
+            if (user?.id) {
+                setUserRemarks((prev) => ({
+                    ...prev,
+                    [user.id]: `PASTED ${chars} CHARS (BLOCKED)`,
+                }))
+            }
             try {
                 await reportContestIntegrityEvent(roomCode, 'PASTE_ATTEMPT', { chars })
             } catch (err) {
                 console.error('Failed to report paste attempt:', err)
             }
         },
-        [roomCode]
+        [roomCode, user?.id]
     )
 
     const handleExitContest = async () => {
@@ -574,7 +595,12 @@ export function SolveScreen() {
                                   hasWinner,
                                   winnerName: winner?.name,
                                   isWinner,
-                                  participants: contestRoom.participants || [],
+                                  participants: (contestRoom.participants || []).map((p) => ({
+                                      ...p,
+                                      remark: p.isDisqualified
+                                          ? `DISQUALIFIED: ${p.disqualifiedReason || 'Tab switch'}`
+                                          : userRemarks[p.userId] || (p.isHost ? 'HOST' : 'ACTIVE'),
+                                  })),
                               }
                             : undefined
                     }
