@@ -284,6 +284,41 @@ public:
         return ContestRepository::build_response(txn, *row_opt, user_id);
     }
 
+    ContestResult disqualify_participant(const std::string& user_id, const std::string& code, const std::string& reason) {
+        auto conn_guard = db_pool_.acquire();
+        pqxx::work txn(conn_guard.get());
+
+        auto row_opt = ContestRepository::find_by_code(txn, code);
+        if (!row_opt.has_value()) {
+            return {false, 404, "Contest room not found", std::nullopt};
+        }
+
+        const auto& r = *row_opt;
+        json participants = json::parse(r["participants"].as<std::string>());
+        bool found = false;
+        for (auto& p : participants) {
+            if (p.value("userId", "") == user_id) {
+                p["isDisqualified"] = true;
+                p["disqualifiedReason"] = reason;
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            txn.exec_params(
+                "UPDATE \"ContestRoom\" SET participants = $1 WHERE code = $2",
+                participants.dump(), code
+            );
+        }
+
+        auto updated_opt = ContestRepository::find_by_code(txn, code);
+        auto room_resp = ContestRepository::build_response(txn, *updated_opt, user_id);
+        txn.commit();
+
+        return {true, 200, "Participant disqualified successfully", room_resp};
+    }
+
 private:
     DbConnectionPool& db_pool_;
 };

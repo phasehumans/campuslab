@@ -135,6 +135,7 @@ type ContestLeaderboardEntry = {
     solved: number
     lastAcceptedAt: string | null
     isYou: boolean
+    isDisqualified?: boolean
 }
 
 type ContestParticipant = {
@@ -142,6 +143,8 @@ type ContestParticipant = {
     name: string
     avatar?: string | null
     isHost: boolean
+    isDisqualified?: boolean
+    disqualifiedReason?: string
 }
 
 export type ContestRoom = {

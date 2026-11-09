@@ -144,6 +144,7 @@ struct ContestLeaderboardItem {
     int solved = 0;
     std::optional<std::string> last_accepted_at;
     bool is_you = false;
+    bool is_disqualified = false;
 
     json to_json() const {
         return {
@@ -154,7 +155,8 @@ struct ContestLeaderboardItem {
             {"score", score},
             {"solved", solved},
             {"lastAcceptedAt", last_accepted_at.has_value() ? json(*last_accepted_at) : nullptr},
-            {"isYou", is_you}
+            {"isYou", is_you},
+            {"isDisqualified", is_disqualified}
         };
     }
 };

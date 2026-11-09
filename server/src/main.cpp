@@ -45,7 +45,7 @@ int main() {
     AuthController auth_controller(auth_service, cfg.jwt_secret, cfg.github_client_id, cfg.github_client_secret, cfg.google_client_id, cfg.google_client_secret, cfg.client_origin);
     ProblemController problem_controller(problem_service, cfg.jwt_secret);
     ExecutionController execution_controller(execution_service, cfg.jwt_secret);
-    ContestController contest_controller(contest_service, cfg.jwt_secret);
+    ContestController contest_controller(contest_service, db_pool, cfg.jwt_secret);
     ProfileController profile_controller(profile_service, cfg.jwt_secret);
 
     // Setup Crow application with CORS middleware

@@ -22,6 +22,8 @@ interface ContestParticipantInfo {
     name: string
     avatar?: string | null
     isHost?: boolean
+    isDisqualified?: boolean
+    disqualifiedReason?: string
 }
 
 interface ContestInfo {
@@ -45,6 +47,9 @@ interface SolveScreenNavbarProps {
     problemTitle?: string
     splitWidth?: number
     contestInfo?: ContestInfo
+    isDisqualified?: boolean
+    liveAlert?: { id: string; message: string; type: 'disqualified' | 'paste' } | null
+    onDismissLiveAlert?: () => void
 }
 
 export function SolveScreenNavbar({
@@ -57,6 +62,9 @@ export function SolveScreenNavbar({
     problemTitle,
     splitWidth,
     contestInfo,
+    isDisqualified = false,
+    liveAlert = null,
+    onDismissLiveAlert,
 }: SolveScreenNavbarProps) {
     const navigate = useNavigate()
     const [isExiting, setIsExiting] = useState(false)
@@ -263,14 +271,24 @@ export function SolveScreenNavbar({
                                                         key={p.userId || idx}
                                                         className="flex items-center justify-between px-1.5 py-1 text-[#e8e8e6] hover:bg-[#222222] rounded-[2px] transition-colors"
                                                     >
-                                                        <span className="truncate max-w-[145px]">
+                                                        <span className="truncate max-w-[130px]">
                                                             {p.name || 'Anonymous Coder'}
                                                         </span>
-                                                        {p.isHost && (
-                                                            <span className="text-[10px] text-[#87b2f4] lowercase font-normal ml-2 shrink-0">
-                                                                host
-                                                            </span>
-                                                        )}
+                                                        <div className="flex items-center gap-1 shrink-0">
+                                                            {p.isDisqualified ? (
+                                                                <span className="text-[9px] text-red-400 font-mono uppercase bg-red-950/70 border border-red-900/80 px-1 py-0.5 rounded-[2px]">
+                                                                    [DISQUALIFIED]
+                                                                </span>
+                                                            ) : p.isHost ? (
+                                                                <span className="text-[10px] text-[#87b2f4] lowercase font-normal ml-1 shrink-0">
+                                                                    host
+                                                                </span>
+                                                            ) : (
+                                                                <span className="text-[9px] text-emerald-400/80 font-mono ml-1 shrink-0">
+                                                                    [active]
+                                                                </span>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                 ))
                                             ) : (
@@ -335,10 +353,14 @@ export function SolveScreenNavbar({
                     style={{ '--split-pos': `${splitWidth ?? 45}%` } as CSSProperties}
                     className="flex items-center gap-1.5 sm:gap-2 md:absolute md:left-[var(--split-pos)] md:-translate-x-1/2 pointer-events-auto z-10"
                 >
-                    <Tooltip content="Run Testcases" shortcut="Ctrl + '" position="bottom">
+                    <Tooltip
+                        content={isDisqualified ? 'Session Disqualified' : 'Run Testcases'}
+                        shortcut="Ctrl + '"
+                        position="bottom"
+                    >
                         <button
                             onClick={handleRun}
-                            disabled={isRunning || isSubmitting}
+                            disabled={isRunning || isSubmitting || isDisqualified}
                             className="flex items-center gap-1 sm:gap-1.5 bg-[#252423] hover:bg-[#2f2e2d] disabled:opacity-50 disabled:cursor-not-allowed text-[#e8e8e6] border border-[#333333] px-2.5 sm:px-3.5 py-1.5 rounded-[2px] font-mono text-xs font-medium transition-colors cursor-pointer shadow-xs"
                         >
                             {isRunning ? (
@@ -350,10 +372,14 @@ export function SolveScreenNavbar({
                         </button>
                     </Tooltip>
 
-                    <Tooltip content="Submit Solution" shortcut="Ctrl + ↵" position="bottom">
+                    <Tooltip
+                        content={isDisqualified ? 'Session Disqualified' : 'Submit Solution'}
+                        shortcut="Ctrl + ↵"
+                        position="bottom"
+                    >
                         <button
                             onClick={() => handleSubmit(getElapsedSeconds())}
-                            disabled={isRunning || isSubmitting}
+                            disabled={isRunning || isSubmitting || isDisqualified}
                             className="flex items-center gap-1 sm:gap-1.5 bg-[#87b2f4] hover:bg-[#72a3ed] disabled:opacity-50 disabled:cursor-not-allowed text-[#141414] px-3 sm:px-4 py-1.5 rounded-[2px] font-mono text-xs font-semibold transition-colors cursor-pointer shadow-xs"
                         >
                             {isSubmitting ? (
@@ -461,6 +487,28 @@ export function SolveScreenNavbar({
                     </Tooltip>
                 </div>
             </nav>
+
+            {liveAlert && (
+                <div
+                    className={cn(
+                        'flex items-center justify-between px-3 py-1.5 font-mono text-xs border-b select-none z-30 shrink-0 transition-colors',
+                        liveAlert.type === 'disqualified'
+                            ? 'bg-red-950/90 text-red-200 border-red-800'
+                            : 'bg-[#292212] text-amber-200 border-amber-800/80'
+                    )}
+                >
+                    <span className="font-semibold tracking-wide truncate mr-2">
+                        {liveAlert.message}
+                    </span>
+                    <button
+                        type="button"
+                        onClick={onDismissLiveAlert}
+                        className="text-[10px] uppercase font-mono px-1.5 py-0.5 border border-current opacity-80 hover:opacity-100 rounded-[2px] cursor-pointer shrink-0"
+                    >
+                        [DISMISS]
+                    </button>
+                </div>
+            )}
 
             {showExitModal &&
                 createPortal(

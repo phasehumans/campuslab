@@ -282,3 +282,14 @@ export const getContestRoom = async (roomCode: string) => {
     const response = await request<{ room: ContestRoom }>(`/contests/rooms/${roomCode}`)
     return response!.room
 }
+
+export const reportContestIntegrityEvent = async (
+    roomCode: string,
+    event: 'DISQUALIFIED' | 'PASTE_ATTEMPT',
+    details?: { reason?: string; chars?: number }
+) => {
+    return request<{ success: boolean; message: string }>(`/contests/rooms/${roomCode}/integrity`, {
+        method: 'POST',
+        body: JSON.stringify({ event, ...details }),
+    })
+}

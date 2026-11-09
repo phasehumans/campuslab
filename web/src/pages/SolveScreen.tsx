@@ -26,6 +26,8 @@ import {
     leaveContestRoom,
     runCode,
     submitCode,
+    getAuthToken,
+    reportContestIntegrityEvent,
 } from '@/lib/api'
 import type { EditorLanguage, ExecutionResponse, SubmissionItem } from '@/lib/types'
 
@@ -55,6 +57,184 @@ export function SolveScreen() {
         (contestRoom.isEnded ||
             (contestRoom.endsAt && (parseUtcDate(contestRoom.endsAt) ?? Infinity) <= Date.now())) &&
         !hasWinner
+    )
+
+    const meParticipant = contestRoom?.participants?.find((p) => p.userId === user?.id)
+    const isServerDisqualified = Boolean(meParticipant?.isDisqualified)
+
+    const [isDisqualified, setIsDisqualified] = useState(false)
+    const [disqualifiedReason, setDisqualifiedReason] = useState('')
+    const [hasEnteredFullscreen, setHasEnteredFullscreen] = useState(false)
+    const [liveAlert, setLiveAlert] = useState<{
+        id: string
+        message: string
+        type: 'disqualified' | 'paste'
+    } | null>(null)
+
+    useEffect(() => {
+        if (isServerDisqualified) {
+            setIsDisqualified(true)
+            setDisqualifiedReason(
+                meParticipant?.disqualifiedReason || 'Contest integrity violation'
+            )
+        }
+    }, [isServerDisqualified, meParticipant?.disqualifiedReason])
+
+    // WebSocket subscription for live contest peer updates
+    useEffect(() => {
+        if (!roomCode || !isLoggedIn) return
+
+        const token = getAuthToken()
+        if (!token) return
+
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+        const host = window.location.host
+        const wsUrl = `${protocol}//${host}/ws/contest`
+
+        let ws: WebSocket | null = null
+        let reconnectTimer: ReturnType<typeof setTimeout> | null = null
+        let isUnmounted = false
+
+        const connect = () => {
+            if (isUnmounted) return
+            try {
+                ws = new WebSocket(wsUrl)
+
+                ws.onopen = () => {
+                    ws?.send(
+                        JSON.stringify({
+                            type: 'JOIN_ROOM',
+                            roomCode,
+                            token,
+                        })
+                    )
+                }
+
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data)
+                        if (data.type === 'PEER_DISQUALIFIED') {
+                            setLiveAlert({
+                                id: `${Date.now()}-${Math.random()}`,
+                                message: `[ALERT] ${data.userName} has been DISQUALIFIED (${data.reason})`,
+                                type: 'disqualified',
+                            })
+                            queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
+                        } else if (data.type === 'PEER_PASTE_ATTEMPT') {
+                            setLiveAlert({
+                                id: `${Date.now()}-${Math.random()}`,
+                                message: `[ALERT] ${data.userName} attempted paste (${data.chars} chars blocked)`,
+                                type: 'paste',
+                            })
+                        }
+                    } catch (e) {
+                        console.error('Failed to parse WS message:', e)
+                    }
+                }
+
+                ws.onclose = () => {
+                    if (!isUnmounted) {
+                        reconnectTimer = setTimeout(connect, 3000)
+                    }
+                }
+            } catch (e) {
+                console.error('WebSocket connection error:', e)
+            }
+        }
+
+        connect()
+
+        return () => {
+            isUnmounted = true
+            if (reconnectTimer) clearTimeout(reconnectTimer)
+            if (ws) {
+                ws.onclose = null
+                ws.close()
+            }
+        }
+    }, [roomCode, isLoggedIn, queryClient])
+
+    // Auto-dismiss live alerts after a timeout
+    useEffect(() => {
+        if (!liveAlert) return
+        const timer = setTimeout(
+            () => setLiveAlert(null),
+            liveAlert.type === 'disqualified' ? 7000 : 4500
+        )
+        return () => clearTimeout(timer)
+    }, [liveAlert])
+
+    // Disqualification trigger: Option A (Zero Tolerance on 1st Warning)
+    const triggerDisqualification = useCallback(
+        async (reason: string) => {
+            if (!roomCode || isDisqualified || contestRoom?.isEnded) return
+            setIsDisqualified(true)
+            setDisqualifiedReason(reason)
+
+            try {
+                await reportContestIntegrityEvent(roomCode, 'DISQUALIFIED', { reason })
+            } catch (err) {
+                console.error('Failed to report contest disqualification:', err)
+            }
+
+            queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
+        },
+        [roomCode, isDisqualified, contestRoom?.isEnded, queryClient]
+    )
+
+    // Window focus, tab switch, and fullscreen watchdog (Contest mode only)
+    useEffect(() => {
+        if (!roomCode || !hasEnteredFullscreen || isDisqualified || contestRoom?.isEnded) return
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                triggerDisqualification('Tab switch detected')
+            }
+        }
+
+        const handleBlur = () => {
+            triggerDisqualification('Window unfocused')
+        }
+
+        const handleFullscreenChange = () => {
+            if (!document.fullscreenElement) {
+                triggerDisqualification('Exited fullscreen')
+            }
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange)
+        window.addEventListener('blur', handleBlur)
+        document.addEventListener('fullscreenchange', handleFullscreenChange)
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange)
+            window.removeEventListener('blur', handleBlur)
+            document.removeEventListener('fullscreenchange', handleFullscreenChange)
+        }
+    }, [
+        roomCode,
+        hasEnteredFullscreen,
+        isDisqualified,
+        contestRoom?.isEnded,
+        triggerDisqualification,
+    ])
+
+    // Paste attempt handler (Option A: Block buffer write and broadcast attempt)
+    const handlePasteAttempt = useCallback(
+        async (chars: number) => {
+            if (!roomCode) return
+            setLiveAlert({
+                id: `${Date.now()}-${Math.random()}`,
+                message: `[BLOCKED] Direct paste is disabled in contest arena (${chars} chars)`,
+                type: 'paste',
+            })
+            try {
+                await reportContestIntegrityEvent(roomCode, 'PASTE_ATTEMPT', { chars })
+            } catch (err) {
+                console.error('Failed to report paste attempt:', err)
+            }
+        },
+        [roomCode]
     )
 
     const handleExitContest = async () => {
@@ -290,7 +470,7 @@ export function SolveScreen() {
     }
 
     const handleRun = () => {
-        if (!problemQuery.data || !ensureAuthenticated()) {
+        if (isDisqualified || !problemQuery.data || !ensureAuthenticated()) {
             return
         }
 
@@ -301,7 +481,7 @@ export function SolveScreen() {
     }
 
     const handleSubmit = (explicitSeconds?: number) => {
-        if (!problemQuery.data || !ensureAuthenticated()) {
+        if (isDisqualified || !problemQuery.data || !ensureAuthenticated()) {
             return
         }
 
@@ -314,7 +494,7 @@ export function SolveScreen() {
     }
 
     const handleResetCode = () => {
-        if (!problemQuery.data) return
+        if (isDisqualified || !problemQuery.data) return
         const defaultCode = problemQuery.data.starterCodes?.[language] ?? FALLBACK_CODE[language]
         setCodeByLanguage((current) => ({
             ...current,
@@ -325,6 +505,7 @@ export function SolveScreen() {
     // Keyboard Shortcuts: Ctrl+' to Run, Ctrl+Enter to Submit
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            if (isDisqualified) return
             if ((e.ctrlKey || e.metaKey) && e.key === "'") {
                 e.preventDefault()
                 handleRun()
@@ -336,7 +517,7 @@ export function SolveScreen() {
 
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [codeByLanguage, language, problemQuery.data])
+    }, [codeByLanguage, language, problemQuery.data, isDisqualified])
 
     if (problemQuery.isLoading) {
         return <SolveScreenSkeleton backPath={roomCode ? `/contest/${roomCode}` : '/'} />
@@ -397,6 +578,9 @@ export function SolveScreen() {
                               }
                             : undefined
                     }
+                    isDisqualified={isDisqualified}
+                    liveAlert={liveAlert}
+                    onDismissLiveAlert={() => setLiveAlert(null)}
                 />
 
                 {/* Persistent Match Concluded Alert Bar (When Modal is Dismissed) */}
@@ -589,6 +773,9 @@ export function SolveScreen() {
                                         }))
                                     }
                                     language={language}
+                                    isContestMode={Boolean(roomCode)}
+                                    onPasteAttempt={handlePasteAttempt}
+                                    readOnly={isDisqualified}
                                 />
                             </div>
 
@@ -860,6 +1047,83 @@ export function SolveScreen() {
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>,
+                    document.body
+                )}
+
+            {/* Mandatory Fullscreen Prompt for Contest Arena */}
+            {roomCode &&
+                !hasEnteredFullscreen &&
+                !isDisqualified &&
+                !contestRoom?.isEnded &&
+                createPortal(
+                    <div className="dark fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-4 font-mono select-none">
+                        <div className="w-full max-w-md bg-[#181818] border border-[#333333] p-6 rounded-[3px] space-y-4 text-center">
+                            <div className="text-xs font-semibold uppercase tracking-wider text-[#e8e8e6] border-b border-[#282828] pb-3">
+                                [CONTEST INTEGRITY ARENA]
+                            </div>
+                            <div className="text-xs text-[#a09f9d] leading-relaxed text-left space-y-2">
+                                <p>This contest arena enforces strict peer integrity rules:</p>
+                                <div className="space-y-1.5 pl-2 border-l border-[#333333] text-[11px] text-[#cccccc]">
+                                    <div>[1] Fullscreen mode is mandatory.</div>
+                                    <div>
+                                        [2] Tab switch, window exit, or defocus triggers immediate
+                                        disqualification.
+                                    </div>
+                                    <div>[3] Direct copy-paste into the editor is blocked.</div>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={async () => {
+                                    try {
+                                        if (!document.fullscreenElement) {
+                                            await document.documentElement.requestFullscreen()
+                                        }
+                                        setHasEnteredFullscreen(true)
+                                    } catch {
+                                        // Allow entering if browser sandbox denies programmatic fullscreen
+                                        setHasEnteredFullscreen(true)
+                                    }
+                                }}
+                                className="w-full py-2.5 px-4 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] font-semibold text-xs tracking-wider uppercase rounded-[2px] transition-colors cursor-pointer"
+                            >
+                                [ENTER FULLSCREEN & START CONTEST]
+                            </button>
+                        </div>
+                    </div>,
+                    document.body
+                )}
+
+            {/* Disqualified Session Overlay */}
+            {isDisqualified &&
+                createPortal(
+                    <div className="dark fixed inset-0 z-[210] flex items-center justify-center bg-black/95 p-4 font-mono select-none">
+                        <div className="w-full max-w-md bg-[#181818] border border-red-900/80 p-6 rounded-[3px] space-y-4 text-center">
+                            <div className="text-sm font-bold uppercase tracking-widest text-red-400 border-b border-red-900/40 pb-3">
+                                [CONTEST SESSION TERMINATED]
+                            </div>
+                            <div className="bg-red-950/40 border border-red-900/50 p-3 rounded-[2px] text-left text-xs text-red-200">
+                                <div className="font-semibold uppercase tracking-wider mb-1">
+                                    [STATUS: DISQUALIFIED]
+                                </div>
+                                <div className="text-red-300">
+                                    Reason:{' '}
+                                    {disqualifiedReason || 'Tab switch / window defocus detected'}
+                                </div>
+                            </div>
+                            <p className="text-xs text-[#888888] leading-relaxed">
+                                Your contest session has been permanently locked due to an integrity
+                                violation. Further edits and submissions for this room are disabled.
+                            </p>
+                            <button
+                                type="button"
+                                onClick={handleExitContest}
+                                className="w-full py-2.5 px-4 bg-[#252423] hover:bg-[#2f2e2d] text-[#e8e8e6] border border-[#444444] font-semibold text-xs tracking-wider uppercase rounded-[2px] transition-colors cursor-pointer"
+                            >
+                                [EXIT CONTEST ARENA]
+                            </button>
                         </div>
                     </div>,
                     document.body

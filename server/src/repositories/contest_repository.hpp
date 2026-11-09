@@ -77,9 +77,17 @@ public:
         }
 
         std::vector<std::string> participant_uids;
+        std::unordered_map<std::string, bool> disqualified_map;
+        std::unordered_map<std::string, std::string> disqualified_reason_map;
         for (const auto& p : participants_raw) {
             std::string uid = p.value("userId", "");
-            if (!uid.empty()) participant_uids.push_back(uid);
+            if (!uid.empty()) {
+                participant_uids.push_back(uid);
+                if (p.value("isDisqualified", false)) {
+                    disqualified_map[uid] = true;
+                    disqualified_reason_map[uid] = p.value("disqualifiedReason", "Integrity violation");
+                }
+            }
             if (uid == current_user_id) resp.me_joined = true;
         }
         resp.participant_count = static_cast<int>(participant_uids.size());
@@ -107,11 +115,14 @@ public:
         for (const auto& uid : participant_uids) {
             const auto& meta = user_meta[uid];
             std::string uname = meta.name.empty() ? "Competitor" : meta.name;
+            bool is_dq = (disqualified_map.count(uid) > 0 && disqualified_map[uid]);
             resp.participants.push_back({
                 {"userId", uid},
                 {"name", uname},
                 {"avatar", meta.avatar.empty() ? nullptr : json(meta.avatar)},
-                {"isHost", uid == host_user_id}
+                {"isHost", uid == host_user_id},
+                {"isDisqualified", is_dq},
+                {"disqualifiedReason", is_dq ? disqualified_reason_map[uid] : ""}
             });
         }
 
@@ -122,6 +133,7 @@ public:
             item.name = meta.name.empty() ? "Competitor" : meta.name;
             item.avatar = meta.avatar;
             item.is_you = (uid == current_user_id);
+            item.is_disqualified = (disqualified_map.count(uid) > 0 && disqualified_map[uid]);
 
             if (standings_map.contains(uid)) {
                 item.score = standings_map[uid].value("score", 0);
@@ -134,6 +146,7 @@ public:
         }
 
         std::sort(resp.leaderboard.begin(), resp.leaderboard.end(), [](const ContestLeaderboardItem& a, const ContestLeaderboardItem& b) {
+            if (a.is_disqualified != b.is_disqualified) return !a.is_disqualified;
             if (a.score != b.score) return a.score > b.score;
             if (a.solved != b.solved) return a.solved > b.solved;
             std::string ta = a.last_accepted_at.value_or("9999");

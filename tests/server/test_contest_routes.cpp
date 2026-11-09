@@ -63,7 +63,7 @@ int main() {
     ContestService contest_service(pool);
 
     AppType app;
-    ContestController controller(contest_service, cfg.jwt_secret);
+    ContestController controller(contest_service, pool, cfg.jwt_secret);
     controller.register_routes(app);
     app.validate();
 
@@ -450,6 +450,60 @@ int main() {
         auto r_lv_solo = post_resp("/api/v1/contests/rooms/" + solo_code + "/leave", "{}", host_tok);
         TEST_ASSERT(r_lv_solo.code == 200, "Solo participant leaves successfully");
         TEST_ASSERT(json::parse(r_lv_solo.body)["room"]["isEnded"] == true, "Solo contest immediately closed when last member leaves");
+    }
+
+    // -------------------------------------------------------------
+    std::cout << "\n[7] Testing Contest Integrity & Anti-Cheat Endpoints..." << std::endl;
+    {
+        // 7.1 Create room with Host and Player 2
+        auto r_cr = post_resp("/api/v1/contests/rooms", "{\"questionCount\":2,\"timeLimitMinutes\":30}", host_tok);
+        TEST_ASSERT(r_cr.code == 201, "Integrity test room created");
+        std::string room_code = json::parse(r_cr.body)["room"]["code"];
+
+        auto r_j2 = post_resp("/api/v1/contests/rooms/" + room_code + "/join", "{}", p2_tok);
+        TEST_ASSERT(r_j2.code == 200, "Player 2 joined integrity test room");
+
+        // 7.2 Unauthenticated integrity event -> 401
+        auto r_unauth = post_resp("/api/v1/contests/rooms/" + room_code + "/integrity", "{\"event\":\"DISQUALIFIED\"}");
+        TEST_ASSERT(r_unauth.code == 401, "Unauthenticated integrity request returns 401");
+
+        // 7.3 Unknown event type -> 400
+        auto r_unk = post_resp("/api/v1/contests/rooms/" + room_code + "/integrity", "{\"event\":\"UNKNOWN_EVENT\"}", p2_tok);
+        TEST_ASSERT(r_unk.code == 400, "Unknown integrity event returns 400");
+
+        // 7.4 Player 2 logs paste attempt -> 200 OK
+        auto r_paste = post_resp("/api/v1/contests/rooms/" + room_code + "/integrity", "{\"event\":\"PASTE_ATTEMPT\",\"chars\":45}", p2_tok);
+        TEST_ASSERT(r_paste.code == 200, "Paste attempt logged with 200 OK");
+        TEST_ASSERT(json::parse(r_paste.body)["success"] == true, "Paste attempt success is true");
+
+        // 7.5 Player 2 triggered tab switch / window exit -> Disqualified
+        auto r_dq = post_resp("/api/v1/contests/rooms/" + room_code + "/integrity", "{\"event\":\"DISQUALIFIED\",\"reason\":\"Tab switch\"}", p2_tok);
+        TEST_ASSERT(r_dq.code == 200, "Disqualification returns 200 OK");
+        TEST_ASSERT(json::parse(r_dq.body)["success"] == true, "Disqualification success is true");
+
+        // 7.6 Verify via GET that Player 2 is marked as isDisqualified: true
+        auto r_check = get_resp("/api/v1/contests/rooms/" + room_code);
+        TEST_ASSERT(r_check.code == 200, "Room retrieval returns 200");
+        auto b_check = json::parse(r_check.body);
+        bool found_p2_dq = false;
+        for (const auto& p : b_check["room"]["participants"]) {
+            if (p["userId"] == player2_user.id) {
+                TEST_ASSERT(p["isDisqualified"] == true, "Participant is marked as isDisqualified in participants list");
+                TEST_ASSERT(p["disqualifiedReason"] == "Tab switch", "Reason matches Tab switch");
+                found_p2_dq = true;
+            }
+        }
+        TEST_ASSERT(found_p2_dq, "Player 2 found in participants");
+
+        // 7.7 Verify Leaderboard marks Player 2 as disqualified
+        bool lb_dq = false;
+        for (const auto& entry : b_check["room"]["leaderboard"]) {
+            if (entry["userId"] == player2_user.id) {
+                TEST_ASSERT(entry["isDisqualified"] == true, "Leaderboard entry isDisqualified is true");
+                lb_dq = true;
+            }
+        }
+        TEST_ASSERT(lb_dq, "Player 2 found in leaderboard");
     }
 
     std::cout << "\n==========================================================" << std::endl;

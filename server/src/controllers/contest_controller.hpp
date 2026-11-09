@@ -6,6 +6,8 @@
 #include "../middleware/cors.hpp"
 #include "../middleware/auth_middleware.hpp"
 #include "../services/contest_service.hpp"
+#include "../services/contest_ws_manager.hpp"
+#include "../db/connection_pool.hpp"
 
 namespace campuslab {
 
@@ -13,8 +15,8 @@ using json = nlohmann::json;
 
 class ContestController {
 public:
-    ContestController(ContestService& contest_service, const std::string& jwt_secret)
-        : contest_service_(contest_service), jwt_secret_(jwt_secret) {}
+    ContestController(ContestService& contest_service, DbConnectionPool& db_pool, const std::string& jwt_secret)
+        : contest_service_(contest_service), db_pool_(db_pool), jwt_secret_(jwt_secret) {}
 
     void register_routes(AppType& app) {
         // POST /api/v1/contests/rooms
@@ -157,10 +159,69 @@ public:
                 return crow::response(500, json({{"success", false}, {"message", e.what()}}).dump());
             }
         });
+
+        // POST /api/v1/contests/rooms/:code/integrity
+        CROW_ROUTE(app, "/api/v1/contests/rooms/<string>/integrity").methods(crow::HTTPMethod::POST)([this](const crow::request& req, const std::string& raw_code) {
+            auto auth = AuthMiddleware::get_auth_context(req, jwt_secret_);
+            if (!auth.is_authenticated) {
+                return crow::response(401, json({{"success", false}, {"message", "Unauthorized"}}).dump());
+            }
+
+            std::string code = raw_code;
+            std::transform(code.begin(), code.end(), code.begin(), ::toupper);
+
+            try {
+                auto body = json::parse(req.body);
+                std::string event = body.value("event", "");
+
+                std::string user_name = "Coder";
+                try {
+                    auto conn_guard = db_pool_.acquire();
+                    pqxx::work txn(conn_guard.get());
+                    auto u_rows = txn.exec_params("SELECT name FROM \"User\" WHERE id = $1", auth.user_id);
+                    if (!u_rows.empty() && !u_rows[0]["name"].is_null()) {
+                        user_name = u_rows[0]["name"].as<std::string>();
+                    }
+                } catch (...) {}
+
+                if (event == "DISQUALIFIED") {
+                    std::string reason = body.value("reason", "Tab switch / window exit");
+                    auto res = contest_service_.disqualify_participant(auth.user_id, code, reason);
+                    if (!res.success) {
+                        return crow::response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
+                    }
+                    ContestWsManager::instance().broadcast_disqualified(code, auth.user_id, user_name, reason);
+                    return crow::response(200, json({{"success", true}, {"message", "Participant disqualified successfully"}}).dump());
+                } else if (event == "PASTE_ATTEMPT") {
+                    int chars = body.value("chars", 0);
+                    ContestWsManager::instance().broadcast_paste_attempt(code, auth.user_id, user_name, chars);
+                    return crow::response(200, json({{"success", true}, {"message", "Paste attempt broadcasted"}}).dump());
+                } else {
+                    return crow::response(400, json({{"success", false}, {"message", "Unknown integrity event"}}).dump());
+                }
+            } catch (const json::parse_error&) {
+                return crow::response(400, json({{"success", false}, {"message", "Invalid JSON payload"}}).dump());
+            } catch (const std::exception& e) {
+                return crow::response(500, json({{"success", false}, {"message", e.what()}}).dump());
+            }
+        });
+
+        // WebSocket /ws/contest
+        CROW_WEBSOCKET_ROUTE(app, "/ws/contest")
+            .onopen([](crow::websocket::connection& conn) {
+                ContestWsManager::instance().on_open(conn);
+            })
+            .onclose([](crow::websocket::connection& conn, const std::string& reason) {
+                ContestWsManager::instance().on_close(conn, reason);
+            })
+            .onmessage([this](crow::websocket::connection& conn, const std::string& data, bool /*is_binary*/) {
+                ContestWsManager::instance().handle_message(conn, data, contest_service_, jwt_secret_, db_pool_);
+            });
     }
 
 private:
     ContestService& contest_service_;
+    DbConnectionPool& db_pool_;
     std::string jwt_secret_;
 };
 

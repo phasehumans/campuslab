@@ -98,6 +98,23 @@ public:
             return {false, 400, "Missing problemId or sourceCode", nullptr, nullptr};
         }
 
+        if (!contest_code.empty()) {
+            auto conn_guard = db_pool_.acquire();
+            pqxx::work txn(conn_guard.get());
+            auto r_rows = txn.exec_params("SELECT participants, NOW() > \"endsAt\" as is_ended FROM \"ContestRoom\" WHERE code = $1", contest_code);
+            if (!r_rows.empty()) {
+                if (r_rows[0]["is_ended"].as<bool>()) {
+                    return {false, 400, "Contest has already ended", nullptr, nullptr};
+                }
+                auto parts = json::parse(r_rows[0]["participants"].as<std::string>());
+                for (const auto& p : parts) {
+                    if (p.value("userId", "") == user_id && p.value("isDisqualified", false)) {
+                        return {false, 403, "You have been disqualified from this contest for an integrity violation", nullptr, nullptr};
+                    }
+                }
+            }
+        }
+
         std::string problem_difficulty;
         std::vector<Testcase> hidden_testcases;
 
