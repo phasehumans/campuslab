@@ -127,6 +127,26 @@ export type ProfileResponse = {
         }>
     }
     recentSubmissions: SubmissionRecord[]
+    duels?: DuelRecord
+}
+
+export type DuelRecord = {
+    wins: number
+    losses: number
+    draws: number
+}
+
+export type Potd = {
+    date: string
+    nextAt: string
+    solvedCount: number
+    solvedByMe: boolean
+    problem: {
+        id: string
+        title: string
+        difficulty: Difficulty
+        tags: string[]
+    }
 }
 
 type ContestQuestion = {
@@ -159,7 +179,25 @@ type ContestParticipant = {
     disqualifiedReason?: string
 }
 
+export type RoomMode = 'ROOM' | 'DUEL'
+export type DuelStatus = 'WAITING' | 'LOBBY' | 'LIVE' | 'FINISHED' | 'CANCELLED'
+export type DuelFinishReason =
+    'SOLVED' | 'TIMEOUT' | 'FORFEIT' | 'DISQUALIFIED' | 'EXPIRED' | 'CANCELLED'
+export type DuelDifficulty = 'EASY' | 'MEDIUM' | 'HARD' | 'RANDOM'
+
 export type ContestRoom = {
+    mode: RoomMode
+    status: DuelStatus
+    hostUserId: string
+    difficulty: DuelDifficulty | null
+    winnerId: string | null
+    finishReason: DuelFinishReason | null
+    finishedAt: string | null
+    rematchCode: string | null
+    readyUserIds: string[]
+    warnings: Record<string, { count: number; lastReason?: string }>
+    serverNow: string
+    hasStarted: boolean
     code: string
     maxParticipants: number | null
     participantCount: number

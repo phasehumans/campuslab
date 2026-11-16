@@ -1,8 +1,10 @@
 import type {
     ContestRoom,
+    DuelDifficulty,
     EditorLanguage,
     ExecutionResponse,
     PlaygroundRunResponse,
+    Potd,
     ProblemDetail,
     ProblemExample,
     ProblemsResponse,
@@ -43,7 +45,7 @@ type RequestOptions = {
     allowUnauthorized?: boolean
 }
 
-class ApiError extends Error {
+export class ApiError extends Error {
     status: number
     data: unknown
 
@@ -314,4 +316,70 @@ export const reportContestIntegrityEvent = async (
         method: 'POST',
         body: JSON.stringify({ event, ...details }),
     })
+}
+
+export const getPotd = async (): Promise<Potd | null> => {
+    const response = await request<{ potd: Potd }>('/potd', undefined, { allowUnauthorized: true })
+    return response?.potd ?? null
+}
+
+export const createDuel = async (payload: {
+    difficulty: DuelDifficulty
+    timeLimitMinutes: 15 | 30 | 45
+}) => {
+    const response = await request<{ duel: ContestRoom }>('/duels', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+    })
+    return response!.duel
+}
+
+export const getDuel = async (code: string) => {
+    const response = await request<{ duel: ContestRoom }>(`/duels/${encodeURIComponent(code)}`)
+    return response!.duel
+}
+
+export const joinDuel = async (code: string) => {
+    const response = await request<{ duel: ContestRoom }>(
+        `/duels/${encodeURIComponent(code)}/join`,
+        { method: 'POST' }
+    )
+    return response!.duel
+}
+
+export const setDuelReady = async (code: string, ready: boolean) => {
+    const response = await request<{ duel: ContestRoom }>(
+        `/duels/${encodeURIComponent(code)}/ready`,
+        { method: 'POST', body: JSON.stringify({ ready }) }
+    )
+    return response!.duel
+}
+
+export const leaveDuel = async (code: string) => {
+    const response = await request<{ duel: ContestRoom | null }>(
+        `/duels/${encodeURIComponent(code)}/leave`,
+        { method: 'POST' }
+    )
+    return response?.duel ?? null
+}
+
+export const reportDuelViolation = async (code: string, reason: string) => {
+    const response = await request<{
+        violations: number
+        maxViolations: number
+        lost: boolean
+        duel: ContestRoom | null
+    }>(`/duels/${encodeURIComponent(code)}/violation`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+    })
+    return response!
+}
+
+export const requestRematch = async (code: string) => {
+    const response = await request<{ duel: ContestRoom }>(
+        `/duels/${encodeURIComponent(code)}/rematch`,
+        { method: 'POST' }
+    )
+    return response!.duel
 }

@@ -15,7 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { cn, parseUtcDate } from '@/lib/utils'
-import { leaveContestRoom } from '@/lib/api'
+import { leaveContestRoom, leaveDuel } from '@/lib/api'
 
 interface ContestParticipantInfo {
     userId: string
@@ -36,6 +36,9 @@ interface ContestInfo {
     winnerName?: string
     isWinner?: boolean
     participants?: ContestParticipantInfo[]
+    isDuel?: boolean
+    duelFinished?: boolean
+    opponentName?: string
 }
 
 interface SolveScreenNavbarProps {
@@ -49,7 +52,7 @@ interface SolveScreenNavbarProps {
     splitWidth?: number
     contestInfo?: ContestInfo
     isDisqualified?: boolean
-    liveAlert?: { id: string; message: string; type: 'disqualified' | 'paste' } | null
+    liveAlert?: { id: string; message: string; type: 'disqualified' | 'paste' | 'info' } | null
     onDismissLiveAlert?: () => void
 }
 
@@ -507,7 +510,9 @@ export function SolveScreenNavbar({
                         'fixed top-14 left-4 z-[100] max-w-xs sm:max-w-sm rounded-[3px] p-3 font-mono text-xs shadow-2xl border transition-all select-none pointer-events-auto',
                         liveAlert.type === 'disqualified'
                             ? 'bg-[#181818]/95 border-red-800 text-red-200 shadow-red-950/40'
-                            : 'bg-[#181818]/95 border-amber-700/80 text-amber-200 shadow-amber-950/40'
+                            : liveAlert.type === 'info'
+                              ? 'bg-[#181818]/95 border-[#87b2f4]/60 text-[#dbe7fb] shadow-black/40'
+                              : 'bg-[#181818]/95 border-amber-700/80 text-amber-200 shadow-amber-950/40'
                     )}
                 >
                     <div className="flex items-center justify-between border-b border-white/10 pb-1.5 mb-1.5">
@@ -516,10 +521,12 @@ export function SolveScreenNavbar({
                                 'text-[10px] font-bold tracking-wider uppercase',
                                 liveAlert.type === 'disqualified'
                                     ? 'text-red-400'
-                                    : 'text-amber-400'
+                                    : liveAlert.type === 'info'
+                                      ? 'text-[#87b2f4]'
+                                      : 'text-amber-400'
                             )}
                         >
-                            [CONTEST ALERT]
+                            {contestInfo?.isDuel ? '[DUEL]' : '[CONTEST ALERT]'}
                         </span>
                         <button
                             type="button"
@@ -569,7 +576,16 @@ export function SolveScreenNavbar({
                             </div>
 
                             <p className="text-[#a09f9d] leading-relaxed">
-                                {contestInfo ? (
+                                {contestInfo?.isDuel && !contestInfo.duelFinished ? (
+                                    <>
+                                        Leaving now{' '}
+                                        <span className="text-rose-300 font-semibold">
+                                            forfeits the duel
+                                        </span>
+                                        . {contestInfo.opponentName || 'Your opponent'} will be
+                                        declared the winner.
+                                    </>
+                                ) : contestInfo ? (
                                     <>
                                         Are you sure you want to exit contest room{' '}
                                         <span className="text-[#e8e8e6] font-semibold">
@@ -609,7 +625,11 @@ export function SolveScreenNavbar({
                                         if (contestInfo?.roomCode) {
                                             setIsExiting(true)
                                             try {
-                                                await leaveContestRoom(contestInfo.roomCode)
+                                                if (contestInfo.isDuel) {
+                                                    await leaveDuel(contestInfo.roomCode)
+                                                } else {
+                                                    await leaveContestRoom(contestInfo.roomCode)
+                                                }
                                             } catch (err) {
                                                 console.error('Failed to leave contest room:', err)
                                             } finally {
@@ -622,7 +642,11 @@ export function SolveScreenNavbar({
                                     className="px-3.5 py-2 bg-rose-500/80 hover:bg-rose-500 text-white font-medium rounded-[3px] transition-colors cursor-pointer flex items-center gap-1.5"
                                 >
                                     {isExiting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                                    {contestInfo ? 'Exit Contest' : 'Exit Problem'}
+                                    {contestInfo?.isDuel && !contestInfo.duelFinished
+                                        ? 'Forfeit & Exit'
+                                        : contestInfo
+                                          ? 'Exit Contest'
+                                          : 'Exit Problem'}
                                 </button>
                             </div>
                         </div>

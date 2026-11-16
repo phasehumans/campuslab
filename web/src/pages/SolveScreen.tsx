@@ -28,7 +28,12 @@ import {
     submitCode,
     getAuthToken,
     reportContestIntegrityEvent,
+    leaveDuel,
+    reportDuelViolation,
+    requestRematch,
 } from '@/lib/api'
+import { DuelResultPanel } from '@/components/duel/DuelResultPanel'
+import { duelOpponent, duelOutcome } from '@/lib/duel'
 import type { EditorLanguage, ExecutionResponse, SubmissionItem } from '@/lib/types'
 
 export function SolveScreen() {
@@ -49,15 +54,33 @@ export function SolveScreen() {
     })
 
     const contestRoom = contestRoomQuery.data
-    const winner = contestRoom?.leaderboard?.find((entry) => entry.solved >= 1)
+    const isDuel = contestRoom?.mode === 'DUEL'
+    const duelFinished = Boolean(isDuel && contestRoom?.status === 'FINISHED')
+    const duelOpponentInfo = isDuel && contestRoom ? duelOpponent(contestRoom, user?.id) : undefined
+    const duelWinner =
+        isDuel && contestRoom?.winnerId
+            ? contestRoom.participants.find((p) => p.userId === contestRoom.winnerId)
+            : undefined
+    // Duels are decided by the server (earliest-received Accepted); rooms by the leaderboard
+    const winner = isDuel
+        ? duelWinner && {
+              userId: duelWinner.userId,
+              name: duelWinner.name,
+              avatar: duelWinner.avatar,
+              isYou: duelWinner.userId === user?.id,
+          }
+        : contestRoom?.leaderboard?.find((entry) => entry.solved >= 1)
     const hasWinner = Boolean(winner)
     const isWinner = Boolean(winner && (winner.isYou || (user && winner.userId === user.id)))
-    const isContestTimeout = Boolean(
-        contestRoom &&
-        (contestRoom.isEnded ||
-            (contestRoom.endsAt && (parseUtcDate(contestRoom.endsAt) ?? Infinity) <= Date.now())) &&
-        !hasWinner
-    )
+    const isContestTimeout = isDuel
+        ? duelFinished && !contestRoom?.winnerId
+        : Boolean(
+              contestRoom &&
+              (contestRoom.isEnded ||
+                  (contestRoom.endsAt &&
+                      (parseUtcDate(contestRoom.endsAt) ?? Infinity) <= Date.now())) &&
+              !hasWinner
+          )
 
     const meParticipant = contestRoom?.participants?.find((p) => p.userId === user?.id)
     const isServerDisqualified = Boolean(meParticipant?.isDisqualified)
@@ -69,8 +92,13 @@ export function SolveScreen() {
     const [liveAlert, setLiveAlert] = useState<{
         id: string
         message: string
-        type: 'disqualified' | 'paste'
+        type: 'disqualified' | 'paste' | 'info'
     } | null>(null)
+    // Duel anti-cheat: the reason for the (single) warning a player can receive
+    const [duelWarning, setDuelWarning] = useState<string | null>(null)
+    const duelViolationInFlightRef = useRef(false)
+    const lastDuelViolationAtRef = useRef(0)
+    const [rematchError, setRematchError] = useState<string | null>(null)
 
     useEffect(() => {
         if (isServerDisqualified) {
@@ -80,6 +108,11 @@ export function SolveScreen() {
             )
         }
     }, [isServerDisqualified, meParticipant?.disqualifiedReason])
+
+    const userIdRef = useRef<string | undefined>(user?.id)
+    useEffect(() => {
+        userIdRef.current = user?.id
+    }, [user?.id])
 
     // WebSocket subscription for live contest peer updates
     useEffect(() => {
@@ -124,6 +157,45 @@ export function SolveScreen() {
                                 ...prev,
                                 [data.userId]: `DISQUALIFIED: ${data.reason}`,
                             }))
+                            queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
+                        } else if (data.type === 'OPPONENT_SUBMITTED') {
+                            if (data.userId !== userIdRef.current) {
+                                const verdict =
+                                    data.total > 0
+                                        ? `${data.status} (${data.passed}/${data.total} tests)`
+                                        : data.status
+                                setLiveAlert({
+                                    id: `${Date.now()}-${Math.random()}`,
+                                    message: `${data.userName} submitted: ${verdict}`,
+                                    type: 'info',
+                                })
+                                setUserRemarks((prev) => ({
+                                    ...prev,
+                                    [data.userId]: `LAST: ${String(data.status).toUpperCase()} ${data.passed}/${data.total}`,
+                                }))
+                            }
+                        } else if (data.type === 'PEER_WARNED') {
+                            if (data.userId !== userIdRef.current) {
+                                setLiveAlert({
+                                    id: `${Date.now()}-${Math.random()}`,
+                                    message: `${data.userName} got an anti-cheat warning (${data.reason}). One more and they lose.`,
+                                    type: 'paste',
+                                })
+                                setUserRemarks((prev) => ({
+                                    ...prev,
+                                    [data.userId]: 'WARNED (1/1)',
+                                }))
+                            }
+                        } else if (data.type === 'REMATCH_OFFER') {
+                            if (data.fromUserId !== userIdRef.current) {
+                                setLiveAlert({
+                                    id: `${Date.now()}-${Math.random()}`,
+                                    message: `${data.fromName} wants a rematch!`,
+                                    type: 'info',
+                                })
+                            }
+                            queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
+                        } else if (typeof data.type === 'string' && data.type.startsWith('DUEL_')) {
                             queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
                         } else if (data.type === 'PEER_PASTE_ATTEMPT') {
                             setLiveAlert({
@@ -197,23 +269,68 @@ export function SolveScreen() {
         [roomCode, isDisqualified, contestRoom?.isEnded, user?.id, queryClient]
     )
 
+    // Duels: first violation is a warning (back to the fullscreen gate), second one loses
+    const triggerDuelViolation = useCallback(
+        async (reason: string) => {
+            if (!roomCode || duelFinished) return
+            const now = Date.now()
+            // One Alt+Tab fires blur, visibilitychange and fullscreenchange together
+            if (duelViolationInFlightRef.current || now - lastDuelViolationAtRef.current < 3000) {
+                return
+            }
+            lastDuelViolationAtRef.current = now
+            duelViolationInFlightRef.current = true
+            setHasEnteredFullscreen(false)
+            try {
+                const res = await reportDuelViolation(roomCode, reason)
+                if (!res.lost) setDuelWarning(reason)
+            } catch (err) {
+                console.error('Failed to report duel violation:', err)
+                setDuelWarning(reason)
+            } finally {
+                duelViolationInFlightRef.current = false
+                queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
+            }
+        },
+        [roomCode, duelFinished, queryClient]
+    )
+
+    const triggerIntegrityViolation = useCallback(
+        (reason: string) => {
+            if (isDuel) {
+                triggerDuelViolation(reason)
+            } else {
+                triggerDisqualification(reason)
+            }
+        },
+        [isDuel, triggerDuelViolation, triggerDisqualification]
+    )
+
     // Window focus, tab switch, and fullscreen watchdog (Contest mode only)
     useEffect(() => {
-        if (!roomCode || !hasEnteredFullscreen || isDisqualified || contestRoom?.isEnded) return
+        if (
+            !roomCode ||
+            !contestRoom ||
+            !hasEnteredFullscreen ||
+            isDisqualified ||
+            contestRoom.isEnded ||
+            duelFinished
+        )
+            return
 
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden') {
-                triggerDisqualification('Tab switch detected')
+                triggerIntegrityViolation('Tab switch detected')
             }
         }
 
         const handleBlur = () => {
-            triggerDisqualification('Window unfocused')
+            triggerIntegrityViolation('Window unfocused')
         }
 
         const handleFullscreenChange = () => {
             if (!document.fullscreenElement) {
-                triggerDisqualification('Exited fullscreen')
+                triggerIntegrityViolation('Exited fullscreen')
             }
         }
 
@@ -228,10 +345,11 @@ export function SolveScreen() {
         }
     }, [
         roomCode,
+        contestRoom,
         hasEnteredFullscreen,
         isDisqualified,
-        contestRoom?.isEnded,
-        triggerDisqualification,
+        duelFinished,
+        triggerIntegrityViolation,
     ])
 
     // Paste attempt handler (Option A: Block buffer write and broadcast attempt)
@@ -261,13 +379,31 @@ export function SolveScreen() {
     const handleExitContest = async () => {
         if (roomCode) {
             try {
-                await leaveContestRoom(roomCode)
+                if (isDuel) {
+                    if (!duelFinished) await leaveDuel(roomCode)
+                } else {
+                    await leaveContestRoom(roomCode)
+                }
             } catch (err) {
                 console.error('Failed to leave contest room:', err)
             }
         }
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => undefined)
+        }
         navigate('/')
     }
+
+    const rematchMutation = useMutation({
+        mutationFn: () => requestRematch(roomCode as string),
+        onSuccess: (next) => {
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(() => undefined)
+            }
+            navigate(`/duel/${next.code}`)
+        },
+        onError: (err) => setRematchError(getApiErrorMessage(err, 'Could not start a rematch')),
+    })
 
     // Blast confetti from lower-left and lower-right only when the current user wins
     useEffect(() => {
@@ -439,7 +575,7 @@ export function SolveScreen() {
                 problemId: id as string,
                 sourceCode: codeByLanguage[language],
                 language,
-                contestCode: isContestTimeout ? undefined : roomCode,
+                contestCode: isContestTimeout || duelFinished ? undefined : roomCode,
                 solveDurationSeconds: variables?.solveDurationSeconds,
             }),
         onSuccess: async (response) => {
@@ -595,6 +731,9 @@ export function SolveScreen() {
                                   hasWinner,
                                   winnerName: winner?.name,
                                   isWinner,
+                                  isDuel,
+                                  duelFinished,
+                                  opponentName: duelOpponentInfo?.name,
                                   participants: (contestRoom.participants || []).map((p) => ({
                                       ...p,
                                       remark: p.isDisqualified
@@ -609,8 +748,38 @@ export function SolveScreen() {
                     onDismissLiveAlert={() => setLiveAlert(null)}
                 />
 
+                {/* Duel concluded bar (when the result modal is dismissed) */}
+                {isDuel && duelFinished && dismissedContestResult && contestRoom && (
+                    <div className="w-full bg-[#18181b] border-b border-[#333333] px-3 py-1.5 flex items-center justify-between text-xs font-mono shrink-0 select-none">
+                        <span
+                            className={cn(
+                                'font-medium',
+                                duelOutcome(contestRoom, user?.id) === 'won'
+                                    ? 'text-emerald-400'
+                                    : duelOutcome(contestRoom, user?.id) === 'lost'
+                                      ? 'text-rose-300'
+                                      : 'text-[#fcd34d]'
+                            )}
+                        >
+                            {duelOutcome(contestRoom, user?.id) === 'won'
+                                ? 'Duel won'
+                                : duelOutcome(contestRoom, user?.id) === 'lost'
+                                  ? 'Duel lost'
+                                  : 'Duel drawn'}
+                            <span className="text-[#a09f9d] font-normal"> · practice mode</span>
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => setDismissedContestResult(false)}
+                            className="text-[11px] text-[#87b2f4] hover:underline cursor-pointer"
+                        >
+                            View result
+                        </button>
+                    </div>
+                )}
+
                 {/* Persistent Match Concluded Alert Bar (When Modal is Dismissed) */}
-                {hasWinner && dismissedContestResult && (
+                {!isDuel && hasWinner && dismissedContestResult && (
                     <div className="w-full bg-[#18181b] border-b border-[#333333] px-3 py-1.5 flex items-center justify-between text-xs font-mono shrink-0 select-none">
                         <div className="flex items-center gap-2">
                             {isWinner ? (
@@ -879,8 +1048,48 @@ export function SolveScreen() {
                 </div>
             </div>
 
+            {/* Duel result modal */}
+            {isDuel &&
+                duelFinished &&
+                contestRoom &&
+                !dismissedContestResult &&
+                createPortal(
+                    <div
+                        className="dark fixed inset-0 z-[220] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Duel result"
+                    >
+                        <div className="w-full max-w-[440px] rounded-[4px] border border-[#333333] bg-[#1e1e1e] text-[#e8e8e6] shadow-2xl p-6 relative">
+                            <button
+                                type="button"
+                                onClick={() => setDismissedContestResult(true)}
+                                className="absolute top-4 right-4 text-[#94a3b8] hover:text-white transition-colors p-1 cursor-pointer"
+                                aria-label="Close"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                            <DuelResultPanel
+                                duel={contestRoom}
+                                myId={user?.id}
+                                problemTitle={problem.title}
+                                onExit={handleExitContest}
+                                onStay={() => setDismissedContestResult(true)}
+                                onRematch={() => {
+                                    setRematchError(null)
+                                    rematchMutation.mutate()
+                                }}
+                                isRematchPending={rematchMutation.isPending}
+                                rematchError={rematchError}
+                            />
+                        </div>
+                    </div>,
+                    document.body
+                )}
+
             {/* Contest Victory / Defeat / Timeout Overlay Modal */}
-            {(hasWinner || isContestTimeout) &&
+            {!isDuel &&
+                (hasWinner || isContestTimeout) &&
                 !dismissedContestResult &&
                 createPortal(
                     <div
@@ -1083,19 +1292,35 @@ export function SolveScreen() {
                 !hasEnteredFullscreen &&
                 !isDisqualified &&
                 !contestRoom?.isEnded &&
+                !duelFinished &&
                 createPortal(
                     <div className="dark fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-4 font-mono select-none">
                         <div className="w-full max-w-md bg-[#181818] border border-[#333333] p-6 rounded-[3px] space-y-4 text-center">
                             <div className="text-xs font-semibold uppercase tracking-wider text-[#e8e8e6] border-b border-[#282828] pb-3">
-                                [CONTEST INTEGRITY ARENA]
+                                {isDuel ? '[1V1 DUEL ARENA]' : '[CONTEST INTEGRITY ARENA]'}
                             </div>
+                            {isDuel && duelWarning && (
+                                <div className="bg-amber-950/40 border border-amber-700/70 p-3 rounded-[2px] text-left text-xs text-amber-200 space-y-1">
+                                    <div className="font-semibold uppercase tracking-wider">
+                                        [WARNING 1 OF 1]
+                                    </div>
+                                    <div>
+                                        {duelWarning}. Do that once more and you lose the duel.
+                                    </div>
+                                </div>
+                            )}
                             <div className="text-xs text-[#a09f9d] leading-relaxed text-left space-y-2">
-                                <p>This contest arena enforces strict peer integrity rules:</p>
+                                <p>
+                                    {isDuel
+                                        ? 'This duel enforces strict integrity rules:'
+                                        : 'This contest arena enforces strict peer integrity rules:'}
+                                </p>
                                 <div className="space-y-1.5 pl-2 border-l border-[#333333] text-[11px] text-[#cccccc]">
                                     <div>[1] Fullscreen mode is mandatory.</div>
                                     <div>
-                                        [2] Tab switch, window exit, or defocus triggers immediate
-                                        disqualification.
+                                        {isDuel
+                                            ? '[2] Tab switch, window exit, or defocus: first time is a warning, second time you lose.'
+                                            : '[2] Tab switch, window exit, or defocus triggers immediate disqualification.'}
                                     </div>
                                     <div>[3] Direct copy-paste into the editor is blocked.</div>
                                 </div>
@@ -1115,15 +1340,20 @@ export function SolveScreen() {
                                 }}
                                 className="w-full py-2.5 px-4 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] font-semibold text-xs tracking-wider uppercase rounded-[2px] transition-colors cursor-pointer"
                             >
-                                [ENTER FULLSCREEN & START CONTEST]
+                                {isDuel && duelWarning
+                                    ? '[RE-ENTER FULLSCREEN & CONTINUE]'
+                                    : isDuel
+                                      ? '[ENTER FULLSCREEN & START DUEL]'
+                                      : '[ENTER FULLSCREEN & START CONTEST]'}
                             </button>
                         </div>
                     </div>,
                     document.body
                 )}
 
-            {/* Disqualified Session Overlay */}
+            {/* Disqualified Session Overlay (duels show the duel result instead) */}
             {isDisqualified &&
+                !isDuel &&
                 createPortal(
                     <div className="dark fixed inset-0 z-[210] flex items-center justify-center bg-black/95 p-4 font-mono select-none">
                         <div className="w-full max-w-md bg-[#181818] border border-red-900/80 p-6 rounded-[3px] space-y-4 text-center">

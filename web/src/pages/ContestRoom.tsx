@@ -29,6 +29,10 @@ export function ContestRoom() {
     useEffect(() => {
         if (!roomQuery.data) return
         const room = roomQuery.data
+        if (room.mode === 'DUEL') {
+            navigate(`/duel/${room.code}`, { replace: true })
+            return
+        }
         if (!room.questions || room.questions.length === 0) return
 
         if (room.meJoined) {

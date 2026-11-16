@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Loader2, AlertCircle } from 'lucide-react'
+import { consumePostLoginRedirect } from '@/lib/utils'
 
 export function OAuthCallback({
     provider,
@@ -48,10 +49,11 @@ export function OAuthCallback({
             redirectUri,
         })
             .then(() => {
+                const target = consumePostLoginRedirect()
                 if (window.history.replaceState) {
-                    window.history.replaceState({}, document.title, '/')
+                    window.history.replaceState({}, document.title, target)
                 }
-                navigate('/', { replace: true })
+                navigate(target, { replace: true })
             })
             .catch((err: unknown) => {
                 const message =

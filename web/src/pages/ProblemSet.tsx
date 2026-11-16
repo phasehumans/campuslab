@@ -7,6 +7,9 @@ import { ProblemTable } from '@/components/problem/ProblemTable'
 import { ProblemTableSkeleton } from '@/components/problem/ProblemTableSkeleton'
 import { ProblemPagination } from '@/components/problem/ProblemPagination'
 import { SidelinePanel } from '@/components/home/SidelinePanel'
+import { PotdCard } from '@/components/home/PotdCard'
+import { getPotd } from '@/lib/api'
+import { useAuth } from '@/contexts/AuthContext'
 
 export function ProblemSet() {
     const navigate = useNavigate()
@@ -18,6 +21,15 @@ export function ProblemSet() {
     const [status, setStatus] = useState('All')
     const [topic, setTopic] = useState('All')
     const [availableTopics, setAvailableTopics] = useState<string[]>([])
+    const { isLoggedIn } = useAuth()
+
+    // Shares the cache entry with PotdCard, used to badge today's row in the table
+    const potdQuery = useQuery({
+        queryKey: ['potd', isLoggedIn],
+        queryFn: getPotd,
+        staleTime: 60_000,
+        refetchInterval: 60_000,
+    })
 
     // Debounce search input to avoid hitting backend on every keystroke
     useEffect(() => {
@@ -161,6 +173,8 @@ export function ProblemSet() {
 
                 {/* Left Area: Filter Bar, Problem Table & Attached Pagination Footer (Mobile: Below Sideline, Desktop: Left Column) */}
                 <div className="flex-1 min-w-0 w-full space-y-2.5 order-2 lg:order-1">
+                    <PotdCard />
+
                     {/* Compact Filter Bar */}
                     <div className="flex flex-col sm:flex-row gap-2.5 items-center justify-between border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] p-2.5 rounded-[3px] transition-colors">
                         <div className="relative w-full sm:flex-1">
@@ -234,6 +248,7 @@ export function ProblemSet() {
                                 problems={displayedProblems}
                                 onProblemClick={handleProblemClick}
                                 startIndex={(page - 1) * pageSize + 1}
+                                potdProblemId={potdQuery.data?.problem.id ?? null}
                                 footer={
                                     <ProblemPagination
                                         currentPage={page}
