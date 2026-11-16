@@ -4,17 +4,23 @@
 #include <memory>
 #include "config/app_config.hpp"
 #include "db/connection_pool.hpp"
+#include "db/migrations.hpp"
 #include "middleware/cors.hpp"
 #include "services/auth_service.hpp"
 #include "services/problem_service.hpp"
 #include "services/execution_service.hpp"
 #include "services/contest_service.hpp"
 #include "services/profile_service.hpp"
+#include "services/potd_service.hpp"
+#include "services/duel_service.hpp"
+#include "services/contest_ws_manager.hpp"
 #include "controllers/auth_controller.hpp"
 #include "controllers/problem_controller.hpp"
 #include "controllers/execution_controller.hpp"
 #include "controllers/contest_controller.hpp"
 #include "controllers/profile_controller.hpp"
+#include "controllers/potd_controller.hpp"
+#include "controllers/duel_controller.hpp"
 
 using namespace campuslab;
 
@@ -34,12 +40,21 @@ int main() {
     DbConnectionPool db_pool(cfg.db_url, cfg.db_pool_size);
     std::cout << "[API] PostgreSQL connection pool initialized (" << db_pool.available_count() << " connections)." << std::endl;
 
+    Migrations::run(db_pool);
+
     // Initialize business services
     AuthService auth_service(db_pool, cfg.jwt_secret);
     ProblemService problem_service(db_pool);
     ExecutionService execution_service(db_pool, cfg.redis_host, cfg.redis_port);
     ContestService contest_service(db_pool);
     ProfileService profile_service(db_pool);
+    PotdService potd_service(db_pool);
+    DuelService duel_service(db_pool, [](const std::string& code, const json& msg) {
+        ContestWsManager::instance().broadcast_to_room(code, msg);
+    });
+    execution_service.on_contest_submission = [&duel_service](const std::string& code, const std::string& user_id, const json& submission) {
+        duel_service.on_submission_judged(code, user_id, submission);
+    };
 
     // Initialize API controllers
     AuthController auth_controller(auth_service, cfg.jwt_secret, cfg.github_client_id, cfg.github_client_secret, cfg.google_client_id, cfg.google_client_secret, cfg.client_origin);
@@ -47,6 +62,8 @@ int main() {
     ExecutionController execution_controller(execution_service, cfg.jwt_secret);
     ContestController contest_controller(contest_service, db_pool, cfg.jwt_secret);
     ProfileController profile_controller(profile_service, cfg.jwt_secret);
+    PotdController potd_controller(potd_service, cfg.jwt_secret);
+    DuelController duel_controller(duel_service, cfg.jwt_secret);
 
     // Setup Crow application with CORS middleware
     AppType app;
@@ -78,6 +95,8 @@ int main() {
     execution_controller.register_routes(app);
     contest_controller.register_routes(app);
     profile_controller.register_routes(app);
+    potd_controller.register_routes(app);
+    duel_controller.register_routes(app);
 
     std::cout << "[API] All routes registered successfully." << std::endl;
     std::cout << "[API] Server listening on port " << cfg.port << "..." << std::endl;

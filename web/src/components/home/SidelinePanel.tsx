@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { Loader2, ArrowRight } from 'lucide-react'
+import { Loader2, ArrowRight, Swords } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
-import { getApiErrorMessage, getProfile, joinContestRoom } from '@/lib/api'
+import { getApiErrorMessage, getContestRoom, getProfile, joinContestRoom } from '@/lib/api'
 import { ContestActionModal } from '@/components/contest/ContestActionModal'
+import { CreateDuelModal } from '@/components/duel/CreateDuelModal'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { cn, formatRelativeTime } from '@/lib/utils'
 
@@ -93,6 +94,7 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
     const [roomCode, setRoomCode] = useState('')
     const [joinError, setJoinError] = useState<string | null>(null)
     const [isContestModalOpen, setIsContestModalOpen] = useState(false)
+    const [isDuelModalOpen, setIsDuelModalOpen] = useState(false)
 
     const profileQuery = useQuery({
         queryKey: ['profile'],
@@ -101,10 +103,18 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
     })
 
     const joinMutation = useMutation({
-        mutationFn: (code: string) => joinContestRoom(code.trim().toUpperCase()),
+        // One box joins both contest rooms and duels: duel codes go to the duel page
+        mutationFn: async (raw: string) => {
+            const code = raw.trim().toUpperCase()
+            const existing = await getContestRoom(code)
+            if (existing.mode === 'DUEL') return existing
+            return joinContestRoom(code)
+        },
         onSuccess: (room) => {
             setJoinError(null)
-            if (room.questions && room.questions.length > 0) {
+            if (room.mode === 'DUEL') {
+                navigate(`/duel/${room.code}`)
+            } else if (room.questions && room.questions.length > 0) {
                 navigate(`/problem/${room.questions[0].id}?room=${room.code}`)
             } else {
                 navigate(`/contest/${room.code}`)
@@ -209,6 +219,31 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                                 </div>
                             )}
 
+                            {/* 1v1 duel record */}
+                            {profile?.duels &&
+                                profile.duels.wins + profile.duels.losses + profile.duels.draws >
+                                    0 && (
+                                    <div className="flex items-center justify-between font-mono text-[11px] pt-1">
+                                        <span className="flex items-center gap-1.5 text-[#52525b] dark:text-[#a09f9d]">
+                                            <Swords className="h-3 w-3" />
+                                            Duels
+                                        </span>
+                                        <span className="text-[#090a0f] dark:text-[#e8e8e6]">
+                                            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                                                {profile.duels.wins}W
+                                            </span>
+                                            {' · '}
+                                            <span className="text-rose-500 dark:text-rose-300 font-semibold">
+                                                {profile.duels.losses}L
+                                            </span>
+                                            {' · '}
+                                            <span className="text-[#64748b] dark:text-[#a09f9d]">
+                                                {profile.duels.draws}D
+                                            </span>
+                                        </span>
+                                    </div>
+                                )}
+
                             {/* Recent Submissions (Max 3, Minimalist List) */}
                             {profile?.recentSubmissions && profile.recentSubmissions.length > 0 && (
                                 <div className="space-y-1.5 pt-2.5 border-t border-[#f0f2f5] dark:border-[#272727] font-mono">
@@ -282,11 +317,27 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                     </div>
                 )}
 
+                {/* 1v1 Duel */}
+                <button
+                    type="button"
+                    onClick={() => {
+                        if (!isLoggedIn) {
+                            openModal()
+                            return
+                        }
+                        setIsDuelModalOpen(true)
+                    }}
+                    className="w-full flex items-center justify-center gap-1.5 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] font-mono text-xs font-semibold py-2 px-3 rounded-[3px] transition-colors cursor-pointer"
+                >
+                    <Swords className="h-3.5 w-3.5" />
+                    <span>Challenge a friend (1v1)</span>
+                </button>
+
                 {/* Join with room code */}
                 <form onSubmit={handleJoin} className="space-y-2">
                     <input
                         type="text"
-                        placeholder="ENTER ROOM CODE (E.G. A1B2)"
+                        placeholder="ROOM OR DUEL CODE"
                         value={roomCode}
                         onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                         maxLength={8}
@@ -298,7 +349,7 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                         className="w-full flex items-center justify-center gap-1.5 bg-[#090a0f] dark:bg-white hover:bg-[#27272a] dark:hover:bg-[#e8e8e6] text-white dark:text-[#141414] font-mono text-xs py-2 px-3 rounded-[3px] transition-colors disabled:opacity-50 cursor-pointer"
                     >
                         {joinMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                        <span>Join Contest</span>
+                        <span>Join with Code</span>
                     </button>
                 </form>
 
@@ -323,6 +374,8 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                     <span>+ Create Contest</span>
                 </button>
             </div>
+
+            <CreateDuelModal isOpen={isDuelModalOpen} onClose={() => setIsDuelModalOpen(false)} />
 
             {/* Contest Room Creation Modal */}
             <ContestActionModal

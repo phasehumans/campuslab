@@ -9,6 +9,7 @@ interface ProblemTableProps {
     onProblemClick: (id: string) => void
     startIndex?: number
     footer?: React.ReactNode
+    potdProblemId?: string | null
 }
 
 export function ProblemTable({
@@ -16,6 +17,7 @@ export function ProblemTable({
     onProblemClick,
     startIndex = 1,
     footer,
+    potdProblemId = null,
 }: ProblemTableProps) {
     const queryClient = useQueryClient()
 
@@ -72,14 +74,24 @@ export function ProblemTable({
                                             )}
                                         </td>
                                         <td className="px-2.5 sm:px-4 py-2.5 align-middle truncate max-w-0">
-                                            <Link
-                                                to={`/problem/${problem.id}`}
-                                                onClick={(e) => e.stopPropagation()}
-                                                onMouseEnter={() => handlePrefetch(problem.id)}
-                                                className="font-medium text-xs sm:text-[13px] text-[#090a0f] dark:text-[#e8e8e6] group-hover:text-[#87b2f4] group-hover:underline transition-colors block truncate"
-                                            >
-                                                {problem.title}
-                                            </Link>
+                                            <div className="flex items-center gap-1.5 min-w-0">
+                                                {potdProblemId === problem.id && (
+                                                    <span
+                                                        className="shrink-0 font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-[2px] bg-[#87b2f4]/15 border border-[#87b2f4]/40 text-[#3b6fc4] dark:text-[#87b2f4]"
+                                                        title="Problem of the Day"
+                                                    >
+                                                        today
+                                                    </span>
+                                                )}
+                                                <Link
+                                                    to={`/problem/${problem.id}`}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    onMouseEnter={() => handlePrefetch(problem.id)}
+                                                    className="font-medium text-xs sm:text-[13px] text-[#090a0f] dark:text-[#e8e8e6] group-hover:text-[#87b2f4] group-hover:underline transition-colors block truncate min-w-0"
+                                                >
+                                                    {problem.title}
+                                                </Link>
+                                            </div>
                                         </td>
                                         <td className="px-4 py-2.5 hidden md:table-cell align-middle">
                                             <div className="flex items-center gap-1.5 overflow-hidden whitespace-nowrap">

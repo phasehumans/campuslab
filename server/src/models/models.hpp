@@ -176,6 +176,20 @@ struct ContestRoomResponse {
     std::vector<ContestQuestionItem> questions;
     std::vector<ContestLeaderboardItem> leaderboard;
 
+    // Duel fields (mode == "DUEL"); regular rooms use mode "ROOM"
+    std::string mode = "ROOM";
+    std::string status = "LIVE";
+    std::string host_user_id;
+    std::optional<std::string> difficulty;
+    std::optional<std::string> winner_id;
+    std::optional<std::string> finish_reason;
+    std::optional<std::string> finished_at;
+    std::optional<std::string> rematch_code;
+    std::vector<std::string> ready_user_ids;
+    json warnings = json::object();
+    std::string server_now;
+    bool has_started = true;
+
     json to_json() const {
         json qs = json::array();
         for (const auto& q : questions) qs.push_back(q.to_json());
@@ -183,7 +197,21 @@ struct ContestRoomResponse {
         json lb = json::array();
         for (const auto& l : leaderboard) lb.push_back(l.to_json());
 
+        auto opt = [](const std::optional<std::string>& v) { return v.has_value() ? json(*v) : json(nullptr); };
+
         return {
+            {"mode", mode},
+            {"status", status},
+            {"hostUserId", host_user_id},
+            {"difficulty", opt(difficulty)},
+            {"winnerId", opt(winner_id)},
+            {"finishReason", opt(finish_reason)},
+            {"finishedAt", opt(finished_at)},
+            {"rematchCode", opt(rematch_code)},
+            {"readyUserIds", ready_user_ids},
+            {"warnings", warnings},
+            {"serverNow", server_now},
+            {"hasStarted", has_started},
             {"code", code},
             {"maxParticipants", max_participants.has_value() ? json(*max_participants) : nullptr},
             {"participantCount", participant_count},

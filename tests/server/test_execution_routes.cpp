@@ -208,6 +208,51 @@ int main() {
         TEST_ASSERT(body_auth["submissions"].size() >= 1, "Contains at least 1 submission created above");
     }
 
+    // -------------------------------------------------------------
+    // 5. POST /api/v1/playground/run - Stateless Playground & Rate Limiting
+    // -------------------------------------------------------------
+    std::cout << "\n[5] Testing POST /api/v1/playground/run (No Auth, Stateless)..." << std::endl;
+    {
+        // 5a. Unauthenticated is allowed (no 401)
+        auto r_malformed = make_post_req("/api/v1/playground/run", "{invalid");
+        crow::response res_malformed;
+        app.handle_full(r_malformed, res_malformed);
+        TEST_ASSERT(res_malformed.code == 400, "Malformed JSON returns 400 without auth");
+        TEST_ASSERT(json::parse(res_malformed.body)["message"] == "Invalid JSON payload", "Invalid JSON message");
+
+        // 5b. Empty source code returns 400
+        auto r_empty = make_post_req("/api/v1/playground/run", "{\"sourceCode\":\"\"}");
+        crow::response res_empty;
+        app.handle_full(r_empty, res_empty);
+        TEST_ASSERT(res_empty.code == 400, "Empty sourceCode returns 400");
+        TEST_ASSERT(json::parse(res_empty.body)["message"] == "Source code is required", "Source code required");
+
+        // 5c. Source code > 64KB returns 413
+        std::string huge_code = "{\"sourceCode\":\"" + std::string(70000, 'a') + "\"}";
+        auto r_huge = make_post_req("/api/v1/playground/run", huge_code);
+        crow::response res_huge;
+        app.handle_full(r_huge, res_huge);
+        TEST_ASSERT(res_huge.code == 413, "Oversized sourceCode returns 413");
+
+        // 5d. Rate Limiting: 30 runs per minute
+        // Send 30 requests to consume quota
+        for (int i = 0; i < 30; ++i) {
+            auto r_rate = make_post_req("/api/v1/playground/run", "{\"sourceCode\":\"\"}");
+            crow::response res_rate;
+            app.handle_full(r_rate, res_rate);
+            // It will fail validation with 400, but rate limiter still counted it
+        }
+
+        // 31st request should be rejected with 429 Too Many Requests
+        auto r_exceeded = make_post_req("/api/v1/playground/run", "{\"sourceCode\":\"int main(){}\"}");
+        crow::response res_exceeded;
+        app.handle_full(r_exceeded, res_exceeded);
+        TEST_ASSERT(res_exceeded.code == 429, "Exceeding 30 runs/min returns 429 Too Many Requests");
+        auto body_exceeded = json::parse(res_exceeded.body);
+        TEST_ASSERT(body_exceeded["success"] == false, "Success is false on 429");
+        TEST_ASSERT(res_exceeded.get_header_value("Retry-After") != "", "Contains Retry-After header");
+    }
+
     std::cout << "\n==========================================================" << std::endl;
     std::cout << "  ALL EXECUTION FEATURE & ROUTE UNIT TESTS PASSED (100%)! " << std::endl;
     std::cout << "==========================================================" << std::endl;

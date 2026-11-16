@@ -14,9 +14,107 @@ using json = nlohmann::json;
 class ExecutionController {
 public:
     ExecutionController(ExecutionService& execution_service, const std::string& jwt_secret)
-        : execution_service_(execution_service), jwt_secret_(jwt_secret), rate_limiter_(60, 60) {}
+        : execution_service_(execution_service), jwt_secret_(jwt_secret), rate_limiter_(60, 60), playground_rate_limiter_(30, 60) {}
 
     void register_routes(AppType& app) {
+        // POST /api/v1/playground/run (Public, stateless, 30 runs/min per IP)
+        CROW_ROUTE(app, "/api/v1/playground/run").methods(crow::HTTPMethod::POST)([this](const crow::request& req) {
+            // Public endpoint: rate limit by client IP (30 runs / 60 seconds)
+            std::string client_ip = RateLimiter::get_client_ip(req);
+            auto limit_res = playground_rate_limiter_.check_limit(client_ip);
+            if (!limit_res.allowed) {
+                crow::response response(429, json({
+                    {"success", false},
+                    {"message", "Rate limit exceeded. Maximum 30 runs per minute allowed for playground."}
+                }).dump());
+                response.add_header("Retry-After", std::to_string(limit_res.retry_after_seconds));
+                response.add_header("Content-Type", "application/json");
+                return response;
+            }
+
+            // Payload size validation (1MB)
+            if (req.body.size() > 1048576) {
+                crow::response response(413, json({{"success", false}, {"message", "Payload exceeds maximum allowed size of 1MB"}}).dump());
+                response.add_header("Content-Type", "application/json");
+                return response;
+            }
+
+            try {
+                auto body = json::parse(req.body);
+                auto get_str = [](const json& j, const std::string& key, const std::string& def = "") -> std::string {
+                    if (!j.contains(key) || j[key].is_null()) return def;
+                    if (j[key].is_string()) return j[key].get<std::string>();
+                    return j[key].dump();
+                };
+
+                std::string source_code = get_str(body, "sourceCode");
+                if (source_code.empty()) {
+                    crow::response response(400, json({{"success", false}, {"message", "Source code is required"}}).dump());
+                    response.add_header("Content-Type", "application/json");
+                    return response;
+                }
+
+                if (source_code.size() > 65536) {
+                    crow::response response(413, json({{"success", false}, {"message", "Source code exceeds maximum allowed size of 64KB"}}).dump());
+                    response.add_header("Content-Type", "application/json");
+                    return response;
+                }
+
+                std::string stdin_input = get_str(body, "stdin");
+                if (stdin_input.size() > 65536) {
+                    crow::response response(413, json({{"success", false}, {"message", "Custom input exceeds maximum allowed size of 64KB"}}).dump());
+                    response.add_header("Content-Type", "application/json");
+                    return response;
+                }
+
+                std::vector<Testcase> testcases;
+                testcases.push_back({ stdin_input, "" });
+
+                // Run code as ephemeral guest job - no database records created
+                auto res = execution_service_.run_code("guest", source_code, testcases);
+                if (!res.success) {
+                    crow::response response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
+                    response.add_header("Content-Type", "application/json");
+                    return response;
+                }
+
+                json result_item = json::object();
+                if (res.execution.contains("results") && res.execution["results"].is_array() && !res.execution["results"].empty()) {
+                    result_item = res.execution["results"][0];
+                }
+
+                std::string status = get_str(result_item, "status", "Accepted");
+                std::string stdout_out = get_str(result_item, "stdout");
+                std::string stderr_out = get_str(result_item, "stderr");
+                std::string compile_out = get_str(result_item, "compileOutput");
+                std::string time_str = get_str(result_item, "time", "0.000s");
+                std::string memory_str = get_str(result_item, "memory", "0.0 MB");
+
+                json out = {
+                    {"success", true},
+                    {"status", status},
+                    {"stdout", stdout_out},
+                    {"stderr", stderr_out},
+                    {"compileOutput", compile_out},
+                    {"compile_output", compile_out},
+                    {"time", time_str},
+                    {"memory", memory_str}
+                };
+
+                crow::response response(200, out.dump());
+                response.add_header("Content-Type", "application/json");
+                return response;
+            } catch (const json::parse_error&) {
+                crow::response response(400, json({{"success", false}, {"message", "Invalid JSON payload"}}).dump());
+                response.add_header("Content-Type", "application/json");
+                return response;
+            } catch (const std::exception& e) {
+                crow::response response(500, json({{"success", false}, {"message", e.what()}}).dump());
+                response.add_header("Content-Type", "application/json");
+                return response;
+            }
+        });
+
         // POST /api/v1/code-execution/run
         CROW_ROUTE(app, "/api/v1/code-execution/run").methods(crow::HTTPMethod::POST)([this](const crow::request& req) {
             auto auth = AuthMiddleware::get_auth_context(req, jwt_secret_);
@@ -199,6 +297,7 @@ private:
     ExecutionService& execution_service_;
     std::string jwt_secret_;
     RateLimiter rate_limiter_;
+    RateLimiter playground_rate_limiter_;
 };
 
 } // namespace campuslab

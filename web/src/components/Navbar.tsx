@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Terminal } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { SignoutModal } from '@/components/auth/SignoutModal'
@@ -27,7 +27,7 @@ export function Navbar() {
                         </span>
                     </div>
 
-                    {/* Right Area: GitHub and Auth */}
+                    {/* Right Area: GitHub, Playground and Auth */}
                     <div className="flex items-center gap-2 sm:gap-2.5 font-mono text-xs">
                         {/* GitHub Link */}
                         <Tooltip content="GitHub Repository" position="bottom">
@@ -47,23 +47,43 @@ export function Navbar() {
                             </a>
                         </Tooltip>
 
-                        {/* User or Sign In Modal trigger */}
-                        {isLoggedIn ? (
-                            <div className="flex items-center border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] px-2.5 py-1 rounded-[3px]">
-                                <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6] max-w-[140px] truncate">
-                                    {user?.name || user?.email?.split('@')[0] || 'User'}
-                                </span>
-                            </div>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={openModal}
-                                className="inline-flex items-center gap-1.5 bg-[#090a0f] text-white hover:bg-[#27272a] text-xs font-mono font-medium px-3 sm:px-3.5 py-1.5 rounded-[3px] transition-colors cursor-pointer"
-                            >
-                                <span>Sign in</span>
-                                <ArrowRight className="h-3 w-3 opacity-70" />
-                            </button>
-                        )}
+                        {/* Playground Link (Desktop: right side of GitHub icon) */}
+                        <Link
+                            to="/playground"
+                            className="hidden sm:inline-flex items-center gap-1.5 border border-[#e2e8f0] dark:border-[#333333] hover:border-[#cbd5e1] dark:hover:border-[#52525b] bg-[#f8fafc] dark:bg-[#1f1f1e] text-[#090a0f] dark:text-[#e8e8e6] px-2.5 py-1.5 rounded-[3px] transition-colors cursor-pointer"
+                        >
+                            <Terminal className="h-3 w-3 text-[#64748b] dark:text-[#a09f9d]" />
+                            <span className="font-medium">Playground</span>
+                        </Link>
+
+                        {/* User or Sign In Modal trigger (Desktop) */}
+                        <div className="hidden sm:flex items-center">
+                            {isLoggedIn ? (
+                                <div className="flex items-center border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] px-2.5 py-1 rounded-[3px]">
+                                    <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6] max-w-[140px] truncate">
+                                        {user?.name || user?.email?.split('@')[0] || 'User'}
+                                    </span>
+                                </div>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={openModal}
+                                    className="inline-flex items-center gap-1.5 bg-[#090a0f] text-white hover:bg-[#27272a] text-xs font-mono font-medium px-3 sm:px-3.5 py-1.5 rounded-[3px] transition-colors cursor-pointer"
+                                >
+                                    <span>Sign in</span>
+                                    <ArrowRight className="h-3 w-3 opacity-70" />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Mobile View: Playground in place of Sign In button */}
+                        <Link
+                            to="/playground"
+                            className="sm:hidden inline-flex items-center gap-1.5 bg-[#090a0f] text-white hover:bg-[#27272a] text-xs font-mono font-medium px-3 py-1.5 rounded-[3px] transition-colors cursor-pointer"
+                        >
+                            <Terminal className="h-3 w-3 opacity-80" />
+                            <span>Playground</span>
+                        </Link>
                     </div>
                 </div>
             </header>

@@ -35,11 +35,14 @@ if [[ "${1:-}" == "--fresh" || "${1:-}" == "--clean" || "${1:-}" == "-f" ]]; the
     $DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 fi
 
-echo "==> [1/2] Applying schema from database/01_schema.sql..."
+echo "==> [1/3] Applying schema from database/01_schema.sql..."
 $DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < "$SCRIPT_DIR/database/01_schema.sql"
 
-echo "==> [2/2] Seeding 250 problems and testcases from database/02_seed.sql..."
+echo "==> [2/3] Seeding 250 problems and testcases from database/02_seed.sql..."
 $DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < "$SCRIPT_DIR/database/02_seed.sql"
+
+echo "==> [3/3] Applying POTD & duel migration from database/03_potd_duels.sql..."
+$DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < "$SCRIPT_DIR/database/03_potd_duels.sql"
 
 echo "==> Verification check:"
 $DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT count(*) AS total_problems, AVG(jsonb_array_length(testcases::jsonb)) AS avg_testcases, MIN(jsonb_array_length(testcases::jsonb)) AS min_testcases, MAX(jsonb_array_length(testcases::jsonb)) AS max_testcases FROM \"Problem\";"

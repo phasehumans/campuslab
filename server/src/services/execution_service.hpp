@@ -6,6 +6,7 @@
 #include <chrono>
 #include <thread>
 #include <optional>
+#include <functional>
 #include <iostream>
 #include <pqxx/pqxx>
 #include <hiredis/hiredis.h>
@@ -23,6 +24,9 @@ class ExecutionService {
 public:
     ExecutionService(DbConnectionPool& db_pool, const std::string& redis_host, int redis_port)
         : db_pool_(db_pool), redis_host_(redis_host), redis_port_(redis_port) {}
+
+    // Invoked after a submission made inside a room has been judged (used by duels).
+    std::function<void(const std::string& contest_code, const std::string& user_id, const json& submission)> on_contest_submission;
 
     struct RunResult {
         bool success;
@@ -101,15 +105,40 @@ public:
         if (!contest_code.empty()) {
             auto conn_guard = db_pool_.acquire();
             pqxx::work txn(conn_guard.get());
-            auto r_rows = txn.exec_params("SELECT participants, NOW() > \"endsAt\" as is_ended FROM \"ContestRoom\" WHERE code = $1", contest_code);
+            auto r_rows = txn.exec_params(
+                "SELECT participants, NOW() > \"endsAt\" as is_ended, NOW() >= \"startsAt\" AS has_started, "
+                "mode, status, \"problemIds\"[1] AS duel_problem_id "
+                "FROM \"ContestRoom\" WHERE code = $1",
+                contest_code
+            );
             if (!r_rows.empty()) {
-                if (r_rows[0]["is_ended"].as<bool>()) {
+                const auto& room = r_rows[0];
+                bool is_duel = room["mode"].as<std::string>() == "DUEL";
+                if (is_duel && room["status"].as<std::string>() != "LIVE") {
+                    return {false, 400, "This duel is not live", nullptr, nullptr};
+                }
+                if (room["is_ended"].as<bool>()) {
                     return {false, 400, "Contest has already ended", nullptr, nullptr};
                 }
-                auto parts = json::parse(r_rows[0]["participants"].as<std::string>());
+                auto parts = json::parse(room["participants"].as<std::string>());
+                bool is_participant = false;
                 for (const auto& p : parts) {
-                    if (p.value("userId", "") == user_id && p.value("isDisqualified", false)) {
-                        return {false, 403, "You have been disqualified from this contest for an integrity violation", nullptr, nullptr};
+                    if (p.value("userId", "") == user_id) {
+                        is_participant = true;
+                        if (p.value("isDisqualified", false)) {
+                            return {false, 403, "You have been disqualified from this contest for an integrity violation", nullptr, nullptr};
+                        }
+                    }
+                }
+                if (is_duel) {
+                    if (!is_participant) {
+                        return {false, 403, "You are not part of this duel", nullptr, nullptr};
+                    }
+                    if (!room["has_started"].as<bool>()) {
+                        return {false, 400, "The duel has not started yet", nullptr, nullptr};
+                    }
+                    if (room["duel_problem_id"].is_null() || room["duel_problem_id"].as<std::string>() != problem_id) {
+                        return {false, 400, "This problem is not part of the duel", nullptr, nullptr};
                     }
                 }
             }
@@ -143,7 +172,7 @@ public:
         std::string submission_id;
         {
             auto conn_guard = db_pool_.acquire();
-            submission_id = SubmissionRepository::create_submission(conn_guard.get(), user_id, problem_id, source_code, user_solve_time);
+            submission_id = SubmissionRepository::create_submission(conn_guard.get(), user_id, problem_id, source_code, user_solve_time, contest_code);
         }
 
         JudgeJob job;
@@ -288,6 +317,14 @@ public:
                 {"userSolveTime", user_solve_time_val.has_value() ? json(*user_solve_time_val) : nullptr},
                 {"testcases", testcases_arr}
             };
+        }
+
+        if (!contest_code.empty() && on_contest_submission) {
+            try {
+                on_contest_submission(contest_code, user_id, submission_data);
+            } catch (const std::exception& e) {
+                std::cerr << "[ExecutionService] contest submission hook failed: " << e.what() << std::endl;
+            }
         }
 
         json exec_results = json::array();

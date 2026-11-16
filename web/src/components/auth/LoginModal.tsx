@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { X, Loader2 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
-import { cn } from '@/lib/utils'
+import { cn, rememberPostLoginRedirect } from '@/lib/utils'
 
 interface LoginModalProps {
     forceDark?: boolean
@@ -17,6 +17,7 @@ export function LoginModal({ forceDark = false }: LoginModalProps) {
     const handleOAuth = async (provider: 'github' | 'google') => {
         clearAuthError()
         setLoadingProvider(provider)
+        rememberPostLoginRedirect()
 
         if (provider === 'github') {
             const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID

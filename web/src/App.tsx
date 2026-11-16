@@ -17,6 +17,10 @@ const ContestRoom = lazy(() =>
     import('./pages/ContestRoom').then((m) => ({ default: m.ContestRoom }))
 )
 
+const DuelPage = lazy(() => import('./pages/DuelPage').then((m) => ({ default: m.DuelPage })))
+
+const Playground = lazy(() => import('./pages/Playground').then((m) => ({ default: m.Playground })))
+
 function HomeRoute() {
     const [searchParams] = useSearchParams()
     const code = searchParams.get('code')
@@ -50,6 +54,7 @@ export default function App() {
                                 <Route element={<Layout />}>
                                     <Route path="/" element={<HomeRoute />} />
                                     <Route path="/contest/:roomId" element={<ContestRoom />} />
+                                    <Route path="/duel/:code" element={<DuelPage />} />
 
                                     {/* OAuth Callbacks */}
                                     <Route
@@ -64,6 +69,7 @@ export default function App() {
 
                                 {/* Fullscreen Code Editor IDE */}
                                 <Route path="/problem/:id" element={<SolveScreen />} />
+                                <Route path="/playground" element={<Playground />} />
 
                                 {/* Fallback */}
                                 <Route path="*" element={<Navigate to="/" replace />} />

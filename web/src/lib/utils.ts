@@ -58,3 +58,33 @@ export function formatRelativeTime(dateString?: string | null): string {
         return 'recently'
     }
 }
+
+const POST_LOGIN_REDIRECT_KEY = 'post_login_redirect'
+
+/** Remember the current page so OAuth can bring the user back to it (e.g. a duel invite). */
+export function rememberPostLoginRedirect(): void {
+    try {
+        const path = window.location.pathname + window.location.search
+        if (path !== '/' && !path.startsWith('/auth')) {
+            sessionStorage.setItem(POST_LOGIN_REDIRECT_KEY, path)
+        } else {
+            sessionStorage.removeItem(POST_LOGIN_REDIRECT_KEY)
+        }
+    } catch {
+        // storage unavailable: fall back to the home page
+    }
+}
+
+/** Read and clear the remembered page. Only same-origin relative paths are accepted. */
+export function consumePostLoginRedirect(): string {
+    try {
+        const path = sessionStorage.getItem(POST_LOGIN_REDIRECT_KEY)
+        sessionStorage.removeItem(POST_LOGIN_REDIRECT_KEY)
+        if (path && path.startsWith('/') && !path.startsWith('//') && !path.startsWith('/auth')) {
+            return path
+        }
+    } catch {
+        // ignore
+    }
+    return '/'
+}
