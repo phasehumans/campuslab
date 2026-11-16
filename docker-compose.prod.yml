@@ -1,8 +1,17 @@
+# Cap container logs so they can never fill the server disk (10 MB x 3 files each)
+x-logging: &default-logging
+    driver: json-file
+    options:
+        max-size: '10m'
+        max-file: '3'
+
+# Images are built in CI and pulled from GHCR; never build on the server.
 services:
     postgres:
         image: postgres:16
         container_name: campuslab-postgres
         restart: unless-stopped
+        logging: *default-logging
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-myuser}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypassword}
@@ -26,6 +35,7 @@ services:
         image: redis:7-alpine
         container_name: campuslab-redis
         restart: unless-stopped
+        logging: *default-logging
         ports:
             - '127.0.0.1:6379:6379'
         healthcheck:
@@ -36,11 +46,9 @@ services:
 
     judge:
         image: ghcr.io/phasehumans/campuslab-judge:latest
-        build:
-            context: .
-            dockerfile: judge/Dockerfile
         container_name: campuslab-judge
         restart: unless-stopped
+        logging: *default-logging
         privileged: true
         environment:
             REDIS_HOST: ${REDIS_HOST:-redis}
@@ -55,15 +63,14 @@ services:
 
     api:
         image: ghcr.io/phasehumans/campuslab-api:latest
-        build:
-            context: .
-            dockerfile: server/Dockerfile
         container_name: campuslab-api
         restart: unless-stopped
+        logging: *default-logging
         ports:
             - '127.0.0.1:3000:3000'
         environment:
             PORT: 3000
+            LOG_LEVEL: ${LOG_LEVEL:-warning}
             JWT_SECRET: ${JWT_SECRET:-supersecret}
             REDIS_HOST: ${REDIS_HOST:-redis}
             REDIS_PORT: ${REDIS_PORT:-6379}

@@ -1,4 +1,3 @@
-import { Loader2, RotateCcw } from 'lucide-react'
 import { cn, formatDuration } from '@/lib/utils'
 import { duelElapsedSeconds, duelOutcome, duelResultText } from '@/lib/duel'
 import type { ContestRoom } from '@/lib/types'
@@ -143,12 +142,11 @@ export function DuelResultPanel({
                     disabled={isRematchPending}
                     className="flex-1 flex items-center justify-center gap-1.5 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] text-xs font-semibold py-2 px-3 rounded-[3px] transition-colors cursor-pointer disabled:opacity-60"
                 >
-                    {isRematchPending ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                        <RotateCcw className="h-3.5 w-3.5" />
-                    )}
-                    {duel.rematchCode ? 'Join rematch' : 'Rematch'}
+                    {isRematchPending
+                        ? 'Starting rematch...'
+                        : duel.rematchCode
+                          ? 'Join rematch'
+                          : 'Rematch'}
                 </button>
             </div>
         </div>

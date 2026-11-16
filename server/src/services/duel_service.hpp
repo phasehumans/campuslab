@@ -13,6 +13,7 @@
 #include "../models/models.hpp"
 #include "../repositories/contest_repository.hpp"
 #include "contest_service.hpp"
+#include "integrity.hpp"
 
 namespace campuslab {
 
@@ -32,8 +33,7 @@ public:
 
     static constexpr int LOBBY_TTL_MINUTES = 30;
     static constexpr int COUNTDOWN_SECONDS = 3;
-    static constexpr int MAX_VIOLATIONS = 2;          // 1st = warning, 2nd = loss
-    static constexpr long long VIOLATION_DEBOUNCE_MS = 3000;
+    static constexpr int MAX_VIOLATIONS = Integrity::MAX_VIOLATIONS;  // 1st = warning, 2nd = loss
     static constexpr int PENDING_GRACE_SECONDS = 60;  // stuck judge jobs stop blocking after this
     static constexpr int MAX_OPEN_DUELS_PER_USER = 5;
 
@@ -58,9 +58,13 @@ public:
         std::optional<ContestRoomResponse> room;
     };
 
+    // EASY_OR_MEDIUM is the default: a random Hard in 30 minutes mostly ends in a draw.
+    static constexpr const char* DEFAULT_DIFFICULTY = "EASY_OR_MEDIUM";
+    static constexpr int DEFAULT_TIME_LIMIT_MINUTES = 30;
+
     static bool normalize_difficulty(std::string& d) {
         std::transform(d.begin(), d.end(), d.begin(), ::toupper);
-        return d == "EASY" || d == "MEDIUM" || d == "HARD" || d == "RANDOM";
+        return d == "EASY" || d == "MEDIUM" || d == "HARD" || d == "RANDOM" || d == "EASY_OR_MEDIUM";
     }
 
     static bool valid_time_limit(int minutes) {
@@ -72,7 +76,7 @@ public:
     // ---------------------------------------------------------
     DuelResult create(const std::string& user_id, std::string difficulty, int time_limit_minutes) {
         if (!normalize_difficulty(difficulty)) {
-            return {false, 400, "Difficulty must be one of Easy, Medium, Hard or Random", std::nullopt};
+            return {false, 400, "Difficulty must be one of Easy, Medium, Hard, Easy or Medium, or Random", std::nullopt};
         }
         if (!valid_time_limit(time_limit_minutes)) {
             return {false, 400, "Time limit must be 15, 30 or 45 minutes", std::nullopt};
@@ -329,7 +333,7 @@ public:
         }
 
         json warnings = json::parse(r["warnings"].as<std::string>());
-        int count = warnings.contains(user_id) ? warnings[user_id].value("count", 0) : 0;
+        int count = Integrity::count_for(warnings, user_id);
 
         if (r["status"].as<std::string>() != "LIVE" || !r["has_started"].as<bool>()) {
             auto room = build(txn, code, user_id);
@@ -338,25 +342,19 @@ public:
             return {true, 200, "Duel is not live; violation ignored", count, false, room};
         }
 
-        long long now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch()).count();
-        long long last_ms = warnings.contains(user_id) ? warnings[user_id].value("lastAtMs", 0LL) : 0LL;
-
-        // One real-world action (e.g. Alt+Tab) fires blur + visibilitychange + fullscreenchange
-        if (count > 0 && now_ms - last_ms < VIOLATION_DEBOUNCE_MS) {
+        auto outcome = Integrity::record(warnings, user_id, reason);
+        count = outcome.violations;
+        if (outcome.duplicate) {
             auto room = build(txn, code, user_id);
             txn.commit();
             emit(code, pre_event);
             return {true, 200, "Duplicate violation ignored", count, false, room};
         }
-
-        count += 1;
-        warnings[user_id] = {{"count", count}, {"lastAtMs", now_ms}, {"lastReason", reason}};
         txn.exec_params("UPDATE \"ContestRoom\" SET warnings = $1::jsonb WHERE code = $2", warnings.dump(), code);
 
         json event;
         bool lost = false;
-        if (count >= MAX_VIOLATIONS) {
+        if (outcome.disqualified) {
             for (auto& p : participants) {
                 if (p.value("userId", "") == user_id) {
                     p["isDisqualified"] = true;
@@ -408,7 +406,7 @@ public:
                 next_code = r["rematch_code"].as<std::string>();
                 txn.commit();
             } else {
-                std::string difficulty = r["difficulty"].is_null() ? "RANDOM" : r["difficulty"].as<std::string>();
+                std::string difficulty = r["difficulty"].is_null() ? DEFAULT_DIFFICULTY : r["difficulty"].as<std::string>();
                 next_code = insert_duel(txn, user_id, difficulty, r["time_limit_minutes"].as<int>());
                 txn.exec_params("UPDATE \"ContestRoom\" SET \"rematchCode\" = $1 WHERE code = $2", next_code, code);
                 std::string name = user_name(txn, user_id);
@@ -599,7 +597,7 @@ private:
 
         auto rows = txn.exec_params(
             "SELECT p.id, p.difficulty::text AS difficulty FROM \"Problem\" p "
-            "WHERE ($1 = 'RANDOM' OR p.difficulty::text = $1) "
+            "WHERE (" + difficulty_filter() + ") "
             "AND NOT EXISTS (SELECT 1 FROM \"ProblemSolved\" ps WHERE ps.\"problemId\" = p.id AND ps.\"userId\" IN ($2, $3)) "
             "ORDER BY random() LIMIT 1",
             difficulty, a, b
@@ -607,12 +605,17 @@ private:
         if (rows.empty()) {
             rows = txn.exec_params(
                 "SELECT p.id, p.difficulty::text AS difficulty FROM \"Problem\" p "
-                "WHERE ($1 = 'RANDOM' OR p.difficulty::text = $1) ORDER BY random() LIMIT 1",
+                "WHERE (" + difficulty_filter() + ") ORDER BY random() LIMIT 1",
                 difficulty
             );
         }
         if (rows.empty()) return std::nullopt;
         return std::make_pair(rows[0]["id"].as<std::string>(), rows[0]["difficulty"].as<std::string>());
+    }
+
+    static std::string difficulty_filter() {
+        return "$1 = 'RANDOM' OR p.difficulty::text = $1 "
+               "OR ($1 = 'EASY_OR_MEDIUM' AND p.difficulty::text IN ('EASY', 'MEDIUM'))";
     }
 
     static ContestRoomResponse build(pqxx::work& txn, const std::string& code, const std::string& user_id) {

@@ -79,6 +79,27 @@ public:
         broadcast_to_room(room_code, broadcast);
     }
 
+    void broadcast_warned(const std::string& room_code, const std::string& user_id, const std::string& user_name, const std::string& reason, int violations) {
+        broadcast_to_room(room_code, {
+            {"type", "PEER_WARNED"},
+            {"userId", user_id},
+            {"userName", user_name},
+            {"reason", reason},
+            {"violations", violations},
+            {"timestamp", now_iso()}
+        });
+    }
+
+    // Broadcasts the result of ContestService::report_violation to the room.
+    void broadcast_violation(const std::string& room_code, const std::string& user_id, const ContestService::ViolationResult& res, const std::string& reason) {
+        if (!res.success || res.duplicate) return;
+        if (res.disqualified) {
+            broadcast_disqualified(room_code, user_id, res.user_name, reason);
+        } else {
+            broadcast_warned(room_code, user_id, res.user_name, reason, res.violations);
+        }
+    }
+
     void broadcast_paste_attempt(const std::string& room_code, const std::string& user_id, const std::string& user_name, int chars) {
         json broadcast = {
             {"type", "PEER_PASTE_ATTEMPT"},
@@ -137,7 +158,7 @@ public:
                         {"message", "Invalid authentication token"}
                     }).dump());
                 }
-            } else if (type == "DISQUALIFIED") {
+            } else if (type == "DISQUALIFIED" || type == "VIOLATION") {
                 std::string reason = j.value("reason", "Tab switch / window exit");
                 std::string user_id;
                 std::string user_name;
@@ -153,10 +174,8 @@ public:
                 }
 
                 if (!user_id.empty() && !room_code.empty()) {
-                    auto res = contest_service.disqualify_participant(user_id, room_code, reason);
-                    if (res.success) {
-                        broadcast_disqualified(room_code, user_id, user_name, reason);
-                    }
+                    auto res = contest_service.report_violation(user_id, room_code, reason);
+                    broadcast_violation(room_code, user_id, res, reason);
                 }
             } else if (type == "PASTE_ATTEMPT") {
                 int chars = j.value("chars", 0);

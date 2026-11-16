@@ -94,10 +94,10 @@ export function SolveScreen() {
         message: string
         type: 'disqualified' | 'paste' | 'info'
     } | null>(null)
-    // Duel anti-cheat: the reason for the (single) warning a player can receive
-    const [duelWarning, setDuelWarning] = useState<string | null>(null)
-    const duelViolationInFlightRef = useRef(false)
-    const lastDuelViolationAtRef = useRef(0)
+    // Anti-cheat: the reason for the (single) warning a player can receive
+    const [integrityWarning, setIntegrityWarning] = useState<string | null>(null)
+    const violationInFlightRef = useRef(false)
+    const lastViolationAtRef = useRef(0)
     const [rematchError, setRematchError] = useState<string | null>(null)
 
     useEffect(() => {
@@ -178,7 +178,7 @@ export function SolveScreen() {
                             if (data.userId !== userIdRef.current) {
                                 setLiveAlert({
                                     id: `${Date.now()}-${Math.random()}`,
-                                    message: `${data.userName} got an anti-cheat warning (${data.reason}). One more and they lose.`,
+                                    message: `${data.userName} got an anti-cheat warning (${data.reason}). One more and they're out.`,
                                     type: 'paste',
                                 })
                                 setUserRemarks((prev) => ({
@@ -244,66 +244,59 @@ export function SolveScreen() {
         return () => clearTimeout(timer)
     }, [liveAlert])
 
-    // Disqualification trigger: Option A (Zero Tolerance on 1st Warning)
-    const triggerDisqualification = useCallback(
+    // Anti-cheat for contests and duels: the server counts violations.
+    // First one is a warning (back to the fullscreen gate); the second disqualifies
+    // (contest: locked out, duel: the opponent wins).
+    const triggerIntegrityViolation = useCallback(
         async (reason: string) => {
-            if (!roomCode || isDisqualified || contestRoom?.isEnded) return
-            setIsDisqualified(true)
-            setDisqualifiedReason(reason)
-
-            if (user?.id) {
-                setUserRemarks((prev) => ({
-                    ...prev,
-                    [user.id]: `DISQUALIFIED: ${reason}`,
-                }))
-            }
-
-            try {
-                await reportContestIntegrityEvent(roomCode, 'DISQUALIFIED', { reason })
-            } catch (err) {
-                console.error('Failed to report contest disqualification:', err)
-            }
-
-            queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
-        },
-        [roomCode, isDisqualified, contestRoom?.isEnded, user?.id, queryClient]
-    )
-
-    // Duels: first violation is a warning (back to the fullscreen gate), second one loses
-    const triggerDuelViolation = useCallback(
-        async (reason: string) => {
-            if (!roomCode || duelFinished) return
+            if (!roomCode || isDisqualified || contestRoom?.isEnded || duelFinished) return
             const now = Date.now()
             // One Alt+Tab fires blur, visibilitychange and fullscreenchange together
-            if (duelViolationInFlightRef.current || now - lastDuelViolationAtRef.current < 3000) {
+            if (violationInFlightRef.current || now - lastViolationAtRef.current < 3000) {
                 return
             }
-            lastDuelViolationAtRef.current = now
-            duelViolationInFlightRef.current = true
+            lastViolationAtRef.current = now
+            violationInFlightRef.current = true
             setHasEnteredFullscreen(false)
             try {
-                const res = await reportDuelViolation(roomCode, reason)
-                if (!res.lost) setDuelWarning(reason)
+                if (isDuel) {
+                    const res = await reportDuelViolation(roomCode, reason)
+                    if (!res.lost) setIntegrityWarning(reason)
+                } else {
+                    const res = await reportContestIntegrityEvent(roomCode, 'VIOLATION', { reason })
+                    if (res?.disqualified) {
+                        setIsDisqualified(true)
+                        setDisqualifiedReason(reason)
+                        if (user?.id) {
+                            setUserRemarks((prev) => ({
+                                ...prev,
+                                [user.id]: `DISQUALIFIED: ${reason}`,
+                            }))
+                        }
+                    } else {
+                        setIntegrityWarning(reason)
+                        if (user?.id) {
+                            setUserRemarks((prev) => ({ ...prev, [user.id]: 'WARNED (1/1)' }))
+                        }
+                    }
+                }
             } catch (err) {
-                console.error('Failed to report duel violation:', err)
-                setDuelWarning(reason)
+                console.error('Failed to report integrity violation:', err)
+                setIntegrityWarning(reason)
             } finally {
-                duelViolationInFlightRef.current = false
+                violationInFlightRef.current = false
                 queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
             }
         },
-        [roomCode, duelFinished, queryClient]
-    )
-
-    const triggerIntegrityViolation = useCallback(
-        (reason: string) => {
-            if (isDuel) {
-                triggerDuelViolation(reason)
-            } else {
-                triggerDisqualification(reason)
-            }
-        },
-        [isDuel, triggerDuelViolation, triggerDisqualification]
+        [
+            roomCode,
+            isDisqualified,
+            contestRoom?.isEnded,
+            duelFinished,
+            isDuel,
+            user?.id,
+            queryClient,
+        ]
     )
 
     // Window focus, tab switch, and fullscreen watchdog (Contest mode only)
@@ -591,6 +584,7 @@ export function SolveScreen() {
                 queryClient.invalidateQueries({ queryKey: ['problems'] }),
                 queryClient.invalidateQueries({ queryKey: ['problem', id] }),
                 queryClient.invalidateQueries({ queryKey: ['profile'] }),
+                queryClient.invalidateQueries({ queryKey: ['potd'] }),
                 queryClient.invalidateQueries({ queryKey: ['problem-submissions', id] }),
                 roomCode
                     ? queryClient.invalidateQueries({ queryKey: ['contest-room', roomCode] })
@@ -1064,10 +1058,10 @@ export function SolveScreen() {
                             <button
                                 type="button"
                                 onClick={() => setDismissedContestResult(true)}
-                                className="absolute top-4 right-4 text-[#94a3b8] hover:text-white transition-colors p-1 cursor-pointer"
+                                className="absolute top-4 right-4 font-mono text-[11px] text-[#94a3b8] hover:text-white transition-colors px-1 cursor-pointer"
                                 aria-label="Close"
                             >
-                                <X className="h-4 w-4" />
+                                [x]
                             </button>
                             <DuelResultPanel
                                 duel={contestRoom}
@@ -1299,13 +1293,16 @@ export function SolveScreen() {
                             <div className="text-xs font-semibold uppercase tracking-wider text-[#e8e8e6] border-b border-[#282828] pb-3">
                                 {isDuel ? '[1V1 DUEL ARENA]' : '[CONTEST INTEGRITY ARENA]'}
                             </div>
-                            {isDuel && duelWarning && (
+                            {integrityWarning && (
                                 <div className="bg-amber-950/40 border border-amber-700/70 p-3 rounded-[2px] text-left text-xs text-amber-200 space-y-1">
                                     <div className="font-semibold uppercase tracking-wider">
                                         [WARNING 1 OF 1]
                                     </div>
                                     <div>
-                                        {duelWarning}. Do that once more and you lose the duel.
+                                        {integrityWarning}. Do that once more and{' '}
+                                        {isDuel
+                                            ? 'you lose the duel.'
+                                            : 'you will be disqualified.'}
                                     </div>
                                 </div>
                             )}
@@ -1320,7 +1317,7 @@ export function SolveScreen() {
                                     <div>
                                         {isDuel
                                             ? '[2] Tab switch, window exit, or defocus: first time is a warning, second time you lose.'
-                                            : '[2] Tab switch, window exit, or defocus triggers immediate disqualification.'}
+                                            : '[2] Tab switch, window exit, or defocus: first time is a warning, second time you are disqualified.'}
                                     </div>
                                     <div>[3] Direct copy-paste into the editor is blocked.</div>
                                 </div>
@@ -1340,7 +1337,7 @@ export function SolveScreen() {
                                 }}
                                 className="w-full py-2.5 px-4 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] font-semibold text-xs tracking-wider uppercase rounded-[2px] transition-colors cursor-pointer"
                             >
-                                {isDuel && duelWarning
+                                {integrityWarning
                                     ? '[RE-ENTER FULLSCREEN & CONTINUE]'
                                     : isDuel
                                       ? '[ENTER FULLSCREEN & START DUEL]'

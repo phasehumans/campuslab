@@ -2,6 +2,7 @@
 #include <cassert>
 #include <string>
 #include <chrono>
+#include <thread>
 #include <algorithm>
 #include <vector>
 #include <pqxx/pqxx>
@@ -476,10 +477,31 @@ int main() {
         TEST_ASSERT(r_paste.code == 200, "Paste attempt logged with 200 OK");
         TEST_ASSERT(json::parse(r_paste.body)["success"] == true, "Paste attempt success is true");
 
-        // 7.5 Player 2 triggered tab switch / window exit -> Disqualified
+        // 7.5 First violation is only a warning
+        auto r_warn = post_resp("/api/v1/contests/rooms/" + room_code + "/integrity", "{\"event\":\"VIOLATION\",\"reason\":\"Window unfocused\"}", p2_tok);
+        TEST_ASSERT(r_warn.code == 200, "First violation returns 200 OK");
+        auto b_warn = json::parse(r_warn.body);
+        TEST_ASSERT(b_warn["violations"] == 1 && b_warn["disqualified"] == false, "First violation is a warning, not a disqualification");
+        {
+            auto room_after_warn = json::parse(get_resp("/api/v1/contests/rooms/" + room_code).body)["room"];
+            for (const auto& p : room_after_warn["participants"]) {
+                if (p["userId"] == player2_user.id) {
+                    TEST_ASSERT(p["isDisqualified"] == false, "Warned participant is still active");
+                }
+            }
+            TEST_ASSERT(room_after_warn["warnings"][player2_user.id]["count"] == 1, "Room records one warning");
+        }
+
+        // 7.5b The same burst of browser events counts once
+        auto r_burst = post_resp("/api/v1/contests/rooms/" + room_code + "/integrity", "{\"event\":\"VIOLATION\",\"reason\":\"Exited fullscreen\"}", p2_tok);
+        TEST_ASSERT(json::parse(r_burst.body)["violations"] == 1, "Burst within 3s is debounced");
+
+        // 7.5c Second violation disqualifies (legacy DISQUALIFIED event is treated as a violation)
+        std::this_thread::sleep_for(std::chrono::milliseconds(3100));
         auto r_dq = post_resp("/api/v1/contests/rooms/" + room_code + "/integrity", "{\"event\":\"DISQUALIFIED\",\"reason\":\"Tab switch\"}", p2_tok);
         TEST_ASSERT(r_dq.code == 200, "Disqualification returns 200 OK");
         TEST_ASSERT(json::parse(r_dq.body)["success"] == true, "Disqualification success is true");
+        TEST_ASSERT(json::parse(r_dq.body)["disqualified"] == true, "Second violation disqualifies");
 
         // 7.6 Verify via GET that Player 2 is marked as isDisqualified: true
         auto r_check = get_resp("/api/v1/contests/rooms/" + room_code);

@@ -24,8 +24,8 @@ public:
             if (!auth.is_authenticated) return error(401, "Unauthorized");
             try {
                 auto body = req.body.empty() ? json::object() : json::parse(req.body);
-                std::string difficulty = body.value("difficulty", std::string("RANDOM"));
-                int time_limit = body.value("timeLimitMinutes", 30);
+                std::string difficulty = body.value("difficulty", std::string(DuelService::DEFAULT_DIFFICULTY));
+                int time_limit = body.value("timeLimitMinutes", DuelService::DEFAULT_TIME_LIMIT_MINUTES);
                 return respond(duel_service_.create(auth.user_id, difficulty, time_limit));
             } catch (const json::exception&) {
                 return error(400, "Invalid JSON payload");

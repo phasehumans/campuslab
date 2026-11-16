@@ -184,14 +184,22 @@ public:
                     }
                 } catch (...) {}
 
-                if (event == "DISQUALIFIED") {
+                // VIOLATION (DISQUALIFIED kept for older clients): server counts warnings and decides
+                if (event == "VIOLATION" || event == "DISQUALIFIED") {
                     std::string reason = body.value("reason", "Tab switch / window exit");
-                    auto res = contest_service_.disqualify_participant(auth.user_id, code, reason);
+                    if (reason.size() > 120) reason = reason.substr(0, 120);
+                    auto res = contest_service_.report_violation(auth.user_id, code, reason);
                     if (!res.success) {
                         return crow::response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
                     }
-                    ContestWsManager::instance().broadcast_disqualified(code, auth.user_id, user_name, reason);
-                    return crow::response(200, json({{"success", true}, {"message", "Participant disqualified successfully"}}).dump());
+                    ContestWsManager::instance().broadcast_violation(code, auth.user_id, res, reason);
+                    return crow::response(200, json({
+                        {"success", true},
+                        {"message", res.message},
+                        {"violations", res.violations},
+                        {"maxViolations", Integrity::MAX_VIOLATIONS},
+                        {"disqualified", res.disqualified}
+                    }).dump());
                 } else if (event == "PASTE_ATTEMPT") {
                     int chars = body.value("chars", 0);
                     ContestWsManager::instance().broadcast_paste_attempt(code, auth.user_id, user_name, chars);

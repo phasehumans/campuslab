@@ -1,6 +1,7 @@
 #define CROW_MAIN
 #include "crow_all.h"
 #include <iostream>
+#include <cstdlib>
 #include <memory>
 #include "config/app_config.hpp"
 #include "db/connection_pool.hpp"
@@ -67,6 +68,13 @@ int main() {
 
     // Setup Crow application with CORS middleware
     AppType app;
+
+    // LOG_LEVEL=warning (production) stops Crow from logging every request
+    if (const char* level = std::getenv("LOG_LEVEL")) {
+        std::string lv(level);
+        if (lv == "warning") app.loglevel(crow::LogLevel::Warning);
+        else if (lv == "error") app.loglevel(crow::LogLevel::Error);
+    }
 
     // Health check endpoints
     auto health_handler = []() {

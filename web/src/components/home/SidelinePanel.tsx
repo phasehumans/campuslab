@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { Loader2, ArrowRight, Swords } from 'lucide-react'
+import { Loader2, ArrowRight } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { getApiErrorMessage, getContestRoom, getProfile, joinContestRoom } from '@/lib/api'
 import { ContestActionModal } from '@/components/contest/ContestActionModal'
@@ -224,9 +224,8 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                                 profile.duels.wins + profile.duels.losses + profile.duels.draws >
                                     0 && (
                                     <div className="flex items-center justify-between font-mono text-[11px] pt-1">
-                                        <span className="flex items-center gap-1.5 text-[#52525b] dark:text-[#a09f9d]">
-                                            <Swords className="h-3 w-3" />
-                                            Duels
+                                        <span className="text-[#52525b] dark:text-[#a09f9d]">
+                                            1v1 Duels
                                         </span>
                                         <span className="text-[#090a0f] dark:text-[#e8e8e6]">
                                             <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
@@ -317,22 +316,6 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                     </div>
                 )}
 
-                {/* 1v1 Duel */}
-                <button
-                    type="button"
-                    onClick={() => {
-                        if (!isLoggedIn) {
-                            openModal()
-                            return
-                        }
-                        setIsDuelModalOpen(true)
-                    }}
-                    className="w-full flex items-center justify-center gap-1.5 bg-[#87b2f4] hover:bg-[#72a3ed] text-[#141414] font-mono text-xs font-semibold py-2 px-3 rounded-[3px] transition-colors cursor-pointer"
-                >
-                    <Swords className="h-3.5 w-3.5" />
-                    <span>Challenge a friend (1v1)</span>
-                </button>
-
                 {/* Join with room code */}
                 <form onSubmit={handleJoin} className="space-y-2">
                     <input
@@ -372,6 +355,21 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                     className="w-full flex items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#333333] hover:bg-[#f9fafb] dark:hover:bg-[#252423] text-[#090a0f] dark:text-[#e8e8e6] font-mono text-xs py-2 px-3 rounded-[3px] transition-colors cursor-pointer"
                 >
                     <span>+ Create Contest</span>
+                </button>
+
+                {/* 1v1 Duel */}
+                <button
+                    type="button"
+                    onClick={() => {
+                        if (!isLoggedIn) {
+                            openModal()
+                            return
+                        }
+                        setIsDuelModalOpen(true)
+                    }}
+                    className="w-full flex items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#333333] hover:bg-[#f9fafb] dark:hover:bg-[#252423] text-[#090a0f] dark:text-[#e8e8e6] font-mono text-xs py-2 px-3 rounded-[3px] transition-colors cursor-pointer"
+                >
+                    <span>+ Challenge a Friend (1v1)</span>
                 </button>
             </div>
 

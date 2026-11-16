@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Check, Copy, Loader2, Share2, Swords } from 'lucide-react'
 import {
     ApiError,
     getApiErrorMessage,
@@ -13,16 +12,11 @@ import {
 } from '@/lib/api'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRoomSocket } from '@/lib/useRoomSocket'
-import {
-    duelDifficultyLabel,
-    duelShareMessage,
-    duelUrl,
-    serverClockOffset,
-    whatsappShareUrl,
-} from '@/lib/duel'
+import { duelDifficultyLabel, serverClockOffset } from '@/lib/duel'
 import { cn, parseUtcDate } from '@/lib/utils'
 import { CreateDuelModal } from '@/components/duel/CreateDuelModal'
 import { DuelResultPanel } from '@/components/duel/DuelResultPanel'
+import { DuelSharePanel } from '@/components/duel/DuelSharePanel'
 import type { ContestRoom } from '@/lib/types'
 
 type Participant = ContestRoom['participants'][number]
@@ -108,7 +102,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                 onClick={() => navigate('/')}
                 className="flex items-center gap-1.5 text-[#52525b] dark:text-[#a09f9d] hover:text-[#090a0f] dark:hover:text-[#e8e8e6] transition-colors cursor-pointer"
             >
-                <ArrowLeft className="h-3.5 w-3.5" /> Back to Problem Set
+                &larr; Back to Problem Set
             </button>
             <div className="p-5 sm:p-6 rounded-[3px] border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] space-y-5 text-[#090a0f] dark:text-[#e8e8e6]">
                 {children}
@@ -120,10 +114,8 @@ function Shell({ children }: { children: React.ReactNode }) {
 function Header({ title, subtitle }: { title: string; subtitle?: string }) {
     return (
         <div className="text-center space-y-1.5">
-            <div className="flex justify-center">
-                <div className="h-10 w-10 rounded-[3px] bg-[#87b2f4]/15 border border-[#87b2f4]/30 flex items-center justify-center text-[#87b2f4]">
-                    <Swords className="h-5 w-5" />
-                </div>
+            <div className="text-[10px] uppercase tracking-wider font-semibold text-[#87b2f4]">
+                [1v1 Duel]
             </div>
             <h2 className="text-base font-semibold font-sans">{title}</h2>
             {subtitle && <p className="text-[#64748b] dark:text-[#a09f9d]">{subtitle}</p>}
@@ -144,7 +136,6 @@ export function DuelPage() {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
     const { isLoggedIn, user, openModal } = useAuth()
-    const [copied, setCopied] = useState<'link' | 'code' | null>(null)
     const [actionError, setActionError] = useState<string | null>(null)
     const [isCreateOpen, setIsCreateOpen] = useState(false)
     const [now, setNow] = useState(() => Date.now())
@@ -231,23 +222,12 @@ export function DuelPage() {
         }
     }, [duel?.status, duel?.hasStarted, duel?.code, isParticipant, problemId, navigate])
 
-    const copy = async (text: string, which: 'link' | 'code') => {
-        try {
-            await navigator.clipboard.writeText(text)
-            setCopied(which)
-            setTimeout(() => setCopied(null), 2000)
-        } catch {
-            setActionError('Could not copy. Long-press the link to copy it instead.')
-        }
-    }
-
     // ---------------------------------------------------------
     // Loading / errors
     // ---------------------------------------------------------
     if (duelQuery.isLoading) {
         return (
             <div className="flex h-[60vh] w-full items-center justify-center font-mono text-xs text-[#94a3b8] dark:text-[#a09f9d]">
-                <Loader2 className="h-4 w-4 animate-spin text-[#87b2f4] mr-2" />
                 Loading duel [{code}]...
             </div>
         )
@@ -366,8 +346,7 @@ export function DuelPage() {
                     >
                         {secondsLeft > 0 ? secondsLeft : 'GO'}
                     </div>
-                    <div className="flex items-center justify-center gap-2 text-[#64748b] dark:text-[#a09f9d]">
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    <div className="text-[#64748b] dark:text-[#a09f9d]">
                         {secondsLeft > 0
                             ? 'Problem reveals in a moment...'
                             : 'Entering the arena...'}
@@ -382,91 +361,14 @@ export function DuelPage() {
     // ---------------------------------------------------------
     if (duel.status === 'WAITING') {
         if (isParticipant) {
-            const link = duelUrl(duel.code)
-            const message = duelShareMessage(duel)
-            const expiresMs = (parseUtcDate(duel.endsAt) ?? 0) - (now + clockOffset)
-            const canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator
             return (
                 <Shell>
-                    <Header
-                        title="Waiting for your opponent..."
-                        subtitle="Send this link to a friend. The duel starts when you're both ready."
-                    />
-                    <Chips duel={duel} />
                     {errorBox}
-
-                    <div className="space-y-2">
-                        <a
-                            href={whatsappShareUrl(message)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-full flex items-center justify-center gap-1.5 py-2.5 px-4 bg-[#25D366] hover:bg-[#1fb857] text-[#0b2e17] rounded-[3px] font-semibold transition-colors"
-                        >
-                            Share on WhatsApp
-                        </a>
-                        <div className="flex gap-2">
-                            <button
-                                type="button"
-                                className={secondaryBtn}
-                                onClick={() => copy(link, 'link')}
-                            >
-                                {copied === 'link' ? (
-                                    <Check className="h-3.5 w-3.5 text-emerald-500" />
-                                ) : (
-                                    <Copy className="h-3.5 w-3.5" />
-                                )}
-                                {copied === 'link' ? 'Copied!' : 'Copy link'}
-                            </button>
-                            {canNativeShare && (
-                                <button
-                                    type="button"
-                                    className={secondaryBtn}
-                                    onClick={() =>
-                                        navigator
-                                            .share({
-                                                title: 'CampusLab duel',
-                                                text: message,
-                                                url: link,
-                                            })
-                                            .catch(() => undefined)
-                                    }
-                                >
-                                    <Share2 className="h-3.5 w-3.5" />
-                                    Share
-                                </button>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="text-center space-y-1 pt-1">
-                        <div className="text-[10px] uppercase tracking-wider text-[#64748b] dark:text-[#a09f9d]">
-                            or type the code
-                        </div>
-                        <button
-                            type="button"
-                            onClick={() => copy(duel.code, 'code')}
-                            className="text-2xl font-bold tracking-[0.25em] select-all cursor-pointer hover:text-[#87b2f4] transition-colors"
-                            title="Copy code"
-                        >
-                            {duel.code}
-                        </button>
-                        <div className="text-[11px] text-[#94a3b8] dark:text-[#777777]">
-                            {copied === 'code'
-                                ? 'Code copied'
-                                : expiresMs > 0
-                                  ? `Link expires in ${Math.max(1, Math.ceil(expiresMs / 60000))} min`
-                                  : 'Link expired'}
-                        </div>
-                    </div>
-
-                    <button
-                        type="button"
-                        className={linkBtn}
-                        disabled={leaveMutation.isPending}
-                        onClick={() => leaveMutation.mutate()}
-                    >
-                        Cancel duel
-                    </button>
+                    <DuelSharePanel
+                        duel={duel}
+                        isCancelling={leaveMutation.isPending}
+                        onCancel={() => leaveMutation.mutate()}
+                    />
                 </Shell>
             )
         }
@@ -499,8 +401,7 @@ export function DuelPage() {
                         disabled={joinMutation.isPending}
                         onClick={() => joinMutation.mutate()}
                     >
-                        {joinMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                        Accept challenge
+                        {joinMutation.isPending ? 'Joining...' : 'Accept challenge'}
                     </button>
                 ) : (
                     <button type="button" className={primaryBtn} onClick={openModal}>
@@ -539,7 +440,6 @@ export function DuelPage() {
                 disabled={readyMutation.isPending}
                 onClick={() => readyMutation.mutate(!iAmReady)}
             >
-                {readyMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 {iAmReady ? "I'm not ready" : "I'm ready"}
             </button>
             <p className="text-center text-[11px] text-[#94a3b8] dark:text-[#777777]">

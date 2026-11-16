@@ -11,6 +11,7 @@
 #include "../db/connection_pool.hpp"
 #include "../models/models.hpp"
 #include "../repositories/contest_repository.hpp"
+#include "integrity.hpp"
 
 namespace campuslab {
 
@@ -323,6 +324,73 @@ public:
         txn.commit();
 
         return {true, 200, "Participant disqualified successfully", room_resp};
+    }
+
+    struct ViolationResult {
+        bool success;
+        int status_code;
+        std::string message;
+        int violations = 0;
+        bool duplicate = false;
+        bool disqualified = false;
+        std::string user_name;
+    };
+
+    // Anti-cheat: the first violation is a warning, the second disqualifies (server decides).
+    ViolationResult report_violation(const std::string& user_id, const std::string& code, const std::string& reason) {
+        auto conn_guard = db_pool_.acquire();
+        pqxx::work txn(conn_guard.get());
+
+        auto row_opt = ContestRepository::find_by_code(txn, code, true);
+        if (!row_opt.has_value()) {
+            return {false, 404, "Contest room not found"};
+        }
+        const auto& r = *row_opt;
+        if (r["mode"].as<std::string>() == "DUEL") {
+            return {false, 400, "This is a duel room. Use the duel link to continue"};
+        }
+
+        json participants = json::parse(r["participants"].as<std::string>());
+        json* me = nullptr;
+        for (auto& p : participants) {
+            if (p.value("userId", "") == user_id) me = &p;
+        }
+        if (!me) {
+            return {false, 403, "User is not a participant in this contest room"};
+        }
+
+        json warnings = json::parse(r["warnings"].as<std::string>());
+        int count = Integrity::count_for(warnings, user_id);
+        if (r["is_ended"].as<bool>()) {
+            return {true, 200, "Contest has ended; violation ignored", count, true, false};
+        }
+        if (me->value("isDisqualified", false)) {
+            return {true, 200, "Already disqualified", count, true, true};
+        }
+
+        auto outcome = Integrity::record(warnings, user_id, reason);
+        if (outcome.duplicate) {
+            txn.commit();
+            return {true, 200, "Duplicate violation ignored", outcome.violations, true, false};
+        }
+        txn.exec_params("UPDATE \"ContestRoom\" SET warnings = $1::jsonb WHERE code = $2", warnings.dump(), code);
+
+        if (outcome.disqualified) {
+            (*me)["isDisqualified"] = true;
+            (*me)["disqualifiedReason"] = reason;
+            txn.exec_params("UPDATE \"ContestRoom\" SET participants = $1::jsonb WHERE code = $2", participants.dump(), code);
+        }
+
+        std::string name = "Coder";
+        auto u_rows = txn.exec_params("SELECT name FROM \"User\" WHERE id = $1", user_id);
+        if (!u_rows.empty() && !u_rows[0]["name"].is_null()) name = u_rows[0]["name"].as<std::string>();
+        txn.commit();
+
+        return {
+            true, 200,
+            outcome.disqualified ? "Second violation: participant disqualified" : "Warning recorded",
+            outcome.violations, false, outcome.disqualified, name
+        };
     }
 
 private:

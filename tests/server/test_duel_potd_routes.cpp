@@ -202,6 +202,24 @@ int main() {
         TEST_ASSERT(d["questions"].empty(), "No problem revealed while waiting");
         TEST_ASSERT(d["hostUserId"] == alice.id, "Creator is host");
 
+        // Defaults: Easy-or-Medium, 30 minutes; problem is never Hard
+        auto rdef = post("/api/v1/duels", "{}", c_tok);
+        TEST_ASSERT(rdef.code == 201, "Duel with default settings created");
+        auto ddef = json::parse(rdef.body)["duel"];
+        TEST_ASSERT(ddef["difficulty"] == "EASY_OR_MEDIUM", "Default difficulty is Easy or Medium");
+        TEST_ASSERT(ddef["timeLimitMinutes"] == 30, "Default time limit is 30 minutes");
+        {
+            std::string dcode = ddef["code"];
+            post("/api/v1/duels/" + dcode + "/join", "{}", b_tok);
+            post("/api/v1/duels/" + dcode + "/ready", "{\"ready\":true}", c_tok);
+            post("/api/v1/duels/" + dcode + "/ready", "{\"ready\":true}", b_tok);
+            set_duel_times(dcode, "NOW() - INTERVAL '1 minute'", "NOW() + INTERVAL '29 minutes'");
+            auto dg = json::parse(get("/api/v1/duels/" + dcode, c_tok).body)["duel"];
+            std::string diff = dg["questions"][0]["difficulty"];
+            TEST_ASSERT(diff == "Easy" || diff == "Medium", "Default duel picks an Easy or Medium problem");
+            post("/api/v1/duels/" + dcode + "/leave", "{}", c_tok);
+        }
+
         auto anon = get("/api/v1/duels/" + code);
         TEST_ASSERT(anon.code == 200, "Logged-out invitee can view the challenge card");
         TEST_ASSERT(json::parse(anon.body)["duel"]["participants"][0]["name"] == "Alice Duel", "Challenge card shows challenger");
@@ -402,10 +420,10 @@ int main() {
         auto ra = duel_service.get_record(alice.id);
         auto rb = duel_service.get_record(bob.id);
         auto rc = duel_service.get_record(carol.id);
-        // alice: lost [6], lost [8], won [9 forfeit], drew [9 timeout]
+        // alice: lost [6], lost [8], won [9 forfeit], drew [9 timeout]; bob also won carol's forfeit in [2]
         TEST_ASSERT(ra["wins"] == 1 && ra["losses"] == 2 && ra["draws"] == 1, "Alice record 1W 2L 1D");
-        TEST_ASSERT(rb["wins"] == 2 && rb["losses"] == 1 && rb["draws"] == 1, "Bob record 2W 1L 1D");
-        TEST_ASSERT(rc["wins"] == 0 && rc["losses"] == 0 && rc["draws"] == 0, "Carol has no duels");
+        TEST_ASSERT(rb["wins"] == 3 && rb["losses"] == 1 && rb["draws"] == 1, "Bob record 3W 1L 1D");
+        TEST_ASSERT(rc["wins"] == 0 && rc["losses"] == 1 && rc["draws"] == 0, "Carol record 0W 1L (forfeited the defaults duel)");
     }
 
     std::cout << "\n==========================================================" << std::endl;

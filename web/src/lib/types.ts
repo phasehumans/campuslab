@@ -183,7 +183,7 @@ export type RoomMode = 'ROOM' | 'DUEL'
 export type DuelStatus = 'WAITING' | 'LOBBY' | 'LIVE' | 'FINISHED' | 'CANCELLED'
 export type DuelFinishReason =
     'SOLVED' | 'TIMEOUT' | 'FORFEIT' | 'DISQUALIFIED' | 'EXPIRED' | 'CANCELLED'
-export type DuelDifficulty = 'EASY' | 'MEDIUM' | 'HARD' | 'RANDOM'
+export type DuelDifficulty = 'EASY' | 'MEDIUM' | 'HARD' | 'EASY_OR_MEDIUM' | 'RANDOM'
 
 export type ContestRoom = {
     mode: RoomMode

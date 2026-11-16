@@ -309,10 +309,16 @@ export const getContestRoom = async (roomCode: string) => {
 
 export const reportContestIntegrityEvent = async (
     roomCode: string,
-    event: 'DISQUALIFIED' | 'PASTE_ATTEMPT',
+    event: 'VIOLATION' | 'PASTE_ATTEMPT',
     details?: { reason?: string; chars?: number }
 ) => {
-    return request<{ success: boolean; message: string }>(`/contests/rooms/${roomCode}/integrity`, {
+    return request<{
+        success: boolean
+        message: string
+        violations?: number
+        maxViolations?: number
+        disqualified?: boolean
+    }>(`/contests/rooms/${roomCode}/integrity`, {
         method: 'POST',
         body: JSON.stringify({ event, ...details }),
     })
@@ -323,10 +329,13 @@ export const getPotd = async (): Promise<Potd | null> => {
     return response?.potd ?? null
 }
 
-export const createDuel = async (payload: {
-    difficulty: DuelDifficulty
-    timeLimitMinutes: 15 | 30 | 45
-}) => {
+/** Omitted fields use the server defaults: Easy or Medium, 30 minutes. */
+export const createDuel = async (
+    payload: {
+        difficulty?: DuelDifficulty
+        timeLimitMinutes?: 15 | 30 | 45
+    } = {}
+) => {
     const response = await request<{ duel: ContestRoom }>('/duels', {
         method: 'POST',
         body: JSON.stringify(payload),

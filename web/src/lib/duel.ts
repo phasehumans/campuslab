@@ -1,17 +1,16 @@
 import type { ContestRoom, DuelDifficulty } from './types'
 import { parseUtcDate } from './utils'
 
-export const DUEL_DIFFICULTIES: { value: DuelDifficulty; label: string }[] = [
-    { value: 'EASY', label: 'Easy' },
-    { value: 'MEDIUM', label: 'Medium' },
-    { value: 'HARD', label: 'Hard' },
-    { value: 'RANDOM', label: 'Random' },
-]
-
-export const DUEL_TIME_LIMITS = [15, 30, 45] as const
+const DUEL_DIFFICULTY_LABELS: Record<DuelDifficulty, string> = {
+    EASY: 'Easy',
+    MEDIUM: 'Medium',
+    HARD: 'Hard',
+    EASY_OR_MEDIUM: 'Easy or Medium',
+    RANDOM: 'Random',
+}
 
 export function duelDifficultyLabel(d: DuelDifficulty | null | undefined) {
-    return DUEL_DIFFICULTIES.find((x) => x.value === d)?.label ?? 'Random'
+    return d ? DUEL_DIFFICULTY_LABELS[d] : 'Easy or Medium'
 }
 
 export function duelUrl(code: string) {
