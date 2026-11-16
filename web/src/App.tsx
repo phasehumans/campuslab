@@ -17,6 +17,8 @@ const ContestRoom = lazy(() =>
     import('./pages/ContestRoom').then((m) => ({ default: m.ContestRoom }))
 )
 
+const Playground = lazy(() => import('./pages/Playground').then((m) => ({ default: m.Playground })))
+
 function HomeRoute() {
     const [searchParams] = useSearchParams()
     const code = searchParams.get('code')
@@ -64,6 +66,7 @@ export default function App() {
 
                                 {/* Fullscreen Code Editor IDE */}
                                 <Route path="/problem/:id" element={<SolveScreen />} />
+                                <Route path="/playground" element={<Playground />} />
 
                                 {/* Fallback */}
                                 <Route path="*" element={<Navigate to="/" replace />} />

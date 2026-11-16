@@ -69,6 +69,18 @@ export type ExecutionResponse = {
     results: ExecutionResult[]
 }
 
+export type PlaygroundRunResponse = {
+    success: boolean
+    status: string
+    stdout: string
+    stderr: string
+    compile_output: string
+    compileOutput?: string
+    time: string
+    memory: string
+    message?: string
+}
+
 export type SubmissionItem = {
     id: string
     userId: string

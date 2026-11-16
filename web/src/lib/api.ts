@@ -2,6 +2,7 @@ import type {
     ContestRoom,
     EditorLanguage,
     ExecutionResponse,
+    PlaygroundRunResponse,
     ProblemDetail,
     ProblemExample,
     ProblemsResponse,
@@ -198,6 +199,27 @@ export const runCode = async (payload: {
     })
 
     return response!.execution
+}
+
+export const runPlaygroundCode = async (payload: {
+    sourceCode: string
+    stdin?: string
+    language?: EditorLanguage
+}): Promise<PlaygroundRunResponse> => {
+    const response = await request<PlaygroundRunResponse>(
+        '/playground/run',
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                sourceCode: payload.sourceCode,
+                stdin: payload.stdin ?? '',
+                language: payload.language ?? 'cpp',
+            }),
+        },
+        { allowUnauthorized: true }
+    )
+
+    return response!
 }
 
 export const submitCode = async (payload: {
