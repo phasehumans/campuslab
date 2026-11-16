@@ -153,8 +153,10 @@ public:
                 }
 
                 if (!user_id.empty() && !room_code.empty()) {
-                    contest_service.disqualify_participant(user_id, room_code, reason);
-                    broadcast_disqualified(room_code, user_id, user_name, reason);
+                    auto res = contest_service.disqualify_participant(user_id, room_code, reason);
+                    if (res.success) {
+                        broadcast_disqualified(room_code, user_id, user_name, reason);
+                    }
                 }
             } else if (type == "PASTE_ATTEMPT") {
                 int chars = j.value("chars", 0);

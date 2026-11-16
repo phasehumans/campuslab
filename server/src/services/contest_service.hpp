@@ -144,14 +144,11 @@ public:
             "'" + txn.esc(participants.dump()) + "'::jsonb, " +
             "'" + txn.esc(standings.dump()) + "'::jsonb, " +
             "NOW(), NOW(), NOW() + INTERVAL '" + std::to_string(time_limit_minutes) + " minutes'"
-            ") RETURNING code, \"hostUserId\" AS host_user_id, \"maxParticipants\" AS max_participants, "
-            "\"questionCount\" AS question_count, \"timeLimitMinutes\" AS time_limit_minutes, topics, "
-            "\"problemIds\" AS problem_ids, \"problemPoints\" AS problem_points, participants, standings, "
-            "\"createdAt\"::text AS created_at, \"startsAt\"::text AS starts_at, \"endsAt\"::text AS ends_at, "
-            "NOW() > (NOW() + INTERVAL '" + std::to_string(time_limit_minutes) + " minutes') AS is_ended"
+            ") RETURNING code"
         );
 
-        auto room_resp = ContestRepository::build_response(txn, ins_res[0], user_id);
+        auto created_opt = ContestRepository::find_by_code(txn, ins_res[0]["code"].as<std::string>());
+        auto room_resp = ContestRepository::build_response(txn, *created_opt, user_id);
         txn.commit();
 
         return {true, 201, "Contest room created successfully", room_resp};
@@ -167,6 +164,9 @@ public:
         }
 
         const auto& r = *row_opt;
+        if (r["mode"].as<std::string>() == "DUEL") {
+            return {false, 400, "This is a duel room. Use the duel link to continue", std::nullopt};
+        }
         if (r["is_ended"].as<bool>()) {
             return {false, 400, "Contest room has already ended", std::nullopt};
         }
@@ -225,6 +225,9 @@ public:
         }
 
         const auto& r = *row_opt;
+        if (r["mode"].as<std::string>() == "DUEL") {
+            return {false, 400, "This is a duel room. Use the duel link to continue", std::nullopt};
+        }
         json participants = json::parse(r["participants"].as<std::string>());
         json new_participants = json::array();
         bool found = false;
@@ -294,6 +297,9 @@ public:
         }
 
         const auto& r = *row_opt;
+        if (r["mode"].as<std::string>() == "DUEL") {
+            return {false, 400, "This is a duel room. Use the duel link to continue", std::nullopt};
+        }
         json participants = json::parse(r["participants"].as<std::string>());
         bool found = false;
         for (auto& p : participants) {

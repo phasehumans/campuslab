@@ -7,6 +7,7 @@
 #include "json.hpp"
 #include "../db/connection_pool.hpp"
 #include "../models/models.hpp"
+#include "duel_service.hpp"
 
 namespace campuslab {
 
@@ -114,7 +115,8 @@ public:
                 {"totalSolved", total_solved},
                 {"byDifficulty", by_diff_arr}
             }},
-            {"recentSubmissions", recent_subs_arr}
+            {"recentSubmissions", recent_subs_arr},
+            {"duels", DuelService::record_for(txn, user_id)}
         };
 
         return profile_data;

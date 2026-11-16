@@ -12,14 +12,17 @@ namespace campuslab {
 
 class ContestRepository {
 public:
-    static std::optional<pqxx::row> find_by_code(pqxx::work& txn, const std::string& code) {
+    // for_update = true takes a row lock so concurrent duel transitions serialize.
+    static std::optional<pqxx::row> find_by_code(pqxx::work& txn, const std::string& code, bool for_update = false) {
         auto rows = txn.exec_params(
             "SELECT code, \"hostUserId\" AS host_user_id, \"maxParticipants\" AS max_participants, "
             "\"questionCount\" AS question_count, \"timeLimitMinutes\" AS time_limit_minutes, "
             "topics, \"problemIds\" AS problem_ids, \"problemPoints\" AS problem_points, participants, standings, "
             "\"createdAt\"::text AS created_at, \"startsAt\"::text AS starts_at, \"endsAt\"::text AS ends_at, "
-            "NOW() > \"endsAt\" as is_ended "
-            "FROM \"ContestRoom\" WHERE code = $1",
+            "NOW() > \"endsAt\" as is_ended, NOW() >= \"startsAt\" AS has_started, NOW()::timestamp(3)::text AS server_now, "
+            "mode, status, difficulty, \"readyUserIds\" AS ready_user_ids, warnings, \"winnerId\" AS winner_id, "
+            "\"finishReason\" AS finish_reason, \"finishedAt\"::text AS finished_at, \"rematchCode\" AS rematch_code "
+            "FROM \"ContestRoom\" WHERE code = $1" + std::string(for_update ? " FOR UPDATE" : ""),
             code
         );
         if (rows.empty()) return std::nullopt;
@@ -37,8 +40,31 @@ public:
         resp.ends_at = r["ends_at"].as<std::string>();
         resp.is_ended = r["is_ended"].as<bool>();
 
+        auto opt_str = [&](const char* col) -> std::optional<std::string> {
+            if (r[col].is_null()) return std::nullopt;
+            return r[col].as<std::string>();
+        };
+        resp.host_user_id = host_user_id;
+        resp.mode = r["mode"].as<std::string>();
+        resp.status = r["status"].as<std::string>();
+        resp.difficulty = opt_str("difficulty");
+        resp.winner_id = opt_str("winner_id");
+        resp.finish_reason = opt_str("finish_reason");
+        resp.finished_at = opt_str("finished_at");
+        resp.rematch_code = opt_str("rematch_code");
+        resp.ready_user_ids = ProblemRepository::parse_pg_array(r["ready_user_ids"].as<std::string>());
+        resp.warnings = json::parse(r["warnings"].as<std::string>());
+        resp.server_now = r["server_now"].as<std::string>();
+        resp.has_started = r["has_started"].as<bool>();
+
         resp.topics = ProblemRepository::parse_pg_array(r["topics"].as<std::string>());
         std::vector<std::string> pids = ProblemRepository::parse_pg_array(r["problem_ids"].as<std::string>());
+
+        // A duel's problem stays secret until the countdown finishes
+        if (resp.mode == "DUEL") {
+            bool revealed = (resp.status == "LIVE" && resp.has_started) || resp.status == "FINISHED";
+            if (!revealed) pids.clear();
+        }
         json points_map = json::parse(r["problem_points"].as<std::string>());
         json participants_raw = json::parse(r["participants"].as<std::string>());
         json standings_map = json::parse(r["standings"].as<std::string>());
