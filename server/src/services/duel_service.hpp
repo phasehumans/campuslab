@@ -429,20 +429,26 @@ public:
         try {
             std::string name;
             json event = nullptr;
+            int total = 0;
             {
                 auto conn_guard = db_pool_.acquire();
                 pqxx::work txn(conn_guard.get());
                 auto row = ContestRepository::find_by_code(txn, code, true);
                 if (!row.has_value() || (*row)["mode"].as<std::string>() != "DUEL") return;
                 name = user_name(txn, user_id);
+                // The judge stops at the first failing test, so report against the problem's full suite
+                auto t_rows = txn.exec_params(
+                    "SELECT jsonb_array_length(testcases) FROM \"Problem\" WHERE id = $1",
+                    submission.value("problemId", std::string())
+                );
+                if (!t_rows.empty() && !t_rows[0][0].is_null()) total = t_rows[0][0].as<int>();
                 event = finalize_locked(txn, code);
                 txn.commit();
             }
 
-            int passed = 0, total = 0;
+            int passed = 0;
             if (submission.contains("testcases") && submission["testcases"].is_array()) {
                 for (const auto& tc : submission["testcases"]) {
-                    total++;
                     if (tc.value("passed", false)) passed++;
                 }
             }
