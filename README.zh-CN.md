@@ -6,7 +6,8 @@
 
 Campus Lab 是一个免费、开源的编程平台，专为大学编程实验课设计。老师可以在实验课上举办实时编程比赛。学生可以刷题、和朋友比拼，并马上知道自己的代码对不对。它运行在学校自己的服务器上。
 
-- **250+ 道题目：** 每道题都用 30 个隐藏测试来检查。你的用时和提交记录都会保存。
+- **按主题排列的 250 道题：** 从数组到动态规划，共 18 个主题，由易到难。每道题最多用 50 个隐藏测试来检查。你的用时和提交记录都会保存。
+- **8 种语言：** 可以用 C、C++、Python、JavaScript、TypeScript、Lua、Perl 或 Ruby 作答。
 - **实时比赛：** 比赛房间带有实时排行榜。全屏锁定和禁止粘贴可以防止作弊。
 - **1v1 对战：** 向朋友发起挑战，看谁先做出来。
 - **每日一题：** 每天一道新题，帮你保持连续打卡。
@@ -23,4 +24,6 @@ Campus Lab 最初是 SES's R. C. Patel Institute of Technology (RCPIT), Shirpur 
 
 ### 反馈与 Bug
 
-发现 Bug 或有好的想法？请[提交 Issue](https://github.com/phasehumans/campus-lab/issues) 或发邮件到 [team@trydecember.com](mailto:team@trydecember.com)。如果要报告安全问题，请查看 [SECURITY.md](SECURITY.md)。
+发现 Bug 或有好的想法？请[提交 Issue](https://github.com/phasehumans/campuslab/issues) 或发邮件到 [team@trydecember.com](mailto:team@trydecember.com)。如果要报告安全问题，请查看 [SECURITY.md](SECURITY.md)。
+
+想添加新题目？请查看 [problems/AUTHORING.md](problems/AUTHORING.md)。

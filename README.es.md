@@ -6,7 +6,8 @@
 
 Campus Lab es una plataforma de programación gratuita y de código abierto para los laboratorios de programación de la universidad. Los profesores pueden hacer concursos de programación en vivo durante la clase. Los estudiantes pueden practicar problemas, competir con sus amigos y ver al momento si su código funciona. Funciona en el propio servidor de tu universidad.
 
-- **Más de 250 problemas:** Cada problema se revisa con 30 pruebas ocultas. Se guardan tu tiempo y tus envíos anteriores.
+- **250 problemas por temas:** Una lista de práctica con 18 temas, desde arreglos hasta programación dinámica, de fácil a difícil. Cada problema se revisa con hasta 50 pruebas ocultas. Se guardan tu tiempo y tus envíos anteriores.
+- **8 lenguajes:** Escribe tu solución en C, C++, Python, JavaScript, TypeScript, Lua, Perl o Ruby.
 - **Concursos en vivo:** Salas de concurso con una tabla de posiciones en vivo. El bloqueo de pantalla completa y de pegado ayuda a evitar trampas.
 - **Duelos 1v1:** Reta a un amigo y mira quién resuelve el problema primero.
 - **Problema del día:** Un problema nuevo cada día para mantener tu racha.
@@ -23,4 +24,6 @@ Campus Lab empezó como un proyecto semestral en SES's R. C. Patel Institute of 
 
 ### Comentarios y errores
 
-¿Encontraste un error o tienes una idea? [Abre un issue](https://github.com/phasehumans/campus-lab/issues) o escríbenos a [team@trydecember.com](mailto:team@trydecember.com). Para avisar de un problema de seguridad, mira [SECURITY.md](SECURITY.md).
+¿Encontraste un error o tienes una idea? [Abre un issue](https://github.com/phasehumans/campuslab/issues) o escríbenos a [team@trydecember.com](mailto:team@trydecember.com). Para avisar de un problema de seguridad, mira [SECURITY.md](SECURITY.md).
+
+¿Quieres agregar un problema? Mira [problems/AUTHORING.md](problems/AUTHORING.md).

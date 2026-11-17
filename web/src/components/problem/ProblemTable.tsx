@@ -2,8 +2,7 @@ import { Link } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { cn } from '@/lib/utils'
 import { getProblem } from '@/lib/api'
-import { Fragment } from 'react'
-import type { Potd, ProblemSummary, SheetSection } from '@/lib/types'
+import type { Potd, ProblemSummary } from '@/lib/types'
 
 const STATUS_LABEL: Record<ProblemSummary['status'], string> = {
     Solved: 'Solved',
@@ -36,8 +35,6 @@ interface ProblemTableProps {
     footer?: React.ReactNode
     /** Problem of the Day, pinned above question 1 */
     potd?: Potd | null
-    /** Sheet sections with progress; a heading row is shown where a new section starts */
-    sections?: SheetSection[]
 }
 
 export function ProblemTable({
@@ -46,9 +43,7 @@ export function ProblemTable({
     startIndex = 1,
     footer,
     potd = null,
-    sections = [],
 }: ProblemTableProps) {
-    const sectionByTitle = new Map(sections.map((s) => [s.title, s]))
     const queryClient = useQueryClient()
 
     const handlePrefetch = (id: string) => {
@@ -179,23 +174,7 @@ export function ProblemTable({
                                     problem.number != null
                                         ? String(problem.number).padStart(3, '0')
                                         : String(startIndex + idx).padStart(2, '0')
-                                const startsSection =
-                                    Boolean(problem.section) &&
-                                    (idx === 0 || problems[idx - 1].section !== problem.section)
-                                const section = problem.section
-                                    ? sectionByTitle.get(problem.section)
-                                    : undefined
-                                return (
-                                    <Fragment key={problem.id}>
-                                        {startsSection && (
-                                            <SectionHeaderRow
-                                                title={problem.section as string}
-                                                section={section}
-                                            />
-                                        )}
-                                        {renderRow(problem, label)}
-                                    </Fragment>
-                                )
+                                return renderRow(problem, label)
                             })
                         ) : (
                             <tr>
@@ -217,34 +196,5 @@ export function ProblemTable({
                 </div>
             )}
         </div>
-    )
-}
-
-/** A heading row where a sheet section starts, with this user's progress in it. */
-function SectionHeaderRow({ title, section }: { title: string; section?: SheetSection }) {
-    const pct =
-        section && section.total > 0 ? Math.round((section.solved / section.total) * 100) : 0
-    return (
-        <tr className="bg-[#f9fafb] dark:bg-[#191919]">
-            <td colSpan={5} className="px-2 sm:px-4 py-2">
-                <div className="flex items-center justify-between gap-3 font-mono text-[11px]">
-                    <span className="uppercase tracking-wider font-semibold text-[#090a0f] dark:text-[#e8e8e6] truncate">
-                        {section ? `${section.order}. ` : ''}
-                        {title}
-                    </span>
-                    {section && (
-                        <span className="flex items-center gap-2 shrink-0 text-[#64748b] dark:text-[#a09f9d]">
-                            <span className="hidden sm:block h-1 w-20 rounded-full bg-[#e2e8f0] dark:bg-[#2a2a2a] overflow-hidden">
-                                <span
-                                    className="block h-full bg-[#87b2f4]"
-                                    style={{ width: `${pct}%` }}
-                                />
-                            </span>
-                            {section.solved}/{section.total}
-                        </span>
-                    )}
-                </div>
-            </td>
-        </tr>
     )
 }

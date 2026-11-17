@@ -6,7 +6,8 @@
 
 Campus Lab は、大学のプログラミング実習のための無料・オープンソースのコーディングプラットフォームです。先生は実習の時間にライブのコーディングコンテストを開けます。学生は問題を練習したり、友達と競ったり、自分のコードが正しいかすぐに確認したりできます。大学のサーバー上で動きます。
 
-- **250 問以上の問題：** 各問題は 30 個の隠しテストでチェックされます。解いた時間と提出履歴は保存されます。
+- **トピック別の 250 問：** 配列から動的計画法まで、18 のトピックを易しい順に並べた練習シートです。各問題は最大 50 個の隠しテストでチェックされます。解いた時間と提出履歴は保存されます。
+- **8 つの言語：** C、C++、Python、JavaScript、TypeScript、Lua、Perl、Ruby で解答できます。
 - **ライブコンテスト：** リアルタイムのランキング付きのコンテストルーム。全画面ロックと貼り付け禁止で不正を防ぎます。
 - **1v1 デュエル：** 友達に勝負を挑んで、どちらが先に解けるか競えます。
 - **今日の一問：** 毎日新しい問題が出るので、連続記録を続けられます。
@@ -23,4 +24,6 @@ Campus Lab は SES's R. C. Patel Institute of Technology (RCPIT), Shirpur の学
 
 ### フィードバックとバグ報告
 
-バグを見つけた、またはアイデアがありますか？[Issue を作成する](https://github.com/phasehumans/campus-lab/issues)か、[team@trydecember.com](mailto:team@trydecember.com) までメールしてください。セキュリティの問題は [SECURITY.md](SECURITY.md) をご覧ください。
+バグを見つけた、またはアイデアがありますか？[Issue を作成する](https://github.com/phasehumans/campuslab/issues)か、[team@trydecember.com](mailto:team@trydecember.com) までメールしてください。セキュリティの問題は [SECURITY.md](SECURITY.md) をご覧ください。
+
+問題を追加したい場合は [problems/AUTHORING.md](problems/AUTHORING.md) をご覧ください。

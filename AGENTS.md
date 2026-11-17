@@ -2,7 +2,7 @@
 
 ### Issue tracker
 
-Issues live in GitHub Issues for phasehumans/campus-lab, managed with the `gh` CLI. See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues for phasehumans/campuslab, managed with the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

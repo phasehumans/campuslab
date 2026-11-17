@@ -255,7 +255,6 @@ export function ProblemSet() {
                                 problems={displayedProblems}
                                 onProblemClick={handleProblemClick}
                                 startIndex={(page - 1) * pageSize + 1}
-                                sections={problemsData?.sections ?? []}
                                 potd={
                                     page === 1 &&
                                     !debouncedSearch.trim() &&

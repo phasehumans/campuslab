@@ -6,7 +6,8 @@
 
 Campus Lab은 대학 프로그래밍 실습을 위한 무료 오픈소스 코딩 플랫폼입니다. 교수님은 실습 시간에 실시간 코딩 대회를 열 수 있습니다. 학생은 문제를 연습하고, 친구와 겨루고, 자기 코드가 맞는지 바로 확인할 수 있습니다. 학교 서버에서 직접 실행됩니다.
 
-- **250개 이상의 문제:** 모든 문제는 30개의 숨겨진 테스트로 채점됩니다. 풀이 시간과 제출 기록이 저장됩니다.
+- **주제별 250문제:** 배열부터 동적 계획법까지 18개 주제를 쉬운 순서로 정리한 연습 시트입니다. 모든 문제는 최대 50개의 숨겨진 테스트로 채점됩니다. 풀이 시간과 제출 기록이 저장됩니다.
+- **8개 언어:** C, C++, Python, JavaScript, TypeScript, Lua, Perl, Ruby로 풀 수 있습니다.
 - **실시간 대회:** 실시간 순위표가 있는 대회 방. 전체 화면 잠금과 붙여넣기 차단으로 부정행위를 막습니다.
 - **1대1 대결:** 친구에게 도전하고 누가 먼저 푸는지 겨뤄 보세요.
 - **오늘의 문제:** 매일 새 문제가 나와서 연속 기록을 이어갈 수 있습니다.
@@ -23,4 +24,6 @@ Campus Lab은 SES's R. C. Patel Institute of Technology (RCPIT), Shirpur의 학�
 
 ### 피드백 및 버그
 
-버그를 찾았거나 아이디어가 있나요? [이슈를 등록](https://github.com/phasehumans/campus-lab/issues)하거나 [team@trydecember.com](mailto:team@trydecember.com)으로 이메일을 보내 주세요. 보안 문제는 [SECURITY.md](SECURITY.md)를 확인하세요.
+버그를 찾았거나 아이디어가 있나요? [이슈를 등록](https://github.com/phasehumans/campuslab/issues)하거나 [team@trydecember.com](mailto:team@trydecember.com)으로 이메일을 보내 주세요. 보안 문제는 [SECURITY.md](SECURITY.md)를 확인하세요.
+
+문제를 추가하고 싶다면 [problems/AUTHORING.md](problems/AUTHORING.md)를 확인하세요.
