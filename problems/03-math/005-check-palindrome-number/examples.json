@@ -1,0 +1,14 @@
+[
+  {
+    "input": "121",
+    "explanation": "121 reads the same in both directions."
+  },
+  {
+    "input": "-121",
+    "explanation": "Read from right to left it becomes 121-, which is different, so it is not a palindrome."
+  },
+  {
+    "input": "10",
+    "explanation": "Read backwards it is 01, which is not the same as 10."
+  }
+]

@@ -1,0 +1,4 @@
+1 <= s.length <= 1000
+s consists of lowercase English letters, digits, and square brackets '[]'.
+All integers in s are in range [1, 300].
+The decoded string length does not exceed 10^5.

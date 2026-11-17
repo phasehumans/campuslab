@@ -1,0 +1,1 @@
+Compute the product of all num[i] (let it be M). For each equation i, let M_i = M / num[i]. Calculate modular multiplicative inverse of M_i modulo num[i] (let it be t_i). Sum up rem[i] * t_i * M_i and take the final sum modulo M.

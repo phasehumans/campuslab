@@ -1,0 +1,5 @@
+1 <= n <= 1000
+Each operation is either an integer, '+', 'D', or 'C'.
+For integer operations, the value will be in range [-3 * 10^4, 3 * 10^4].
+All operations are guaranteed to be valid.
+Every recorded score has absolute value at most 10^8.

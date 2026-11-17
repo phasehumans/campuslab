@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n1 2 3",
+    "explanation": "The next greater lexicographical permutation of [1, 2, 3] is [1, 3, 2]."
+  },
+  {
+    "input": "3\n3 2 1",
+    "explanation": "[3, 2, 1] is sorted in descending order, so the next is the sorted order [1, 2, 3]."
+  }
+]

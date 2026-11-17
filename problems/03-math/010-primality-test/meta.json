@@ -1,0 +1,12 @@
+{
+  "title": "Primality Test",
+  "difficulty": "EASY",
+  "tags": [
+    "math",
+    "number-theory",
+    "prime"
+  ],
+  "legacy_id": "e0cdd156-153e-48fd-a3bb-c7200fa8b553",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

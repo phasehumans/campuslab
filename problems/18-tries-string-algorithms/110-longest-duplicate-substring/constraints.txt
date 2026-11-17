@@ -1,0 +1,3 @@
+2 <= |s| <= 10^5
+s consists of lowercase English letters.
+At least one character of s appears twice.

@@ -1,0 +1,12 @@
+{
+  "title": "K Closest Points to Origin",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "geometry"
+  ],
+  "legacy_id": "40b3df63-ed85-4f3b-ab35-761837deafa8",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

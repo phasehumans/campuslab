@@ -1,0 +1,11 @@
+{
+  "title": "Grid Illumination",
+  "difficulty": "HARD",
+  "tags": [
+    "hash-map",
+    "hash-set"
+  ],
+  "legacy_id": "79c607c9-0c92-4a7e-a3ac-72d2e1e9eba8",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

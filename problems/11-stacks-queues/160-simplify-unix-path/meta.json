@@ -1,0 +1,10 @@
+{
+  "title": "Simplify Unix Path",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "stack"
+  ],
+  "legacy_id": "b49c0522-5658-434c-9ed0-699c898969f6",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

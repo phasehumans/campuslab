@@ -1,0 +1,12 @@
+{
+  "title": "Design Add and Search Words Data Structure",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "trie",
+    "prefix-tree",
+    "strings"
+  ],
+  "legacy_id": "d953cfd2-6b4c-4dfa-9512-cababdbff4a1",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

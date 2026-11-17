@@ -1,0 +1,11 @@
+{
+  "title": "Task Scheduler",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "greedy",
+    "sorting-greedy"
+  ],
+  "legacy_id": "8d0a76c2-11cd-4df6-888e-b25ef45ea88e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

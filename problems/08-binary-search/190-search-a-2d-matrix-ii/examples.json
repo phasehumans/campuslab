@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 5 5\n1 4 7 11 15\n2 5 8 12 19\n3 6 9 16 22\n10 13 14 17 24\n18 21 23 26 30",
+    "explanation": "5 is present in the second row, second column."
+  },
+  {
+    "input": "5 5 20\n1 4 7 11 15\n2 5 8 12 19\n3 6 9 16 22\n10 13 14 17 24\n18 21 23 26 30",
+    "explanation": "20 is not present in the matrix."
+  }
+]

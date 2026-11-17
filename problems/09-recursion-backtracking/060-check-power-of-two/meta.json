@@ -1,0 +1,10 @@
+{
+  "title": "Check Power of Two",
+  "difficulty": "EASY",
+  "tags": [
+    "recursion"
+  ],
+  "legacy_id": "c6e4e4e2-da62-47ce-a19c-a3182b40a28b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Longest Valid Parentheses",
+  "difficulty": "HARD",
+  "tags": [
+    "stack",
+    "dynamic-programming",
+    "strings"
+  ],
+  "legacy_id": "e943ead3-3cd9-4749-818f-f5591b0bc97e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

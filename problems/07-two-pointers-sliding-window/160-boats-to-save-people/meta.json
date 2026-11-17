@@ -1,0 +1,11 @@
+{
+  "title": "Boats to Save People",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "two-pointers",
+    "greedy"
+  ],
+  "legacy_id": "d9e0fede-d7fa-4c96-869e-dfd48d6c7e75",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

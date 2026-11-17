@@ -1,0 +1,10 @@
+[
+  {
+    "input": "7\n1 2 3 3 4 4 5",
+    "explanation": "3 and 4 appear multiple times, so they are completely removed. 1, 2, and 5 remain."
+  },
+  {
+    "input": "5\n1 1 1 2 3",
+    "explanation": "1 has duplicates and is completely removed."
+  }
+]

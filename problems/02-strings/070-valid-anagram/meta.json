@@ -1,0 +1,10 @@
+{
+  "title": "Valid Anagram",
+  "difficulty": "EASY",
+  "tags": [
+    "strings"
+  ],
+  "legacy_id": "ed0b342b-a256-4a78-ae7a-2f94d4b38d54",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

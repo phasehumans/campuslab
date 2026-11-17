@@ -1,0 +1,12 @@
+{
+  "title": "Populating Next Right Pointers in Each Node II",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "bfs"
+  ],
+  "legacy_id": "b2651298-4356-4dde-8bc0-880cb6d5e43d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

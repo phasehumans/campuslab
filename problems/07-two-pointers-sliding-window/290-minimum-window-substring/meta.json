@@ -1,0 +1,12 @@
+{
+  "title": "Minimum Window Substring",
+  "difficulty": "HARD",
+  "tags": [
+    "sliding-window",
+    "hash-map",
+    "strings"
+  ],
+  "legacy_id": "e69d3869-3e6f-44be-9d15-1c60b071c843",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "1 2 3",
+    "explanation": "Path 1 -> 2 represents 12. Path 1 -> 3 represents 13. Sum = 12 + 13 = 25."
+  },
+  {
+    "input": "4 9 0 5 1",
+    "explanation": "Paths: 4 -> 9 -> 5 (495), 4 -> 9 -> 1 (491), 4 -> 0 (40). Sum = 495 + 491 + 40 = 1026."
+  }
+]

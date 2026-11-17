@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n3 10 5 25 2",
+    "explanation": "Maximum XOR is 5 ^ 25 = 28."
+  },
+  {
+    "input": "3\n8 4 2",
+    "explanation": "Maximum XOR is 8 ^ 4 = 12."
+  }
+]

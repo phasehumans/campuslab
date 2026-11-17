@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n1 2 1",
+    "explanation": "We can pick fruit types [1, 2, 1] which matches the two baskets restriction."
+  },
+  {
+    "input": "4\n0 1 2 2",
+    "explanation": "We can pick [1, 2, 2]. If we start at the first tree, we get [0, 1] of length 2."
+  }
+]

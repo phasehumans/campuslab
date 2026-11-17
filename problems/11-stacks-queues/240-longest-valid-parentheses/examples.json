@@ -1,0 +1,10 @@
+[
+  {
+    "input": "(()",
+    "explanation": "The longest valid parentheses substring is \"()\", which has length 2."
+  },
+  {
+    "input": ")()())",
+    "explanation": "The longest valid parentheses substring is \"()()\", which has length 4."
+  }
+]

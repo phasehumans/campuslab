@@ -1,0 +1,11 @@
+{
+  "title": "Single Number III",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "bit-manipulation",
+    "xor"
+  ],
+  "legacy_id": "f9b9d32d-a4a7-4b0d-beef-3567429dfc0c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

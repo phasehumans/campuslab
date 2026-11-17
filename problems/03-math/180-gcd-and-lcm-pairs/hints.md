@@ -1,0 +1,1 @@
+Recall that A * B = gcd(A, B) * lcm(A, B) = G * L. If L is not divisible by G, the answer is 0. Otherwise, let d = L / G. We need to find pairs (a, b) such that a * b = d and gcd(a, b) = 1. This is determined by the number of distinct prime factors of d. If d has k distinct prime factors, then there are 2^k such pairs.

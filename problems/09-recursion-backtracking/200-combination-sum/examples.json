@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4 7\n2 3 6 7",
+    "explanation": "The unique combinations are [2, 2, 3] and [7]."
+  },
+  {
+    "input": "3 8\n2 3 5",
+    "explanation": "The unique combinations are [2, 2, 2, 2], [2, 3, 3], and [3, 5]."
+  }
+]

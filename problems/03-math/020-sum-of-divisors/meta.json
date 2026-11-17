@@ -1,0 +1,11 @@
+{
+  "title": "Sum of Divisors",
+  "difficulty": "EASY",
+  "tags": [
+    "math",
+    "number-theory"
+  ],
+  "legacy_id": "f909b669-a800-4e31-a4ce-c0d8a34a626a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

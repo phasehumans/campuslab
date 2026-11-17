@@ -1,0 +1,1 @@
+We always need to quickly fetch and remove the two largest elements. A Max-Heap (priority queue) is ideal for this. Pop the two largest stones, calculate their difference, and push the difference back if it's positive.

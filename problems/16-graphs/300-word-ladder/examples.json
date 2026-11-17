@@ -1,0 +1,8 @@
+[
+  {
+    "input": "hit\ncog\n6\nhot\ndot\ndog\nlot\nlog\ncog"
+  },
+  {
+    "input": "hit\ncog\n5\nhot\ndot\ndog\nlot\nlog"
+  }
+]

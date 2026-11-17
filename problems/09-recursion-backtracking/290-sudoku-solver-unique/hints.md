@@ -1,0 +1,1 @@
+Locate an empty cell (represented by '.'). Try placing numbers 1-9. Check if the placed number is valid in its row, column, and 3x3 block. If valid, recursively solve the rest. If not, backtrack by resetting the cell to '.' and try the next value.

@@ -1,0 +1,10 @@
+{
+  "title": "Find Maximum Element",
+  "difficulty": "EASY",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "a6116897-a9ae-4f5e-9c96-d16bcfc61705",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Minimum Bit Flips for AND OR XOR",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "bit-manipulation",
+    "bitwise"
+  ],
+  "legacy_id": "4175941f-9ee5-45bb-8f55-532a08a4c44f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

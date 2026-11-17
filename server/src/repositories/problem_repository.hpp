@@ -61,7 +61,7 @@ public:
         }
 
         pqxx::work txn(conn);
-        auto rows = txn.exec("SELECT id, title, difficulty, tags FROM \"Problem\" ORDER BY \"createdAt\" ASC");
+        auto rows = txn.exec("SELECT id, title, difficulty, tags, number, section FROM \"Problem\" ORDER BY number ASC NULLS LAST, \"createdAt\" ASC");
         std::vector<ProblemSummaryModel> list;
 
         for (const auto& r : rows) {
@@ -79,6 +79,8 @@ public:
                 p.status = "Attempted";
             }
             p.submission_count = attempted_counts[p.id];
+            if (!r["number"].is_null()) p.number = r["number"].as<int>();
+            if (!r["section"].is_null()) p.section = r["section"].as<std::string>();
             list.push_back(p);
         }
         return list;
@@ -150,8 +152,9 @@ public:
         int total_pages = total == 0 ? 1 : ((total + limit - 1) / limit);
 
         // 4. Fetch the page of problems
-        std::string query = "SELECT id, title, difficulty, tags FROM \"Problem\" " + where_clause +
-                            " ORDER BY \"createdAt\" ASC, id ASC LIMIT " + std::to_string(limit) +
+        // Sheet order: problems with a sheet number first (1..500), then anything unnumbered
+        std::string query = "SELECT id, title, difficulty, tags, number, section FROM \"Problem\" " + where_clause +
+                            " ORDER BY number ASC NULLS LAST, \"createdAt\" ASC, id ASC LIMIT " + std::to_string(limit) +
                             " OFFSET " + std::to_string(offset);
         auto rows = txn.exec(query);
 
@@ -184,7 +187,32 @@ public:
                 p.status = "Attempted";
             }
             p.submission_count = attempted_counts[p.id];
+            if (!r["number"].is_null()) p.number = r["number"].as<int>();
+            if (!r["section"].is_null()) p.section = r["section"].as<std::string>();
             list.push_back(p);
+        }
+
+        // Per-section totals (and this user's solved count) for the sheet's progress display
+        json sections = json::array();
+        {
+            std::string solved_expr = user_id.empty()
+                ? std::string("0")
+                : "COUNT(ps.id)";
+            std::string join = user_id.empty()
+                ? std::string("")
+                : " LEFT JOIN \"ProblemSolved\" ps ON ps.\"problemId\" = p.id AND ps.\"userId\" = '" + txn.esc(user_id) + "'";
+            auto sec_rows = txn.exec(
+                "SELECT p.section, MIN(p.\"sectionOrder\") AS ord, COUNT(DISTINCT p.id) AS total, " + solved_expr + " AS solved "
+                "FROM \"Problem\" p" + join + " WHERE p.section IS NOT NULL GROUP BY p.section ORDER BY ord, p.section"
+            );
+            for (const auto& sr : sec_rows) {
+                sections.push_back({
+                    {"title", sr["section"].as<std::string>()},
+                    {"order", sr["ord"].is_null() ? 0 : sr["ord"].as<int>()},
+                    {"total", sr["total"].as<int>()},
+                    {"solved", sr["solved"].as<int>()}
+                });
+            }
         }
 
         PaginatedProblemsResult result;
@@ -194,6 +222,7 @@ public:
         result.limit = limit;
         result.total_pages = total_pages;
         result.all_tags = std::move(all_tags);
+        result.sections = std::move(sections);
         return result;
     }
 
@@ -201,7 +230,8 @@ public:
         pqxx::work txn(conn);
         auto rows = txn.exec_params(
             "SELECT id, title, description, difficulty, tags, constraints, hints, editorial, "
-            "examples, testcases, codesnippets, \"referneceSolution\" AS reference_solution "
+            "examples, testcases, codesnippets, \"referneceSolution\" AS reference_solution, "
+            "number, section, \"timeLimitMs\" AS time_limit_ms, \"memoryLimitMb\" AS memory_limit_mb "
             "FROM \"Problem\" WHERE id = $1",
             problem_id
         );
@@ -225,6 +255,10 @@ public:
         p.testcases = json::parse(r["testcases"].as<std::string>());
         p.starter_codes = json::parse(r["codesnippets"].as<std::string>());
         p.reference_solutions = json::parse(r["reference_solution"].as<std::string>());
+        if (!r["number"].is_null()) p.number = r["number"].as<int>();
+        if (!r["section"].is_null()) p.section = r["section"].as<std::string>();
+        p.time_limit_ms = r["time_limit_ms"].as<int>();
+        p.memory_limit_mb = r["memory_limit_mb"].as<int>();
 
         p.status = "Unsolved";
         p.submission_count = 0;

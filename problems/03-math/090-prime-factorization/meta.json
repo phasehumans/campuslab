@@ -1,0 +1,12 @@
+{
+  "title": "Prime Factorization",
+  "difficulty": "EASY",
+  "tags": [
+    "math",
+    "number-theory",
+    "prime"
+  ],
+  "legacy_id": "8e7be0c7-3e3c-47d1-8ffd-9ca263b2a627",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

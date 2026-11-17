@@ -1,0 +1,6 @@
+1 <= n <= 5 * 10^4
+1 <= k <= n
+1 <= |s_i| <= 100
+The total length of all strings is at most 5 * 10^5.
+s_i consists of lowercase English letters.
+At least k strings share the same first character (so the answer is non-empty).

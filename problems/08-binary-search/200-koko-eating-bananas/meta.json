@@ -1,0 +1,10 @@
+{
+  "title": "Koko Eating Bananas",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "6e371a7c-78f5-45c5-a704-b35f3bd35dde",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

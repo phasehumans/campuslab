@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 4\n1 5 6 8\n2 4 10 12\n3 7 9 11",
+    "explanation": "All 3 sorted arrays are merged into one sorted array."
+  },
+  {
+    "input": "2 3\n1 3 5\n2 4 6",
+    "explanation": "Merged into a single sorted array."
+  }
+]

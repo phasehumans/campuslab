@@ -1,0 +1,11 @@
+{
+  "title": "Maximum Path Sum in Matrix",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "4b6a52eb-f3c9-4144-a7a2-f2f194321944",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

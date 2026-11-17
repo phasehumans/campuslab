@@ -1,0 +1,10 @@
+[
+  {
+    "input": "leetcode",
+    "explanation": "The character 'l' is the first unique character, located at index 0."
+  },
+  {
+    "input": "loveleetcode",
+    "explanation": "The character 'v' is the first unique character, located at index 2."
+  }
+]

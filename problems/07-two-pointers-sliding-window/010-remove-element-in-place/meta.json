@@ -1,0 +1,11 @@
+{
+  "title": "Remove Element In-Place",
+  "difficulty": "EASY",
+  "tags": [
+    "two-pointers",
+    "arrays"
+  ],
+  "legacy_id": "21b2a2d4-2e87-43bc-9df6-116b57192713",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

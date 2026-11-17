@@ -1,0 +1,12 @@
+{
+  "title": "Longest Common Subsequence",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "lcs",
+    "tabulation"
+  ],
+  "legacy_id": "794594fe-931a-42e8-9085-29e8aaf339aa",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

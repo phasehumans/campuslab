@@ -1,0 +1,11 @@
+{
+  "title": "Serialize and Deserialize List",
+  "difficulty": "HARD",
+  "tags": [
+    "linked-list",
+    "recursion"
+  ],
+  "legacy_id": "7647a482-f7ab-4c28-bbd4-d913d3b3d4e8",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

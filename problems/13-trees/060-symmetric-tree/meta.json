@@ -1,0 +1,12 @@
+{
+  "title": "Symmetric Tree",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "182928df-1081-4d39-b9c2-0599e9458ec4",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

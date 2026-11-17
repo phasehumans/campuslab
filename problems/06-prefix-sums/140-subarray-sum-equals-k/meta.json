@@ -1,0 +1,12 @@
+{
+  "title": "Subarray Sum Equals K",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "hash-map",
+    "prefix-sum",
+    "counting"
+  ],
+  "legacy_id": "022d971f-5c0f-46e4-a7bd-567d86d1a763",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

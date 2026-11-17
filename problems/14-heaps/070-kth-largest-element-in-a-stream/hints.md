@@ -1,0 +1,1 @@
+Use a min-heap (priority queue) of size k to store the k largest elements seen so far. When the heap size exceeds k, pop the smallest element. The top of the heap will always be the k-th largest element.

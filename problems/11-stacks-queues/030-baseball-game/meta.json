@@ -1,0 +1,11 @@
+{
+  "title": "Baseball Game",
+  "difficulty": "EASY",
+  "tags": [
+    "stack",
+    "simulation"
+  ],
+  "legacy_id": "d294e27c-fae1-4e3b-a638-025884ed6e82",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

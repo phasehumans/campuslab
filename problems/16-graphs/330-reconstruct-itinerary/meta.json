@@ -1,0 +1,11 @@
+{
+  "title": "Reconstruct Itinerary",
+  "difficulty": "HARD",
+  "tags": [
+    "graphs",
+    "dfs"
+  ],
+  "legacy_id": "609c3b0e-2841-440d-a25b-11c542633bdc",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

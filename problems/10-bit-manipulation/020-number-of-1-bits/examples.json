@@ -1,0 +1,10 @@
+[
+  {
+    "input": "11",
+    "explanation": "11 in binary is 1011, which has three 1-bits."
+  },
+  {
+    "input": "128",
+    "explanation": "128 in binary is 10000000, which has one 1-bit."
+  }
+]

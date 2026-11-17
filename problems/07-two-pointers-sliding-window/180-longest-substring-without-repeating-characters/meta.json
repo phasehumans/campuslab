@@ -1,0 +1,12 @@
+{
+  "title": "Longest Substring Without Repeating Characters",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "sliding-window",
+    "hash-map",
+    "strings"
+  ],
+  "legacy_id": "b6f67259-5699-4c24-8e5c-375dc1f55085",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

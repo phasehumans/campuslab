@@ -1,0 +1,11 @@
+{
+  "title": "Maximum XOR Sum",
+  "difficulty": "HARD",
+  "tags": [
+    "bit-manipulation",
+    "linear-basis"
+  ],
+  "legacy_id": "c9388b45-aeec-48e5-be40-39e85d7b1b32",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

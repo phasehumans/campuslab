@@ -1,0 +1,11 @@
+{
+  "title": "LRU Cache Operations",
+  "difficulty": "HARD",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "de1821b1-e1bc-4b51-8d6f-fb6d4b33d257",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

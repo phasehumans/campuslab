@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3",
+    "explanation": "To solve with 3 disks, it takes 2 * H(2) + 1 = 2 * 3 + 1 = 7 moves."
+  },
+  {
+    "input": "1",
+    "explanation": "With 1 disk, we just move it directly to the target rod in 1 move."
+  }
+]

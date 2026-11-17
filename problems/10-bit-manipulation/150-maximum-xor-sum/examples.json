@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n9 12 6",
+    "explanation": "Subsets XOR sum maximized by 9 ^ 6 = 15."
+  },
+  {
+    "input": "4\n2 4 8 16",
+    "explanation": "2 ^ 4 ^ 8 ^ 16 = 30."
+  }
+]

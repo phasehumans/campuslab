@@ -1,0 +1,10 @@
+{
+  "title": "Split Array Largest Sum",
+  "difficulty": "HARD",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "2f129c6f-0e22-4c0f-88ee-073c7d61101d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Number of 1 Bits",
+  "difficulty": "EASY",
+  "tags": [
+    "bit-manipulation",
+    "binary"
+  ],
+  "legacy_id": "523c6cc9-a86b-43cb-8501-7c82bd273414",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

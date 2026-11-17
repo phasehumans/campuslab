@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4\n1 5 11 5",
+    "explanation": "The array can be partitioned as [1, 5, 5] and [11]."
+  },
+  {
+    "input": "4\n1 2 3 5",
+    "explanation": "The array cannot be partitioned into equal sum subsets."
+  }
+]

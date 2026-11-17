@@ -1,0 +1,11 @@
+{
+  "title": "Critical Connections in Network (Tarjan's)",
+  "difficulty": "HARD",
+  "tags": [
+    "graphs",
+    "dfs"
+  ],
+  "legacy_id": "f47d413a-eb9b-40dc-be8c-c6db8975533b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

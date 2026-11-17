@@ -1,0 +1,1 @@
+Use a stack of function IDs. Keep track of the previous timestamp. When you see a 'start' log, if the stack is not empty, add the time elapsed to the function on top of the stack, then push the new function. When you see an 'end' log, pop the top function and add the time elapsed (plus 1) to its exclusive time.

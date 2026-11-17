@@ -1,0 +1,9 @@
+[
+  {
+    "input": "9\n1 8 6 2 5 4 8 3 7",
+    "explanation": "The maximum area is obtained between height 8 (index 1) and height 7 (index 8), holding min(8, 7) * (8 - 1) = 7 * 7 = 49 units of water."
+  },
+  {
+    "input": "2\n1 1"
+  }
+]

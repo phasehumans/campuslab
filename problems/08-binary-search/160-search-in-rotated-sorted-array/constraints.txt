@@ -1,0 +1,4 @@
+1 <= N <= 10^5
+-10^9 <= arr[i], target <= 10^9
+All elements of the array are unique
+The array is sorted and possibly rotated

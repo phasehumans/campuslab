@@ -1,0 +1,1 @@
+Moving a chip by 2 units costs 0. Moving by 1 unit costs 1. This means all chips at even positions can be moved to the same even position for free, and all odd positions to the same odd position for free.

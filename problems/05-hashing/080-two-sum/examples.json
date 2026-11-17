@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4 9\n2 7 11 15",
+    "explanation": "arr[1] + arr[2] = 2 + 7 = 9, so the answer is 1 2."
+  },
+  {
+    "input": "3 6\n3 2 4",
+    "explanation": "arr[2] + arr[3] = 2 + 4 = 6. Using the 3 at position 1 twice is not allowed."
+  }
+]

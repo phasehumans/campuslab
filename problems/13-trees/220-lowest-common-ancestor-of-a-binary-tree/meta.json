@@ -1,0 +1,12 @@
+{
+  "title": "Lowest Common Ancestor of a Binary Tree",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "c695efd6-477b-4f01-874f-e9a4fe6e5de4",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

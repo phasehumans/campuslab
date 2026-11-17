@@ -1,0 +1,13 @@
+{
+  "title": "Binary Tree Right Side View",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "bfs",
+    "dfs"
+  ],
+  "legacy_id": "95144441-b306-4f22-9a3d-8810d823f1a7",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

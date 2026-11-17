@@ -1,0 +1,2 @@
+1 <= R, C <= 10
+Each cell is 0, 1 or 2

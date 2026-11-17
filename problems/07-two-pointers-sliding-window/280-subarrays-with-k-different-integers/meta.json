@@ -1,0 +1,12 @@
+{
+  "title": "Subarrays with K Different Integers",
+  "difficulty": "HARD",
+  "tags": [
+    "sliding-window",
+    "hash-map",
+    "counting"
+  ],
+  "legacy_id": "38a67dc7-5b83-4463-8177-548d9c0686a0",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

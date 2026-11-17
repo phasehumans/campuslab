@@ -1,0 +1,10 @@
+[
+  {
+    "input": "1 4 3 2 4 2 5 null null null null null null 4 6",
+    "explanation": "The subtree rooted at 3 is a BST with keys [2, 3, 4, 5, 6], giving sum 2 + 3 + 4 + 5 + 6 = 20."
+  },
+  {
+    "input": "4 3 null 1 2",
+    "explanation": "The leaf node with value 2 is the maximum sum BST."
+  }
+]

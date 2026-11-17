@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n-4 -1 0 3 10",
+    "explanation": "After squaring, the array becomes [16, 1, 0, 9, 100]. After sorting, it becomes [0, 1, 9, 16, 100]."
+  },
+  {
+    "input": "4\n-7 -3 2 3",
+    "explanation": "Squares are 49, 9, 4, 9. Sorted: 4, 9, 9, 49."
+  }
+]

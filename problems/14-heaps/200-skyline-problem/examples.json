@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n2 9 10\n3 7 15\n5 12 12",
+    "explanation": "The key points of the skyline are:\n- x=2: height goes from 0 to 10.\n- x=3: height goes from 10 to 15.\n- x=7: height drops from 15 to 12 (since [3,7,15] ended, next tallest is [5,12,12]).\n- x=12: height drops to 0."
+  },
+  {
+    "input": "2\n0 2 3\n2 5 3",
+    "explanation": "The two buildings touch and have the same height, forming a continuous block of height 3 from x=0 to x=5."
+  }
+]

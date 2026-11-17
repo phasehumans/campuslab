@@ -1,0 +1,10 @@
+{
+  "title": "Find Median from Data Stream",
+  "difficulty": "HARD",
+  "tags": [
+    "sorting"
+  ],
+  "legacy_id": "9b9f6d66-a322-4c6a-ac77-3c71dbd8a9be",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

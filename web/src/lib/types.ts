@@ -1,14 +1,7 @@
 type Difficulty = 'Easy' | 'Medium' | 'Hard'
 type ProblemStatus = 'Solved' | 'Attempted' | 'Unsolved'
 export type EditorLanguage =
-    | 'cpp'
-    | 'c'
-    | 'python'
-    | 'javascript'
-    | 'typescript'
-    | 'lua'
-    | 'perl'
-    | 'ruby'
+    'cpp' | 'c' | 'python' | 'javascript' | 'typescript' | 'lua' | 'perl' | 'ruby'
 
 export type User = {
     id: string
@@ -26,11 +19,6 @@ export type ProblemExample = {
     explanation?: string
 }
 
-type ProblemTestcase = {
-    input: string
-    output: string
-}
-
 export type ProblemSummary = {
     id: string
     title: string
@@ -38,6 +26,17 @@ export type ProblemSummary = {
     tags: string[]
     status: ProblemStatus
     submissionCount: number
+    /** Position in the DSA sheet (1..500) */
+    number?: number | null
+    /** Sheet section title */
+    section?: string | null
+}
+
+export type SheetSection = {
+    title: string
+    order: number
+    total: number
+    solved: number
 }
 
 export type ProblemsResponse = {
@@ -48,14 +47,18 @@ export type ProblemsResponse = {
     limit: number
     totalPages: number
     allTags: string[]
+    sections?: SheetSection[]
 }
 
 export type ProblemDetail = ProblemSummary & {
     description: string
     constraints: string
     examples: ProblemExample[]
-    testcases: ProblemTestcase[]
+    /** Number of hidden tests (the tests themselves are never sent to the browser) */
+    testCount?: number
     starterCodes: Partial<Record<EditorLanguage, string>>
+    timeLimitMs?: number
+    memoryLimitMb?: number
 }
 
 type ExecutionResult = {

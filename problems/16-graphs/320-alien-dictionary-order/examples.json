@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\nwrt\nwrf\ner\nett\nrftt",
+    "explanation": "From the sorted list, we can deduce:\n- 't' comes before 'f'\n- 'w' comes before 'e'\n- 'r' comes before 't'\n- 'e' comes before 'r'\nThis yields the ordering 'wertf'."
+  },
+  {
+    "input": "3\nzb\nza\nx",
+    "explanation": "'b' comes before 'a' and 'z' comes before 'x'. Among the valid orders, the lexicographically smallest is 'bazx'."
+  }
+]

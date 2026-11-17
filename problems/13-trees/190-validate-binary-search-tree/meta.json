@@ -1,0 +1,12 @@
+{
+  "title": "Validate Binary Search Tree",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-search-tree",
+    "dfs"
+  ],
+  "legacy_id": "3bbead43-7227-4b18-a834-ba8a8efecba0",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

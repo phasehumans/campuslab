@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6 2\nA A A B B B",
+    "explanation": "A possible sequence is: A -> B -> idle -> A -> B -> idle -> A -> B. Total intervals = 8."
+  },
+  {
+    "input": "6 0\nA A A B B B",
+    "explanation": "With a cooling interval of 0, any task can be performed in any cycle. Possible sequence is A -> A -> A -> B -> B -> B. Total intervals = 6."
+  }
+]

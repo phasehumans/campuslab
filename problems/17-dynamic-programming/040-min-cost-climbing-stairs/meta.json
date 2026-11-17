@@ -1,0 +1,11 @@
+{
+  "title": "Min Cost Climbing Stairs",
+  "difficulty": "EASY",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "7a498cd1-4dd9-4263-93bc-7fb56721b54f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

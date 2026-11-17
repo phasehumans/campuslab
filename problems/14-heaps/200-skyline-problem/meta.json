@@ -1,0 +1,12 @@
+{
+  "title": "Skyline Problem",
+  "difficulty": "HARD",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "6376049e-e509-408f-91ee-7b08cdbbcbd5",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

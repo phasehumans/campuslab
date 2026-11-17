@@ -1,0 +1,2 @@
+1 <= n <= 10^5
+The elements of the array are distinct and in the range [0, n]

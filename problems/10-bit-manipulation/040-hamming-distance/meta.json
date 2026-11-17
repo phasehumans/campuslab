@@ -1,0 +1,11 @@
+{
+  "title": "Hamming Distance",
+  "difficulty": "EASY",
+  "tags": [
+    "bit-manipulation",
+    "xor"
+  ],
+  "legacy_id": "87ae750e-6fa7-4ed4-9517-0e5f7695c0f7",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

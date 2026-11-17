@@ -1,0 +1,10 @@
+{
+  "title": "Longest Palindromic Substring",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "strings"
+  ],
+  "legacy_id": "bea2879b-ed1d-4afd-a50d-bd1b8c9dd57e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

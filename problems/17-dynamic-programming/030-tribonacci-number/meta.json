@@ -1,0 +1,11 @@
+{
+  "title": "Tribonacci Number",
+  "difficulty": "EASY",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "70dcff98-077e-4484-9918-2e227e238baa",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

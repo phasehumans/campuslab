@@ -1,0 +1,1 @@
+For each divisor d of n, n/d is also a divisor. Iterating up to the square root of n allows you to find all divisors in O(sqrt(n)). Be careful with perfect squares so you do not add the square root twice. Also use a 64-bit integer as the sum can exceed standard 32-bit integer limits.

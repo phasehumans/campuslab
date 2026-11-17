@@ -1,0 +1,1 @@
+Loop from i = 2 up to sqrt(n). If i divides n, count how many times it divides. Output the factor as i^count, update n, and continue. If after the loop n is still greater than 1, then n itself is a prime factor.

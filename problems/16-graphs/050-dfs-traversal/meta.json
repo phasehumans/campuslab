@@ -1,0 +1,11 @@
+{
+  "title": "DFS Traversal",
+  "difficulty": "EASY",
+  "tags": [
+    "graphs",
+    "dfs"
+  ],
+  "legacy_id": "2f4580cd-0383-4d1f-81c0-1a01f78db118",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

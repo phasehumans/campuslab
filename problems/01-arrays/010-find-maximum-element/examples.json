@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n1 5 3 9 2",
+    "explanation": "The maximum number in the array is 9."
+  },
+  {
+    "input": "3\n-10 -5 -20",
+    "explanation": "-5 is the largest among -10, -5, and -20."
+  }
+]

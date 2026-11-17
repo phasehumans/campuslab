@@ -1,0 +1,12 @@
+{
+  "title": "Is Graph Bipartite",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "graphs",
+    "bfs",
+    "dfs"
+  ],
+  "legacy_id": "ef27d2ed-5871-4073-9299-abd44289f06c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Find if Path Exists in Graph",
+  "difficulty": "EASY",
+  "tags": [
+    "graphs",
+    "bfs",
+    "dfs"
+  ],
+  "legacy_id": "d8bca66e-1afb-4b67-9d54-2881539e5de6",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

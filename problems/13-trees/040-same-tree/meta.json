@@ -1,0 +1,12 @@
+{
+  "title": "Same Tree",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "7f8a69fc-ac05-4238-b0d8-443ef468d31b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

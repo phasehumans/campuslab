@@ -1,0 +1,1 @@
+Since the input array can contain negative numbers, squaring them might make them larger than squares of positive numbers. Use a two-pointer approach starting from both ends of the array to build the result from largest to smallest.

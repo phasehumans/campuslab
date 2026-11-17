@@ -1,0 +1,12 @@
+{
+  "title": "Count Derangements",
+  "difficulty": "HARD",
+  "tags": [
+    "math",
+    "number-theory",
+    "modulo"
+  ],
+  "legacy_id": "3e894c45-bb88-455e-8f3e-3278a333409a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 4\n0 0",
+    "explanation": "Starting at (0,0) on a 3x4 board, there exists a sequence of moves visiting all 12 cells exactly once."
+  },
+  {
+    "input": "3 4\n1 1",
+    "explanation": "On a 3x4 board, starting from (1,1) cannot cover all cells."
+  }
+]

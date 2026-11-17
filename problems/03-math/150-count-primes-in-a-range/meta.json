@@ -1,0 +1,12 @@
+{
+  "title": "Count Primes in a Range",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "math",
+    "number-theory",
+    "prime"
+  ],
+  "legacy_id": "5d22fc40-47cc-4f50-a7ac-9365306c01ec",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

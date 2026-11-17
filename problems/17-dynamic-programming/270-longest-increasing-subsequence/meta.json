@@ -1,0 +1,12 @@
+{
+  "title": "Longest Increasing Subsequence",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "lis",
+    "binary-search"
+  ],
+  "legacy_id": "76d8f837-4cb8-4fcc-b43b-66fb09286891",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

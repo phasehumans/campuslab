@@ -1,0 +1,11 @@
+{
+  "title": "Edit Distance",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "e837fd3f-0126-4667-883a-2a6110e75857",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

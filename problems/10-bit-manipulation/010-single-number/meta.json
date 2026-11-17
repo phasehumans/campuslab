@@ -1,0 +1,11 @@
+{
+  "title": "Single Number",
+  "difficulty": "EASY",
+  "tags": [
+    "bit-manipulation",
+    "xor"
+  ],
+  "legacy_id": "f6533bbd-6298-4e1d-861b-cfbe079cb9ca",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

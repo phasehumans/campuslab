@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 8\n1 5 9\n10 11 13\n12 13 15",
+    "explanation": "The elements in sorted order are: [1, 5, 9, 10, 11, 12, 13, 13, 15]. The 8th smallest element is 13."
+  },
+  {
+    "input": "1 1\n-5",
+    "explanation": "There is only one element in the matrix, so the 1st smallest is -5."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "title": "Knight Tour Possible",
+  "difficulty": "HARD",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "498fd5e3-1b89-47bf-8cda-1236c7131328",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

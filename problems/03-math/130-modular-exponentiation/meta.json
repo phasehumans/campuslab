@@ -1,0 +1,12 @@
+{
+  "title": "Modular Exponentiation",
+  "difficulty": "EASY",
+  "tags": [
+    "math",
+    "number-theory",
+    "modulo"
+  ],
+  "legacy_id": "c7dca4c0-9cc8-4ca5-b45b-f6aa1fa7f672",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Reorder List",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "c6dc1b7f-a1aa-4556-b17a-f70b76bfdd08",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

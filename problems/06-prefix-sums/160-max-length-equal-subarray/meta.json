@@ -1,0 +1,11 @@
+{
+  "title": "Max Length Equal Subarray",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "hash-map",
+    "prefix-sum"
+  ],
+  "legacy_id": "e124d2a7-06d5-43cd-a5a5-e743291e7905",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

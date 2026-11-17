@@ -1,0 +1,10 @@
+[
+  {
+    "input": "7\n100 80 60 70 60 75 85",
+    "explanation": "Span for 75 is 4 because 75 >= [60, 70, 60]. Span for 85 is 6 because 85 >= [80, 60, 70, 60, 75]."
+  },
+  {
+    "input": "5\n10 20 30 40 50",
+    "explanation": "Each price is larger than all previous, so the span accumulates progressively."
+  }
+]

@@ -1,0 +1,1 @@
+Use a Max-Heap of size k. Compare elements based on squared distance x^2 + y^2. If the size exceeds k, pop the maximum element. After pushing all elements, the heap will contain the k closest elements. Extract them and sort/reverse them.

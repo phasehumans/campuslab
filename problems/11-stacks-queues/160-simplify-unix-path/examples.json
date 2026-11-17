@@ -1,0 +1,10 @@
+[
+  {
+    "input": "/home/",
+    "explanation": "Trailing slash is removed."
+  },
+  {
+    "input": "/../",
+    "explanation": "Going up from root stays at root."
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "title": "Set Matrix Zeroes",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "matrix"
+  ],
+  "legacy_id": "843f2b60-5ed6-4b40-8ab5-4c35c31ed5d8",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

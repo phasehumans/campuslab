@@ -1,0 +1,10 @@
+{
+  "title": "Jump Game I",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "greedy"
+  ],
+  "legacy_id": "c90cea24-a5e9-4ec5-82e3-fd42007b2980",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

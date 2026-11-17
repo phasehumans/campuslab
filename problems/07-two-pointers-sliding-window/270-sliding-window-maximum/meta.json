@@ -1,0 +1,12 @@
+{
+  "title": "Sliding Window Maximum",
+  "difficulty": "HARD",
+  "tags": [
+    "sliding-window",
+    "deque",
+    "monotonic-queue"
+  ],
+  "legacy_id": "ddc99ff1-fd19-4082-a004-a136eca90b7f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

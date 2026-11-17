@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n3 10 5 25 2",
+    "explanation": "5 ^ 25 = 28 is the maximum XOR."
+  },
+  {
+    "input": "4\n14 70 53 83",
+    "explanation": "Checking all pairs: 14^70=72, 14^53=59, 14^83=93, 70^53=115, 70^83=21, 53^83=102. The maximum is 70 ^ 53 = 115."
+  }
+]

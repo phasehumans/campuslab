@@ -1,0 +1,1 @@
+For each word, split it into two halves. If the first half is a palindrome, you need the reverse of the second half to exist. If the second half is a palindrome, you need the reverse of the first half to exist.

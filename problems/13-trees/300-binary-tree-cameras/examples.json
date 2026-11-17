@@ -1,0 +1,10 @@
+[
+  {
+    "input": "0 0 null 0 0",
+    "explanation": "One camera placed at the left child of root can monitor all nodes of the tree."
+  },
+  {
+    "input": "0 0 null 0 null 0 null null 0",
+    "explanation": "At least two cameras are needed to monitor all nodes."
+  }
+]

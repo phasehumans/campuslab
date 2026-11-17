@@ -1,0 +1,12 @@
+{
+  "title": "Combinations Count (nCr)",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "math",
+    "number-theory",
+    "modulo"
+  ],
+  "legacy_id": "963db56d-08e7-4eb4-a645-ec946f8fc048",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

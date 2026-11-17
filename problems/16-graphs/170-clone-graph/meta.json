@@ -1,0 +1,12 @@
+{
+  "title": "Clone Graph",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "graphs",
+    "dfs",
+    "bfs"
+  ],
+  "legacy_id": "f8f28739-583d-4fa5-ae8f-ec477928cb9d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

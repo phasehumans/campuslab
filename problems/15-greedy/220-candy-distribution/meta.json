@@ -1,0 +1,10 @@
+{
+  "title": "Candy Distribution",
+  "difficulty": "HARD",
+  "tags": [
+    "greedy"
+  ],
+  "legacy_id": "2afb2595-1c45-4087-8f2c-0557736369b0",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

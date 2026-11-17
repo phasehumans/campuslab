@@ -1,0 +1,1 @@
+Let dp[i][j] be the minimum edit distance to match word1[0...i-1] and word2[0...j-1]. If word1[i-1] == word2[j-1], no operation is needed: dp[i][j] = dp[i-1][j-1]. Otherwise, you can perform insert (dp[i][j-1]), delete (dp[i-1][j]), or replace (dp[i-1][j-1]) and add 1.

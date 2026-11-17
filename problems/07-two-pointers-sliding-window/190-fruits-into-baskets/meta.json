@@ -1,0 +1,11 @@
+{
+  "title": "Fruits Into Baskets",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "sliding-window",
+    "arrays"
+  ],
+  "legacy_id": "7949312c-3d05-481f-be52-4c812deaec4d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

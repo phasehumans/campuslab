@@ -1,0 +1,10 @@
+[
+  {
+    "input": "16",
+    "explanation": "16 -> 8 -> 4 -> 2 -> 1 (returns true)."
+  },
+  {
+    "input": "98",
+    "explanation": "98 is even. 98 -> 49 (which is odd and not 1, so returns false)."
+  }
+]

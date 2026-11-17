@@ -1,0 +1,12 @@
+{
+  "title": "Search Suggestion System",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "trie",
+    "prefix-tree",
+    "strings"
+  ],
+  "legacy_id": "e4e5ff2c-1d50-4677-b2d9-663b639c265d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Find Minimum in Rotated Sorted Array",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "050d479c-c97e-4424-8e36-356659398b78",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

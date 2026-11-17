@@ -1,0 +1,11 @@
+{
+  "title": "Sort Linked List",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "linked-list",
+    "recursion"
+  ],
+  "legacy_id": "234b3b64-9ee0-48df-a03d-93dc291f3c23",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

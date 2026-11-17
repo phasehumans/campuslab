@@ -1,0 +1,12 @@
+{
+  "title": "Sieve of Eratosthenes",
+  "difficulty": "EASY",
+  "tags": [
+    "math",
+    "number-theory",
+    "prime"
+  ],
+  "legacy_id": "c7e51fb0-089f-402d-8c12-6ce275688ed9",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

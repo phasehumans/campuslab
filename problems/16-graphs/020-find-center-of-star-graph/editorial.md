@@ -1,0 +1,1 @@
+In a star graph, the center vertex has a degree of N-1, meaning it is connected to all other vertices. All other vertices have a degree of 1. By comparing the first two edges, the vertex that appears in both must be the center vertex. Thus, we can solve this in O(1) time after reading the first two edges.

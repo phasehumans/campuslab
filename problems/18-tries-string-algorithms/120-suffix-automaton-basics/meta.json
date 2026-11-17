@@ -1,0 +1,12 @@
+{
+  "title": "Suffix Automaton Basics",
+  "difficulty": "HARD",
+  "tags": [
+    "suffix-automaton",
+    "strings",
+    "graphs"
+  ],
+  "legacy_id": "bcbbdcd2-2cac-4f2d-8f3d-7c5abe76b31b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Dijkstra Shortest Path",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "graphs",
+    "shortest-path"
+  ],
+  "legacy_id": "f5f7cad1-b201-4ed2-a2ea-151a1d79ec48",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

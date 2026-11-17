@@ -1,0 +1,10 @@
+{
+  "title": "Remove Linked List Elements",
+  "difficulty": "EASY",
+  "tags": [
+    "linked-list"
+  ],
+  "legacy_id": "d0f516fc-281e-454e-beab-a109ea4ef855",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

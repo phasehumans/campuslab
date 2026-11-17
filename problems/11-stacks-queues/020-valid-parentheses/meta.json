@@ -1,0 +1,10 @@
+{
+  "title": "Valid Parentheses",
+  "difficulty": "EASY",
+  "tags": [
+    "stack"
+  ],
+  "legacy_id": "147fb6c6-4f0d-410f-908b-41bffd68ec68",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

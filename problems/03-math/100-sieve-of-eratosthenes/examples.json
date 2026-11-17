@@ -1,0 +1,10 @@
+[
+  {
+    "input": "10",
+    "explanation": "Primes less than or equal to 10 are 2, 3, 5, and 7."
+  },
+  {
+    "input": "2",
+    "explanation": "2 is the smallest prime, so it is the only one printed."
+  }
+]

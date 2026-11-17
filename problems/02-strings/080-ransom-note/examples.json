@@ -1,0 +1,10 @@
+[
+  {
+    "input": "a\nb",
+    "explanation": "The magazine 'b' cannot construct the ransom note 'a'."
+  },
+  {
+    "input": "aa\naab",
+    "explanation": "The magazine 'aab' has two 'a's, which is enough to construct 'aa'."
+  }
+]

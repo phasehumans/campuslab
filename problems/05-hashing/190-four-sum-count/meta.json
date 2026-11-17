@@ -1,0 +1,11 @@
+{
+  "title": "Four Sum Count",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "hash-map",
+    "counting"
+  ],
+  "legacy_id": "9b735f2e-f9cb-4309-9d87-12e2c7a4e5be",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

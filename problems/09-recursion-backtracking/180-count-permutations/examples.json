@@ -1,0 +1,10 @@
+[
+  {
+    "input": "aab",
+    "explanation": "Unique permutations are: 'aab', 'aba', 'baa'."
+  },
+  {
+    "input": "abc",
+    "explanation": "Unique permutations: 'abc', 'acb', 'bac', 'bca', 'cab', 'cba'."
+  }
+]

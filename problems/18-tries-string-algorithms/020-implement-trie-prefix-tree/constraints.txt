@@ -1,0 +1,5 @@
+1 <= q <= 10^5
+Words and prefixes consist of lowercase English letters.
+1 <= |word|, |prefix| <= 100
+The total length of all words and prefixes is at most 3 * 10^5.
+There is at least one search or startsWith operation.

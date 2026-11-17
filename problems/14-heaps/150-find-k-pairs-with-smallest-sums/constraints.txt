@@ -1,0 +1,4 @@
+1 <= n1, n2 <= 10^5
+-10^9 <= nums1[i], nums2[j] <= 10^9
+1 <= k <= 10^4
+nums1 and nums2 are sorted in non-decreasing order.

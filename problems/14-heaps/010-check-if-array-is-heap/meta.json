@@ -1,0 +1,12 @@
+{
+  "title": "Check if Array is Heap",
+  "difficulty": "EASY",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "29edacee-f9a6-4a67-9272-336a550f2061",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

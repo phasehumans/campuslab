@@ -1,0 +1,1 @@
+The degree of a vertex in an undirected graph is the number of edges incident to it. We can initialize a degree array of size N with all zeros. Then, we iterate through the given edges, incrementing the degree count of the two endpoints. Finally, print the array.

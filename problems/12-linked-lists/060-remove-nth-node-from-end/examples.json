@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 2\n1 2 3 4 5",
+    "explanation": "Removing the 2nd node from end (which is 4) results in 1->2->3->5."
+  },
+  {
+    "input": "2 2\n1 2",
+    "explanation": "The 2nd node from the end is the head (1), so the result is just 2."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "title": "Number of Steps to Reduce to Zero",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "bit-manipulation",
+    "strings"
+  ],
+  "legacy_id": "518a7b8a-0997-4633-a9f8-68f0ae1c0ca8",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

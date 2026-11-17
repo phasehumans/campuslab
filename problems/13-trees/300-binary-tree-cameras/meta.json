@@ -1,0 +1,13 @@
+{
+  "title": "Binary Tree Cameras",
+  "difficulty": "HARD",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dynamic-programming",
+    "greedy"
+  ],
+  "legacy_id": "78c85476-4df5-4793-98ba-c6b2549b551f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

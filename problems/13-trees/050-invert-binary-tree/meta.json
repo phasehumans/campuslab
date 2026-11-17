@@ -1,0 +1,12 @@
+{
+  "title": "Invert Binary Tree",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "323af355-f8fb-4a43-a069-4ed96f7e84b0",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

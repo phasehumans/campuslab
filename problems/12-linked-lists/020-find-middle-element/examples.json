@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n1 2 3 4 5",
+    "explanation": "The middle node is 3."
+  },
+  {
+    "input": "6\n1 2 3 4 5 6",
+    "explanation": "There are two middle nodes (3 and 4), the second one is 4."
+  }
+]

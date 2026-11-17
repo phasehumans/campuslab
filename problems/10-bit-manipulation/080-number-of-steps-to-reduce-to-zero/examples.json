@@ -1,0 +1,10 @@
+[
+  {
+    "input": "1101",
+    "explanation": "1101 (13) is odd -> subtract 1 -> 1100 (step 1)\n1100 (12) is even -> divide by 2 -> 110 (step 2)\n110 (6) is even -> divide by 2 -> 11 (step 3)\n11 (3) is odd -> subtract 1 -> 10 (step 4)\n10 (2) is even -> divide by 2 -> 1 (step 5)\n1 (1) is odd -> subtract 1 -> 0 (step 6)"
+  },
+  {
+    "input": "100",
+    "explanation": "100 (4) is even -> divide by 2 -> 10 (step 1)\n10 (2) is even -> divide by 2 -> 1 (step 2)\n1 (1) is odd -> subtract 1 -> 0 (step 3)"
+  }
+]

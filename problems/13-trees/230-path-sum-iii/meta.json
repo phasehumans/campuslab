@@ -1,0 +1,12 @@
+{
+  "title": "Path Sum III",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "32502218-2b59-4762-9986-7fc9e159dae5",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

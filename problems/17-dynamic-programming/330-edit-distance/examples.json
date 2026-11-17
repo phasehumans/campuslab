@@ -1,0 +1,9 @@
+[
+  {
+    "input": "horse\nros",
+    "explanation": "horse -> rorse (replace 'h' with 'r'), rorse -> rose (remove 'r'), rose -> ros (remove 'e')"
+  },
+  {
+    "input": "intention\nexecution"
+  }
+]

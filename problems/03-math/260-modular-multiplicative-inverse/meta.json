@@ -1,0 +1,12 @@
+{
+  "title": "Modular Multiplicative Inverse",
+  "difficulty": "HARD",
+  "tags": [
+    "math",
+    "number-theory",
+    "modulo"
+  ],
+  "legacy_id": "afb38962-1782-4b96-82df-89ff42f91a5b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Group Anagrams",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "hash-map",
+    "sorting",
+    "frequency"
+  ],
+  "legacy_id": "6eeaa36e-34b6-489e-bd60-fc3988213899",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

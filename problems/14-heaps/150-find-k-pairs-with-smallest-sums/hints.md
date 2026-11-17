@@ -1,0 +1,1 @@
+Since the arrays are sorted, the smallest pair is always (nums1[0], nums2[0]). We can push initial elements (nums1[i], nums2[0]) for i in 0..min(n1, k) into a min-heap. When we pop a pair (nums1[i], nums2[j]), we push (nums1[i], nums2[j+1]) into the heap.

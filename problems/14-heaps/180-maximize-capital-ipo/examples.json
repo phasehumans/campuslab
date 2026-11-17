@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 2 0\n1 2 3\n0 1 1",
+    "explanation": "- w = 0. We can only start project 0 (capital 0, profit 1). Capital becomes 1.\n- w = 1. We can start project 1 (capital 1, profit 2) or project 2 (capital 1, profit 3). We choose project 2. Capital becomes 1 + 3 = 4.\n- Since k = 2, we stop. Final capital is 4."
+  },
+  {
+    "input": "3 3 0\n1 2 3\n0 9 10",
+    "explanation": "- w = 0. We can only start project 0 (profit 1). Capital becomes 1.\n- We cannot start project 1 or 2 as we only have 1 capital. We stop. Final capital is 1."
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n2 1 4 1 2",
+    "explanation": "2 and 1 appear twice each, 4 appears once."
+  },
+  {
+    "input": "3\n7 3 7",
+    "explanation": "7 appears twice, 3 appears once."
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "input": "3 9 20 null null 15 7",
+    "explanation": "Level 0: 3 (left-to-right). Level 1: 20 9 (reversed). Level 2: 15 7 (left-to-right)."
+  },
+  {
+    "input": "1"
+  }
+]

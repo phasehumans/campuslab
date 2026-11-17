@@ -1,0 +1,12 @@
+{
+  "title": "Container With Most Water",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "two-pointers",
+    "arrays",
+    "greedy"
+  ],
+  "legacy_id": "78b5a0be-4059-4400-a60a-2648822ec6b6",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

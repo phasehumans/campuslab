@@ -1,0 +1,2 @@
+1 <= n <= 90
+The answer fits in a 64-bit signed integer.

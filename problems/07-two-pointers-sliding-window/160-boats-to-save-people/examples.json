@@ -1,0 +1,10 @@
+[
+  {
+    "input": "2 3\n1 2",
+    "explanation": "1 boat is enough to carry both people since 1 + 2 = 3 <= 3."
+  },
+  {
+    "input": "4 5\n3 2 2 1",
+    "explanation": "Sorted weights are 1 2 2 3. Pair 1 with 3 (sum 4) and 2 with 2 (sum 4): 2 boats."
+  }
+]

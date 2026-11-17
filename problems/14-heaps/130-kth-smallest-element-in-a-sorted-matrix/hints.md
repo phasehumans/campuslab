@@ -1,0 +1,1 @@
+Since the rows are sorted, we can treat this similar to merging k sorted arrays. Initialize a Min-Heap with the first element of each row. Pop the minimum element, and push the next element from that row.

@@ -45,6 +45,8 @@ struct ProblemSummaryModel {
     std::vector<std::string> tags;
     std::string status;     // "Solved", "Attempted", "Unsolved"
     int submission_count = 0;
+    std::optional<int> number;   // position in the DSA sheet (1..500)
+    std::string section;         // sheet section title
 
     json to_json() const {
         return {
@@ -53,7 +55,9 @@ struct ProblemSummaryModel {
             {"difficulty", difficulty},
             {"tags", tags},
             {"status", status},
-            {"submissionCount", submission_count}
+            {"submissionCount", submission_count},
+            {"number", number.has_value() ? json(*number) : json(nullptr)},
+            {"section", section.empty() ? json(nullptr) : json(section)}
         };
     }
 };
@@ -73,7 +77,13 @@ struct ProblemDetailModel {
     json testcases = json::array();
     json starter_codes = json::object();
     json reference_solutions = json::object();
+    std::optional<int> number;
+    std::string section;
+    int time_limit_ms = 1000;
+    int memory_limit_mb = 256;
 
+    // Hidden tests and reference solutions are never sent to clients: only the
+    // examples and the number of hidden tests.
     json to_json() const {
         return {
             {"id", id},
@@ -87,9 +97,12 @@ struct ProblemDetailModel {
             {"hints", hints.has_value() ? json(*hints) : nullptr},
             {"editorial", editorial.has_value() ? json(*editorial) : nullptr},
             {"examples", examples},
-            {"testcases", testcases},
+            {"testCount", testcases.is_array() ? testcases.size() : 0},
             {"starterCodes", starter_codes},
-            {"referenceSolutions", reference_solutions}
+            {"number", number.has_value() ? json(*number) : json(nullptr)},
+            {"section", section.empty() ? json(nullptr) : json(section)},
+            {"timeLimitMs", time_limit_ms},
+            {"memoryLimitMb", memory_limit_mb}
         };
     }
 };
@@ -110,6 +123,7 @@ struct PaginatedProblemsResult {
     int limit = 25;
     int total_pages = 1;
     std::vector<std::string> all_tags;
+    json sections = json::array();  // [{title, order, total, solved}] in sheet order
 };
 
 // -------------------------------------------------------------

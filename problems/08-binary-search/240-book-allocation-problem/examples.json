@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4 2\n12 34 67 90",
+    "explanation": "Minimizing maximum pages allocated yields 113 by assigning [12, 34, 67] and [90]."
+  },
+  {
+    "input": "3 4\n10 20 30",
+    "explanation": "Impossible since students M > books N."
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 4\n1 2 3\n4 5 1",
+    "explanation": "The only item that fits is the 3rd item with weight 1 and value 3. The other items are too heavy."
+  },
+  {
+    "input": "3 50\n60 100 120\n10 20 30",
+    "explanation": "Choose items with weights 20 and 30. Total weight is 50, total value is 100 + 120 = 220."
+  }
+]

@@ -1,0 +1,5 @@
+1 <= K <= 5000
+1 <= word length <= 10
+beginWord, endWord and all words in wordList have the same length
+All words consist of lowercase English letters
+beginWord != endWord

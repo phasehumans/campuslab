@@ -1,0 +1,10 @@
+[
+  {
+    "input": "egg\nadd",
+    "explanation": "e -> a, g -> d. The mappings are unique and consistent."
+  },
+  {
+    "input": "foo\nbar",
+    "explanation": "o maps to both a and r, which is invalid."
+  }
+]

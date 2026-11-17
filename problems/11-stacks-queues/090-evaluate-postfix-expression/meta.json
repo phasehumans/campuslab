@@ -1,0 +1,10 @@
+{
+  "title": "Evaluate Postfix Expression",
+  "difficulty": "EASY",
+  "tags": [
+    "stack"
+  ],
+  "legacy_id": "ea68100e-ad6a-4111-8899-4bb021bd2710",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

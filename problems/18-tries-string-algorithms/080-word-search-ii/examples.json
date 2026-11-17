@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4 4\noaan\netae\nihkr\niflv\n4\noath\npea\neat\nrain",
+    "explanation": "The words 'eat' and 'oath' are found on the board."
+  },
+  {
+    "input": "2 2\nab\ncd\n3\nabdc\nabcd\nca",
+    "explanation": "'abdc' follows a->b->d->c and 'ca' follows c->a. 'abcd' would need the diagonal step b->c, which is not allowed."
+  }
+]

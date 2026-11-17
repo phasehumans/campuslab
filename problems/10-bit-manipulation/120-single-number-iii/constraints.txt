@@ -1,0 +1,4 @@
+4 <= n <= 10^5
+n is even
+0 <= arr[i] <= 10^9
+Exactly two elements appear once, all other elements appear exactly twice

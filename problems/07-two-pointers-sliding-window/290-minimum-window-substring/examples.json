@@ -1,0 +1,10 @@
+[
+  {
+    "input": "ADOBECODEBANC\nABC",
+    "explanation": "The minimum window substring 'BANC' includes 'A', 'B', and 'C' from string t."
+  },
+  {
+    "input": "a\na",
+    "explanation": "The entire string is the minimum window."
+  }
+]

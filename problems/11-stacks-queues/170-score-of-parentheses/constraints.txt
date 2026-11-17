@@ -1,0 +1,2 @@
+2 <= s.length <= 50
+s consists of only '(' and ')' and is guaranteed to be a balanced parentheses string.

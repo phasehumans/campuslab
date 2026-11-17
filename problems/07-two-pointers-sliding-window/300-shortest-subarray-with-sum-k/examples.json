@@ -1,0 +1,10 @@
+[
+  {
+    "input": "1 1\n1",
+    "explanation": "The only element satisfies the condition."
+  },
+  {
+    "input": "3 4\n1 2 -1",
+    "explanation": "No subarray sums up to at least 4."
+  }
+]

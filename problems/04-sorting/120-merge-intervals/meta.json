@@ -1,0 +1,10 @@
+{
+  "title": "Merge Intervals",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "sorting"
+  ],
+  "legacy_id": "b4025cee-1ac2-413c-a165-986a7c6f564e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

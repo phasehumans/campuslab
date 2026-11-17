@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6 9\n-1 0 3 5 9 12",
+    "explanation": "9 exists in the array at index 4."
+  },
+  {
+    "input": "6 2\n-1 0 3 5 9 12",
+    "explanation": "2 does not exist in the array."
+  }
+]

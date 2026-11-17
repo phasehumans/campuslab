@@ -1,0 +1,11 @@
+{
+  "title": "Merge K Sorted Lists",
+  "difficulty": "HARD",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "4953eae8-616c-4192-8c53-effb1f267b10",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

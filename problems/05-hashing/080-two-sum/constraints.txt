@@ -1,0 +1,4 @@
+2 <= n <= 10^5
+-10^9 <= arr[i] <= 10^9
+-2 * 10^9 <= target <= 2 * 10^9
+Exactly one pair of indices i < j has arr[i] + arr[j] = target.

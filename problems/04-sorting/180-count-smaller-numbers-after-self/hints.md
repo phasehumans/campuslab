@@ -1,0 +1,1 @@
+Process from right to left. Use a Binary Indexed Tree (Fenwick Tree) or Segment Tree after coordinate compression to count how many elements smaller than the current element have been processed so far.

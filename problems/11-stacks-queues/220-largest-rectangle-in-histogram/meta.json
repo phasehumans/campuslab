@@ -1,0 +1,11 @@
+{
+  "title": "Largest Rectangle in Histogram",
+  "difficulty": "HARD",
+  "tags": [
+    "stack",
+    "monotonic-stack"
+  ],
+  "legacy_id": "759f6121-baad-4423-8a3e-98ecf045bdf2",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Text Justification",
+  "difficulty": "HARD",
+  "tags": [
+    "strings"
+  ],
+  "legacy_id": "ae2f931d-accc-4f0b-8299-a09b1bfb4d8b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

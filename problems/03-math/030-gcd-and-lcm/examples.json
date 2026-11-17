@@ -1,0 +1,10 @@
+[
+  {
+    "input": "12 18",
+    "explanation": "GCD of 12 and 18 is 6. LCM is (12 * 18) / 6 = 36."
+  },
+  {
+    "input": "5 7",
+    "explanation": "GCD of 5 and 7 is 1. LCM is (5 * 7) / 1 = 35."
+  }
+]

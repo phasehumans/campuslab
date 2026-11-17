@@ -1,0 +1,11 @@
+{
+  "title": "Jewels and Stones",
+  "difficulty": "EASY",
+  "tags": [
+    "hash-set",
+    "counting"
+  ],
+  "legacy_id": "7cd7be48-e184-4a82-94a8-f86eac275726",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

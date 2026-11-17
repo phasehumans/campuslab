@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n3 5 7\n2 3 2",
+    "explanation": "23 % 3 = 2, 23 % 5 = 3, 23 % 7 = 2. Smallest such number is 23."
+  },
+  {
+    "input": "2\n5 7\n1 3",
+    "explanation": "31 % 5 = 1, 31 % 7 = 3. Smallest such number is 31."
+  }
+]

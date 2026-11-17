@@ -1,0 +1,10 @@
+{
+  "title": "Rotate Image 90 Degrees",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "matrix"
+  ],
+  "legacy_id": "01ba776e-847d-411f-8e54-dfa5cdf6453a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

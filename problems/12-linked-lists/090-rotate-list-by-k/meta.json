@@ -1,0 +1,11 @@
+{
+  "title": "Rotate List by K",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "df43a98e-78d1-4136-9a83-4f6999fae853",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

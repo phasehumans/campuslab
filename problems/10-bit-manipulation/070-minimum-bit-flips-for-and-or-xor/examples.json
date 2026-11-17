@@ -1,0 +1,10 @@
+[
+  {
+    "input": "2 6 5",
+    "explanation": "a = 010, b = 110, c = 101. Bit 2: c needs 1 and b already has it (0 flips). Bit 1: c needs 0 but both a and b have 1 (2 flips). Bit 0: c needs 1 and neither has it (1 flip). Total = 3."
+  },
+  {
+    "input": "1 2 3",
+    "explanation": "1 OR 2 = 3 already, no flips needed."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "title": "Word Break Combinations",
+  "difficulty": "HARD",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "f1a008c0-0df6-4ae0-ab7e-536b7b9a0546",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 4\nA B C E\nS F C S\nA D E E\nABCCED",
+    "explanation": "The path A -> B -> C -> C -> E -> D exists on the board."
+  },
+  {
+    "input": "3 4\nA B C E\nS F C S\nA D E E\nABCB",
+    "explanation": "The path ABCB requires using the 'B' at (0,1) again, which is invalid."
+  }
+]

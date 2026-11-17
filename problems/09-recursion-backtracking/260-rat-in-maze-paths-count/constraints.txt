@@ -1,0 +1,2 @@
+1 <= n <= 6
+Grid cells are 0 or 1

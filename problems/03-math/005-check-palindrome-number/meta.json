@@ -1,0 +1,12 @@
+{
+  "title": "Check Palindrome Number",
+  "difficulty": "EASY",
+  "tags": [
+    "basics",
+    "math",
+    "digits"
+  ],
+  "legacy_id": "75476ec3-efcd-40b8-812f-0f07422b6e62",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Balanced Binary Tree",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "ebbadf0d-7310-45df-870b-7a50c2d56a1e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Sort Colors",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "sorting"
+  ],
+  "legacy_id": "dce619b7-5623-4d2c-91e0-4e83cec035cf",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

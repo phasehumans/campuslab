@@ -1,0 +1,8 @@
+1 <= n <= 100
+2 <= m <= 500
+m is an even number.
+0 <= function_id < n
+0 <= timestamp <= 10^9
+Logs are sorted chronologically by timestamp. Logs are valid (every start has a matching end, etc.).
+Calls are properly nested: every end log closes the most recently started call that is still running.
+A log that comes right after an end log at time t has timestamp at least t + 1.

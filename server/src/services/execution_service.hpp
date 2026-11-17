@@ -151,16 +151,22 @@ public:
         }
 
         std::string problem_difficulty;
+        double problem_time_limit_sec = 1.0;
+        int problem_memory_limit_kb = 262144;
         std::vector<Testcase> hidden_testcases;
 
         {
             auto conn_guard = db_pool_.acquire();
             pqxx::work txn(conn_guard.get());
-            auto prob_rows = txn.exec_params("SELECT difficulty, testcases FROM \"Problem\" WHERE id = $1", problem_id);
+            auto prob_rows = txn.exec_params(
+                "SELECT difficulty, testcases, \"timeLimitMs\" AS time_limit_ms, \"memoryLimitMb\" AS memory_limit_mb "
+                "FROM \"Problem\" WHERE id = $1", problem_id);
             if (prob_rows.empty()) {
                 return {false, 404, "Problem not found", nullptr, nullptr};
             }
             problem_difficulty = prob_rows[0]["difficulty"].as<std::string>();
+            problem_time_limit_sec = prob_rows[0]["time_limit_ms"].as<int>() / 1000.0;
+            problem_memory_limit_kb = prob_rows[0]["memory_limit_mb"].as<int>() * 1024;
             auto tc_json = json::parse(prob_rows[0]["testcases"].as<std::string>());
             auto get_tc_str = [](const json& j, const std::string& key) -> std::string {
                 if (!j.contains(key) || j[key].is_null()) return "";
@@ -189,8 +195,8 @@ public:
         job.problem_id = problem_id;
         job.source_code = source_code;
         job.contest_code = contest_code;
-        job.time_limit_sec = 1.0;
-        job.memory_limit_kb = 262144;
+        job.time_limit_sec = problem_time_limit_sec;
+        job.memory_limit_kb = problem_memory_limit_kb;
         job.testcases = hidden_testcases;
 
         redisContext* redis = redisConnect(redis_host_.c_str(), redis_port_);

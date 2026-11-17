@@ -1,0 +1,10 @@
+{
+  "title": "Merge Two Sorted Arrays",
+  "difficulty": "EASY",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "8cc01ba8-a1c7-426f-9c54-6ce7afbd8bd1",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

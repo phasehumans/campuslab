@@ -1,0 +1,2 @@
+1 <= a, b <= 10^9
+Note: LCM can exceed the limits of a 32-bit signed integer.

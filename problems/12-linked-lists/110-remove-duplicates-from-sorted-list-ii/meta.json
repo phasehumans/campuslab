@@ -1,0 +1,11 @@
+{
+  "title": "Remove Duplicates from Sorted List II",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "5551b16b-7564-4d42-b86b-79b8daf9d95c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

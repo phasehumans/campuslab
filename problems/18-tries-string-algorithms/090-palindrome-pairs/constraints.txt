@@ -1,0 +1,4 @@
+1 <= n <= 5000
+0 <= |words[i]| <= 100
+All words in the list are unique.
+words[i] consists of lowercase English letters.

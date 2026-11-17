@@ -1,0 +1,10 @@
+[
+  {
+    "input": "()[]{}",
+    "explanation": "Every open bracket is closed by the correct matching bracket."
+  },
+  {
+    "input": "(]",
+    "explanation": "The closing bracket ']' does not match the opening bracket '('."
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4\n1 3 4 2",
+    "explanation": "For 1, NGE is 3. For 3, NGE is 4. For 4, no greater element exists. For 2, no greater element exists."
+  },
+  {
+    "input": "5\n5 4 3 2 1",
+    "explanation": "All elements are sorted in decreasing order, so no greater element exists to the right of any element."
+  }
+]

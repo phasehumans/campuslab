@@ -1,0 +1,9 @@
+[
+  {
+    "input": "6 3\n1 4 3 2 5 2",
+    "explanation": "Elements less than 3 are 1, 2, 2. Elements >= 3 are 4, 3, 5. They are joined in order."
+  },
+  {
+    "input": "2 2\n2 1"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "title": "Kth Largest Element in an Array",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "bad92e33-9894-4403-a087-7fb9b961bd35",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

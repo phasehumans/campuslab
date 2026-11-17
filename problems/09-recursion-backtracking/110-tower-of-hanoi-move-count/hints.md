@@ -1,0 +1,1 @@
+To move n disks, we must first move n-1 disks to an auxiliary rod, then move the largest disk (1 move), and finally move the n-1 disks from the auxiliary rod to the destination. Thus, the recurrence is H(n) = 2 * H(n-1) + 1. Make sure to use 64-bit integers.

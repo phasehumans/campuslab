@@ -1,0 +1,11 @@
+{
+  "title": "Subsets Using Bits",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "bit-manipulation",
+    "bitwise"
+  ],
+  "legacy_id": "3f5ccf6b-d9df-4e1a-938f-aef1a99d835c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

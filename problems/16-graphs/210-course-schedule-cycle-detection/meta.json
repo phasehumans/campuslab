@@ -1,0 +1,12 @@
+{
+  "title": "Course Schedule (Cycle Detection)",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "graphs",
+    "cycle-detection",
+    "dfs"
+  ],
+  "legacy_id": "f047591b-9780-437d-850d-92333a059623",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

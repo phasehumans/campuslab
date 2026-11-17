@@ -1,0 +1,1 @@
+Use a stack to keep track of the current nesting depth score. When you see '(', push a 0 to start a new nesting group. When you see ')', pop the top score, double it (or make it 1 if it is 0), and add it to the score of the outer group.

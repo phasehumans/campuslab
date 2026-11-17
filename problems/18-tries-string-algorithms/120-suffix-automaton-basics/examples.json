@@ -1,0 +1,9 @@
+[
+  {
+    "input": "abacaba\n4\ndistinct\ncount aba\ncount a\ncount c",
+    "explanation": "Total distinct substrings is 21. 'aba' appears twice (at 0 and 4). 'a' appears 4 times. 'c' appears once."
+  },
+  {
+    "input": "aaaaa\n3\ndistinct\ncount a\ncount aa"
+  }
+]

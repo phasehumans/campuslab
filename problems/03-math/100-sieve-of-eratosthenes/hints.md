@@ -1,0 +1,1 @@
+Use the Sieve of Eratosthenes algorithm. Maintain a boolean array to keep track of prime numbers, initially marking all numbers from 2 to n as prime. Then, for each prime number, mark all its multiples as non-prime.

@@ -1,0 +1,10 @@
+{
+  "title": "Is Subsequence",
+  "difficulty": "EASY",
+  "tags": [
+    "strings"
+  ],
+  "legacy_id": "d3845f50-af84-4472-a538-6c2521c972fd",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

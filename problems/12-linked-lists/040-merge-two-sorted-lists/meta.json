@@ -1,0 +1,11 @@
+{
+  "title": "Merge Two Sorted Lists",
+  "difficulty": "EASY",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "daf1ba6d-f720-4791-a28f-27315f25cbeb",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

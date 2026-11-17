@@ -1,0 +1,12 @@
+{
+  "title": "N-Queens All Arrangements Count",
+  "difficulty": "HARD",
+  "tags": [
+    "backtracking",
+    "recursion",
+    "combinatorics"
+  ],
+  "legacy_id": "518b41eb-b2a7-4249-bea4-e9abde06fa66",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

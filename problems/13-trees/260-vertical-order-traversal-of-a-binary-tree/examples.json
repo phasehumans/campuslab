@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 9 20 null null 15 7",
+    "explanation": "Col -1: [9] at (1, -1). Col 0: [3, 15] at (0, 0) and (2, 0). Col 1: [20] at (1, 1). Col 2: [7] at (2, 2)."
+  },
+  {
+    "input": "1 2 3 4 6 5 7",
+    "explanation": "Both 5 and 6 end up at col 0, row 2. They are sorted as 5, 6."
+  }
+]

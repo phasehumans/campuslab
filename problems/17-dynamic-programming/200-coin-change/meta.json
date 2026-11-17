@@ -1,0 +1,11 @@
+{
+  "title": "Coin Change",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "daca2c3a-c720-462d-95bf-e403b92ee76a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

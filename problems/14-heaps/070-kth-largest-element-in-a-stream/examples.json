@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 6\n3 5 10 9 4 8",
+    "explanation": "For k = 3, after 3 elements [3, 5, 10], the 3rd largest is 3. After adding 9 [3, 5, 10, 9], the 3rd largest is 5. After adding 4, the 3rd largest is 5. After adding 8, the 3rd largest is 8."
+  },
+  {
+    "input": "1 4\n-1 2 0 4",
+    "explanation": "For k = 1, we output the maximum element seen so far at each step."
+  }
+]

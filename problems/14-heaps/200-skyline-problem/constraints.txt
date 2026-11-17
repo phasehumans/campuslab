@@ -1,0 +1,4 @@
+1 <= n <= 10^4
+0 <= left < right <= 2^31 - 1
+1 <= height <= 2^31 - 1
+Buildings are sorted by their left coordinate in non-decreasing order.

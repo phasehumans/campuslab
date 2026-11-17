@@ -1,0 +1,11 @@
+{
+  "title": "Maximum Subarray (Kadane's Algorithm)",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "arrays",
+    "subarray"
+  ],
+  "legacy_id": "87868f60-4253-445f-b6c0-0dd9430b8efa",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

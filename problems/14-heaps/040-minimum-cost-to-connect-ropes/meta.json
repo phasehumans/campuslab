@@ -1,0 +1,12 @@
+{
+  "title": "Minimum Cost to Connect Ropes",
+  "difficulty": "EASY",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "greedy"
+  ],
+  "legacy_id": "183671da-f602-4be8-aaf6-229186faad9a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

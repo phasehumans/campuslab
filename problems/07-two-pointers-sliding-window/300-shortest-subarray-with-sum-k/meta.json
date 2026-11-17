@@ -1,0 +1,12 @@
+{
+  "title": "Shortest Subarray with Sum >= K",
+  "difficulty": "HARD",
+  "tags": [
+    "sliding-window",
+    "monotonic-queue",
+    "prefix-sum"
+  ],
+  "legacy_id": "aed88a24-d612-4f69-9f82-e7127c724ea4",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Minimum Number of Refueling Stops",
+  "difficulty": "HARD",
+  "tags": [
+    "greedy"
+  ],
+  "legacy_id": "50f38cc8-2cde-4da4-bd45-bb933cd8f715",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

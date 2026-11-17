@@ -1,0 +1,12 @@
+{
+  "title": "Kth Smallest Element in a Sorted Matrix",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "matrix"
+  ],
+  "legacy_id": "dfb5004e-9efd-474a-9584-383f8a3e8672",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

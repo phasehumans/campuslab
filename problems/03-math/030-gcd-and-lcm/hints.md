@@ -1,0 +1,1 @@
+Use the Euclidean algorithm to find the GCD. Once GCD is found, the LCM can be calculated using the formula: LCM(a, b) = (a * b) / GCD(a, b). To avoid overflow during calculation, divide one of the numbers by GCD before multiplying.

@@ -1,0 +1,12 @@
+{
+  "title": "Palindrome Pairs",
+  "difficulty": "HARD",
+  "tags": [
+    "trie",
+    "strings",
+    "hash-table"
+  ],
+  "legacy_id": "223657c0-57db-438d-a101-f461a12f28f3",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

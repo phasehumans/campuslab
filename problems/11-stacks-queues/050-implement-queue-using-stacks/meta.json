@@ -1,0 +1,11 @@
+{
+  "title": "Implement Queue using Stacks",
+  "difficulty": "EASY",
+  "tags": [
+    "stack",
+    "queue"
+  ],
+  "legacy_id": "1ead54d3-5291-4144-87f9-edc8441881f1",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

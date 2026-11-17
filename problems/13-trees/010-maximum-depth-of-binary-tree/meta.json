@@ -1,0 +1,12 @@
+{
+  "title": "Maximum Depth of Binary Tree",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "b266de97-8031-4893-b348-8f9da4de7c9f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

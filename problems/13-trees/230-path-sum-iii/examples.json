@@ -1,0 +1,10 @@
+[
+  {
+    "input": "10 5 -3 3 2 null 11 3 -2 null 1\n8",
+    "explanation": "The paths that sum to 8 are: 5 -> 3, 5 -> 2 -> 1, and -3 -> 11."
+  },
+  {
+    "input": "5 4 8 11 null 13 4 7 2 null null 5 1\n22",
+    "explanation": "The paths that sum to 22 are: 5 -> 4 -> 11 -> 2, 5 -> 8 -> 4 -> 5, and 8 -> 13 -> 1."
+  }
+]

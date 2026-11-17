@@ -1,0 +1,12 @@
+{
+  "title": "Partition Equal Subset Sum",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "knapsack",
+    "tabulation"
+  ],
+  "legacy_id": "91c8149c-174f-45cf-8136-b4f4a80118ee",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

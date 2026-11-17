@@ -1,0 +1,12 @@
+{
+  "title": "Last Stone Weight",
+  "difficulty": "EASY",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "816d2eac-afd1-4bb4-9750-80f5314ea883",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

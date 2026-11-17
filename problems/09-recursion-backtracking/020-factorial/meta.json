@@ -1,0 +1,10 @@
+{
+  "title": "Factorial",
+  "difficulty": "EASY",
+  "tags": [
+    "recursion"
+  ],
+  "legacy_id": "1a191239-f1c2-4081-91d7-f2a1db4a9503",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

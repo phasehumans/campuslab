@@ -1,0 +1,9 @@
+[
+  {
+    "input": "7 16\nThis\nis\nan\nexample\nof\ntext\njustification.",
+    "explanation": "Formatting words into max 16 chars per line."
+  },
+  {
+    "input": "6 20\nWhat\nmust\nbe\nacknowledgment\nshall\nbe"
+  }
+]

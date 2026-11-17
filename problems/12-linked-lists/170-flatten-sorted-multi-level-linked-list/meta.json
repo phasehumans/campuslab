@@ -1,0 +1,12 @@
+{
+  "title": "Flatten Sorted Multi-level Linked List",
+  "difficulty": "HARD",
+  "tags": [
+    "linked-list",
+    "divide-and-conquer",
+    "heap"
+  ],
+  "legacy_id": "48d0a7d1-feea-4538-b9e0-f5534bd36bf0",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

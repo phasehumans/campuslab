@@ -1,0 +1,5 @@
+1 <= |s| <= 10^5
+1 <= q <= 10^5
+1 <= |pattern| <= 10^5
+Sum of pattern lengths <= 5 * 10^5
+All strings consist of lowercase English letters.

@@ -1,0 +1,11 @@
+{
+  "title": "Maximum XOR of Two Numbers",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "bit-manipulation",
+    "xor"
+  ],
+  "legacy_id": "5cd5a807-81c6-4461-9307-4a55bb09d26f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

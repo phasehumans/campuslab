@@ -1,0 +1,1 @@
+Use the Extended Euclidean Algorithm to solve the equation: a * x + m * y = gcd(a, m). If gcd(a, m) is 1, the modular inverse exists and is x % m (adjusted to be positive). Otherwise, it does not exist.

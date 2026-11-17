@@ -1,0 +1,12 @@
+{
+  "title": "Word Search II",
+  "difficulty": "HARD",
+  "tags": [
+    "trie",
+    "backtracking",
+    "strings"
+  ],
+  "legacy_id": "32197959-36f7-4d37-8be0-f6ecafa0b8d9",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

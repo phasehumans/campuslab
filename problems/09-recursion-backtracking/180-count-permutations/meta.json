@@ -1,0 +1,12 @@
+{
+  "title": "Count Permutations",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "backtracking",
+    "recursion",
+    "permutations"
+  ],
+  "legacy_id": "e5764a0d-abca-4565-8267-11b49f64187e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

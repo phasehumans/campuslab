@@ -1,0 +1,12 @@
+{
+  "title": "Merge K Sorted Lists (Heap version)",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "34f87f5a-b7af-4a31-9cc3-9635eaa36a20",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

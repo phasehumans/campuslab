@@ -1,0 +1,1 @@
+At each step, we can either place '(' or ')'. We can place '(' only if the count of placed open parentheses is less than n. We can place ')' only if the count of placed close parentheses is less than open parentheses.

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 5 1 6 2 0 8 null null 7 4\n5 1",
+    "explanation": "LCA of 5 and 1 is 3 since it is the lowest shared ancestor."
+  },
+  {
+    "input": "3 5 1 6 2 0 8 null null 7 4\n5 4",
+    "explanation": "LCA of 5 and 4 is 5 itself."
+  }
+]

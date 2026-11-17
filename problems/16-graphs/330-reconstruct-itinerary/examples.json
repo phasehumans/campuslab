@@ -1,0 +1,8 @@
+[
+  {
+    "input": "4\nMUC LHR\nJFK MUC\nSFO SJC\nLHR SFO"
+  },
+  {
+    "input": "5\nJFK SFO\nJFK ATL\nSFO ATL\nATL JFK\nATL SFO"
+  }
+]

@@ -64,6 +64,7 @@ public:
                     {"limit", result.limit},
                     {"totalPages", result.total_pages},
                     {"allTags", result.all_tags},
+                    {"sections", result.sections},
                     {"problems", arr}
                 };
 

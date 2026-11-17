@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 9 20 null null 15 7",
+    "explanation": "The leaf node 9 is at depth 2 (path 3 -> 9). Nodes 15 and 7 are at depth 3. The minimum depth is 2."
+  },
+  {
+    "input": "2 null 3 null 4 null 5 null 6",
+    "explanation": "The shortest path is 2 -> 3 -> 4 -> 5 -> 6, which has 5 nodes. Note that 2 is not a leaf node because it has a right child."
+  }
+]

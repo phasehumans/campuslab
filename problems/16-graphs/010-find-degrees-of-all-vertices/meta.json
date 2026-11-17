@@ -1,0 +1,10 @@
+{
+  "title": "Find Degrees of All Vertices",
+  "difficulty": "EASY",
+  "tags": [
+    "graphs"
+  ],
+  "legacy_id": "42201612-752a-46bd-a042-7f9ab8a4af27",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

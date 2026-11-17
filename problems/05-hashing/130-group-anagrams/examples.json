@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6\neat tea tan ate nat bat",
+    "explanation": "The sorted groups are: [ate, eat, tea] (first word 'ate'), [bat] (first word 'bat'), [nat, tan] (first word 'nat'). Sorting by first words gives: 'ate eat tea', then 'bat', then 'nat tan'."
+  },
+  {
+    "input": "1\na",
+    "explanation": "Only one string, so it prints itself."
+  }
+]

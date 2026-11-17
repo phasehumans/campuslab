@@ -1,0 +1,4 @@
+0 <= k <= 500
+0 <= m_i <= 1000
+Total number of elements across all lists <= 10^5
+-10^9 <= elements <= 10^9

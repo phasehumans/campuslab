@@ -1,0 +1,12 @@
+{
+  "title": "Kth Largest Element in a Stream",
+  "difficulty": "EASY",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "8c7f1d59-9e25-4116-a537-834aa9ffc61d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

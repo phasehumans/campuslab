@@ -1,0 +1,3 @@
+1 <= k <= 10^4
+0 <= n <= 100
+tasks[i] is an uppercase English letter

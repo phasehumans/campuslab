@@ -1,0 +1,1 @@
+Sort the projects by capital required. Use a Max-Heap to store profits of all projects you can currently afford. In each step, push new affordable projects to the heap, pop the project with maximum profit, and add it to your capital.

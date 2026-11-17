@@ -1,0 +1,11 @@
+{
+  "title": "Partition List",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "379005ad-31c1-46f3-b46a-f0df0c637252",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

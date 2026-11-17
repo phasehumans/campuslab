@@ -1,0 +1,4 @@
+1 <= M, N <= 10^5
+-10^9 <= A[i], B[i] <= 10^9
+A and B are sorted in non-decreasing order
+The arrays share at least one common element

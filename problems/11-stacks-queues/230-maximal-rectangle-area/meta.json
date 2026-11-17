@@ -1,0 +1,11 @@
+{
+  "title": "Maximal Rectangle Area",
+  "difficulty": "HARD",
+  "tags": [
+    "stack",
+    "monotonic-stack"
+  ],
+  "legacy_id": "a82e7746-ae68-4593-8b4b-fdc00e23b3ae",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

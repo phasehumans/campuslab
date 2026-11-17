@@ -1,0 +1,12 @@
+{
+  "title": "Merge K Sorted Arrays",
+  "difficulty": "HARD",
+  "tags": [
+    "sorting",
+    "divide-and-conquer",
+    "merge-sort"
+  ],
+  "legacy_id": "e86c44b3-d00c-4fd1-8ba3-4e912cd80c9a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

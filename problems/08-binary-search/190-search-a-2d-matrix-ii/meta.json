@@ -1,0 +1,11 @@
+{
+  "title": "Search a 2D Matrix II",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "searching",
+    "two-pointers"
+  ],
+  "legacy_id": "b57b6f9f-823e-493c-924c-110e5f209787",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

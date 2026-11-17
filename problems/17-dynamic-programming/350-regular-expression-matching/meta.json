@@ -1,0 +1,11 @@
+{
+  "title": "Regular Expression Matching",
+  "difficulty": "HARD",
+  "tags": [
+    "dynamic-programming",
+    "memoization"
+  ],
+  "legacy_id": "db318f78-581e-4c71-ab96-9ac3db7f5d44",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

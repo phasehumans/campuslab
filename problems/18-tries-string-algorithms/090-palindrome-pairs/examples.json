@@ -1,0 +1,9 @@
+[
+  {
+    "input": "5\nabcd\ndcba\nlls\ns\nsssll",
+    "explanation": "words[0]+words[1] = 'abcddcba' (palindrome). words[1]+words[0] = 'dcbaabcd' (palindrome). words[2]+words[4] = 'llssssll'. words[3]+words[2] = 'slls'."
+  },
+  {
+    "input": "2\nbat\ntab"
+  }
+]

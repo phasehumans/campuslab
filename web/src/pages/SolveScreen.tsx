@@ -543,9 +543,8 @@ export function SolveScreen() {
             runCode({
                 sourceCode: codeByLanguage[language],
                 language,
-                testcases: problemQuery.data?.examples?.length
-                    ? problemQuery.data.examples
-                    : (problemQuery.data?.testcases ?? []),
+                // "Run" checks the public examples; hidden tests only run on Submit
+                testcases: problemQuery.data?.examples ?? [],
             }),
         onSuccess: (execution) => {
             setResultTitle('Run Results')
@@ -903,7 +902,7 @@ export function SolveScreen() {
                                         <SubmissionsPanel
                                             problemId={problem.id}
                                             sampleCount={problem.examples?.length ?? 0}
-                                            totalTestcases={problem.testcases?.length ?? 30}
+                                            totalTestcases={problem.testCount ?? 50}
                                             isLoading={submitMutation.isPending}
                                             latestExecution={
                                                 resultTitle.toLowerCase().includes('submission')
@@ -1017,9 +1016,7 @@ export function SolveScreen() {
                                                         title={resultTitle}
                                                         result={executionResult}
                                                         message={resultMessage}
-                                                        totalTestcases={
-                                                            problem.testcases?.length ?? 30
-                                                        }
+                                                        totalTestcases={problem.testCount ?? 50}
                                                         sampleCount={problem.examples?.length ?? 0}
                                                         userSolveTime={
                                                             resultTitle

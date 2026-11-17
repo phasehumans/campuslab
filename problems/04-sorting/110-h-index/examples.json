@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n3 0 6 1 5",
+    "explanation": "The researcher has 5 papers in total. 3 papers have at least 3 citations each (3, 5, 6)."
+  },
+  {
+    "input": "3\n1 3 1",
+    "explanation": "Only 1 paper has at least 1 citation."
+  }
+]

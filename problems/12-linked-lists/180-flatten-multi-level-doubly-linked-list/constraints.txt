@@ -1,0 +1,4 @@
+1 <= n <= 1000
+Node ids are distinct integers in [1, n]
+-10^9 <= Node.val <= 10^9
+The pointers describe a valid multi-level list starting at head_id; every node is reachable exactly once.

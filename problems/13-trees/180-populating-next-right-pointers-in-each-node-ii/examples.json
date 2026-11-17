@@ -1,0 +1,9 @@
+[
+  {
+    "input": "1 2 3 4 5 null 7",
+    "explanation": "Level 0: 1. Level 1: 2 next is 3. Level 2: 4 next is 5, 5 next is 7."
+  },
+  {
+    "input": "1 2 3 4 null null 5"
+  }
+]

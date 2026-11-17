@@ -1,0 +1,10 @@
+{
+  "title": "Min Stack Operations",
+  "difficulty": "EASY",
+  "tags": [
+    "stack"
+  ],
+  "legacy_id": "6afea3e0-dda5-41aa-8b63-fc877a309bcf",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

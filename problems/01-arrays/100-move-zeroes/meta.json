@@ -1,0 +1,10 @@
+{
+  "title": "Move Zeroes",
+  "difficulty": "EASY",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "552212df-65a4-44c6-a41e-1add6ac6098e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

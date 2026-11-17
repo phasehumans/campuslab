@@ -1,0 +1,11 @@
+{
+  "title": "Online Stock Span",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "stack",
+    "monotonic-stack"
+  ],
+  "legacy_id": "058c1589-3c6b-4234-a309-9d7f354d78aa",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

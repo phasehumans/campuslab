@@ -1,0 +1,4 @@
+1 <= N <= 100
+0 <= M <= 1000
+0 <= u, v < N, u != v
+No edge appears twice and the graph is connected.

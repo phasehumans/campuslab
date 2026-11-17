@@ -1,0 +1,1 @@
+First, count the occurrences of each number using a hash map. Then, insert all these occurrences into a hash set. If the size of the set is equal to the size of the map, it means all frequencies are unique.

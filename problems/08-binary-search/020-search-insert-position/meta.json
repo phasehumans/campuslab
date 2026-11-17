@@ -1,0 +1,10 @@
+{
+  "title": "Search Insert Position",
+  "difficulty": "EASY",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "7b1fe326-1a6a-4bcb-b5d1-8b161395767c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Exclusive Time of Functions",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "stack",
+    "simulation"
+  ],
+  "legacy_id": "1a3630b9-3325-487b-af83-702c9fa6e3dd",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

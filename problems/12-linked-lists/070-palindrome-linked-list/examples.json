@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n1 2 3 2 1",
+    "explanation": "1->2->3->2->1 is a palindrome."
+  },
+  {
+    "input": "4\n1 2 3 4",
+    "explanation": "1->2->3->4 is not a palindrome."
+  }
+]

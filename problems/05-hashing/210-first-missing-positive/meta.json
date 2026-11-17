@@ -1,0 +1,12 @@
+{
+  "title": "First Missing Positive",
+  "difficulty": "HARD",
+  "tags": [
+    "arrays",
+    "hashing",
+    "cyclic-sort"
+  ],
+  "legacy_id": "689c3d4f-e5a0-46ea-bd73-5cd3983cb7c4",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "11 2\n1 1 1 0 0 0 1 1 1 1 0",
+    "explanation": "Flipping at most two zeroes gives 6 consecutive ones: 1 1 1 0 0 [0 1 1 1 1 0] -> [1 1 1 1 1 1] after flipping."
+  },
+  {
+    "input": "19 3\n0 0 1 1 0 0 1 1 1 0 1 1 0 0 0 1 1 1 1",
+    "explanation": "Flip the zeros at 0-based indices 4, 5 and 9: positions 2 through 11 then hold 10 consecutive ones."
+  }
+]

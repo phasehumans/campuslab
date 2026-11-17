@@ -1,0 +1,11 @@
+{
+  "title": "Bitwise AND Range",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "bit-manipulation",
+    "bitwise"
+  ],
+  "legacy_id": "2489ded2-3aa5-4c01-a105-72cc2b79c84e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

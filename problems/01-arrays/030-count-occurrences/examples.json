@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6 3\n1 3 2 3 4 3",
+    "explanation": "The value 3 appears 3 times in the array."
+  },
+  {
+    "input": "5 10\n1 2 3 4 5",
+    "explanation": "10 does not appear in the array."
+  }
+]

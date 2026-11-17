@@ -1,0 +1,1 @@
+Implement a backtracking search starting at (r, c). Keep track of visited cells. In each recursive step, try moving to one of the 8 valid L-shaped neighbors. If you successfully visit R * C cells, return true. Backtrack if a move leads to a dead end.

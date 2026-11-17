@@ -1,0 +1,1 @@
+Use Kosaraju's algorithm which consists of two DFS passes. First, perform DFS on the original graph and push nodes to a stack based on their finish times. Second, reverse the graph and run DFS in the stack's order to find components.

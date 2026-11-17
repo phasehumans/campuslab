@@ -1,0 +1,1 @@
+The binary string represents a very large number. Converting it to a standard integer will cause overflow. Consider how division by 2 and subtraction of 1 affect the binary representation of a number.

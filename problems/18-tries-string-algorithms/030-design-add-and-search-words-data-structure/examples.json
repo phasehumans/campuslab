@@ -1,0 +1,9 @@
+[
+  {
+    "input": "7\nadd bad\nadd dad\nadd mad\nsearch pad\nsearch bad\nsearch .ad\nsearch b..",
+    "explanation": "'pad' is false. 'bad' matches exactly. '.ad' matches 'bad', 'dad', 'mad'. 'b..' matches 'bad'."
+  },
+  {
+    "input": "5\nadd a\nadd ab\nsearch a.\nsearch .\nsearch .."
+  }
+]

@@ -1,0 +1,4 @@
+1 <= N <= 300
+Every airport code consists of exactly 3 uppercase English letters
+from != to on every ticket
+At least one valid itinerary starting at JFK uses all tickets

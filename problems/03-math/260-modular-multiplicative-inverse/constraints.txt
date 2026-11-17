@@ -1,0 +1,2 @@
+1 <= a, m <= 10^9
+Note: m is not guaranteed to be prime, so Fermat's Little Theorem cannot be used. You must use the Extended Euclidean Algorithm.

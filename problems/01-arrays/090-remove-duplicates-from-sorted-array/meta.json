@@ -1,0 +1,10 @@
+{
+  "title": "Remove Duplicates from Sorted Array",
+  "difficulty": "EASY",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "94b61659-e6d4-40ff-8631-39f26f7266d3",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,1 @@
+Sort the array first to group duplicates. Use backtracking to find unique subsets. In each step, if you skip the current element, skip all subsequent duplicates of that element to avoid counting the same subset multiple times.

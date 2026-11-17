@@ -1,0 +1,10 @@
+{
+  "title": "H-Index",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "sorting"
+  ],
+  "legacy_id": "126a4bf2-e7c3-4166-a4fe-429de00b4d56",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

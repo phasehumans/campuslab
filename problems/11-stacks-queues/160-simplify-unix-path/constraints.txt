@@ -1,0 +1,2 @@
+1 <= s.length <= 3000
+s starts with '/' and contains only English letters, digits, '.', '/' or '_'.

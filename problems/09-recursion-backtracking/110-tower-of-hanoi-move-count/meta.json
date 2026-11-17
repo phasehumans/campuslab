@@ -1,0 +1,11 @@
+{
+  "title": "Tower of Hanoi Move Count",
+  "difficulty": "EASY",
+  "tags": [
+    "recursion",
+    "combinatorics"
+  ],
+  "legacy_id": "e753d411-b99f-419d-b4d8-d54247c357a5",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

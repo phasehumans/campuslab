@@ -1,0 +1,4 @@
+1 <= n <= 10^5
+n is always odd
+-10^9 <= arr[i] <= 10^9
+Every element appears exactly twice except one

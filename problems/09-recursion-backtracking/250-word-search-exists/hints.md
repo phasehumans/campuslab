@@ -1,0 +1,2 @@
+- Search the grid for the first letter of the word and start a recursive DFS from that cell. To avoid reusing a cell, replace it with a sentinel character (like '#') before recursing and restore it when backtracking.
+- Quick check first: if the board doesn't contain enough copies of some letter of the word, the answer is false without any search.

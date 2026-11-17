@@ -1,0 +1,10 @@
+[
+  {
+    "input": "1 1\n0",
+    "explanation": "We can reach the target without refueling at all."
+  },
+  {
+    "input": "100 1\n1\n10 100",
+    "explanation": "We can't reach the station at position 10 because we only have 1 liter of fuel."
+  }
+]

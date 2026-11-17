@@ -1,0 +1,12 @@
+{
+  "title": "3Sum",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "two-pointers",
+    "sorting",
+    "arrays"
+  ],
+  "legacy_id": "c41970f8-0179-4250-be65-dc349e5e0cdb",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

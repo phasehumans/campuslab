@@ -1,0 +1,10 @@
+[
+  {
+    "input": "9",
+    "explanation": "The numbers coprime to 9 in [1, 9] are 1, 2, 4, 5, 7, and 8. Total count is 6."
+  },
+  {
+    "input": "1",
+    "explanation": "phi(1) = 1 by definition."
+  }
+]

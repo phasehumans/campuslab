@@ -1,0 +1,12 @@
+{
+  "title": "Sum Root to Leaf Numbers",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "3d296de3-1cab-4560-a7c8-0d4be9ae44ca",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

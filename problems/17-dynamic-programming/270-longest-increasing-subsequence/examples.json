@@ -1,0 +1,10 @@
+[
+  {
+    "input": "8\n10 9 2 5 3 7 101 18",
+    "explanation": "The longest increasing subsequence is [2, 3, 7, 101], therefore the length is 4. [2, 3, 7, 18] is also a valid LIS."
+  },
+  {
+    "input": "6\n0 1 0 3 2 3",
+    "explanation": "The LIS is [0, 1, 2, 3]."
+  }
+]

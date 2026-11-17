@@ -1,0 +1,9 @@
+[
+  {
+    "input": "5\n3 9 20 15 7\n9 3 15 20 7",
+    "explanation": "3 is root. Left is 9. Right is 20, which has children 15 and 7."
+  },
+  {
+    "input": "1\n-1\n-1"
+  }
+]

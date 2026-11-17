@@ -1,0 +1,12 @@
+{
+  "title": "Path Sum",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "f838fd64-341b-47f7-8c71-985207a4beba",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Unique Paths",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "6e577b75-8cb1-487d-b97e-34de722b8632",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Flatten Multi-level Doubly Linked List",
+  "difficulty": "HARD",
+  "tags": [
+    "linked-list",
+    "recursion"
+  ],
+  "legacy_id": "98cbaabe-407e-4f81-8e2a-2fee24788d16",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

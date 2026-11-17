@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n1 2 3 4 5\n3 4 5 1 2",
+    "explanation": "Start at station 3 (index 3) and fill up with 4 units of gas. Tank = 4. Drive to station 4. Tank = 4 - 1 + 5 = 8. Drive to station 0. Tank = 8 - 2 + 1 = 7. Drive to station 1. Tank = 7 - 3 + 2 = 6. Drive to station 2. Tank = 6 - 4 + 3 = 5. Drive to station 3. Cost is 5. We have exactly 5, so we can return to 3. Index 3 is valid."
+  },
+  {
+    "input": "3\n2 3 4\n3 4 3",
+    "explanation": "Total gas is 9, total cost is 10. Since we need 10 gas but only have 9, it is impossible to complete the circuit. Return -1."
+  }
+]

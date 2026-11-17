@@ -1,0 +1,12 @@
+{
+  "title": "Segmented Sieve",
+  "difficulty": "HARD",
+  "tags": [
+    "math",
+    "number-theory",
+    "prime"
+  ],
+  "legacy_id": "242f204b-9f78-43b0-be38-ddf58b053654",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

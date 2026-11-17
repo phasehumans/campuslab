@@ -1,0 +1,9 @@
+[
+  {
+    "input": "3 9 20 null null 15 7",
+    "explanation": "Root 3 (level 1), Children 9 and 20 (level 2), 20's children 15 and 7 (level 3). Max depth is 3."
+  },
+  {
+    "input": "1 null 2"
+  }
+]

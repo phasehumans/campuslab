@@ -1,0 +1,1 @@
+If the cumulative sum up to index `i` is `S_i`, and cumulative sum up to index `j` is `S_j` (with `j < i`), then the sum of subarray `nums[j+1..i]` is `S_i - S_j`. If `S_i - S_j = k`, then `S_j = S_i - k`. Use a Hash Map to store the frequencies of prefix sums.

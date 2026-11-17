@@ -1,0 +1,10 @@
+{
+  "title": "Fibonacci Number",
+  "difficulty": "EASY",
+  "tags": [
+    "recursion"
+  ],
+  "legacy_id": "16fdcbfa-57be-4801-88f4-2fb19585faff",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

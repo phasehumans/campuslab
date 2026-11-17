@@ -1,0 +1,12 @@
+{
+  "title": "Count Smaller Numbers After Self",
+  "difficulty": "HARD",
+  "tags": [
+    "sorting",
+    "divide-and-conquer",
+    "merge-sort"
+  ],
+  "legacy_id": "ec468312-19e1-41a9-bd5f-4b0bd90611b3",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

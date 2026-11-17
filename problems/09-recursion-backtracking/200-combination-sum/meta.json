@@ -1,0 +1,11 @@
+{
+  "title": "Combination Sum",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "c789aa94-7a85-485a-86d0-d2e96fd893f6",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

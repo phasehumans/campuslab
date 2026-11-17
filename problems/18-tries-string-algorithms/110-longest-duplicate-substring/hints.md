@@ -1,0 +1,1 @@
+Use binary search on the length of the duplicate substring (range `1` to `len(s)`). For a fixed length `L`, we can use Rabin-Karp (rolling hash) to check if any substring of length `L` is duplicated in O(N) time.

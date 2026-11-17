@@ -1,0 +1,10 @@
+[
+  {
+    "input": "abbaca",
+    "explanation": "In \"abbaca\" we can remove \"bb\" since the letters are adjacent and equal, and this is the only possible move. The result of this move is that the string is \"aaca\", of which only \"aa\" is possible, so the final string is \"ca\"."
+  },
+  {
+    "input": "azxxzy",
+    "explanation": "First remove \"xx\" to get \"azzy\", then remove \"zz\" to get \"ay\"."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "title": "Longest Common Prefix",
+  "difficulty": "EASY",
+  "tags": [
+    "trie",
+    "strings"
+  ],
+  "legacy_id": "f45ca081-60d3-45e4-9637-291262e9f685",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

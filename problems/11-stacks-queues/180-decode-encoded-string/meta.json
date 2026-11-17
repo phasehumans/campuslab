@@ -1,0 +1,10 @@
+{
+  "title": "Decode Encoded String",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "stack"
+  ],
+  "legacy_id": "b6008603-0d0f-46ef-a00b-69947e3db1e1",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

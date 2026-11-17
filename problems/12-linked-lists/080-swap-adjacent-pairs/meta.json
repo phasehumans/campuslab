@@ -1,0 +1,11 @@
+{
+  "title": "Swap Adjacent Pairs",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "linked-list",
+    "recursion"
+  ],
+  "legacy_id": "6b9e4421-34e2-4956-9220-7cdfd3cf0456",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

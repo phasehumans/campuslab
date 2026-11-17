@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 11",
+    "explanation": "(3 * 4) % 11 = 12 % 11 = 1. So 4 is the modular inverse."
+  },
+  {
+    "input": "6 9",
+    "explanation": "Since gcd(6, 9) = 3 != 1, no modular inverse exists."
+  }
+]

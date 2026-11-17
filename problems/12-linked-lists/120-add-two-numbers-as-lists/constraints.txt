@@ -1,0 +1,3 @@
+1 <= n1, n2 <= 10000
+0 <= Node.val <= 9
+Neither number has leading zeros (the most significant digit, i.e. the last node, is non-zero unless the number is 0).

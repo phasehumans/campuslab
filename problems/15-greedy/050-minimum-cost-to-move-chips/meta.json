@@ -1,0 +1,10 @@
+{
+  "title": "Minimum Cost to Move Chips",
+  "difficulty": "EASY",
+  "tags": [
+    "greedy"
+  ],
+  "legacy_id": "95904393-0971-4258-9ef7-bd4038606c6f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6\n-1 0 1 2 -1 -4",
+    "explanation": "The distinct triplets with sum 0 are (-1, -1, 2) and (-1, 0, 1). The two -1 values come from different positions, so (-1, -1, 2) is allowed."
+  },
+  {
+    "input": "5\n0 0 0 0 1",
+    "explanation": "Several position choices give 0 + 0 + 0, but the triplet of values (0, 0, 0) is printed once."
+  }
+]

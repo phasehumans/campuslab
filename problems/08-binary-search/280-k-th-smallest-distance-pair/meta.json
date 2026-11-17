@@ -1,0 +1,11 @@
+{
+  "title": "K-th Smallest Distance Pair",
+  "difficulty": "HARD",
+  "tags": [
+    "binary-search",
+    "two-pointers"
+  ],
+  "legacy_id": "77cb07a7-f659-4a70-9a96-4448131b4c7b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

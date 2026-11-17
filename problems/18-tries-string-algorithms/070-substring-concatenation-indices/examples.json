@@ -1,0 +1,10 @@
+[
+  {
+    "input": "barfoothefoobarman\n2\nfoo\nbar",
+    "explanation": "Substring at index 0 is 'barfoo' (contains 'bar' then 'foo'). Substring at index 9 is 'foobar' (contains 'foo' then 'bar')."
+  },
+  {
+    "input": "wordgoodgoodgoodbestword\n4\nword\ngood\nbest\ngood",
+    "explanation": "The words may repeat: 'good' must appear twice. Only the substring 'goodgoodbestword' starting at index 8 uses each word the right number of times."
+  }
+]

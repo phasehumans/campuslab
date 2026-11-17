@@ -1,0 +1,10 @@
+[
+  {
+    "input": "Hello World",
+    "explanation": "The last word is 'World' of length 5."
+  },
+  {
+    "input": "   fly me   to   the moon  ",
+    "explanation": "The last word is 'moon' of length 4."
+  }
+]

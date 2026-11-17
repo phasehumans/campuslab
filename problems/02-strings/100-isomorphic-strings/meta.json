@@ -1,0 +1,11 @@
+{
+  "title": "Isomorphic Strings",
+  "difficulty": "EASY",
+  "tags": [
+    "hash-map",
+    "frequency"
+  ],
+  "legacy_id": "80b830db-1667-46f1-ad4f-acca2357fa2c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

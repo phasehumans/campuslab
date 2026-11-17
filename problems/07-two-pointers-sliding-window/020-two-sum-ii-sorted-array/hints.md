@@ -1,0 +1,1 @@
+Since the array is sorted, we can use two pointers: one starting at the beginning (left) and one at the end (right). If their sum is less than target, move left pointer to the right. If their sum is greater than target, move right pointer to the left.

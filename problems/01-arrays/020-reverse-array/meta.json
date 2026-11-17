@@ -1,0 +1,10 @@
+{
+  "title": "Reverse Array",
+  "difficulty": "EASY",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "9f176cb9-d457-4dd6-8866-77d43bc5f3f2",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

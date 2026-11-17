@@ -1,0 +1,1 @@
+If the total gas is less than the total cost, it's impossible to complete the circuit. Otherwise, if you start at a station and run out of gas at station i, you can start the search from station i + 1.

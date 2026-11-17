@@ -1,0 +1,1 @@
+For each point, calculate the slopes to all other points. Use a hash map to count the frequency of each slope. Represent the slope as a simplified fraction (numerator and denominator after dividing by their GCD) to avoid precision errors.

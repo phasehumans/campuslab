@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 2\n1 2 3 4 5",
+    "explanation": "Reverse in groups of 2: [1,2] -> [2,1]; [3,4] -> [4,3]; [5] stays 5."
+  },
+  {
+    "input": "5 3\n1 2 3 4 5",
+    "explanation": "[1,2,3] -> [3,2,1]; [4,5] stays 4->5."
+  }
+]

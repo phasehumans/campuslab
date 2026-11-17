@@ -1,0 +1,10 @@
+[
+  {
+    "input": "banana",
+    "explanation": "The substring 'ana' appears twice: at index 1 and at index 3 (the occurrences overlap). No substring of length 4 repeats."
+  },
+  {
+    "input": "abxcdxabycd",
+    "explanation": "Both 'ab' (at 0 and 6) and 'cd' (at 3 and 9) repeat and have the maximum length 2. 'ab' first appears earlier, so it is the answer."
+  }
+]

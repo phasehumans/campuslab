@@ -1,0 +1,11 @@
+{
+  "title": "Intersection of Two Sorted Arrays",
+  "difficulty": "EASY",
+  "tags": [
+    "sorting",
+    "two-pointers"
+  ],
+  "legacy_id": "f3fba496-4f2d-4912-9b1c-be05cf4330d2",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

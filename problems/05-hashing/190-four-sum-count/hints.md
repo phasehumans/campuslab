@@ -1,0 +1,1 @@
+Break the problem down into two halves. Find all possible sums of pairs from `A` and `B` and store their frequencies in a Hash Map. Then, iterate through all pairs in `C` and `D` and check if their negative sum exists in the map.

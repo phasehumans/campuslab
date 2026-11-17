@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 4\n25 64 9 4 100",
+    "explanation": "1st second: Choose 100. Leave sqrt(100) = 10. Piles: [25, 64, 9, 4, 10]\n2nd second: Choose 64. Leave sqrt(64) = 8. Piles: [25, 8, 9, 4, 10]\n3rd second: Choose 25. Leave sqrt(25) = 5. Piles: [5, 8, 9, 4, 10]\n4th second: Choose 10. Leave floor(sqrt(10)) = 3. Piles: [5, 8, 9, 4, 3]\nTotal remaining gifts: 5 + 8 + 9 + 4 + 3 = 29."
+  },
+  {
+    "input": "4 4\n1 1 1 1",
+    "explanation": "All piles have 1 gift. floor(sqrt(1)) = 1. No change after any seconds. Remaining: 4."
+  }
+]

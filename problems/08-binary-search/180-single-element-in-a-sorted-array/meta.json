@@ -1,0 +1,10 @@
+{
+  "title": "Single Element in a Sorted Array",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "f5523256-f76c-4a9b-ba9b-13140f927e1b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

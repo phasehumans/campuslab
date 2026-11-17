@@ -1,0 +1,3 @@
+1 <= n <= 10^5
+0 <= money[i] <= 10^9
+Note: The total money can exceed a 32-bit signed integer. Use 64-bit integers where appropriate.

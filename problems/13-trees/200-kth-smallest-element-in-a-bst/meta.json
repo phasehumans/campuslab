@@ -1,0 +1,12 @@
+{
+  "title": "Kth Smallest Element in a BST",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-search-tree",
+    "dfs"
+  ],
+  "legacy_id": "b118dad5-a0be-40d9-aefe-2ae1e522f5b3",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

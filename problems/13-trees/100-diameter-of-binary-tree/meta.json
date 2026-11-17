@@ -1,0 +1,12 @@
+{
+  "title": "Diameter of Binary Tree",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "7dd2afc2-3b6d-4548-ba19-ded5001a9b3d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

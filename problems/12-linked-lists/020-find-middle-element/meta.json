@@ -1,0 +1,11 @@
+{
+  "title": "Find Middle Element",
+  "difficulty": "EASY",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "223f31cd-c33f-4e09-acde-fe2504ca85c6",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

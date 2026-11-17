@@ -1,0 +1,10 @@
+[
+  {
+    "input": "()",
+    "explanation": "\"()\" has a score of 1."
+  },
+  {
+    "input": "(())",
+    "explanation": "s = \"(())\" has score 2 * score(\"()\") = 2 * 1 = 2."
+  }
+]

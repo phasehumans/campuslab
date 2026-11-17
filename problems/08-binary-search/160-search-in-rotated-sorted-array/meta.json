@@ -1,0 +1,10 @@
+{
+  "title": "Search in Rotated Sorted Array",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "5beb2a82-def7-4bf8-9cc4-e3f444c0fb6f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

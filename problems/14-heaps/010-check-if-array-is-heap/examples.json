@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6\n90 15 10 7 12 2",
+    "explanation": "Parent 90 has children 15 and 10. Parent 15 has children 7 and 12. Parent 10 has child 2. All parents are greater than or equal to their children."
+  },
+  {
+    "input": "6\n9 15 10 7 12 2",
+    "explanation": "The root 9 is smaller than its left child 15."
+  }
+]

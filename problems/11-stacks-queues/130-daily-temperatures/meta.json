@@ -1,0 +1,11 @@
+{
+  "title": "Daily Temperatures",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "stack",
+    "monotonic-stack"
+  ],
+  "legacy_id": "a144ac75-5f6e-4225-9666-7e9969f1de8c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

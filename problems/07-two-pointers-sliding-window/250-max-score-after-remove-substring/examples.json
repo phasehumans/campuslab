@@ -1,0 +1,10 @@
+[
+  {
+    "input": "aabbaabiabaa\n5 4",
+    "explanation": "'ab' is worth more, so remove it first. The letter 'i' splits the string into 'aabbaab' and 'abaa'; 'ab' can be removed 3 times from the first part and once from the second, for 4 * 5 = 20 points. No 'ba' is left."
+  },
+  {
+    "input": "aabaabbab\n4 5",
+    "explanation": "'ba' is worth more. Removing 'ba' twice (10 points) leaves 'aaabb', from which 'ab' can be removed twice (8 points), for 18 in total."
+  }
+]

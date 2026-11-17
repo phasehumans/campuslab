@@ -1,0 +1,12 @@
+{
+  "title": "Recover Binary Search Tree",
+  "difficulty": "HARD",
+  "tags": [
+    "tree",
+    "binary-search-tree",
+    "dfs"
+  ],
+  "legacy_id": "a4ec24b1-c633-412a-969d-04a61143f011",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

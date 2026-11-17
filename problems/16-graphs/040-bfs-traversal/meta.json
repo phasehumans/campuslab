@@ -1,0 +1,11 @@
+{
+  "title": "BFS Traversal",
+  "difficulty": "EASY",
+  "tags": [
+    "graphs",
+    "bfs"
+  ],
+  "legacy_id": "5882a3a0-7559-4ae9-bdcb-82a3b2dd63ca",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

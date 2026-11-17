@@ -1,0 +1,11 @@
+{
+  "title": "Happy Number Check",
+  "difficulty": "EASY",
+  "tags": [
+    "hash-set",
+    "counting"
+  ],
+  "legacy_id": "9a00e323-01b4-4d91-81b1-2c28d190f045",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

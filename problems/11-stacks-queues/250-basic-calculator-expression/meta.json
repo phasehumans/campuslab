@@ -1,0 +1,10 @@
+{
+  "title": "Basic Calculator Expression",
+  "difficulty": "HARD",
+  "tags": [
+    "stack"
+  ],
+  "legacy_id": "e4ae9e90-60a5-45aa-accd-a363649c54e9",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6 8\n5 7 7 8 8 10",
+    "explanation": "The target 8 is found at index 3 and index 4."
+  },
+  {
+    "input": "6 6\n5 7 7 8 8 10",
+    "explanation": "The target 6 is not found in the array."
+  }
+]

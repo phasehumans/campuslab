@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4 3\napple\napplet\napricot\napril",
+    "explanation": "'a' and 'ap' are shared by all 4 strings. 'app' is only shared by 2. Thus, 'ap' is the longest prefix shared by >= 3 strings."
+  },
+  {
+    "input": "5 2\nbanana\nbandana\ncherry\nchess\napple",
+    "explanation": "'ban' is shared by 'banana' and 'bandana' (length 3). 'che' is shared by 'cherry' and 'chess' (length 3). 'ban' is lexicographically smaller."
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3[a]2[bc]",
+    "explanation": "\"a\" repeated 3 times + \"bc\" repeated 2 times."
+  },
+  {
+    "input": "3[a2[c]]",
+    "explanation": "Inner \"2[c]\" -> \"cc\". Outer \"3[acc]\" -> \"accaccacc\"."
+  }
+]

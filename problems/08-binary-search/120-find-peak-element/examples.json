@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4\n1 2 3 1",
+    "explanation": "3 is a peak element and its index is 2."
+  },
+  {
+    "input": "5\n1 3 5 4 2",
+    "explanation": "5 is a peak element and its index is 2."
+  }
+]

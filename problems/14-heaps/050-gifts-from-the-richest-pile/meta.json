@@ -1,0 +1,12 @@
+{
+  "title": "Gifts from the Richest Pile",
+  "difficulty": "EASY",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "simulation"
+  ],
+  "legacy_id": "7804f33b-ebe1-4dd0-a58f-14c0c2c5a9e5",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

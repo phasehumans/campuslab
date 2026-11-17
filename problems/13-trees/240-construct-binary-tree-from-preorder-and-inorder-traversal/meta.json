@@ -1,0 +1,12 @@
+{
+  "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "2ee5f4d9-fa96-40df-9f7a-1bba25d560c2",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

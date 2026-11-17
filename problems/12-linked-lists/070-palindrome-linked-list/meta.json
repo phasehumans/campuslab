@@ -1,0 +1,11 @@
+{
+  "title": "Palindrome Linked List",
+  "difficulty": "EASY",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "c06f7ba4-a9a6-4032-9f64-5cf2e9be8897",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

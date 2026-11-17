@@ -1,0 +1,9 @@
+[
+  {
+    "input": "anagram\nnagaram",
+    "explanation": "\"nagaram\" is an anagram of \"anagram\"."
+  },
+  {
+    "input": "rat\ncar"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "title": "Binary Tree Inorder Traversal",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "95875416-822c-488b-9b46-943cc405a08f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

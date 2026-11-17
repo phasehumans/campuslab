@@ -1,0 +1,12 @@
+{
+  "title": "0/1 Knapsack",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "dynamic-programming",
+    "knapsack",
+    "tabulation"
+  ],
+  "legacy_id": "0c203b07-c5b7-4474-a205-0ae625cda5ee",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

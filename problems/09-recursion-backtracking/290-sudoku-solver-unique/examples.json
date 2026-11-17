@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 3 . . 7 . . . .\n6 . . 1 9 5 . . .\n. 9 8 . . . . 6 .\n8 . . . 6 . . . 3\n4 . . 8 . 3 . . 1\n7 . . . 2 . . . 6\n. 6 . . . . 2 8 .\n. . . 4 1 9 . . 5\n. . . . 8 . . 7 9",
+    "explanation": "The completed Sudoku grid satisfying row, column, and 3x3 box rules."
+  },
+  {
+    "input": ". . . 2 6 . 7 . 1\n6 8 . . 7 . . 9 .\n1 9 . . . 4 5 . .\n8 2 . 1 . . . 4 .\n. . 4 6 . 2 9 . .\n. 5 . . . 3 . 2 8\n. . 9 3 . . . 7 4\n. 4 . . 5 . . 3 6\n7 . 3 . 1 8 . . .",
+    "explanation": "A second Sudoku board resolved correctly."
+  }
+]

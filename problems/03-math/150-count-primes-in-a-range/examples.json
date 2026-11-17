@@ -1,0 +1,10 @@
+[
+  {
+    "input": "1 10",
+    "explanation": "Primes in [1, 10] are 2, 3, 5, 7. Total count is 4."
+  },
+  {
+    "input": "10 20",
+    "explanation": "Primes in [10, 20] are 11, 13, 17, 19. Total count is 4."
+  }
+]

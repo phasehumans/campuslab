@@ -1,0 +1,11 @@
+{
+  "title": "Sudoku Solver Unique",
+  "difficulty": "HARD",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "7498483f-aac4-45f6-832f-d05e648c331a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

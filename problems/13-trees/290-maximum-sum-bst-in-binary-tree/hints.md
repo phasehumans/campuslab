@@ -1,0 +1,1 @@
+Perform a postorder traversal. For each node, verify if its left and right subtrees are BSTs, and if root.val is strictly greater than the maximum value in the left subtree and strictly less than the minimum value in the right subtree.

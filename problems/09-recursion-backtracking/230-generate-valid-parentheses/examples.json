@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3",
+    "explanation": "For n = 3, there are 5 well-formed parenthesis combinations."
+  },
+  {
+    "input": "1",
+    "explanation": "For n = 1, only '()' is possible."
+  }
+]

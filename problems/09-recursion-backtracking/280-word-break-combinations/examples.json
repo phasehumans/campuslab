@@ -1,0 +1,10 @@
+[
+  {
+    "input": "catsanddog\n5\ncat\ncats\nand\nsand\ndog",
+    "explanation": "The sentences are 'cats and dog' and 'cat sand dog'."
+  },
+  {
+    "input": "pineapplepenapple\n5\napple\npen\napplepen\npine\npineapple",
+    "explanation": "The sentences are:\n1) 'pine apple pen apple'\n2) 'pineapple pen apple'\n3) 'pine applepen apple'"
+  }
+]

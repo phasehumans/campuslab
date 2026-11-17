@@ -1,0 +1,11 @@
+{
+  "title": "Ransom Note",
+  "difficulty": "EASY",
+  "tags": [
+    "hash-map",
+    "frequency"
+  ],
+  "legacy_id": "c9c94786-3e85-41e5-8f3d-435a226b5b32",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

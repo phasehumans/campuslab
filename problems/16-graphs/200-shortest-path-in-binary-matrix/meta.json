@@ -1,0 +1,11 @@
+{
+  "title": "Shortest Path in Binary Matrix",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "graphs",
+    "bfs"
+  ],
+  "legacy_id": "d9fcc4f6-4ad0-4cd9-9dd8-553f7908b175",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

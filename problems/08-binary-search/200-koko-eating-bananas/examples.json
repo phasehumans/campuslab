@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4 8\n3 6 7 11",
+    "explanation": "If speed K = 4, she can eat pile 1 (3 bananas) in 1 hour, pile 2 (6 bananas) in 2 hours, pile 3 (7 bananas) in 2 hours, pile 4 (11 bananas) in 3 hours. Total hours = 1 + 2 + 2 + 3 = 8."
+  },
+  {
+    "input": "5 5\n30 11 23 4 20",
+    "explanation": "With speed 30, Koko eats all bananas in 5 hours (1 + 1 + 1 + 1 + 1). If she eats at speed 29, she would need 2 hours for the first pile, totaling 6 hours."
+  }
+]

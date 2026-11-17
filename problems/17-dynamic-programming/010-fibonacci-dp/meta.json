@@ -1,0 +1,12 @@
+{
+  "title": "Fibonacci DP",
+  "difficulty": "EASY",
+  "tags": [
+    "dynamic-programming",
+    "tabulation",
+    "memoization"
+  ],
+  "legacy_id": "4cf0d060-682d-48e6-a9a9-44db93dd9630",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

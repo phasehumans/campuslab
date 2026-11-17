@@ -1,0 +1,20 @@
+{
+  "arrays": "Arrays",
+  "strings": "Strings",
+  "math": "Math & Number Theory",
+  "sorting": "Sorting",
+  "hashing": "Hashing & Frequency Counting",
+  "prefix-sums": "Prefix Sums & Difference Arrays",
+  "two-pointers-sliding-window": "Two Pointers & Sliding Window",
+  "binary-search": "Binary Search",
+  "recursion-backtracking": "Recursion & Backtracking",
+  "bit-manipulation": "Bit Manipulation",
+  "stacks-queues": "Stacks & Queues",
+  "linked-lists": "Linked Lists",
+  "trees": "Trees & BST",
+  "heaps": "Heaps & Priority Queues",
+  "greedy": "Greedy",
+  "graphs": "Graphs",
+  "dynamic-programming": "Dynamic Programming",
+  "tries-string-algorithms": "Tries & String Algorithms"
+}

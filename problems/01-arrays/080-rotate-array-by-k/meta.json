@@ -1,0 +1,10 @@
+{
+  "title": "Rotate Array by K",
+  "difficulty": "EASY",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "df8104db-5feb-471d-9813-034344896ac2",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

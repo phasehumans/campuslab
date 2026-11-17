@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 2\n1 1 1",
+    "explanation": "The subarrays are [1, 1] at index 0..1 and [1, 1] at index 1..2."
+  },
+  {
+    "input": "3 3\n1 2 3",
+    "explanation": "The subarrays are [1, 2] at index 0..1 and [3] at index 2..2."
+  }
+]

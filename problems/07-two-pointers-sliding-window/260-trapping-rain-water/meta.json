@@ -1,0 +1,12 @@
+{
+  "title": "Trapping Rain Water",
+  "difficulty": "HARD",
+  "tags": [
+    "two-pointers",
+    "arrays",
+    "prefix-max"
+  ],
+  "legacy_id": "d4310148-8498-45d1-aa90-b1fc579830a3",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Climbing Stairs",
+  "difficulty": "EASY",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "9fdb9629-2371-4c31-ba4b-2415df58c9cb",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

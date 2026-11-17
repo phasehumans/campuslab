@@ -1,0 +1,12 @@
+{
+  "title": "Top K Frequent Elements",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "249fc340-a5ae-4cf1-8d04-356fc6f9b547",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

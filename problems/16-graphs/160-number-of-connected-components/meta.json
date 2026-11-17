@@ -1,0 +1,12 @@
+{
+  "title": "Number of Connected Components",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "graphs",
+    "dfs",
+    "bfs"
+  ],
+  "legacy_id": "1fc2511a-60e7-4fa8-8f5f-6560dbc9e3ad",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

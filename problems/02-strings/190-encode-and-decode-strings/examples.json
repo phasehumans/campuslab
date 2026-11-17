@@ -1,0 +1,10 @@
+[
+  {
+    "input": "2\nhello\nworld",
+    "explanation": "The encoded string is '5#hello5#world', length is 14. Decoded strings match original inputs."
+  },
+  {
+    "input": "1\n",
+    "explanation": "An empty string is encoded as '0#'. The length is 2. The decoded string is empty."
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n3 0 1",
+    "explanation": "n=3, so range is [0,3]. 2 is missing."
+  },
+  {
+    "input": "9\n9 6 4 2 3 5 7 0 1",
+    "explanation": "n=9, so range is [0,9]. 8 is missing."
+  }
+]

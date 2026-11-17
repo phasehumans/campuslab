@@ -1,0 +1,12 @@
+{
+  "title": "Reverse in K-Groups",
+  "difficulty": "HARD",
+  "tags": [
+    "linked-list",
+    "recursion",
+    "two-pointers"
+  ],
+  "legacy_id": "d919d39c-88c9-41df-acbd-7610ce5ae531",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

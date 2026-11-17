@@ -1,0 +1,11 @@
+{
+  "title": "Product of Array Except Self",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "arrays",
+    "prefix-sum"
+  ],
+  "legacy_id": "e75f2855-23fc-4eb8-9437-5b0d9dd0d35c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

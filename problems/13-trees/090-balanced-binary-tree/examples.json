@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 9 20 null null 15 7",
+    "explanation": "The height of left subtree is 1 and right subtree is 2. The difference is 1, so it is balanced."
+  },
+  {
+    "input": "1 2 2 3 3 null null 4 4",
+    "explanation": "The height of left subtree is 3 and right subtree is 1. The difference is 2, so it is unbalanced."
+  }
+]

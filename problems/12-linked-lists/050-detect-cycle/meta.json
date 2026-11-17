@@ -1,0 +1,11 @@
+{
+  "title": "Detect Cycle",
+  "difficulty": "EASY",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "ed55cb89-8325-4389-a554-a3d8645ba780",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

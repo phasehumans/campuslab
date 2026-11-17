@@ -1,0 +1,11 @@
+{
+  "title": "Encode and Decode Strings",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "hash-map",
+    "string"
+  ],
+  "legacy_id": "628bc1c9-3fde-45b7-86b7-1aba18a56127",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

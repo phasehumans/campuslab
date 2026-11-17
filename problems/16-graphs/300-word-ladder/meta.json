@@ -1,0 +1,11 @@
+{
+  "title": "Word Ladder",
+  "difficulty": "HARD",
+  "tags": [
+    "graphs",
+    "bfs"
+  ],
+  "legacy_id": "6b523a0f-efa5-43e4-a6bf-db4338839fdc",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

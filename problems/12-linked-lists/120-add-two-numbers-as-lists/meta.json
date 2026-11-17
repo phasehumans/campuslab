@@ -1,0 +1,11 @@
+{
+  "title": "Add Two Numbers as Lists",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "linked-list",
+    "recursion"
+  ],
+  "legacy_id": "b9cb5cb0-61cc-4e5f-9460-2e50b85166d6",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

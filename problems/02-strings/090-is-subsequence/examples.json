@@ -1,0 +1,9 @@
+[
+  {
+    "input": "abc\nahbgdc",
+    "explanation": "\"abc\" can be formed by taking characters 'a', 'b', 'c' from \"ahbgdc\"."
+  },
+  {
+    "input": "axc\nahbgdc"
+  }
+]

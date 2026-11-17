@@ -1,0 +1,2 @@
+1 <= r, c <= 500
+Total matrix elements <= 2.5 * 10^5

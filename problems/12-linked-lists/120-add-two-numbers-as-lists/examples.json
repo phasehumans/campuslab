@@ -1,0 +1,9 @@
+[
+  {
+    "input": "3 3\n2 4 3\n5 6 4",
+    "explanation": "342 + 465 = 807, represented as 7->0->8."
+  },
+  {
+    "input": "1 1\n0\n0"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "title": "Smallest Range Covering K Lists",
+  "difficulty": "HARD",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "3b09b7ae-d04e-41c3-ba7f-13dee74106c7",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

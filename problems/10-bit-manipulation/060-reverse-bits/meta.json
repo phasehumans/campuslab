@@ -1,0 +1,11 @@
+{
+  "title": "Reverse Bits",
+  "difficulty": "EASY",
+  "tags": [
+    "bit-manipulation",
+    "binary"
+  ],
+  "legacy_id": "d637ddcd-0edb-4f0f-ac7e-ff88e17feaa2",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

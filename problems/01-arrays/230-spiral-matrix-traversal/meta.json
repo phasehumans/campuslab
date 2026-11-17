@@ -1,0 +1,10 @@
+{
+  "title": "Spiral Matrix Traversal",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "matrix"
+  ],
+  "legacy_id": "095ca733-0e80-4a4e-9a9a-605acfd63e5b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

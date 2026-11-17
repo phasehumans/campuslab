@@ -1,0 +1,12 @@
+{
+  "title": "Euler's Totient Function",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "math",
+    "number-theory",
+    "prime"
+  ],
+  "legacy_id": "560dbb9f-5d12-4385-91a6-6f614fee2a1e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

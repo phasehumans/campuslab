@@ -1,0 +1,11 @@
+{
+  "title": "Score of Parentheses",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "stack",
+    "strings"
+  ],
+  "legacy_id": "38276269-a19a-4a15-9e74-0dd2edab6123",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

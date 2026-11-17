@@ -1,0 +1,11 @@
+{
+  "title": "Assign Cookies",
+  "difficulty": "EASY",
+  "tags": [
+    "greedy",
+    "sorting-greedy"
+  ],
+  "legacy_id": "f9351e87-1ead-460e-9152-17001d3541ab",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

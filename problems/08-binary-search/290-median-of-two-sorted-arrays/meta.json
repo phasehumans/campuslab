@@ -1,0 +1,10 @@
+{
+  "title": "Median of Two Sorted Arrays",
+  "difficulty": "HARD",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "c7a9eb47-4614-49a7-901a-8007be829325",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

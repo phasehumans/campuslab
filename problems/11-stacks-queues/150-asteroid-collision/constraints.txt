@@ -1,0 +1,4 @@
+1 <= n <= 10^5
+-1000 <= asteroids[i] <= 1000
+asteroids[i] != 0
+At least one asteroid survives all collisions.

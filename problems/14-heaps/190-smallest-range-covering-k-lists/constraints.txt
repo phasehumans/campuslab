@@ -1,0 +1,4 @@
+1 <= k <= 3500
+1 <= m_i <= 50
+Total elements <= 10^5
+-10^5 <= elements <= 10^5

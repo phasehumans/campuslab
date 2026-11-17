@@ -1,0 +1,10 @@
+{
+  "title": "Check Palindrome String",
+  "difficulty": "EASY",
+  "tags": [
+    "strings"
+  ],
+  "legacy_id": "5d998d0b-1b9d-4237-9a0e-efc6ae4d516e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

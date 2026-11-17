@@ -1,0 +1,11 @@
+{
+  "title": "Strongly Connected Components",
+  "difficulty": "HARD",
+  "tags": [
+    "graphs",
+    "dfs"
+  ],
+  "legacy_id": "3d6d9e4f-cbc6-419b-984f-22c5eba6d805",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

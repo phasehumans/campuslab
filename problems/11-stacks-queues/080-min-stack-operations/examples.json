@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6\npush -2\npush 0\npush -3\ngetMin\npop\ngetMin",
+    "explanation": "Push -2, 0, -3. Min is -3. Pop -3. Min is now -2."
+  },
+  {
+    "input": "5\npush 5\npush 3\ntop\ngetMin\npop",
+    "explanation": "Push 5, 3. Top is 3, min is 3. Pop 3."
+  }
+]

@@ -1,0 +1,2 @@
+1 <= s.length <= 1000
+s consists of English letters (both uppercase and lowercase) and digits.

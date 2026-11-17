@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 5\n1 1 4 2 3",
+    "explanation": "Remove 3 and 2 from the right to reduce x to 0 in 2 operations."
+  },
+  {
+    "input": "5 10\n5 6 7 8 9",
+    "explanation": "It is impossible to reduce x to exactly 0."
+  }
+]

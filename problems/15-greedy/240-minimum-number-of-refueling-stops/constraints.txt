@@ -1,0 +1,4 @@
+1 <= target, startFuel <= 10^9
+0 <= n <= 500
+0 < position_i < position_i+1 < target
+1 <= fuel_i <= 10^9

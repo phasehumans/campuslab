@@ -1,0 +1,10 @@
+[
+  {
+    "input": "aA\naAAbbbb",
+    "explanation": "The jewels are 'a' and 'A'. Among 'aAAbbbb', there are 3 jewels: 'a', 'A', 'A'."
+  },
+  {
+    "input": "z\nZZ",
+    "explanation": "The only jewel is 'z'. Since stones are uppercase 'Z', none are jewels."
+  }
+]

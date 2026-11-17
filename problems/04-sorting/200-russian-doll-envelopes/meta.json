@@ -1,0 +1,11 @@
+{
+  "title": "Russian Doll Envelopes",
+  "difficulty": "HARD",
+  "tags": [
+    "sorting",
+    "binary-search"
+  ],
+  "legacy_id": "2a220033-1c7b-400d-9a99-345d7498de38",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

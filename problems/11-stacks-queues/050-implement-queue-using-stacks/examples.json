@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\npush 1\npush 2\npeek\npop\nempty",
+    "explanation": "Queue becomes [1, 2]. Peek returns 1. Pop removes 1, leaving [2]. Not empty."
+  },
+  {
+    "input": "4\npush 10\npeek\npop\nempty",
+    "explanation": "Push 10. Peek returns 10. Pop removes 10. Queue is empty."
+  }
+]

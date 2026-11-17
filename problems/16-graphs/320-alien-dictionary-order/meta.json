@@ -1,0 +1,12 @@
+{
+  "title": "Alien Dictionary Order",
+  "difficulty": "HARD",
+  "tags": [
+    "hash-map",
+    "graph",
+    "topological-sort"
+  ],
+  "legacy_id": "a849d7bc-5822-4dc5-b091-f04997a5b54d",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

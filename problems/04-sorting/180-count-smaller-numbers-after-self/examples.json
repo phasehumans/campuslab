@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4\n5 2 6 1",
+    "explanation": "For 5, there are 2 smaller elements to the right (2 and 1). For 2, 1 is smaller. For 6, 1 is smaller. For 1, 0 smaller."
+  },
+  {
+    "input": "4\n-1 -1 0 0",
+    "explanation": "No elements strictly smaller to the right."
+  }
+]

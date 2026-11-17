@@ -1,0 +1,1 @@
+Implement Binary Exponentiation (also known as exponentiation by squaring) to compute the power in O(log n) time. Make sure to perform all operations using 64-bit integers and apply the modulo operation at each multiplication step to prevent overflow. Note that if m = 1, the result is always 0.

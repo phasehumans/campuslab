@@ -1,0 +1,12 @@
+{
+  "title": "Flood Fill Algorithm",
+  "difficulty": "EASY",
+  "tags": [
+    "graphs",
+    "dfs",
+    "bfs"
+  ],
+  "legacy_id": "5980c7ab-302d-4062-839c-a4e9569fb0e3",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

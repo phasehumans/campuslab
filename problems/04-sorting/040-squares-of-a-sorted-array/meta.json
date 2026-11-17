@@ -1,0 +1,11 @@
+{
+  "title": "Squares of a Sorted Array",
+  "difficulty": "EASY",
+  "tags": [
+    "sorting",
+    "two-pointers"
+  ],
+  "legacy_id": "dec272a5-6028-4210-8749-f6890a6c9dbb",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

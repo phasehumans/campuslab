@@ -1,0 +1,13 @@
+{
+  "title": "Vertical Order Traversal of a Binary Tree",
+  "difficulty": "HARD",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs",
+    "bfs"
+  ],
+  "legacy_id": "2aab9da3-70eb-4aec-932a-4c029f31922a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

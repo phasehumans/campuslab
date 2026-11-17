@@ -1,0 +1,10 @@
+{
+  "title": "Find Peak Element",
+  "difficulty": "EASY",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "a2bab7ef-475b-40da-b8f2-a2500fc42907",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,4 @@
+1 <= R, C <= 50
+0 <= pixel color, newColor <= 10^4
+0 <= sr < R
+0 <= sc < C

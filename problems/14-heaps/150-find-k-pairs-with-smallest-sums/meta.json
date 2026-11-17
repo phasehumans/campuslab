@@ -1,0 +1,12 @@
+{
+  "title": "Find K Pairs with Smallest Sums",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "sorting"
+  ],
+  "legacy_id": "9157e19b-e472-422c-b640-ae7434412b34",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

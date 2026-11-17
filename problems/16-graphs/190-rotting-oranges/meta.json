@@ -1,0 +1,11 @@
+{
+  "title": "Rotting Oranges",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "graphs",
+    "bfs"
+  ],
+  "legacy_id": "63c3dc9f-5da8-4abc-832b-40de4926fe69",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

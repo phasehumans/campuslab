@@ -1,0 +1,11 @@
+{
+  "title": "Rat in Maze Paths Count",
+  "difficulty": "HARD",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "e8730149-3c64-483e-ae85-8ea5ef5591b1",
+  "time_limit_ms": 2000,
+  "memory_mb": 256
+}

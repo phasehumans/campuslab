@@ -69,3 +69,9 @@ cmake-build-*/
 .DS_Store
 Thumbs.db
 .december
+.problemkit-cache/
+
+
+# private keys / certs
+*.pem
+*.key

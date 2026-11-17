@@ -1,0 +1,11 @@
+{
+  "title": "Cheapest Flights Within K Stops",
+  "difficulty": "HARD",
+  "tags": [
+    "graphs",
+    "shortest-path"
+  ],
+  "legacy_id": "62c9aa66-ebf6-4bd7-b809-bd4f9bfadba9",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

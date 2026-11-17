@@ -1,0 +1,1 @@
+Use recursive DFS starting from (0,0). Mark cells as visited before exploring neighbors in 4 directions, and unmark them when backtracking. If you reach (n-1, n-1), return 1. Sum up all paths from your neighbors.

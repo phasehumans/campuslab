@@ -1,0 +1,11 @@
+{
+  "title": "Next Greater Element",
+  "difficulty": "EASY",
+  "tags": [
+    "stack",
+    "monotonic-stack"
+  ],
+  "legacy_id": "36c9ffc2-530f-401a-8036-09e4b339df5e",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

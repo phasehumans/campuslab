@@ -1,0 +1,7 @@
+1 <= N <= 100
+0 <= M <= N * (N - 1)
+0 <= u, v < N, u != v
+There is at most one flight from any city u to any city v
+1 <= w <= 10^4
+0 <= src, dst < N, src != dst
+0 <= K < N

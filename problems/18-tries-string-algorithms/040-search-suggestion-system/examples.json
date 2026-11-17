@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\nmobile\nmouse\nmoneypot\nmonitor\nmousepad\nmouse",
+    "explanation": "After typing 'm' and 'mo' all five products match; the three smallest are mobile, moneypot, monitor. After 'mou', 'mous' and 'mouse' only mouse and mousepad match."
+  },
+  {
+    "input": "4\nhavana\nhavana\nhavana\nhat\nhavt",
+    "explanation": "Duplicates count as separate products. After 'h' and 'ha': hat havana havana. After 'hav': havana havana havana. Nothing starts with 'havt', so the last line is blank."
+  }
+]

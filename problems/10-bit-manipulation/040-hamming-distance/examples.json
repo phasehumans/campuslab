@@ -1,0 +1,10 @@
+[
+  {
+    "input": "1 4",
+    "explanation": "1 (0001) ^ 4 (0100) = 5 (0101) which has 2 set bits."
+  },
+  {
+    "input": "3 3",
+    "explanation": "3 (0011) ^ 3 (0011) = 0 (0000) which has 0 set bits."
+  }
+]

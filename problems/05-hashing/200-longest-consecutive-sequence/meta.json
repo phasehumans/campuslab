@@ -1,0 +1,11 @@
+{
+  "title": "Longest Consecutive Sequence",
+  "difficulty": "HARD",
+  "tags": [
+    "hash-set",
+    "arrays"
+  ],
+  "legacy_id": "4697e675-57b6-44a7-85b4-dc2da794a9a4",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

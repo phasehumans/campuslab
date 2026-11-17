@@ -1,0 +1,6 @@
+1 <= n <= 1000
+1 <= |products[i]| <= 2000
+1 <= |searchWord| <= 1000
+The total length of all products is at most 10^6.
+All strings consist of lowercase English letters.
+At least one product starts with the first character of searchWord.

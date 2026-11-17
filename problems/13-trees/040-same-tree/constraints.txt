@@ -1,0 +1,2 @@
+The number of nodes in both trees is in the range [0, 1000].
+-10^4 <= Node.val <= 10^4

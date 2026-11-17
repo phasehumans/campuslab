@@ -1,0 +1,10 @@
+[
+  {
+    "input": "7 0\n4 5 6 7 0 1 2",
+    "explanation": "0 is at index 4."
+  },
+  {
+    "input": "7 3\n4 5 6 7 0 1 2",
+    "explanation": "3 is not in the array."
+  }
+]

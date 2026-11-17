@@ -1,0 +1,11 @@
+{
+  "title": "House Robber",
+  "difficulty": "EASY",
+  "tags": [
+    "dynamic-programming",
+    "tabulation"
+  ],
+  "legacy_id": "207ff6e2-e76d-4d8c-bef4-3c6782a9e242",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

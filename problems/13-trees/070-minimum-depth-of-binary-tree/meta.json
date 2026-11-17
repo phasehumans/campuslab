@@ -1,0 +1,13 @@
+{
+  "title": "Minimum Depth of Binary Tree",
+  "difficulty": "EASY",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs",
+    "bfs"
+  ],
+  "legacy_id": "d4298a23-0310-41d8-884c-2b2e07b2ce2a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

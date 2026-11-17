@@ -1,0 +1,9 @@
+[
+  {
+    "input": "1 2 3\n1 2 3",
+    "explanation": "Both trees are structurally identical with identical node values."
+  },
+  {
+    "input": "1 2\n1 null 2"
+  }
+]

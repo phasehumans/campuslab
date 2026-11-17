@@ -1,0 +1,12 @@
+{
+  "title": "Implement Trie (Prefix Tree)",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "trie",
+    "prefix-tree",
+    "strings"
+  ],
+  "legacy_id": "f60335da-ad7e-48b9-8840-dda6c90603e4",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

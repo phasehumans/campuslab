@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4\n5 4\n6 4\n6 7\n2 3",
+    "explanation": "The maximum number of envelopes you can Russian doll is 3 ([2,3] => [5,4] => [6,7])."
+  },
+  {
+    "input": "3\n1 1\n1 1\n1 1",
+    "explanation": "We cannot put any envelope inside another because they are identical size."
+  }
+]

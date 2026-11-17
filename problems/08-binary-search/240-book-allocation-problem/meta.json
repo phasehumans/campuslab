@@ -1,0 +1,10 @@
+{
+  "title": "Book Allocation Problem",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "74847e61-9830-4e3f-85f5-2bc97c7fadc9",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

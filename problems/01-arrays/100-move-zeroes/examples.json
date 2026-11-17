@@ -1,0 +1,9 @@
+[
+  {
+    "input": "5\n0 1 0 3 12",
+    "explanation": "All zeroes are moved to the end, while 1, 3, and 12 retain their order."
+  },
+  {
+    "input": "1\n0"
+  }
+]

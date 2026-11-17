@@ -1,0 +1,4 @@
+[
+  {"input": "3\nflower\nflow\nflight", "explanation": "All three strings start with 'fl', but 'flo' is not a prefix of 'flight'."},
+  {"input": "3\ndog\ndoor\ndot", "explanation": "Every string starts with 'do'; the third characters differ."}
+]

@@ -1,0 +1,10 @@
+{
+  "title": "Next Permutation",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "963a8baa-3c0d-49a2-b4b9-f960e105ce65",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

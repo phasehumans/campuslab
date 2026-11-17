@@ -1,0 +1,1 @@
+This is another binary search on answer problem. The search space is [max(nums), sum(nums)]. Write a helper function to verify if it is possible to split the array into at most K subarrays with a max sum limit.

@@ -1,0 +1,12 @@
+{
+  "title": "Binary Tree Zigzag Level Order Traversal",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "bfs"
+  ],
+  "legacy_id": "a82f3837-8789-4a89-be20-b9f10d9a00c3",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

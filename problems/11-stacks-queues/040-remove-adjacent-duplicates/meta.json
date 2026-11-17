@@ -1,0 +1,11 @@
+{
+  "title": "Remove Adjacent Duplicates",
+  "difficulty": "EASY",
+  "tags": [
+    "stack",
+    "strings"
+  ],
+  "legacy_id": "3b6be6da-7f60-496b-9e02-e01829bd2e16",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

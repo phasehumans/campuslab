@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4\n4 3 2 6",
+    "explanation": "We connect 2 and 3 (cost 5). Piles: [4, 5, 6].\nWe connect 4 and 5 (cost 9). Piles: [9, 6].\nWe connect 9 and 6 (cost 15). Piles: [15].\nTotal cost: 5 + 9 + 15 = 29."
+  },
+  {
+    "input": "1\n10",
+    "explanation": "There is only one rope, so no connections are needed. Cost is 0."
+  }
+]

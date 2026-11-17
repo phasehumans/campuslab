@@ -1,0 +1,10 @@
+{
+  "title": "Find Center of Star Graph",
+  "difficulty": "EASY",
+  "tags": [
+    "graphs"
+  ],
+  "legacy_id": "ac097fe4-3b7a-4ce8-951a-8caa9a86babf",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

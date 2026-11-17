@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 7",
+    "explanation": "5=101, 6=110, 7=111. AND = 100 = 4"
+  },
+  {
+    "input": "1 2147483647",
+    "explanation": "The range is so large that all bit positions get a 0 somewhere."
+  }
+]

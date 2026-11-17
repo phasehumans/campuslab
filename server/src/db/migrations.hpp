@@ -44,6 +44,14 @@ public:
             "CREATE INDEX IF NOT EXISTS \"Submission_contestCode_idx\" ON public.\"Submission\" USING btree (\"contestCode\")",
             "CREATE INDEX IF NOT EXISTS \"Submission_problemId_createdAt_idx\" ON public.\"Submission\" USING btree (\"problemId\", \"createdAt\")",
 
+            // DSA sheet: order, section and per-problem limits (filled by database/04_problem_sheet.sql)
+            "ALTER TABLE public.\"Problem\" ADD COLUMN IF NOT EXISTS number integer",
+            "ALTER TABLE public.\"Problem\" ADD COLUMN IF NOT EXISTS section text",
+            "ALTER TABLE public.\"Problem\" ADD COLUMN IF NOT EXISTS \"sectionOrder\" integer",
+            "ALTER TABLE public.\"Problem\" ADD COLUMN IF NOT EXISTS \"timeLimitMs\" integer DEFAULT 1000 NOT NULL",
+            "ALTER TABLE public.\"Problem\" ADD COLUMN IF NOT EXISTS \"memoryLimitMb\" integer DEFAULT 256 NOT NULL",
+            "CREATE UNIQUE INDEX IF NOT EXISTS \"Problem_number_key\" ON public.\"Problem\" (number)",
+
             // Multi-language: submissions store a language id; older rows were all C++
             "UPDATE public.\"Submission\" SET language = 'cpp' WHERE language = 'C++ (GCC 13)'"
         };

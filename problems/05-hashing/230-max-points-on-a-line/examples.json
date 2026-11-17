@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n1 1\n2 2\n3 3",
+    "explanation": "All three points lie on the line y = x."
+  },
+  {
+    "input": "6\n1 1\n3 2\n5 3\n4 1\n2 3\n1 4",
+    "explanation": "The points (1, 4), (2, 3), (3, 2), and (4, 1) lie on the line y = -x + 5. The maximum number of points on a line is 4."
+  }
+]

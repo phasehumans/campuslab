@@ -1,0 +1,13 @@
+{
+  "title": "Maximum Sum BST in Binary Tree",
+  "difficulty": "HARD",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dynamic-programming",
+    "dfs"
+  ],
+  "legacy_id": "3d8147cc-af5e-4592-b57a-19dcfa11c63c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Asteroid Collision",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "stack"
+  ],
+  "legacy_id": "d359341e-339a-46ff-a3c3-d62581faf37f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

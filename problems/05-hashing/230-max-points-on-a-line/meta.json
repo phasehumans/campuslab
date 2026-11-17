@@ -1,0 +1,12 @@
+{
+  "title": "Max Points on a Line",
+  "difficulty": "HARD",
+  "tags": [
+    "hash-map",
+    "math",
+    "geometry"
+  ],
+  "legacy_id": "80a746fa-dfe4-4fb3-989e-36ca5bbc0349",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

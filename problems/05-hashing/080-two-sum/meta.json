@@ -1,0 +1,11 @@
+{
+  "title": "Two Sum",
+  "difficulty": "EASY",
+  "tags": [
+    "hash-map",
+    "arrays"
+  ],
+  "legacy_id": "76647f4e-7217-4e21-94b9-91f3c6fd1cbb",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

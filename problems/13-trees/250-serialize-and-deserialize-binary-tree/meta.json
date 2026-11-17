@@ -1,0 +1,13 @@
+{
+  "title": "Serialize and Deserialize Binary Tree",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs",
+    "bfs"
+  ],
+  "legacy_id": "cb44fb7a-fb82-402e-a4ff-6a4eed87819a",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

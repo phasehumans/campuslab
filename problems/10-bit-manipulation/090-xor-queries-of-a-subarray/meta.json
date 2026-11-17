@@ -1,0 +1,11 @@
+{
+  "title": "XOR Queries of a Subarray",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "bit-manipulation",
+    "prefix-sum"
+  ],
+  "legacy_id": "0f972c6d-1799-4126-b091-31a45e7a713b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

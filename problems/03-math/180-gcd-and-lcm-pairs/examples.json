@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6 36",
+    "explanation": "The 4 ordered pairs are (6, 36), (12, 18), (18, 12), and (36, 6). All of these have GCD = 6 and LCM = 36."
+  },
+  {
+    "input": "12 18",
+    "explanation": "18 is not divisible by 12, so no such pairs exist."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "title": "Reverse Linked List",
+  "difficulty": "EASY",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "acf80880-0b30-4888-9797-b817a63e4f3b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

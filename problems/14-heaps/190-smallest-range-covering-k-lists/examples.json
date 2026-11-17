@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n4 4 10 15 24\n4 0 9 12 20\n4 5 18 22 30",
+    "explanation": "List 1: [4, 10, 15, 24]\nList 2: [0, 9, 12, 20]\nList 3: [5, 18, 22, 30]\nThe range [20, 24] contains 24 (from List 1), 20 (from List 2), and 22 (from List 3). No range of width less than 4 covers all three lists."
+  },
+  {
+    "input": "3\n3 1 2 3\n3 1 2 3\n3 1 2 3",
+    "explanation": "The range [1, 1] has width 0 and contains 1 from every list; among all width-0 ranges it has the smallest start."
+  }
+]

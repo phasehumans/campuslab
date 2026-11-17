@@ -1,0 +1,12 @@
+{
+  "title": "Island Count (Number of Islands)",
+  "difficulty": "EASY",
+  "tags": [
+    "graphs",
+    "dfs",
+    "bfs"
+  ],
+  "legacy_id": "efaa1e82-653e-48da-a98a-df9b92452fd2",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Chinese Remainder Theorem",
+  "difficulty": "HARD",
+  "tags": [
+    "math",
+    "number-theory",
+    "modulo"
+  ],
+  "legacy_id": "c7c04cdc-34d3-4d42-8213-da9016fb4e0f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

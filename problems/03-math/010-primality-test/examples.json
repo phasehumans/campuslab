@@ -1,0 +1,10 @@
+[
+  {
+    "input": "17",
+    "explanation": "17 is prime because it has no positive divisors other than 1 and 17."
+  },
+  {
+    "input": "4",
+    "explanation": "4 is composite because 4 = 2 * 2."
+  }
+]

@@ -1,0 +1,4 @@
+1 <= n <= 10^4
+Each token is either '+', '-', '*', '/' or a valid integer in range [-200, 200].
+The expression is guaranteed to be valid.
+No division by zero occurs, and every intermediate result fits in a signed 32-bit integer.

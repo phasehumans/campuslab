@@ -1,0 +1,5 @@
+1 <= k <= 10
+1 <= num[i] <= 10^9
+0 <= rem[i] < num[i]
+All elements in num are pairwise coprime.
+Product of all elements of num <= 10^12.

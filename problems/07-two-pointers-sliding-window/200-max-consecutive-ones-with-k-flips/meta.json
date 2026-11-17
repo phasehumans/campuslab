@@ -1,0 +1,11 @@
+{
+  "title": "Max Consecutive Ones with K Flips",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "sliding-window",
+    "arrays"
+  ],
+  "legacy_id": "c672cbe6-833e-4e99-947b-c744cfa6504f",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

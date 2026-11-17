@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5\n5 5 5 10 20",
+    "explanation": "From the first 3 customers, we collect three $5 bills in order. From the fourth, we collect a $10 bill and give back a $5 bill. From the fifth, we give a $10 bill and a $5 bill. Since everyone got change, output true."
+  },
+  {
+    "input": "5\n5 5 10 10 20",
+    "explanation": "From the first two customers, we collect two $5 bills. For the next two, we collect a $10 bill and give back a $5 bill. For the last customer, we cannot give change of $15 back because we only have two $10 bills. Since not everyone received correct change, the answer is false."
+  }
+]

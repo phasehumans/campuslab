@@ -1,0 +1,10 @@
+[
+  {
+    "input": "aba",
+    "explanation": "Already a palindrome."
+  },
+  {
+    "input": "abca",
+    "explanation": "Deleting character 'c' results in 'aba', which is a palindrome."
+  }
+]

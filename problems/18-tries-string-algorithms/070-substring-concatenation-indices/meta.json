@@ -1,0 +1,12 @@
+{
+  "title": "Substring Concatenation Indices",
+  "difficulty": "HARD",
+  "tags": [
+    "hash-map",
+    "sliding-window",
+    "frequency"
+  ],
+  "legacy_id": "ec675779-d695-48bf-98c8-8d454dc7724c",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

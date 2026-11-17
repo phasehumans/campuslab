@@ -1,0 +1,9 @@
+[
+  {
+    "input": "1 2 2 3 4 4 3",
+    "explanation": "Mirror match at every level: Left [2,3,4] and Right [2,4,3] reflect perfectly."
+  },
+  {
+    "input": "1 2 2 null 3 null 3"
+  }
+]

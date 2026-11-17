@@ -1,0 +1,9 @@
+[
+  {
+    "input": "babad",
+    "explanation": "\"bab\" starts at index 0 and has length 3. \"aba\" is also a palindrome of length 3 but starts at index 1. We choose the one that starts earlier."
+  },
+  {
+    "input": "cbbd"
+  }
+]

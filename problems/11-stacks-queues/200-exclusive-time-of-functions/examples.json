@@ -1,0 +1,10 @@
+[
+  {
+    "input": "2 4\n0:start:0\n1:start:2\n1:end:5\n0:end:6",
+    "explanation": "Function 0 starts at time 0 and runs for 2 units (times 0 and 1).\nFunction 1 starts at time 2 and runs for 4 units (times 2, 3, 4, 5).\nFunction 0 resumes at time 6 and runs for 1 unit (time 6).\nSo function 0 has exclusive time 2 + 1 = 3, and function 1 has exclusive time 4."
+  },
+  {
+    "input": "1 2\n0:start:0\n0:end:0",
+    "explanation": "Function 0 starts at 0 and ends at 0, consuming 1 unit of time."
+  }
+]

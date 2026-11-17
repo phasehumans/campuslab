@@ -1,0 +1,11 @@
+{
+  "title": "Two Sum II - Sorted Array",
+  "difficulty": "EASY",
+  "tags": [
+    "binary-search",
+    "two-pointers"
+  ],
+  "legacy_id": "d25f452d-1b0e-422a-bd8a-4b65ddaca119",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

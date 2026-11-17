@@ -1,0 +1,9 @@
+[
+  {
+    "input": "6\ninsert apple\nsearch apple\nsearch app\nstartsWith app\ninsert app\nsearch app",
+    "explanation": "Trie holds 'apple'. Searching 'apple' is true. Searching 'app' is false. StartsWith 'app' is true because 'apple' begins with 'app'. After inserting 'app', searching 'app' becomes true."
+  },
+  {
+    "input": "4\ninsert hello\nstartsWith hell\nsearch helloa\nsearch hello"
+  }
+]

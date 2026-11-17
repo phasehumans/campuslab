@@ -1,0 +1,2 @@
+1 <= n <= 10^5
+bills[i] is either 5, 10, or 20

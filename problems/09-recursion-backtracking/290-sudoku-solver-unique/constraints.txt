@@ -1,0 +1,4 @@
+The board has 9 rows of 9 tokens each
+Every token is a digit '1'-'9' or '.'
+The given digits do not break any Sudoku rule
+The puzzle has exactly one solution

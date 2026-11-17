@@ -1,0 +1,3 @@
+1 <= |jewels|, |stones| <= 10^5
+All characters in jewels are unique.
+Both strings consist of English letters (case-sensitive).

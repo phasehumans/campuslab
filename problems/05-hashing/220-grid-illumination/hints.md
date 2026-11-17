@@ -1,0 +1,1 @@
+Since grid size is up to 10^9, we cannot store the grid in a 2D array. Use Hash Maps to count the number of active lamps in each row, column, and diagonals. Also use a Hash Set to track active lamp coordinates to turn them off in O(1) time.

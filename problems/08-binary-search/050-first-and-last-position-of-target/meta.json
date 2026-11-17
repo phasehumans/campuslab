@@ -1,0 +1,10 @@
+{
+  "title": "First and Last Position of Target",
+  "difficulty": "EASY",
+  "tags": [
+    "binary-search"
+  ],
+  "legacy_id": "d7b2fefc-98cf-41c4-9517-aea961cc2286",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

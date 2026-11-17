@@ -1,0 +1,10 @@
+{
+  "title": "Sum of Digits Recursive",
+  "difficulty": "EASY",
+  "tags": [
+    "recursion"
+  ],
+  "legacy_id": "791c061f-af1a-4b06-b62c-90e1bd658c95",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Longest Common Prefix (Trie)",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "trie",
+    "prefix-tree",
+    "strings"
+  ],
+  "legacy_id": "0cf294bd-cdff-4977-ae0f-2e49140cdfe7",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

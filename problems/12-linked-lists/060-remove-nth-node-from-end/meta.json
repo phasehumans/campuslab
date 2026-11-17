@@ -1,0 +1,11 @@
+{
+  "title": "Remove Nth Node from End",
+  "difficulty": "EASY",
+  "tags": [
+    "linked-list",
+    "two-pointers"
+  ],
+  "legacy_id": "4de24bae-70bd-412b-8537-fa3b4da4b638",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

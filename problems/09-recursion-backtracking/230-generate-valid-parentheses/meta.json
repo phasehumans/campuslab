@@ -1,0 +1,11 @@
+{
+  "title": "Generate Valid Parentheses",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "f0d3a953-0d62-43e3-abb2-1c36fa98a5ef",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "13",
+    "explanation": "Binary of 13 is ...1101. Reversed 32-bit: 10110000...0 = 2952790016"
+  },
+  {
+    "input": "0",
+    "explanation": "All bits are 0, reversed is still 0."
+  }
+]

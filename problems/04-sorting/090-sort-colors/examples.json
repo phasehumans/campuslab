@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6\n2 0 2 1 1 0",
+    "explanation": "The 0s, 1s, and 2s are grouped together."
+  },
+  {
+    "input": "3\n2 0 1",
+    "explanation": "Output is sorted."
+  }
+]

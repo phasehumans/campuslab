@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3\n5 10 -5",
+    "explanation": "10 and -5 collide, -5 explodes. 5 and 10 never collide."
+  },
+  {
+    "input": "4\n10 2 -5 7",
+    "explanation": "-5 meets 2 first and destroys it, then meets 10 and is destroyed. 7 moves right, away from everything, so 10 and 7 remain."
+  }
+]

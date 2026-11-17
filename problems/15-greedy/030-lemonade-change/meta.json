@@ -1,0 +1,10 @@
+{
+  "title": "Lemonade Change",
+  "difficulty": "EASY",
+  "tags": [
+    "greedy"
+  ],
+  "legacy_id": "680c6283-81b4-4189-9a53-05961a7543ea",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

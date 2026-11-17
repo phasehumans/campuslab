@@ -1,0 +1,12 @@
+{
+  "title": "Max Score After Remove Substring",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "two-pointers",
+    "greedy",
+    "stack"
+  ],
+  "legacy_id": "8e3b3c27-d844-4135-81b1-41f6478a5ac0",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

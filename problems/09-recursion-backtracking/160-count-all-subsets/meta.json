@@ -1,0 +1,11 @@
+{
+  "title": "Count All Subsets",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "47728204-dbdb-48c0-ba0f-b9ab5d7f694b",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "input": "5\n1 2 3 4 5\n4 0 -1 1 2",
+    "explanation": "Original list is successfully serialized, deserialized, and matched."
+  },
+  {
+    "input": "3\n10 20 30\n-1 -1 -1"
+  }
+]

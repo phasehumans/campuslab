@@ -1,0 +1,12 @@
+{
+  "title": "Longest Duplicate Substring",
+  "difficulty": "HARD",
+  "tags": [
+    "hash-map",
+    "binary-search",
+    "rolling-hash"
+  ],
+  "legacy_id": "a13cc299-7407-48b5-acbf-7f00e73ec6bf",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

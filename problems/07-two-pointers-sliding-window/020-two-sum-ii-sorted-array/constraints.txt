@@ -1,0 +1,4 @@
+2 <= N <= 10^5
+-10^9 <= numbers[i] <= 10^9
+-10^9 <= target <= 10^9
+The tests are generated such that there is exactly one solution.

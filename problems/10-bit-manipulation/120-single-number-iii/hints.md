@@ -1,0 +1,1 @@
+If you XOR all elements, you get `xor_sum = x ^ y`, where x and y are the two unique elements. Since x and y are distinct, `xor_sum` must have at least one set bit. Use the position of this set bit to partition the array.

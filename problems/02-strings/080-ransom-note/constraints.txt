@@ -1,0 +1,2 @@
+1 <= |ransomNote|, |magazine| <= 10^5
+Both strings consist of lowercase English letters.

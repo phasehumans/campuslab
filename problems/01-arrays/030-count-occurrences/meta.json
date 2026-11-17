@@ -1,0 +1,10 @@
+{
+  "title": "Count Occurrences",
+  "difficulty": "EASY",
+  "tags": [
+    "arrays"
+  ],
+  "legacy_id": "45d482c9-3bf2-43da-b4c7-5681ff58e570",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "input": "6 2\n1 1 1 2 2 3",
+    "explanation": "1 appears 3 times, 2 appears 2 times, 3 appears 1 time. The 2 most frequent are [1, 2]."
+  },
+  {
+    "input": "1 1\n1"
+  }
+]

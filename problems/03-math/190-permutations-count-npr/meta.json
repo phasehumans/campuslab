@@ -1,0 +1,12 @@
+{
+  "title": "Permutations Count (nPr)",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "math",
+    "number-theory",
+    "modulo"
+  ],
+  "legacy_id": "09b4182f-c9d1-42fc-abc5-53e2e84fd190",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

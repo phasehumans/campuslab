@@ -1,0 +1,11 @@
+{
+  "title": "Word Search Exists",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "backtracking",
+    "recursion"
+  ],
+  "legacy_id": "656d14b1-e3e0-4eeb-a920-1e0a3c0ffbcc",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

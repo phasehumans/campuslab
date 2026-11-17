@@ -1,0 +1,1 @@
+First, sort the intervals based on their start times. Then, iterate through the sorted intervals. If the current interval overlaps with the last merged interval, merge them by updating the end time. Otherwise, add the current interval as a new merged interval.

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "12345",
+    "explanation": "1 + 2 + 3 + 4 + 5 = 15."
+  },
+  {
+    "input": "0",
+    "explanation": "The sum of the digits of 0 is 0."
+  }
+]

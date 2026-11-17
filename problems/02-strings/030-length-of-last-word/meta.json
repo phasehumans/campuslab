@@ -1,0 +1,10 @@
+{
+  "title": "Length of Last Word",
+  "difficulty": "EASY",
+  "tags": [
+    "strings"
+  ],
+  "legacy_id": "300245fd-0eab-4339-9b08-7b9e70c71087",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

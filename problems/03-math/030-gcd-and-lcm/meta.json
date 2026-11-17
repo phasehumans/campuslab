@@ -1,0 +1,11 @@
+{
+  "title": "GCD and LCM",
+  "difficulty": "EASY",
+  "tags": [
+    "math",
+    "number-theory"
+  ],
+  "legacy_id": "db66efb3-7d41-46d3-9ff4-3428a9bdb3cc",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

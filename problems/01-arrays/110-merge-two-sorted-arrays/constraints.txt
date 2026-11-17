@@ -1,0 +1,3 @@
+1 <= n, m <= 5 * 10^4
+-10^9 <= arr1[i], arr2[j] <= 10^9
+Both arrays are sorted in non-decreasing order

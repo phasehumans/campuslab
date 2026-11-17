@@ -1,0 +1,10 @@
+{
+  "title": "Gas Station",
+  "difficulty": "MEDIUM",
+  "tags": [
+    "greedy"
+  ],
+  "legacy_id": "d0244579-7065-44c1-8e56-bdee7c24cedd",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Binary Tree Maximum Path Sum",
+  "difficulty": "HARD",
+  "tags": [
+    "tree",
+    "binary-tree",
+    "dfs"
+  ],
+  "legacy_id": "e050c021-834b-4fe3-82bb-6f72287f67db",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 4 8 11 null 13 4 7 2 null null null 1\n22",
+    "explanation": "The root-to-leaf path 5 -> 4 -> 11 -> 2 sums to 22."
+  },
+  {
+    "input": "1 2 3\n5",
+    "explanation": "The root-to-leaf paths are 1 -> 2 (sum 3) and 1 -> 3 (sum 4). None of them sum to 5."
+  }
+]

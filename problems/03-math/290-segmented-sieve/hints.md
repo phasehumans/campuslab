@@ -1,0 +1,1 @@
+A standard sieve up to 10^12 is impossible. However, since the range size R - L is at most 10^6, you can precompute primes up to sqrt(R) <= 10^6 using a standard sieve. Then, use these precomputed primes to mark composite numbers in the range [L, R] using a segmented array.

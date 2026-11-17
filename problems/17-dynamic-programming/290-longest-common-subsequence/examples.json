@@ -1,0 +1,10 @@
+[
+  {
+    "input": "abcde\nace",
+    "explanation": "The longest common subsequence is \"ace\" and its length is 3."
+  },
+  {
+    "input": "abc\ndef",
+    "explanation": "There is no common subsequence, so the result is 0."
+  }
+]

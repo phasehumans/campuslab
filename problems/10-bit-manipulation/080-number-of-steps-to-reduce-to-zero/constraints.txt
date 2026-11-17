@@ -1,0 +1,3 @@
+1 <= |s| <= 10^6
+s consists only of characters '0' and '1'
+s may have leading zeros

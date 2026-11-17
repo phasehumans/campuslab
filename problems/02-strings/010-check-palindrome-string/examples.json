@@ -1,0 +1,10 @@
+[
+  {
+    "input": "racecar",
+    "explanation": "'racecar' reads the same forward and backward."
+  },
+  {
+    "input": "hello",
+    "explanation": "'hello' reversed is 'olleh', which is different."
+  }
+]

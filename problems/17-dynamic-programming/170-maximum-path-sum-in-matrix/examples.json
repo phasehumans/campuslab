@@ -1,0 +1,10 @@
+[
+  {
+    "input": "3 3\n1 2 10\n100 3 2\n1 1 20",
+    "explanation": "Path: 2 (row 0, col 1) -> 100 (row 1, col 0) -> 1 (row 2, col 0). Sum = 2 + 100 + 1 = 103."
+  },
+  {
+    "input": "2 2\n5 6\n-10 10",
+    "explanation": "Path: 6 -> 10. Sum = 16."
+  }
+]

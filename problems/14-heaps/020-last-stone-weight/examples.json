@@ -1,0 +1,10 @@
+[
+  {
+    "input": "6\n2 7 4 1 8 1",
+    "explanation": "We combine 7 and 8 to get 1, array becomes [2,4,1,1,1]. Combine 2 and 4 to get 2, array becomes [2,1,1,1]. Combine 2 and 1 to get 1, array becomes [1,1,1]. Combine 1 and 1 to get 0, array becomes [1]. The last stone has weight 1."
+  },
+  {
+    "input": "1\n5",
+    "explanation": "There is only one stone, so we return its weight immediately."
+  }
+]

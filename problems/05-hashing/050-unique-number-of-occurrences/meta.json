@@ -1,0 +1,12 @@
+{
+  "title": "Unique Number of Occurrences",
+  "difficulty": "EASY",
+  "tags": [
+    "hash-map",
+    "hash-set",
+    "counting"
+  ],
+  "legacy_id": "8e158a5d-c08f-44ae-ab8b-8b1a99d14bf4",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

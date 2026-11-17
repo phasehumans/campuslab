@@ -1,0 +1,5 @@
+1 <= s.length <= 10^5
+s contains digits, '+', '-', '(', ')' and ' '.
+s is a valid expression.
+Every number, every running partial result and the final result fit in a signed 32-bit integer.
+A unary minus appears only at the very start of the expression or right after '('. '+' is never unary.

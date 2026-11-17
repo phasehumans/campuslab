@@ -1,0 +1,9 @@
+[
+  {
+    "input": "5 2\n1 2 3 4 5",
+    "explanation": "Rotate 2 steps: 4->5->1->2->3."
+  },
+  {
+    "input": "3 4\n0 1 2"
+  }
+]

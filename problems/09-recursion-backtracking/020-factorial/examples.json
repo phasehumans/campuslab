@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5",
+    "explanation": "5! = 5 * 4 * 3 * 2 * 1 = 120."
+  },
+  {
+    "input": "0",
+    "explanation": "0! is defined to be 1."
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "title": "Count Sort Frequencies",
+  "difficulty": "EASY",
+  "tags": [
+    "sorting"
+  ],
+  "legacy_id": "a25f3fb0-baf0-41b6-97ec-037db3aeb168",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

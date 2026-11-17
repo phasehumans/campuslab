@@ -1,0 +1,9 @@
+[
+  {
+    "input": "1 2 null null 3 4 null null 5 null null",
+    "explanation": "Reconstructs root 1, left child 2 (no children), right child 3 (left child 4, right child 5). Prints BFS level order."
+  },
+  {
+    "input": "null"
+  }
+]

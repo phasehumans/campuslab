@@ -1,0 +1,1 @@
+Use Euler's product formula: phi(n) = n * product_{p | n} (1 - 1/p), where the product is over all distinct prime factors p of n. You can find all prime factors of n in O(sqrt(n)) time by trial division.

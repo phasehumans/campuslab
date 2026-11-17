@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4 5\n10100\n10111\n11111\n10010",
+    "explanation": "The maximal rectangle is from row 1 to 2, col 2 to 4, containing only 1s."
+  },
+  {
+    "input": "1 1\n0",
+    "explanation": "The matrix only contains a single 0, so the maximum area is 0."
+  }
+]

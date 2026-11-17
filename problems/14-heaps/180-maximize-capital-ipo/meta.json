@@ -1,0 +1,13 @@
+{
+  "title": "Maximize Capital (IPO)",
+  "difficulty": "HARD",
+  "tags": [
+    "heap",
+    "priority-queue",
+    "greedy",
+    "sorting"
+  ],
+  "legacy_id": "3d5d50b4-11b7-44cc-a5fe-25cfd67f1841",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

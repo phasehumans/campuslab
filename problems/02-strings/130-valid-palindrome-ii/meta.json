@@ -1,0 +1,10 @@
+{
+  "title": "Valid Palindrome II",
+  "difficulty": "EASY",
+  "tags": [
+    "strings"
+  ],
+  "legacy_id": "9479419d-3e9b-4dad-ada9-1906c1de1f66",
+  "time_limit_ms": 1000,
+  "memory_mb": 256
+}

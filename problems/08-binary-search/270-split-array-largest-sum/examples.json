@@ -1,0 +1,10 @@
+[
+  {
+    "input": "5 2\n7 2 5 10 8",
+    "explanation": "Split into [7, 2, 5] and [10, 8]. The largest sum of the subarrays is 18."
+  },
+  {
+    "input": "5 3\n1 2 3 4 5",
+    "explanation": "Split into [1, 2, 3], [4], and [5]. The largest sum of the subarrays is 6."
+  }
+]

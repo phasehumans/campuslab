@@ -1,0 +1,10 @@
+[
+  {
+    "input": "4",
+    "explanation": "There are 2 distinct configurations to place 4 queens safely on a 4x4 chessboard."
+  },
+  {
+    "input": "1",
+    "explanation": "1 queen on a 1x1 board has exactly 1 valid solution."
+  }
+]
