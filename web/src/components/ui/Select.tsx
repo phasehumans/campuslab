@@ -23,7 +23,14 @@ interface SelectProps {
  * Minimal dropdown matching the app's mono style. Keyboard: Enter/Space/Arrow keys
  * to open and move, Enter to choose, Escape to close, type a letter to jump.
  */
-export function Select({ value, options, onChange, label, className, compact = false }: SelectProps) {
+export function Select({
+    value,
+    options,
+    onChange,
+    label,
+    className,
+    compact = false,
+}: SelectProps) {
     const [open, setOpen] = useState(false)
     const [activeIndex, setActiveIndex] = useState(0)
     const rootRef = useRef<HTMLDivElement>(null)

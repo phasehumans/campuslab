@@ -295,7 +295,7 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                         value={roomCode}
                         onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                         maxLength={8}
-                        className="w-full px-3 py-2 border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#252423] rounded-[3px] font-mono text-xs text-[#090a0f] dark:text-[#e8e8e6] placeholder:text-[#94a3b8] dark:placeholder:text-[#a09f9d]/60 focus:outline-none focus:border-[#87b2f4] uppercase tracking-wider"
+                        className="w-full px-3 py-2 border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#252423] rounded-[3px] font-mono text-base sm:text-xs text-[#090a0f] dark:text-[#e8e8e6] placeholder:text-[#94a3b8] dark:placeholder:text-[#a09f9d]/60 focus:outline-none focus:border-[#87b2f4] uppercase tracking-wider"
                     />
                     <button
                         type="submit"

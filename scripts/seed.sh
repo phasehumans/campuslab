@@ -38,13 +38,13 @@ fi
 echo "==> [1/4] Applying schema from database/01_schema.sql..."
 $DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < "$SCRIPT_DIR/database/01_schema.sql"
 
-echo "==> [2/4] Seeding 250 problems and testcases from database/02_seed.sql..."
+echo "==> [2/4] Seeding users from database/02_seed.sql..."
 $DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < "$SCRIPT_DIR/database/02_seed.sql"
 
 echo "==> [3/4] Applying POTD & duel migration from database/03_potd_duels.sql..."
 $DOCKER_CMD exec -i "$POSTGRES_CONTAINER" psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" < "$SCRIPT_DIR/database/03_potd_duels.sql"
 
-echo "==> [4/4] Applying the DSA problem sheet (database/04_sheet_*)..."
+echo "==> [4/4] Loading the 250-problem DSA sheet (database/04_sheet_*)..."
 for f in "$SCRIPT_DIR"/database/04_sheet_*; do
     [ -e "$f" ] || continue
     case "$f" in

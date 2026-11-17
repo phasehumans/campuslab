@@ -9,7 +9,7 @@ export function SolveScreenSkeleton({ backPath = '/' }: SolveScreenSkeletonProps
     const navigate = useNavigate()
 
     return (
-        <div className="solve-screen dark flex flex-col h-screen bg-[#141414] text-[#e8e8e6] font-sans overflow-hidden select-none">
+        <div className="solve-screen dark flex flex-col h-dvh bg-[#141414] text-[#e8e8e6] font-sans overflow-hidden select-none">
             {/* Top Navbar Skeleton (Exact match with SolveScreenNavbar) */}
             <header className="flex items-center justify-between h-12 px-2.5 sm:px-3 bg-[#141414] text-[#e8e8e6] font-mono text-xs border-b border-[#2e2e2e] relative z-30 shrink-0">
                 {/* Left: Back button & Title placeholder */}

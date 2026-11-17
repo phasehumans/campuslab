@@ -29,7 +29,6 @@ const RUN_SHORTCUT_HINT =
         ? 'Run code (⌘ + Enter)'
         : 'Run code (Ctrl + Enter)'
 
-
 // Code is kept per language (the C++ key matches what older versions saved)
 const codeStorageKey = (language: EditorLanguage) => `campuslab_playground_code_${language}`
 
@@ -67,6 +66,8 @@ export function Playground() {
     const [errorMsg, setErrorMsg] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
     const [isFullscreen, setIsFullscreen] = useState(false)
+    // Below lg the editor and input/output panels are shown one at a time
+    const [mobileTab, setMobileTab] = useState<'code' | 'io'>('code')
     const [, startTransition] = useTransition()
 
     // Autosave code to localStorage
@@ -91,6 +92,8 @@ export function Playground() {
         if (isRunning) return
         setIsRunning(true)
         setErrorMsg(null)
+        // On phones the output lives on its own tab, so jump there to show the run
+        setMobileTab('io')
 
         try {
             const res = await runPlaygroundCode({
@@ -139,11 +142,7 @@ export function Playground() {
     }, [])
 
     const handleReset = () => {
-        if (
-            window.confirm(
-                'Clear the editor? Your current code will be removed.'
-            )
-        ) {
+        if (window.confirm('Clear the editor? Your current code will be removed.')) {
             setCode('')
             setResult(null)
             setErrorMsg(null)
@@ -168,7 +167,7 @@ export function Playground() {
 
     return (
         <DarkSurface>
-            <div className="solve-screen dark flex flex-col h-screen w-screen bg-[#141414] text-[#e8e8e6] font-sans overflow-hidden select-none relative">
+            <div className="solve-screen dark flex flex-col h-dvh w-full bg-[#141414] text-[#e8e8e6] font-sans overflow-hidden select-none relative">
                 {/* Top Navbar: matches SolveScreenNavbar in dark theme always */}
                 <nav className="flex items-center justify-between h-12 px-2.5 sm:px-4 bg-[#141414] text-[#e8e8e6] font-mono text-xs border-b border-[#333333] shrink-0 select-none">
                     {/* Left: Back Arrow + Logo */}
@@ -291,11 +290,48 @@ export function Playground() {
                     </div>
                 </nav>
 
+                {/* Mobile View Switcher (visible below lg) */}
+                <div className="flex lg:hidden items-center px-2.5 py-1.5 bg-[#191919] border-b border-[#333333] font-mono text-xs shrink-0">
+                    <div className="flex items-center gap-1 bg-[#141414] p-0.5 rounded-[3px] border border-[#333333] w-full">
+                        <button
+                            type="button"
+                            onClick={() => setMobileTab('code')}
+                            className={cn(
+                                'flex-1 py-1 px-2.5 rounded-[2px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer',
+                                mobileTab === 'code'
+                                    ? 'bg-[#252423] text-white font-medium border border-[#3f3f46]'
+                                    : 'text-[#a09f9d] hover:text-[#e8e8e6]'
+                            )}
+                        >
+                            <span className="font-semibold text-emerald-400">&lt;/&gt;</span>
+                            <span>Code</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setMobileTab('io')}
+                            className={cn(
+                                'flex-1 py-1 px-2.5 rounded-[2px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer',
+                                mobileTab === 'io'
+                                    ? 'bg-[#252423] text-white font-medium border border-[#3f3f46]'
+                                    : 'text-[#a09f9d] hover:text-[#e8e8e6]'
+                            )}
+                        >
+                            <span>Input & Output</span>
+                            {result && <span className="h-1.5 w-1.5 rounded-full bg-[#87b2f4]" />}
+                        </button>
+                    </div>
+                </div>
+
                 {/* Main Side-by-Side Area */}
                 <div className="flex-1 min-h-0 p-2 sm:p-2.5 overflow-hidden">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 h-full">
                         {/* Left Panel: Code Editor */}
-                        <div className="flex flex-col border border-[#333333] rounded-[3px] bg-[#191919] overflow-hidden h-full shadow-xs">
+                        <div
+                            className={cn(
+                                'flex-col border border-[#333333] rounded-[3px] bg-[#191919] overflow-hidden h-full shadow-xs lg:flex',
+                                mobileTab === 'code' ? 'flex' : 'hidden'
+                            )}
+                        >
                             <EditorHeader language={language} onLanguageChange={changeLanguage} />
                             <div className="flex-1 min-h-0 flex flex-col bg-[#1E1E1E]">
                                 <CodeEditor code={code} setCode={setCode} language={language} />
@@ -303,7 +339,12 @@ export function Playground() {
                         </div>
 
                         {/* Right Panel: Side-by-Side Input & Output */}
-                        <div className="flex flex-col gap-2.5 h-full min-h-0">
+                        <div
+                            className={cn(
+                                'flex-col gap-2.5 h-full min-h-0 lg:flex',
+                                mobileTab === 'io' ? 'flex' : 'hidden'
+                            )}
+                        >
                             {/* Custom Input Panel */}
                             <div className="flex flex-col border border-[#333333] rounded-[3px] bg-[#191919] overflow-hidden h-40 shrink-0 shadow-xs">
                                 <div className="flex items-center justify-between px-3.5 py-2 bg-[#191919] border-b border-[#333333] font-mono text-xs text-[#a09f9d] shrink-0">
@@ -324,7 +365,7 @@ export function Playground() {
                                     value={stdin}
                                     onChange={(e) => setStdin(e.target.value)}
                                     placeholder="Enter custom input to pass to standard input (cin / scanf)..."
-                                    className="flex-1 w-full p-3 font-mono text-xs bg-[#141414] text-[#e8e8e6] placeholder-[#555555] outline-none resize-none border-none leading-relaxed select-text"
+                                    className="flex-1 w-full p-3 font-mono text-base sm:text-xs bg-[#141414] text-[#e8e8e6] placeholder-[#555555] outline-none resize-none border-none leading-relaxed select-text"
                                     spellCheck={false}
                                 />
                             </div>

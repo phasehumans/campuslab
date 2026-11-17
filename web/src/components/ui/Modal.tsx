@@ -117,7 +117,7 @@ export function Modal({
                 aria-labelledby={title ? titleId : undefined}
                 tabIndex={-1}
                 className={cn(
-                    'relative w-full rounded-[6px] border border-[#e2e8f0] dark:border-[#2e2e2e] bg-white dark:bg-[#1e1e1e] text-[#090a0f] dark:text-[#e8e8e6] p-5 sm:p-6 space-y-4 outline-none',
+                    'relative w-full max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-[6px] border border-[#e2e8f0] dark:border-[#2e2e2e] bg-white dark:bg-[#1e1e1e] text-[#090a0f] dark:text-[#e8e8e6] p-5 sm:p-6 space-y-4 outline-none',
                     'shadow-[0_12px_40px_rgba(15,23,42,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.55)]',
                     size === 'sm' ? 'max-w-[400px]' : 'max-w-[460px]'
                 )}

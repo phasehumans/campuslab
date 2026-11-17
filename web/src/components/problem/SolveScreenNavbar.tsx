@@ -204,7 +204,7 @@ export function SolveScreenNavbar({
                     {contestInfo ? (
                         <div className="flex items-center gap-1.5 shrink-0">
                             <div className="flex items-center px-2 py-1 rounded-[3px] border border-[#333333] bg-[#222120] font-mono text-[11px] shrink-0 select-none">
-                                <span className="text-[#a09f9d] mr-1 text-[10px] uppercase tracking-wider">
+                                <span className="hidden sm:inline text-[#a09f9d] mr-1 text-[10px] uppercase tracking-wider">
                                     ROOM
                                 </span>
                                 <span className="font-semibold tracking-wider text-[#e8e8e6]">
@@ -222,10 +222,13 @@ export function SolveScreenNavbar({
                                     >
                                         <Users className="h-3 w-3 text-[#94a3b8] shrink-0" />
                                         <span>
-                                            {contestInfo.participantCount}{' '}
-                                            {contestInfo.participantCount === 1
-                                                ? 'coder'
-                                                : 'coders'}
+                                            {contestInfo.participantCount}
+                                            <span className="hidden sm:inline">
+                                                {' '}
+                                                {contestInfo.participantCount === 1
+                                                    ? 'coder'
+                                                    : 'coders'}
+                                            </span>
                                         </span>
                                         <ChevronDown
                                             className={cn(
@@ -316,6 +319,25 @@ export function SolveScreenNavbar({
                         )
                     )}
 
+                    {/* Mobile winner badge: compact version of the desktop "Won Match" chip */}
+                    {contestInfo?.hasWinner && (
+                        <div
+                            className={cn(
+                                'flex md:hidden items-center px-1.5 py-1 rounded-[3px] text-[10px] font-mono border shrink-0 select-none',
+                                contestInfo.isWinner
+                                    ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400 font-semibold'
+                                    : 'bg-[#251e20] border-rose-500/25 text-rose-300 font-medium'
+                            )}
+                            title={
+                                contestInfo.isWinner
+                                    ? 'You solved it first'
+                                    : `${contestInfo.winnerName || 'Another player'} solved it first`
+                            }
+                        >
+                            {contestInfo.isWinner ? 'Won' : 'Lost'}
+                        </div>
+                    )}
+
                     {/* Mobile Timer: Displays neatly on the left beside Home on < md screens */}
                     {contestInfo ? (
                         <div
@@ -375,7 +397,16 @@ export function SolveScreenNavbar({
                             ) : (
                                 <Play className="h-3.5 w-3.5 text-emerald-500 fill-emerald-500" />
                             )}
-                            <span>{isRunning ? 'Running...' : 'Run'}</span>
+                            <span>
+                                {isRunning ? (
+                                    <>
+                                        <span className="sm:hidden">Run</span>
+                                        <span className="hidden sm:inline">Running...</span>
+                                    </>
+                                ) : (
+                                    'Run'
+                                )}
+                            </span>
                         </button>
                     </Tooltip>
 
@@ -394,7 +425,16 @@ export function SolveScreenNavbar({
                             ) : (
                                 <CloudUpload className="h-3.5 w-3.5" />
                             )}
-                            <span>{isSubmitting ? 'Submitting...' : 'Submit'}</span>
+                            <span>
+                                {isSubmitting ? (
+                                    <>
+                                        <span className="sm:hidden">Submit</span>
+                                        <span className="hidden sm:inline">Submitting...</span>
+                                    </>
+                                ) : (
+                                    'Submit'
+                                )}
+                            </span>
                         </button>
                     </Tooltip>
                 </div>

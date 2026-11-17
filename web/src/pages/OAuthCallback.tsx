@@ -63,7 +63,7 @@ export function OAuthCallback({
     }, [searchParams, provider, customRedirectUri, loginWithOAuth, navigate])
 
     return (
-        <div className="flex h-screen w-full items-center justify-center bg-white dark:bg-[#141414] font-mono text-xs text-[#090a0f] dark:text-[#e8e8e6]">
+        <div className="flex h-dvh w-full items-center justify-center bg-white dark:bg-[#141414] font-mono text-xs text-[#090a0f] dark:text-[#e8e8e6]">
             {error ? (
                 <div className="flex flex-col items-center gap-3 p-6 max-w-sm border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/20 rounded-[4px] text-center">
                     <AlertCircle className="h-6 w-6 text-red-600 dark:text-red-400" />

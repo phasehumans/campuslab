@@ -1,4 +1,11 @@
-import { useEffect, useState, useRef, useCallback, type MouseEvent as ReactMouseEvent } from 'react'
+import {
+    useEffect,
+    useState,
+    useRef,
+    useCallback,
+    type MouseEvent as ReactMouseEvent,
+    type PointerEvent as ReactPointerEvent,
+} from 'react'
 import confetti from 'canvas-confetti'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
@@ -432,8 +439,7 @@ export function SolveScreen() {
         setLanguageState(next)
         rememberLanguage(next)
     }
-    const [codeByLanguage, setCodeByLanguage] =
-        useState<Record<EditorLanguage, string>>(EMPTY_CODE)
+    const [codeByLanguage, setCodeByLanguage] = useState<Record<EditorLanguage, string>>(EMPTY_CODE)
     const [activeLeftTab, setActiveLeftTab] = useState<'description' | 'submissions'>('description')
     const [bottomPanelOpen, setBottomPanelOpen] = useState(false)
     const [activeBottomTab, setActiveBottomTab] = useState<'testcase' | 'testresult'>('testcase')
@@ -490,7 +496,8 @@ export function SolveScreen() {
         }
     }, [isDraggingH])
 
-    const onStartDragV = useCallback((e: ReactMouseEvent) => {
+    // Pointer events so the editor/test-panel divider also drags with touch on phones
+    const onStartDragV = useCallback((e: ReactPointerEvent) => {
         e.preventDefault()
         setIsDraggingV(true)
     }, [])
@@ -498,22 +505,24 @@ export function SolveScreen() {
     useEffect(() => {
         if (!isDraggingV) return
 
-        const handleMouseMove = (e: MouseEvent) => {
+        const handlePointerMove = (e: PointerEvent) => {
             if (!verticalContainerRef.current) return
             const rect = verticalContainerRef.current.getBoundingClientRect()
             const newHeight = ((rect.bottom - e.clientY) / rect.height) * 100
             setBottomHeight(Math.min(75, Math.max(20, newHeight)))
         }
 
-        const handleMouseUp = () => {
+        const handlePointerUp = () => {
             setIsDraggingV(false)
         }
 
-        window.addEventListener('mousemove', handleMouseMove)
-        window.addEventListener('mouseup', handleMouseUp)
+        window.addEventListener('pointermove', handlePointerMove)
+        window.addEventListener('pointerup', handlePointerUp)
+        window.addEventListener('pointercancel', handlePointerUp)
         return () => {
-            window.removeEventListener('mousemove', handleMouseMove)
-            window.removeEventListener('mouseup', handleMouseUp)
+            window.removeEventListener('pointermove', handlePointerMove)
+            window.removeEventListener('pointerup', handlePointerUp)
+            window.removeEventListener('pointercancel', handlePointerUp)
         }
     }, [isDraggingV])
 
@@ -671,7 +680,7 @@ export function SolveScreen() {
 
     if (problemQuery.isError || !problemQuery.data) {
         return (
-            <div className="flex h-screen flex-col items-center justify-center gap-4 bg-[#141414] px-6 text-center font-mono text-xs">
+            <div className="flex h-dvh flex-col items-center justify-center gap-4 bg-[#141414] px-6 text-center font-mono text-xs">
                 <p className="text-rose-300">
                     {getApiErrorMessage(problemQuery.error, 'Unable to load this problem')}
                 </p>
@@ -692,7 +701,7 @@ export function SolveScreen() {
 
     return (
         <DarkSurface>
-            <div className="solve-screen dark flex flex-col h-screen bg-[#141414] text-[#e8e8e6] font-sans overflow-hidden relative">
+            <div className="solve-screen dark flex flex-col h-dvh bg-[#141414] text-[#e8e8e6] font-sans overflow-hidden relative">
                 {/* Transparent dragging overlay to ensure cursor tracking */}
                 {(isDraggingH || isDraggingV) && (
                     <div
@@ -979,8 +988,8 @@ export function SolveScreen() {
                                     <>
                                         {/* Vertical Divider */}
                                         <div
-                                            onMouseDown={onStartDragV}
-                                            className="h-1.5 hover:bg-[#87b2f4]/30 active:bg-[#87b2f4]/50 transition-colors cursor-row-resize flex items-center justify-center group select-none shrink-0"
+                                            onPointerDown={onStartDragV}
+                                            className="h-3 md:h-1.5 touch-none hover:bg-[#87b2f4]/30 active:bg-[#87b2f4]/50 transition-colors cursor-row-resize flex items-center justify-center group select-none shrink-0"
                                             title="Drag to resize"
                                         >
                                             <div className="w-6 h-0.5 bg-[#333333] rounded-full group-hover:bg-[#87b2f4]" />

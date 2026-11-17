@@ -34,7 +34,7 @@ function HomeRoute() {
 }
 
 const Loading = () => (
-    <div className="flex h-screen w-full items-center justify-center bg-white dark:bg-[#141414] font-mono text-xs text-[#94a3b8] dark:text-[#a09f9d]">
+    <div className="flex h-dvh w-full items-center justify-center bg-white dark:bg-[#141414] font-mono text-xs text-[#94a3b8] dark:text-[#a09f9d]">
         <div className="flex items-center gap-2">
             <div className="animate-spin rounded-full h-4 w-4 border-2 border-[#e2e8f0] dark:border-[#333333] border-t-[#87b2f4]"></div>
             <span>loading campuslab...</span>

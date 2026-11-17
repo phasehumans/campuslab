@@ -182,7 +182,7 @@ export function ProblemSet() {
                                 placeholder="Filter by title, tag, or ID..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full pl-9 pr-3 py-1.5 border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#252423] rounded-[2px] font-mono text-xs text-[#090a0f] dark:text-[#e8e8e6] placeholder:text-[#94a3b8] dark:placeholder:text-[#a09f9d]/60 focus:outline-none focus:border-[#87b2f4]"
+                                className="w-full pl-9 pr-3 py-1.5 border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#252423] rounded-[2px] font-mono text-base sm:text-xs text-[#090a0f] dark:text-[#e8e8e6] placeholder:text-[#94a3b8] dark:placeholder:text-[#a09f9d]/60 focus:outline-none focus:border-[#87b2f4]"
                             />
                         </div>
 
