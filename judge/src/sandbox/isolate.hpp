@@ -127,6 +127,10 @@ public:
         return exit_code == 0;
     }
 
+    static bool status_code_is_sigkill(std::map<std::string, std::string>& meta) {
+        return meta["status"] == "SG" && meta["exitsig"] == "9";
+    }
+
     static std::map<std::string, std::string> parse_meta(const std::string& meta_path) {
         std::map<std::string, std::string> meta;
         std::ifstream file(meta_path);
@@ -214,11 +218,14 @@ public:
 
         std::string status_code = meta["status"];
         std::string time_str = meta["time"];
-        // With cgroups, cg-mem is the real peak memory of the whole box
-        std::string memory_str = lim.use_cg && !meta["cg-mem"].empty() ? meta["cg-mem"] : meta["max-rss"];
+        // The box's cgroup lives for the whole job (compile + every test), so its peak memory
+        // (cg-mem) and OOM flag (cg-oom-killed) carry over from earlier runs: after compiling,
+        // cg-mem is the compiler's ~200 MB. Report the program's own peak RSS instead, and only
+        // count an OOM when this run was actually SIGKILLed.
+        std::string memory_str = meta["max-rss"];
         std::string isolate_exitcode = meta["exitcode"];
         std::string isolate_message = meta["message"];
-        bool oom_killed = meta["cg-oom-killed"] == "1";
+        bool oom_killed = meta["cg-oom-killed"] == "1" && status_code_is_sigkill(meta);
 
         if (!time_str.empty()) {
             item.time = time_str + "s";
