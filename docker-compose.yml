@@ -58,5 +58,38 @@ services:
             - postgres
             - redis
 
+    # Test-only services: the "build" stages keep the C++ toolchain and headers that
+    # the slim runtime images drop. Used by scripts/run_tests.sh.
+    api-build:
+        build:
+            context: .
+            dockerfile: server/Dockerfile
+            target: build
+        profiles: ['test']
+        environment:
+            JWT_SECRET: supersecret
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            DATABASE_URL: postgresql://myuser:mypassword@postgres:5432/campus_lab
+        depends_on:
+            - postgres
+            - redis
+
+    judge-build:
+        build:
+            context: .
+            dockerfile: judge/Dockerfile
+            target: build
+        profiles: ['test']
+        privileged: true
+        environment:
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            DATABASE_URL: postgresql://myuser:mypassword@postgres:5432/campus_lab
+            ISOLATE_BOX_ID: 2
+        depends_on:
+            - postgres
+            - redis
+
 volumes:
     campuslab_postgres_data:
