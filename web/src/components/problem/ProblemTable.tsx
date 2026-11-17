@@ -4,6 +4,30 @@ import { cn } from '@/lib/utils'
 import { getProblem } from '@/lib/api'
 import type { Potd, ProblemSummary } from '@/lib/types'
 
+const STATUS_LABEL: Record<ProblemSummary['status'], string> = {
+    Solved: 'Solved',
+    Attempted: 'Attempted',
+    Unsolved: 'Not started',
+}
+
+/** Solid green = solved, half-filled amber = attempted, faint ring = not started. */
+function StatusDot({ status }: { status: ProblemSummary['status'] }) {
+    return (
+        <span
+            title={STATUS_LABEL[status]}
+            className={cn(
+                'inline-block h-2 w-2 rounded-full align-middle',
+                status === 'Solved' && 'bg-emerald-400',
+                status === 'Attempted' &&
+                    'border border-[#f59e0b] dark:border-[#fcd34d] bg-[linear-gradient(90deg,#f59e0b_50%,transparent_50%)] dark:bg-[linear-gradient(90deg,#fcd34d_50%,transparent_50%)]',
+                status === 'Unsolved' && 'border border-[#cbd5e1] dark:border-[#3f3f46]'
+            )}
+        >
+            <span className="sr-only">{STATUS_LABEL[status]}</span>
+        </span>
+    )
+}
+
 interface ProblemTableProps {
     problems: ProblemSummary[]
     onProblemClick: (id: string) => void
@@ -56,14 +80,8 @@ export function ProblemTable({
             >
                 {label}
             </td>
-            <td className="px-1.5 sm:px-3 py-2.5 text-center font-mono text-[11px] align-middle">
-                {problem.status === 'Solved' ? (
-                    <span className="text-[#34d399] font-medium">[done]</span>
-                ) : problem.status === 'Attempted' ? (
-                    <span className="text-[#fcd34d] font-medium">[try]</span>
-                ) : (
-                    <span className="text-[#cbd5e1] dark:text-[#333333]">[-]</span>
-                )}
+            <td className="px-1.5 sm:px-3 py-2.5 text-center align-middle">
+                <StatusDot status={problem.status} />
             </td>
             <td className="px-2.5 sm:px-4 py-2.5 align-middle truncate max-w-0">
                 <div className="flex items-baseline gap-2 min-w-0">
@@ -103,7 +121,7 @@ export function ProblemTable({
                 <span
                     className={cn(
                         'font-medium',
-                        problem.difficulty === 'Easy' && 'text-[#34d399]',
+                        problem.difficulty === 'Easy' && 'text-emerald-400',
                         problem.difficulty === 'Medium' && 'text-[#fcd34d]',
                         problem.difficulty === 'Hard' && 'text-rose-300'
                     )}

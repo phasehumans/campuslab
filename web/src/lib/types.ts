@@ -128,6 +128,8 @@ export type ProfileResponse = {
     }
     recentSubmissions: SubmissionRecord[]
     duels?: DuelRecord
+    /** Distinct problems accepted per IST day over the last 30 days */
+    activity?: { today: string; days: Array<{ date: string; count: number }> }
 }
 
 export type DuelRecord = {

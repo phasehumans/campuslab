@@ -7,6 +7,7 @@ import { ProblemTable } from '@/components/problem/ProblemTable'
 import { ProblemTableSkeleton } from '@/components/problem/ProblemTableSkeleton'
 import { ProblemPagination } from '@/components/problem/ProblemPagination'
 import { SidelinePanel } from '@/components/home/SidelinePanel'
+import { Select } from '@/components/ui/Select'
 import { getPotd } from '@/lib/api'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -186,43 +187,52 @@ export function ProblemSet() {
                         </div>
 
                         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto font-mono text-xs">
-                            {/* Topic select */}
-                            <select
+                            <Select
+                                label="Topic"
                                 value={topic}
-                                onChange={(e) => handleTopicChange(e.target.value)}
-                                className="flex-1 sm:flex-none px-2.5 py-1.5 border border-[#e2e8f0] dark:border-[#333333] rounded-[2px] bg-white dark:bg-[#252423] text-[#52525b] dark:text-[#e8e8e6] focus:outline-none focus:border-[#87b2f4]"
-                            >
-                                <option value="All">All Topics</option>
-                                {availableTopics.map((t) => (
-                                    <option key={t} value={t}>
-                                        {t}
-                                    </option>
-                                ))}
-                            </select>
-
-                            {/* Difficulty select */}
-                            <select
+                                onChange={handleTopicChange}
+                                className="flex-1 sm:flex-none sm:w-36"
+                                options={[
+                                    { value: 'All', label: 'All Topics' },
+                                    ...availableTopics.map((t) => ({ value: t, label: t })),
+                                ]}
+                            />
+                            <Select
+                                label="Difficulty"
                                 value={difficulty}
-                                onChange={(e) => handleDifficultyChange(e.target.value)}
-                                className="flex-1 sm:flex-none px-2.5 py-1.5 border border-[#e2e8f0] dark:border-[#333333] rounded-[2px] bg-white dark:bg-[#252423] text-[#52525b] dark:text-[#e8e8e6] focus:outline-none focus:border-[#87b2f4]"
-                            >
-                                <option value="All">All Difficulties</option>
-                                <option value="Easy">Easy</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Hard">Hard</option>
-                            </select>
-
-                            {/* Status select */}
-                            <select
+                                onChange={handleDifficultyChange}
+                                className="flex-1 sm:flex-none sm:w-32"
+                                options={[
+                                    { value: 'All', label: 'All Difficulties' },
+                                    {
+                                        value: 'Easy',
+                                        label: 'Easy',
+                                        className: 'text-emerald-500 dark:text-emerald-400',
+                                    },
+                                    {
+                                        value: 'Medium',
+                                        label: 'Medium',
+                                        className: 'text-[#d97706] dark:text-[#fcd34d]',
+                                    },
+                                    {
+                                        value: 'Hard',
+                                        label: 'Hard',
+                                        className: 'text-rose-500 dark:text-rose-300',
+                                    },
+                                ]}
+                            />
+                            <Select
+                                label="Status"
                                 value={status}
-                                onChange={(e) => handleStatusChange(e.target.value)}
-                                className="flex-1 sm:flex-none px-2.5 py-1.5 border border-[#e2e8f0] dark:border-[#333333] rounded-[2px] bg-white dark:bg-[#252423] text-[#52525b] dark:text-[#e8e8e6] focus:outline-none focus:border-[#87b2f4]"
-                            >
-                                <option value="All">All Statuses</option>
-                                <option value="Solved">Solved</option>
-                                <option value="Attempted">Attempted</option>
-                                <option value="Unsolved">Unsolved</option>
-                            </select>
+                                onChange={handleStatusChange}
+                                className="flex-1 sm:flex-none sm:w-28"
+                                options={[
+                                    { value: 'All', label: 'All Statuses' },
+                                    { value: 'Solved', label: 'Solved' },
+                                    { value: 'Attempted', label: 'Attempted' },
+                                    { value: 'Unsolved', label: 'Unsolved' },
+                                ]}
+                            />
                         </div>
                     </div>
 

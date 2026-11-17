@@ -7,6 +7,9 @@ import { getApiErrorMessage, getContestRoom, getProfile, joinContestRoom } from 
 import { ContestActionModal } from '@/components/contest/ContestActionModal'
 import { CreateDuelModal } from '@/components/duel/CreateDuelModal'
 import { Tooltip } from '@/components/ui/Tooltip'
+import { ActivityGrid } from '@/components/home/ActivityGrid'
+import { SolvedRing } from '@/components/home/SolvedRing'
+import { DuelRecord } from '@/components/home/DuelRecord'
 import { cn, formatRelativeTime } from '@/lib/utils'
 
 interface SidelinePanelProps {
@@ -16,53 +19,45 @@ interface SidelinePanelProps {
 function ProfileSkeleton({ userName, userEmail }: { userName?: string; userEmail?: string }) {
     return (
         <div className="space-y-3 animate-pulse">
-            <div className="space-y-1">
-                {userName ? (
-                    <div className="text-xs font-medium text-[#090a0f] dark:text-[#e8e8e6] truncate">
-                        {userName}
-                    </div>
-                ) : (
-                    <div className="h-3.5 w-24 bg-[#e2e8f0] dark:bg-[#282828] rounded-[2px]" />
-                )}
-                {userEmail ? (
-                    <div className="font-mono text-[10px] text-[#94a3b8] dark:text-[#a09f9d] truncate">
-                        {userEmail}
-                    </div>
-                ) : (
-                    <div className="h-2.5 w-32 bg-[#f1f5f9] dark:bg-[#242424] rounded-[2px]" />
-                )}
-            </div>
-
-            {/* Progress Bar Skeleton */}
-            <div className="space-y-1.5 pt-1 font-mono text-[11px]">
-                <div className="flex justify-between items-center">
-                    <span className="text-[#52525b] dark:text-[#a09f9d]">Solved</span>
-                    <div className="h-2.5 w-16 bg-[#e2e8f0] dark:bg-[#282828] rounded-[2px]" />
-                </div>
-                <div className="h-1.5 w-full bg-[#f1f5f9] dark:bg-[#252423] rounded-full overflow-hidden border border-[#e2e8f0] dark:border-[#333333]">
-                    <div className="h-full w-1/4 bg-[#e2e8f0] dark:bg-[#2e2e2e] rounded-full" />
+            <div className="flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-full bg-[#e2e8f0] dark:bg-[#282828] shrink-0" />
+                <div className="min-w-0 flex-1 h-8 flex flex-col justify-between">
+                    {userName ? (
+                        <div className="text-xs leading-4 font-medium text-[#090a0f] dark:text-[#e8e8e6] truncate">
+                            {userName}
+                        </div>
+                    ) : (
+                        <div className="h-3 w-24 mt-0.5 bg-[#e2e8f0] dark:bg-[#282828] rounded-[2px]" />
+                    )}
+                    {userEmail ? (
+                        <div className="font-mono text-[10px] leading-4 text-[#94a3b8] dark:text-[#a09f9d] truncate">
+                            {userEmail}
+                        </div>
+                    ) : (
+                        <div className="h-2.5 w-32 mb-0.5 bg-[#f1f5f9] dark:bg-[#242424] rounded-[2px]" />
+                    )}
                 </div>
             </div>
 
-            {/* By Difficulty stats Skeleton */}
-            <div className="grid grid-cols-3 gap-1 pt-1 font-mono text-[10px]">
-                {[
-                    { label: 'Easy', color: 'text-[#34d399]' },
-                    { label: 'Medium', color: 'text-[#fcd34d]' },
-                    { label: 'Hard', color: 'text-rose-300' },
-                ].map((item) => (
-                    <div
-                        key={item.label}
-                        className="p-1.5 bg-[#f9fafb] dark:bg-[#252423] border border-[#e2e8f0] dark:border-[#333333] rounded-[2px] flex flex-col items-center gap-1"
-                    >
-                        <span className={cn('font-medium', item.color)}>{item.label}</span>
-                        <div className="h-3 w-4 bg-[#e2e8f0] dark:bg-[#333333] rounded-[2px]" />
-                    </div>
-                ))}
+            {/* Solved ring skeleton */}
+            <div className="flex items-center gap-4 pt-1 font-mono text-[11px]">
+                <div className="h-[76px] w-[76px] rounded-full border-[7px] border-[#f1f5f9] dark:border-[#252423] shrink-0" />
+                <div className="flex-1 space-y-1.5">
+                    {[
+                        { label: 'Easy', color: 'text-emerald-500 dark:text-emerald-400' },
+                        { label: 'Medium', color: 'text-[#d97706] dark:text-[#fcd34d]' },
+                        { label: 'Hard', color: 'text-rose-500 dark:text-rose-300' },
+                    ].map((item) => (
+                        <div key={item.label} className="flex items-center justify-between">
+                            <span className={cn('font-medium', item.color)}>{item.label}</span>
+                            <div className="h-2.5 w-8 bg-[#e2e8f0] dark:bg-[#333333] rounded-[2px]" />
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Recent Submissions Skeleton */}
-            <div className="space-y-1.5 pt-2.5 border-t border-[#f0f2f5] dark:border-[#272727] font-mono">
+            <div className="space-y-1.5 pt-2.5 font-mono">
                 <div className="flex items-center justify-between text-[10px] text-[#64748b] dark:text-[#777777] uppercase tracking-wider">
                     <span>Recent Submissions</span>
                 </div>
@@ -139,23 +134,24 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
     }
 
     const profile = profileQuery.data
-    const totalSolved = profile?.stats.totalSolved ?? 0
-    const targetCount = totalProblemsCount || 250
-    const percentDone =
-        targetCount > 0 ? Math.min(100, Math.round((totalSolved / targetCount) * 100)) : 0
+    const avatarUrl = profile?.user.avatar || user?.avatar || null
+    const targetCount =
+        profile?.stats.byDifficulty.reduce((sum, d) => sum + d.total, 0) ||
+        totalProblemsCount ||
+        250
 
     return (
         <aside className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0 lg:block lg:space-y-4">
             {/* 1. Profile / Auth Box */}
             <div className="border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] p-4 rounded-[3px] shadow-[0_1px_2px_rgba(0,0,0,0.02)] space-y-3 transition-colors">
-                <div className="flex items-center justify-between font-mono text-[11px] text-[#64748b] dark:text-[#a09f9d] border-b border-[#f0f2f5] dark:border-[#272727] pb-2">
-                    <span className="uppercase tracking-wider font-medium">[Profile]</span>
+                <div className="flex items-center justify-between font-mono text-[11px] text-[#64748b] dark:text-[#a09f9d] pb-2">
+                    <span className="uppercase tracking-wider font-medium">Profile</span>
                     {isLoggedIn && (
                         <Tooltip content="Sign out of account" position="bottom" align="end">
                             <button
                                 type="button"
                                 onClick={openSignoutModal}
-                                className="text-[#94a3b8] dark:text-[#a09f9d] hover:text-[#ef4444] transition-colors cursor-pointer"
+                                className="text-[#94a3b8] dark:text-[#a09f9d] hover:text-red-500 transition-colors cursor-pointer"
                             >
                                 logout
                             </button>
@@ -165,87 +161,62 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
 
                 {isLoggedIn ? (
                     profileQuery.isLoading ? (
-                        <ProfileSkeleton userName={user?.name} userEmail={user?.email} />
+                        <ProfileSkeleton
+                            userName={user?.name ?? undefined}
+                            userEmail={user?.email ?? undefined}
+                        />
                     ) : (
                         <div className="space-y-3">
-                            <div className="space-y-0.5">
-                                <div className="text-xs font-medium text-[#090a0f] dark:text-[#e8e8e6] truncate">
-                                    {user?.name || 'Developer'}
+                            {/* Identity: name on top, email below, together exactly the avatar's height */}
+                            <div className="flex items-center gap-2.5">
+                                <div className="h-8 w-8 rounded-full bg-[#f1f5f9] dark:bg-[#252423] border border-[#e2e8f0] dark:border-[#333333] flex items-center justify-center text-xs font-medium text-[#090a0f] dark:text-[#e8e8e6] overflow-hidden shrink-0">
+                                    {avatarUrl ? (
+                                        <img
+                                            src={avatarUrl}
+                                            alt=""
+                                            className="h-full w-full object-cover"
+                                            referrerPolicy="no-referrer"
+                                        />
+                                    ) : (
+                                        (user?.name || 'D')[0].toUpperCase()
+                                    )}
                                 </div>
-                                <div className="font-mono text-[10px] text-[#94a3b8] dark:text-[#a09f9d] truncate">
-                                    {user?.email || 'signed in'}
-                                </div>
-                            </div>
-
-                            {/* Progress Bar */}
-                            <div className="space-y-1 pt-1 font-mono text-[11px]">
-                                <div className="flex justify-between text-[#52525b] dark:text-[#a09f9d]">
-                                    <span>Solved</span>
-                                    <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6]">
-                                        {totalSolved} / {targetCount} ({percentDone}%)
-                                    </span>
-                                </div>
-                                <div className="h-1.5 w-full bg-[#f1f5f9] dark:bg-[#252423] rounded-full overflow-hidden border border-[#e2e8f0] dark:border-[#333333]">
-                                    <div
-                                        className="h-full bg-[#10b981] transition-all duration-500"
-                                        style={{ width: `${percentDone}%` }}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* By Difficulty stats */}
-                            {profile?.stats.byDifficulty && (
-                                <div className="grid grid-cols-3 gap-1 pt-1 font-mono text-[10px] text-center">
-                                    {profile.stats.byDifficulty.map((diff) => (
-                                        <div
-                                            key={diff.name}
-                                            className="p-1.5 bg-[#f9fafb] dark:bg-[#252423] border border-[#e2e8f0] dark:border-[#333333] rounded-[2px]"
-                                        >
-                                            <div
-                                                className={cn(
-                                                    'font-medium',
-                                                    diff.name === 'Easy' && 'text-[#34d399]',
-                                                    diff.name === 'Medium' && 'text-[#fcd34d]',
-                                                    diff.name === 'Hard' && 'text-rose-300'
-                                                )}
-                                            >
-                                                {diff.name}
-                                            </div>
-                                            <div className="text-[#090a0f] dark:text-[#e8e8e6] font-semibold mt-0.5">
-                                                {diff.value}
-                                            </div>
+                                <div className="min-w-0 h-8 flex flex-col justify-between">
+                                    <div className="text-xs leading-4 font-medium text-[#090a0f] dark:text-[#e8e8e6] truncate">
+                                        {user?.name || 'Developer'}
+                                    </div>
+                                    {(profile?.user.email || user?.email) && (
+                                        <div className="font-mono text-[10px] leading-4 text-[#94a3b8] dark:text-[#a09f9d] truncate">
+                                            {profile?.user.email || user?.email}
                                         </div>
-                                    ))}
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Solved: ring split by difficulty + legend */}
+                            {profile?.stats.byDifficulty && (
+                                <SolvedRing
+                                    stats={profile.stats.byDifficulty}
+                                    total={targetCount}
+                                />
+                            )}
+
+                            {/* Last 30 days of activity */}
+                            {profile?.activity && (
+                                <div className="pt-1">
+                                    <ActivityGrid
+                                        today={profile.activity.today}
+                                        days={profile.activity.days}
+                                    />
                                 </div>
                             )}
 
-                            {/* 1v1 duel record */}
-                            {profile?.duels &&
-                                profile.duels.wins + profile.duels.losses + profile.duels.draws >
-                                    0 && (
-                                    <div className="flex items-center justify-between font-mono text-[11px] pt-1">
-                                        <span className="text-[#52525b] dark:text-[#a09f9d]">
-                                            1v1 Duels
-                                        </span>
-                                        <span className="text-[#090a0f] dark:text-[#e8e8e6]">
-                                            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                                                {profile.duels.wins}W
-                                            </span>
-                                            {' · '}
-                                            <span className="text-rose-500 dark:text-rose-300 font-semibold">
-                                                {profile.duels.losses}L
-                                            </span>
-                                            {' · '}
-                                            <span className="text-[#64748b] dark:text-[#a09f9d]">
-                                                {profile.duels.draws}D
-                                            </span>
-                                        </span>
-                                    </div>
-                                )}
+                            {/* 1v1 duel record (only after the first finished duel) */}
+                            {profile?.duels && <DuelRecord record={profile.duels} />}
 
                             {/* Recent Submissions (Max 3, Minimalist List) */}
                             {profile?.recentSubmissions && profile.recentSubmissions.length > 0 && (
-                                <div className="space-y-1.5 pt-2.5 border-t border-[#f0f2f5] dark:border-[#272727] font-mono">
+                                <div className="space-y-1.5 pt-2.5 font-mono">
                                     <div className="flex items-center justify-between text-[10px] text-[#64748b] dark:text-[#777777] uppercase tracking-wider">
                                         <span>Recent Submissions</span>
                                     </div>
@@ -305,8 +276,8 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
 
             {/* Contest Center */}
             <div className="border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] p-4 rounded-[3px] shadow-[0_1px_2px_rgba(0,0,0,0.02)] space-y-3 transition-colors">
-                <div className="flex items-center justify-between font-mono text-[11px] text-[#64748b] dark:text-[#a09f9d] border-b border-[#f0f2f5] dark:border-[#272727] pb-2">
-                    <span className="uppercase tracking-wider font-medium">[Contests]</span>
+                <div className="flex items-center justify-between font-mono text-[11px] text-[#64748b] dark:text-[#a09f9d] pb-2">
+                    <span className="uppercase tracking-wider font-medium">Contests</span>
                     <span className="text-[#94a3b8] dark:text-[#a09f9d] text-[10px]">live</span>
                 </div>
 
@@ -336,10 +307,8 @@ export function SidelinePanel({ totalProblemsCount = 0 }: SidelinePanelProps) {
                     </button>
                 </form>
 
-                <div className="flex items-center gap-2 font-mono text-[10px] text-[#cbd5e1] dark:text-[#333333] my-1">
-                    <div className="flex-1 h-px bg-[#f0f2f5] dark:bg-[#272727]" />
+                <div className="flex items-center justify-center font-mono text-[10px] text-[#94a3b8] dark:text-[#777777]">
                     <span>or</span>
-                    <div className="flex-1 h-px bg-[#f0f2f5] dark:bg-[#272727]" />
                 </div>
 
                 {/* Create Room Button */}

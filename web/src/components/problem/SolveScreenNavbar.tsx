@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, type CSSProperties } from 'react'
-import { createPortal } from 'react-dom'
 import {
     ArrowLeft,
     Play,
@@ -16,6 +15,8 @@ import { useNavigate } from 'react-router-dom'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { cn, parseUtcDate } from '@/lib/utils'
 import { leaveContestRoom, leaveDuel } from '@/lib/api'
+import { Modal, ModalButton } from '@/components/ui/Modal'
+import { LiveAlertToast, type LiveAlert } from '@/components/problem/LiveAlertToast'
 
 interface ContestParticipantInfo {
     userId: string
@@ -52,7 +53,7 @@ interface SolveScreenNavbarProps {
     splitWidth?: number
     contestInfo?: ContestInfo
     isDisqualified?: boolean
-    liveAlert?: { id: string; message: string; type: 'disqualified' | 'paste' | 'info' } | null
+    liveAlert?: LiveAlert | null
     onDismissLiveAlert?: () => void
 }
 
@@ -72,6 +73,7 @@ export function SolveScreenNavbar({
 }: SolveScreenNavbarProps) {
     const navigate = useNavigate()
     const [isExiting, setIsExiting] = useState(false)
+    const isLiveDuel = Boolean(contestInfo?.isDuel && !contestInfo.duelFinished)
 
     // Contest Countdown Timer State
     const [contestSecondsLeft, setContestSecondsLeft] = useState(() => {
@@ -131,17 +133,6 @@ export function SolveScreenNavbar({
             window.removeEventListener('keydown', handleKeyDown)
         }
     }, [showCodersDropdown])
-
-    useEffect(() => {
-        if (!showExitModal) return
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                setShowExitModal(false)
-            }
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [showExitModal])
 
     // Wall-clock stopwatch ticker with zero drift across background tabs
     useEffect(() => {
@@ -217,7 +208,7 @@ export function SolveScreenNavbar({
                                     ROOM
                                 </span>
                                 <span className="font-semibold tracking-wider text-[#e8e8e6]">
-                                    [{contestInfo.roomCode}]
+                                    {contestInfo.roomCode}
                                 </span>
                             </div>
                             <div className="relative" ref={codersDropdownRef}>
@@ -248,7 +239,7 @@ export function SolveScreenNavbar({
                                 {/* Joined Coders Dropdown Menu */}
                                 {showCodersDropdown && (
                                     <div className="absolute left-0 top-full mt-1.5 w-64 bg-[#181818] border border-[#333333] rounded-[3px] shadow-xl z-50 text-[11px] font-mono p-2 space-y-1.5">
-                                        <div className="flex items-center justify-between text-[#888888] pb-1.5 border-b border-[#282828] px-1">
+                                        <div className="flex items-center justify-between text-[#888888] pb-1.5 px-1">
                                             <span className="uppercase tracking-wider text-[10px] font-medium">
                                                 Coders (
                                                 {contestInfo.participants &&
@@ -273,7 +264,7 @@ export function SolveScreenNavbar({
                                                 contestInfo.participants.map((p, idx) => (
                                                     <div
                                                         key={p.userId || idx}
-                                                        className="px-2 py-1.5 hover:bg-[#222222] rounded-[2px] transition-colors border-b border-[#242424] last:border-b-0 space-y-1"
+                                                        className="px-2 py-1.5 hover:bg-[#222222] rounded-[2px] transition-colors space-y-1"
                                                     >
                                                         <div className="flex items-center justify-between text-[#e8e8e6]">
                                                             <span className="truncate max-w-[150px] font-medium">
@@ -297,11 +288,11 @@ export function SolveScreenNavbar({
                                                               p.remark !== 'ACTIVE' &&
                                                               p.remark !== 'HOST' ? (
                                                                 <span className="text-[9px] text-amber-300 font-mono uppercase bg-[#292212] border border-amber-800/80 px-1.5 py-0.5 rounded-[2px] truncate max-w-full">
-                                                                    [{p.remark}]
+                                                                    {p.remark}
                                                                 </span>
                                                             ) : (
                                                                 <span className="text-[9px] text-emerald-400/80 font-mono">
-                                                                    [ACTIVE]
+                                                                    ACTIVE
                                                                 </span>
                                                             )}
                                                         </div>
@@ -382,7 +373,7 @@ export function SolveScreenNavbar({
                             {isRunning ? (
                                 <Loader2 className="h-3.5 w-3.5 animate-spin text-[#87b2f4]" />
                             ) : (
-                                <Play className="h-3.5 w-3.5 text-[#10b981] fill-[#10b981]" />
+                                <Play className="h-3.5 w-3.5 text-emerald-500 fill-emerald-500" />
                             )}
                             <span>{isRunning ? 'Running...' : 'Run'}</span>
                         </button>
@@ -413,38 +404,57 @@ export function SolveScreenNavbar({
                     {contestInfo ? (
                         <div className="flex items-center gap-2">
                             {contestInfo.hasWinner && (
+                                <Tooltip
+                                    content={
+                                        contestInfo.isWinner
+                                            ? 'You solved it first'
+                                            : `${contestInfo.winnerName || 'Another player'} solved it first`
+                                    }
+                                    position="bottom"
+                                >
+                                    <div
+                                        className={cn(
+                                            'flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] text-[11px] font-mono border cursor-default',
+                                            contestInfo.isWinner
+                                                ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400 font-semibold'
+                                                : 'bg-[#251e20] border-rose-500/25 text-rose-300 font-medium'
+                                        )}
+                                    >
+                                        {contestInfo.isWinner
+                                            ? 'Won Match'
+                                            : `Won by ${contestInfo.winnerName || 'Peer'}`}
+                                    </div>
+                                </Tooltip>
+                            )}
+                            <Tooltip
+                                content={
+                                    contestSecondsLeft === 0 || contestInfo.isEnded
+                                        ? contestInfo.isDuel
+                                            ? 'Duel has ended'
+                                            : 'Contest has ended'
+                                        : contestSecondsLeft < 300
+                                          ? 'Less than 5 minutes left'
+                                          : contestInfo.isDuel
+                                            ? 'Time left in the duel'
+                                            : 'Time left in the contest'
+                                }
+                                position="bottom"
+                            >
                                 <div
                                     className={cn(
-                                        'flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] text-[11px] font-mono border',
-                                        contestInfo.isWinner
-                                            ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400 font-semibold'
-                                            : 'bg-[#251e20] border-rose-500/25 text-rose-300 font-medium'
+                                        'px-2.5 py-1 rounded-[3px] border border-[#333333] bg-[#222120] font-mono text-[11px] font-medium tracking-wider select-none shadow-xs cursor-default',
+                                        contestSecondsLeft < 300 || contestInfo.isEnded
+                                            ? 'text-rose-300'
+                                            : 'text-[#e8e8e6]'
                                     )}
                                 >
-                                    {contestInfo.isWinner
-                                        ? 'Won Match'
-                                        : `Won by ${contestInfo.winnerName || 'Peer'}`}
+                                    <span>
+                                        {contestSecondsLeft === 0 || contestInfo.isEnded
+                                            ? '00:00'
+                                            : formatTimer(contestSecondsLeft)}
+                                    </span>
                                 </div>
-                            )}
-                            <div
-                                className={cn(
-                                    'px-2.5 py-1 rounded-[3px] border border-[#333333] bg-[#222120] font-mono text-[11px] font-medium tracking-wider select-none shadow-xs',
-                                    contestSecondsLeft < 300 || contestInfo.isEnded
-                                        ? 'text-rose-300'
-                                        : 'text-[#e8e8e6]'
-                                )}
-                                title={
-                                    contestSecondsLeft === 0 || contestInfo.isEnded
-                                        ? 'Contest has concluded'
-                                        : `Contest time remaining: ${formatTimer(contestSecondsLeft)}`
-                                }
-                            >
-                                <span>
-                                    {contestSecondsLeft === 0 || contestInfo.isEnded
-                                        ? '00:00'
-                                        : formatTimer(contestSecondsLeft)}
-                                </span>
-                            </div>
+                            </Tooltip>
                         </div>
                     ) : (
                         /* Desktop Solve Timer */
@@ -504,155 +514,80 @@ export function SolveScreenNavbar({
                 </div>
             </nav>
 
-            {liveAlert && (
-                <div
-                    className={cn(
-                        'fixed top-14 left-4 z-[100] max-w-xs sm:max-w-sm rounded-[3px] p-3 font-mono text-xs shadow-2xl border transition-all select-none pointer-events-auto',
-                        liveAlert.type === 'disqualified'
-                            ? 'bg-[#181818]/95 border-red-800 text-red-200 shadow-red-950/40'
-                            : liveAlert.type === 'info'
-                              ? 'bg-[#181818]/95 border-[#87b2f4]/60 text-[#dbe7fb] shadow-black/40'
-                              : 'bg-[#181818]/95 border-amber-700/80 text-amber-200 shadow-amber-950/40'
-                    )}
-                >
-                    <div className="flex items-center justify-between border-b border-white/10 pb-1.5 mb-1.5">
-                        <span
-                            className={cn(
-                                'text-[10px] font-bold tracking-wider uppercase',
-                                liveAlert.type === 'disqualified'
-                                    ? 'text-red-400'
-                                    : liveAlert.type === 'info'
-                                      ? 'text-[#87b2f4]'
-                                      : 'text-amber-400'
-                            )}
-                        >
-                            {contestInfo?.isDuel ? '[DUEL]' : '[CONTEST ALERT]'}
-                        </span>
-                        <button
-                            type="button"
-                            onClick={onDismissLiveAlert}
-                            className="text-[10px] uppercase font-mono px-1 py-0.5 text-[#888888] hover:text-white cursor-pointer ml-3"
-                            aria-label="Dismiss alert"
-                        >
-                            [x]
-                        </button>
-                    </div>
-                    <p className="text-[11px] leading-relaxed text-[#e8e8e6] break-words">
-                        {liveAlert.message}
-                    </p>
-                </div>
-            )}
+            <LiveAlertToast
+                alert={liveAlert}
+                context={contestInfo?.isDuel ? 'Duel' : 'Contest'}
+                onDismiss={onDismissLiveAlert}
+            />
 
-            {showExitModal &&
-                createPortal(
-                    <div
-                        onClick={(e) => {
-                            if (e.target === e.currentTarget) {
-                                setShowExitModal(false)
-                            }
-                        }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 transition-all"
-                        role="dialog"
-                        aria-modal="true"
-                        aria-label={
-                            contestInfo ? 'Exit Contest Confirmation' : 'Exit Problem Confirmation'
-                        }
-                    >
-                        <div className="w-full max-w-[420px] bg-[#1e1e1e] border border-[#333333] rounded-[4px] p-6 shadow-2xl space-y-4 text-[#e8e8e6] font-mono text-xs relative">
-                            <div className="flex items-center justify-between pb-3 border-b border-[#2e2e2e]">
-                                <span className="uppercase tracking-wider font-semibold text-rose-300">
-                                    {contestInfo
-                                        ? '[Exit Contest Arena]'
-                                        : '[Exit Problem Workspace]'}
-                                </span>
-                                <button
-                                    type="button"
-                                    onClick={() => setShowExitModal(false)}
-                                    className="text-[#94a3b8] hover:text-[#e8e8e6] transition-colors p-1 cursor-pointer"
-                                    aria-label="Cancel"
-                                >
-                                    <X className="h-4 w-4" />
-                                </button>
-                            </div>
-
-                            <p className="text-[#a09f9d] leading-relaxed">
-                                {contestInfo?.isDuel && !contestInfo.duelFinished ? (
-                                    <>
-                                        Leaving now{' '}
-                                        <span className="text-rose-300 font-semibold">
-                                            forfeits the duel
-                                        </span>
-                                        . {contestInfo.opponentName || 'Your opponent'} will be
-                                        declared the winner.
-                                    </>
-                                ) : contestInfo ? (
-                                    <>
-                                        Are you sure you want to exit contest room{' '}
-                                        <span className="text-[#e8e8e6] font-semibold">
-                                            [{contestInfo.roomCode}]
-                                        </span>
-                                        ? Your ongoing contest session will be abandoned, and you
-                                        will return to the problem set.
-                                    </>
-                                ) : (
-                                    <>
-                                        Are you sure you want to exit{' '}
-                                        {problemTitle ? (
-                                            <span className="text-[#e8e8e6] font-semibold">
-                                                [{problemTitle}]
-                                            </span>
-                                        ) : (
-                                            'this problem'
-                                        )}{' '}
-                                        and return to the problem sheet? Any unsaved changes in your
-                                        editor may be lost.
-                                    </>
-                                )}
-                            </p>
-
-                            <div className="flex items-center justify-end gap-2.5 pt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowExitModal(false)}
-                                    className="px-3.5 py-2 border border-[#333333] bg-[#252423] hover:bg-[#2f2e2d] text-[#e8e8e6] rounded-[3px] transition-colors cursor-pointer"
-                                >
-                                    {contestInfo ? 'Stay in Contest' : 'Keep Solving'}
-                                </button>
-                                <button
-                                    type="button"
-                                    disabled={isExiting}
-                                    onClick={async () => {
-                                        if (contestInfo?.roomCode) {
-                                            setIsExiting(true)
-                                            try {
-                                                if (contestInfo.isDuel) {
-                                                    await leaveDuel(contestInfo.roomCode)
-                                                } else {
-                                                    await leaveContestRoom(contestInfo.roomCode)
-                                                }
-                                            } catch (err) {
-                                                console.error('Failed to leave contest room:', err)
-                                            } finally {
-                                                setIsExiting(false)
-                                            }
+            <Modal
+                open={showExitModal}
+                onClose={() => setShowExitModal(false)}
+                busy={isExiting}
+                tone={isLiveDuel ? 'danger' : 'default'}
+                eyebrow={
+                    isLiveDuel ? 'Leave duel' : contestInfo ? 'Leave contest' : 'Leave problem'
+                }
+                title={
+                    isLiveDuel
+                        ? 'Forfeit this duel?'
+                        : contestInfo
+                          ? 'Exit this contest?'
+                          : 'Back to the problem sheet?'
+                }
+                description={
+                    isLiveDuel ? (
+                        <>
+                            Leaving now forfeits the duel and{' '}
+                            {contestInfo?.opponentName || 'your opponent'} wins.
+                        </>
+                    ) : contestInfo ? (
+                        <>
+                            You'll leave room {contestInfo.roomCode}. Your contest session ends
+                            here.
+                        </>
+                    ) : (
+                        'Unsaved changes in the editor will be lost.'
+                    )
+                }
+                footer={
+                    <>
+                        <ModalButton disabled={isExiting} onClick={() => setShowExitModal(false)}>
+                            {isLiveDuel ? 'Keep playing' : contestInfo ? 'Stay' : 'Keep solving'}
+                        </ModalButton>
+                        <ModalButton
+                            variant={isLiveDuel || contestInfo ? 'danger' : 'primary'}
+                            disabled={isExiting}
+                            onClick={async () => {
+                                if (contestInfo?.roomCode) {
+                                    setIsExiting(true)
+                                    try {
+                                        if (contestInfo.isDuel) {
+                                            await leaveDuel(contestInfo.roomCode)
+                                        } else {
+                                            await leaveContestRoom(contestInfo.roomCode)
                                         }
-                                        setShowExitModal(false)
-                                        navigate(backPath || '/')
-                                    }}
-                                    className="px-3.5 py-2 bg-rose-500/80 hover:bg-rose-500 text-white font-medium rounded-[3px] transition-colors cursor-pointer flex items-center gap-1.5"
-                                >
-                                    {isExiting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                                    {contestInfo?.isDuel && !contestInfo.duelFinished
-                                        ? 'Forfeit & Exit'
-                                        : contestInfo
-                                          ? 'Exit Contest'
-                                          : 'Exit Problem'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>,
-                    document.body
-                )}
+                                    } catch (err) {
+                                        console.error('Failed to leave contest room:', err)
+                                    } finally {
+                                        setIsExiting(false)
+                                    }
+                                }
+                                setShowExitModal(false)
+                                navigate(backPath || '/')
+                            }}
+                        >
+                            {isExiting
+                                ? 'Leaving...'
+                                : isLiveDuel
+                                  ? 'Forfeit & exit'
+                                  : contestInfo
+                                    ? 'Exit contest'
+                                    : 'Exit'}
+                        </ModalButton>
+                    </>
+                }
+            />
         </>
     )
 }

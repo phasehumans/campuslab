@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { useIsDarkSurface } from '@/components/ui/Modal'
 import { cn } from '@/lib/utils'
 
 interface TooltipProps {
@@ -22,6 +23,7 @@ export function Tooltip({
     className,
 }: TooltipProps) {
     const [isVisible, setIsVisible] = useState(false)
+    const isDarkSurface = useIsDarkSurface()
     const [coords, setCoords] = useState<{ top: number; left: number; transform: string } | null>(
         null
     )
@@ -119,6 +121,7 @@ export function Tooltip({
                 createPortal(
                     <div
                         className={cn(
+                            isDarkSurface && 'dark',
                             'fixed z-[9999] pointer-events-none select-none flex items-center gap-1.5',
                             'px-2 py-1 rounded-[3px] text-[11px] font-mono tracking-tight whitespace-nowrap',
                             'bg-[#090a0f] text-[#f8fafc] border border-[#27272a] shadow-xl',

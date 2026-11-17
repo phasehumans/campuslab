@@ -21,7 +21,7 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
     return (
         <div className="space-y-6 text-xs text-[#a09f9d] leading-relaxed font-sans">
             {/* Header: Title & Clean Metadata Row (No badges, no box highlights) */}
-            <div className="space-y-2 pb-4 border-b border-[#2e2e2e]">
+            <div className="space-y-2 pb-4">
                 <h1 className="text-xl font-semibold tracking-tight text-[#e8e8e6]">
                     {problem.title}
                 </h1>
@@ -30,7 +30,7 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
                     <span
                         className={cn(
                             'font-medium',
-                            problem.difficulty === 'Easy' && 'text-[#34d399]',
+                            problem.difficulty === 'Easy' && 'text-emerald-400',
                             problem.difficulty === 'Medium' && 'text-[#fcd34d]',
                             problem.difficulty === 'Hard' && 'text-rose-300'
                         )}
@@ -203,7 +203,7 @@ export function DescriptionPanel({ problem }: DescriptionPanelProps) {
 
             {/* Constraints (No outer box, clean bulleted list) */}
             {problem.constraints && (
-                <div className="space-y-2 pt-2 border-t border-[#262626]">
+                <div className="space-y-2 pt-2">
                     <div className="text-[11px] font-mono uppercase tracking-wider text-[#e8e8e6] font-medium">
                         Constraints:
                     </div>

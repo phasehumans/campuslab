@@ -14,7 +14,7 @@ export function BottomPanelHeader({
     setBottomPanelOpen,
 }: BottomPanelHeaderProps) {
     return (
-        <div className="flex items-center gap-1 bg-[#191919] px-3 border-b border-[#333333] font-mono text-xs h-9 select-none shrink-0">
+        <div className="flex items-center gap-1 bg-[#191919] px-3 font-mono text-xs h-9 select-none shrink-0">
             <button
                 type="button"
                 onClick={() => setActiveBottomTab('testcase')}

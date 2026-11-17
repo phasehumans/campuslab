@@ -6,7 +6,7 @@ import { SignoutModal } from '@/components/auth/SignoutModal'
 import { Tooltip } from '@/components/ui/Tooltip'
 
 export function Navbar() {
-    const { isLoggedIn, user, openModal } = useAuth()
+    const { isLoggedIn, openModal } = useAuth()
 
     return (
         <>
@@ -56,15 +56,9 @@ export function Navbar() {
                             <span className="font-medium">Playground</span>
                         </Link>
 
-                        {/* User or Sign In Modal trigger (Desktop) */}
-                        <div className="hidden sm:flex items-center">
-                            {isLoggedIn ? (
-                                <div className="flex items-center border border-[#e2e8f0] dark:border-[#333333] bg-[#f9fafb] dark:bg-[#252423] px-2.5 py-1 rounded-[3px]">
-                                    <span className="font-medium text-[#090a0f] dark:text-[#e8e8e6] max-w-[140px] truncate">
-                                        {user?.name || user?.email?.split('@')[0] || 'User'}
-                                    </span>
-                                </div>
-                            ) : (
+                        {/* Sign In (Desktop, logged out only; the profile panel shows who is signed in) */}
+                        {!isLoggedIn && (
+                            <div className="hidden sm:flex items-center">
                                 <button
                                     type="button"
                                     onClick={openModal}
@@ -73,8 +67,8 @@ export function Navbar() {
                                     <span>Sign in</span>
                                     <ArrowRight className="h-3 w-3 opacity-70" />
                                 </button>
-                            )}
-                        </div>
+                            </div>
+                        )}
 
                         {/* Mobile View: Playground in place of Sign In button */}
                         <Link

@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
-import { createPortal } from 'react-dom'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { X, Loader2, Copy, Check } from 'lucide-react'
 import { createContestRoom, getApiErrorMessage } from '@/lib/api'
 import { useAuth } from '@/contexts/AuthContext'
+import { Modal, ModalButton } from '@/components/ui/Modal'
 import type { ContestRoom } from '@/lib/types'
 
 interface ContestActionModalProps {
@@ -12,30 +11,25 @@ interface ContestActionModalProps {
     onClose: () => void
 }
 
+const CONTEST_RULES = [
+    'Fullscreen is required for the whole contest.',
+    "Leaving the window once is a warning. Twice and you're disqualified.",
+    'Pasting into the editor is blocked.',
+    'Submissions close when the 45 minutes are up.',
+]
+
 export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps) {
     const navigate = useNavigate()
     const { isLoggedIn, openModal } = useAuth()
-
     const [createError, setCreateError] = useState<string | null>(null)
     const [createdRoom, setCreatedRoom] = useState<ContestRoom | null>(null)
     const [copied, setCopied] = useState(false)
 
-    // Reset state whenever modal opens or closes
     useEffect(() => {
         if (isOpen) {
             setCreatedRoom(null)
             setCreateError(null)
             setCopied(false)
-        }
-    }, [isOpen])
-
-    // Lock page background scrolling when modal is open
-    useEffect(() => {
-        if (!isOpen) return
-        const prevOverflow = document.body.style.overflow
-        document.body.style.overflow = 'hidden'
-        return () => {
-            document.body.style.overflow = prevOverflow
         }
     }, [isOpen])
 
@@ -47,27 +41,9 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
                 questionCount: 1,
                 timeLimitMinutes: 45,
             }),
-        onSuccess: (room) => {
-            setCreatedRoom(room)
-        },
-        onError: (err) => {
-            setCreateError(getApiErrorMessage(err, 'Failed to create contest room'))
-        },
+        onSuccess: (room) => setCreatedRoom(room),
+        onError: (err) => setCreateError(getApiErrorMessage(err, 'Failed to create contest room')),
     })
-
-    // Keyboard dismiss on Escape
-    useEffect(() => {
-        if (!isOpen) return
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && !createMutation.isPending) {
-                handleClose()
-            }
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [isOpen, createMutation.isPending])
-
-    if (!isOpen) return null
 
     const handleCreate = () => {
         if (!isLoggedIn) {
@@ -79,191 +55,92 @@ export function ContestActionModal({ isOpen, onClose }: ContestActionModalProps)
         createMutation.mutate()
     }
 
-    const handleCopyCode = () => {
+    const handleCopyCode = async () => {
         if (!createdRoom) return
-        navigator.clipboard.writeText(createdRoom.code)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        try {
+            await navigator.clipboard.writeText(createdRoom.code)
+            setCopied(true)
+            setTimeout(() => setCopied(false), 2000)
+        } catch {
+            // the code is selectable as a fallback
+        }
     }
 
     const handleEnterContest = () => {
         if (!createdRoom) return
         onClose()
         const firstQuestion = createdRoom.questions?.[0]
-        if (firstQuestion) {
-            navigate(`/problem/${firstQuestion.id}?room=${createdRoom.code}`)
-        } else {
-            navigate(`/contest/${createdRoom.code}`)
-        }
+        navigate(
+            firstQuestion
+                ? `/problem/${firstQuestion.id}?room=${createdRoom.code}`
+                : `/contest/${createdRoom.code}`
+        )
     }
 
-    const handleClose = () => {
-        setCreatedRoom(null)
-        setCreateError(null)
-        onClose()
-    }
-
-    return createPortal(
-        <div
-            onClick={(e) => {
-                if (e.target === e.currentTarget && !createMutation.isPending) {
-                    handleClose()
-                }
-            }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 dark:bg-black/90 backdrop-blur-md p-4 transition-all"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Contest Room Creation Dialog"
-        >
-            <div className="w-full max-w-[460px] bg-white dark:bg-[#1e1e1e] border border-[#e2e8f0] dark:border-[#333333] rounded-[4px] p-6 shadow-2xl space-y-5 text-[#090a0f] dark:text-[#e8e8e6] relative transition-colors">
-                {/* Header */}
-                <div className="flex items-center justify-between pb-3 border-b border-[#f0f2f5] dark:border-[#272727]">
-                    <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#87b2f4]">
-                            [Contest Room Creation]
-                        </span>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={handleClose}
-                        className="text-[#94a3b8] hover:text-[#090a0f] dark:hover:text-white transition-colors p-1 cursor-pointer"
-                        aria-label="Close modal"
-                    >
-                        <X className="h-4 w-4" />
-                    </button>
-                </div>
-
-                {createError && (
-                    <div className="p-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 font-mono text-xs rounded-[2px]">
-                        {createError}
-                    </div>
-                )}
-
-                {createdRoom ? (
-                    /* Created State: Show Room Code & Join Contest Button */
-                    <div className="space-y-4 font-mono text-xs">
-                        <div className="p-5 rounded-[3px] border border-[#e2e8f0] dark:border-[#333333] bg-[#f8fafc] dark:bg-[#18181b] text-center space-y-3">
-                            <div className="flex items-center justify-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
-                                <Check className="h-4 w-4" />
-                                <span>Contest Room Created</span>
-                            </div>
-
-                            <div className="text-[11px] uppercase tracking-wider text-[#64748b] dark:text-[#a09f9d]">
-                                Room Code
-                            </div>
-
-                            <div className="text-3xl font-bold tracking-[0.25em] text-[#090a0f] dark:text-[#e8e8e6] select-all py-1 font-mono">
-                                {createdRoom.code}
-                            </div>
-
-                            <p className="text-[11px] text-[#64748b] dark:text-[#a09f9d] leading-relaxed max-w-[320px] mx-auto">
-                                Share this code with competitors. Everyone solves the same random
-                                problem in real-time. First to pass all testcases wins!
-                            </p>
-                        </div>
-
-                        <div className="flex items-center gap-2 pt-1">
-                            <button
-                                type="button"
-                                onClick={handleCopyCode}
-                                className="flex-1 flex items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#333333] hover:bg-[#f1f5f9] dark:hover:bg-[#252423] text-[#090a0f] dark:text-[#e8e8e6] font-mono text-xs py-2.5 px-3 rounded-[3px] transition-colors cursor-pointer"
-                            >
-                                {copied ? (
-                                    <>
-                                        <Check className="h-3.5 w-3.5 text-emerald-500" />
-                                        <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                                            Copied!
-                                        </span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Copy className="h-3.5 w-3.5" />
-                                        <span>Copy Code</span>
-                                    </>
-                                )}
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={handleEnterContest}
-                                className="flex-1 flex items-center justify-center gap-1.5 bg-[#87b2f4] hover:bg-[#729ee0] text-[#090a0f] font-mono text-xs font-medium py-2.5 px-3 rounded-[3px] transition-colors cursor-pointer"
-                            >
-                                <span>Join Contest &rarr;</span>
-                            </button>
-                        </div>
-                    </div>
+    return (
+        <Modal
+            open={isOpen}
+            onClose={onClose}
+            busy={createMutation.isPending}
+            eyebrow="Contest Room"
+            title={createdRoom ? 'Room created' : 'Create Quick Contest'}
+            description={
+                createdRoom
+                    ? 'Share this code. Everyone solves the same random problem; first to pass all tests wins.'
+                    : 'Everyone in the room gets the same random problem and 45 minutes. The first correct submission wins.'
+            }
+            footer={
+                createdRoom ? (
+                    <>
+                        <ModalButton onClick={handleCopyCode}>
+                            {copied ? 'Copied!' : 'Copy code'}
+                        </ModalButton>
+                        <ModalButton variant="primary" onClick={handleEnterContest}>
+                            Join contest
+                        </ModalButton>
+                    </>
                 ) : (
-                    /* Initial State: Contest Match Specifications & Create Button */
-                    <div className="space-y-4 font-mono text-xs">
-                        <div>
-                            <h3 className="text-sm font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
-                                Create Quick Contest
-                            </h3>
-                            <p className="text-[11px] text-[#64748b] dark:text-[#a09f9d] mt-0.5">
-                                Instantly generate a room with standard competitive settings.
-                            </p>
-                        </div>
+                    <ModalButton
+                        variant="primary"
+                        block
+                        disabled={createMutation.isPending}
+                        onClick={handleCreate}
+                    >
+                        {createMutation.isPending ? 'Creating room...' : 'Create Contest Room'}
+                    </ModalButton>
+                )
+            }
+        >
+            {createError && (
+                <div className="rounded-[3px] bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 font-mono text-xs p-2.5">
+                    {createError}
+                </div>
+            )}
 
-                        {/* Match Specifications Grid */}
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                            <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    Duration
-                                </div>
-                                <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
-                                    45 Minutes
-                                </div>
-                            </div>
-
-                            <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    Challenge
-                                </div>
-                                <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
-                                    1 Random Problem
-                                </div>
-                            </div>
-
-                            <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    Competitors
-                                </div>
-                                <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
-                                    Unlimited
-                                </div>
-                            </div>
-
-                            <div className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1">
-                                <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                    Win Rule
-                                </div>
-                                <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
-                                    First AC Wins
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="pt-2">
-                            <button
-                                type="button"
-                                onClick={handleCreate}
-                                disabled={createMutation.isPending}
-                                className="w-full flex items-center justify-center gap-2 bg-[#090a0f] dark:bg-white text-white dark:text-[#141414] hover:bg-[#27272a] dark:hover:bg-[#e8e8e6] font-mono text-xs py-2.5 px-4 rounded-[3px] transition-colors disabled:opacity-50 cursor-pointer font-medium"
-                            >
-                                {createMutation.isPending ? (
-                                    <>
-                                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                                        <span>Generating Contest Room...</span>
-                                    </>
-                                ) : (
-                                    <span>Create Contest Room</span>
-                                )}
-                            </button>
-                        </div>
+            {createdRoom ? (
+                <div className="rounded-[4px] bg-[#f8fafc] dark:bg-[#252423] py-5 text-center">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-[#64748b] dark:text-[#a09f9d]">
+                        Room code
                     </div>
-                )}
-            </div>
-        </div>,
-        document.body
+                    <div className="mt-1 font-mono text-3xl font-bold tracking-[0.25em] select-all">
+                        {createdRoom.code}
+                    </div>
+                </div>
+            ) : (
+                <div className="space-y-2">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-[#64748b] dark:text-[#a09f9d]">
+                        Rules
+                    </div>
+                    <ol className="space-y-1.5 font-mono text-[11px] leading-relaxed text-[#52525b] dark:text-[#a09f9d] list-decimal pl-4 marker:text-[#94a3b8] dark:marker:text-[#666666]">
+                        {CONTEST_RULES.map((rule) => (
+                            <li key={rule}>{rule}</li>
+                        ))}
+                    </ol>
+                    <p className="font-mono text-[11px] text-[#94a3b8] dark:text-[#777777]">
+                        Anyone with the room code can join.
+                    </p>
+                </div>
+            )}
+        </Modal>
     )
 }

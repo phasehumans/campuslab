@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createDuel, getApiErrorMessage, getDuel, leaveDuel } from '@/lib/api'
 import { useRoomSocket } from '@/lib/useRoomSocket'
+import { DUEL_RULES } from '@/lib/duel'
+import { Modal, ModalButton } from '@/components/ui/Modal'
 import { DuelSharePanel } from './DuelSharePanel'
 import type { ContestRoom } from '@/lib/types'
 
@@ -57,133 +58,84 @@ export function CreateDuelModal({ isOpen, onClose }: CreateDuelModalProps) {
 
     // Closing while waiting cancels the link, so no half-open duels are left behind
     const handleClose = useCallback(() => {
-        if (createMutation.isPending) return
         if (liveDuel && liveDuel.status === 'WAITING') {
             cancelMutation.mutate(liveDuel.code)
         }
         onClose()
-    }, [createMutation.isPending, liveDuel, cancelMutation, onClose])
+    }, [liveDuel, cancelMutation, onClose])
 
-    useEffect(() => {
-        if (!isOpen) return
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') handleClose()
-        }
-        window.addEventListener('keydown', onKey)
-        const prevOverflow = document.body.style.overflow
-        document.body.style.overflow = 'hidden'
-        return () => {
-            window.removeEventListener('keydown', onKey)
-            document.body.style.overflow = prevOverflow
-        }
-    }, [isOpen, handleClose])
+    const isWaiting = liveDuel?.status === 'WAITING'
+    const isCancelled = liveDuel?.status === 'CANCELLED'
 
-    if (!isOpen) return null
+    let title = 'Challenge a Friend'
+    let description: string | undefined =
+        'You and one friend get the same Easy or Medium problem and 30 minutes. The first correct submission wins.'
+    if (isWaiting) {
+        title = 'Waiting for your opponent'
+        description = undefined
+    } else if (isCancelled) {
+        title = 'Duel link closed'
+        description =
+            liveDuel?.finishReason === 'EXPIRED'
+                ? 'The link expired before anyone joined.'
+                : 'This duel was cancelled.'
+    }
 
-    const specs = [
-        { label: 'Duration', value: '30 Minutes' },
-        { label: 'Challenge', value: '1 Random Problem' },
-        { label: 'Players', value: '2 (1v1)' },
-        { label: 'Win Rule', value: 'First AC Wins' },
-    ]
-
-    return createPortal(
-        <div
-            onClick={(e) => {
-                if (e.target === e.currentTarget) handleClose()
-            }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 dark:bg-black/90 backdrop-blur-md p-4"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Challenge a friend to a duel"
-        >
-            <div className="w-full max-w-[440px] bg-white dark:bg-[#1e1e1e] border border-[#e2e8f0] dark:border-[#333333] rounded-[4px] p-6 shadow-2xl space-y-5 text-[#090a0f] dark:text-[#e8e8e6]">
-                <div className="flex items-center justify-between pb-3 border-b border-[#f0f2f5] dark:border-[#272727]">
-                    <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#87b2f4]">
-                        [1v1 Duel]
-                    </span>
-                    <button
-                        type="button"
-                        onClick={handleClose}
-                        className="font-mono text-[11px] text-[#94a3b8] hover:text-[#090a0f] dark:hover:text-white transition-colors px-1 cursor-pointer"
-                        aria-label={liveDuel ? 'Cancel duel and close' : 'Close'}
-                    >
-                        [x]
-                    </button>
-                </div>
-
-                {liveDuel?.status === 'CANCELLED' ? (
-                    <div className="space-y-4 font-mono text-xs text-center">
-                        <p className="text-[#64748b] dark:text-[#a09f9d]">
-                            {liveDuel.finishReason === 'EXPIRED'
-                                ? 'This duel link expired before anyone joined.'
-                                : 'This duel was cancelled.'}
-                        </p>
-                        <button
-                            type="button"
-                            onClick={() => setCreatedDuel(null)}
-                            className="w-full bg-[#090a0f] dark:bg-white text-white dark:text-[#141414] hover:bg-[#27272a] dark:hover:bg-[#e8e8e6] py-2.5 px-4 rounded-[3px] transition-colors cursor-pointer font-medium"
-                        >
-                            Create a new duel
-                        </button>
-                    </div>
-                ) : liveDuel ? (
-                    <DuelSharePanel
-                        duel={liveDuel}
-                        isCancelling={cancelMutation.isPending}
-                        onCancel={() =>
-                            cancelMutation.mutate(liveDuel.code, { onSettled: () => onClose() })
-                        }
-                    />
+    return (
+        <Modal
+            open={isOpen}
+            onClose={handleClose}
+            busy={createMutation.isPending}
+            eyebrow="1v1 Duel"
+            title={title}
+            description={description}
+            footer={
+                isWaiting ? undefined : isCancelled ? (
+                    <ModalButton variant="primary" block onClick={() => setCreatedDuel(null)}>
+                        Create a new duel
+                    </ModalButton>
                 ) : (
-                    <div className="space-y-4 font-mono text-xs">
-                        <div>
-                            <h3 className="text-sm font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
-                                Challenge a Friend
-                            </h3>
-                            <p className="text-[11px] text-[#64748b] dark:text-[#a09f9d] mt-0.5">
-                                Instantly generate a duel link with standard settings.
-                            </p>
-                        </div>
+                    <ModalButton
+                        variant="primary"
+                        block
+                        disabled={createMutation.isPending}
+                        onClick={() => createMutation.mutate()}
+                    >
+                        {createMutation.isPending ? 'Creating duel link...' : 'Create Duel Link'}
+                    </ModalButton>
+                )
+            }
+        >
+            {error && !liveDuel && (
+                <div className="rounded-[3px] bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 font-mono text-xs p-2.5">
+                    {error}
+                </div>
+            )}
 
-                        {error && (
-                            <div className="p-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 font-mono text-xs rounded-[2px]">
-                                {error}
-                            </div>
-                        )}
-
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                            {specs.map((spec) => (
-                                <div
-                                    key={spec.label}
-                                    className="p-3 rounded-[3px] border border-[#e2e8f0] dark:border-[#272727] bg-[#f8fafc] dark:bg-[#141414] space-y-1"
-                                >
-                                    <div className="text-[#64748b] dark:text-[#a09f9d] text-[10px] uppercase tracking-wider">
-                                        {spec.label}
-                                    </div>
-                                    <div className="font-semibold text-[#090a0f] dark:text-[#e8e8e6]">
-                                        {spec.value}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="pt-2">
-                            <button
-                                type="button"
-                                onClick={() => createMutation.mutate()}
-                                disabled={createMutation.isPending}
-                                className="w-full flex items-center justify-center gap-2 bg-[#090a0f] dark:bg-white text-white dark:text-[#141414] hover:bg-[#27272a] dark:hover:bg-[#e8e8e6] font-mono text-xs py-2.5 px-4 rounded-[3px] transition-colors disabled:opacity-50 cursor-pointer font-medium"
-                            >
-                                {createMutation.isPending
-                                    ? 'Generating Duel Link...'
-                                    : 'Create Duel Link'}
-                            </button>
-                        </div>
+            {isWaiting && liveDuel ? (
+                <DuelSharePanel
+                    duel={liveDuel}
+                    hideStatus
+                    isCancelling={cancelMutation.isPending}
+                    onCancel={() =>
+                        cancelMutation.mutate(liveDuel.code, { onSettled: () => onClose() })
+                    }
+                />
+            ) : !isCancelled ? (
+                <div className="space-y-2">
+                    <div className="font-mono text-[10px] uppercase tracking-wider text-[#64748b] dark:text-[#a09f9d]">
+                        Rules
                     </div>
-                )}
-            </div>
-        </div>,
-        document.body
+                    <ol className="space-y-1.5 font-mono text-[11px] leading-relaxed text-[#52525b] dark:text-[#a09f9d] list-decimal pl-4 marker:text-[#94a3b8] dark:marker:text-[#666666]">
+                        {DUEL_RULES.map((rule) => (
+                            <li key={rule}>{rule}</li>
+                        ))}
+                    </ol>
+                    <p className="font-mono text-[11px] text-[#94a3b8] dark:text-[#777777]">
+                        You'll get a link and a code to send to your friend.
+                    </p>
+                </div>
+            ) : null}
+        </Modal>
     )
 }

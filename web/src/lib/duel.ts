@@ -13,26 +13,26 @@ export function duelDifficultyLabel(d: DuelDifficulty | null | undefined) {
     return d ? DUEL_DIFFICULTY_LABELS[d] : 'Easy or Medium'
 }
 
+/** Shown when creating a duel and when a friend opens the challenge link */
+export const DUEL_RULES = [
+    'Fullscreen is required for the whole duel.',
+    'Leaving the window once is a warning. Twice and you lose.',
+    'Pasting into the editor is blocked.',
+    "If time runs out and nobody solves it, it's a draw.",
+]
+
 export function duelUrl(code: string) {
     return `${window.location.origin}/duel/${code}`
 }
 
-export function duelShareMessage(duel: ContestRoom) {
-    return (
-        `⚔️ I challenge you to a coding duel on CampusLab! ` +
-        `${duelDifficultyLabel(duel.difficulty)} · ${duel.timeLimitMinutes} min. ` +
-        `First to solve wins. Accept here: ${duelUrl(duel.code)}`
-    )
-}
-
-export function whatsappShareUrl(message: string) {
-    return `https://wa.me/?text=${encodeURIComponent(message)}`
-}
-
-/** Milliseconds to add to Date.now() to approximate the server clock. */
-export function serverClockOffset(duel: ContestRoom | undefined) {
+/**
+ * Milliseconds to add to Date.now() to approximate the server clock.
+ * `receivedAt` is when the response carrying `serverNow` arrived (e.g. React Query's
+ * dataUpdatedAt); measuring against render time instead would freeze the countdown.
+ */
+export function serverClockOffset(duel: ContestRoom | undefined, receivedAt: number) {
     const server = parseUtcDate(duel?.serverNow)
-    return server ? server - Date.now() : 0
+    return server && receivedAt ? server - receivedAt : 0
 }
 
 export type DuelOutcome = 'won' | 'lost' | 'draw'

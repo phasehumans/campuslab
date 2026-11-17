@@ -32,7 +32,7 @@ public:
     using Broadcaster = std::function<void(const std::string& room_code, const json& msg)>;
 
     static constexpr int LOBBY_TTL_MINUTES = 30;
-    static constexpr int COUNTDOWN_SECONDS = 3;
+    static constexpr int COUNTDOWN_SECONDS = 5;  // 5 4 3 2 1 GO (keep in sync with DuelPage)
     static constexpr int MAX_VIOLATIONS = Integrity::MAX_VIOLATIONS;  // 1st = warning, 2nd = loss
     static constexpr int PENDING_GRACE_SECONDS = 60;  // stuck judge jobs stop blocking after this
     static constexpr int MAX_OPEN_DUELS_PER_USER = 5;

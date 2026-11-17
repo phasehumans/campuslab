@@ -29,10 +29,10 @@ export class ErrorBoundary extends Component<Props, State> {
             return (
                 <div className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-[#141414] text-[#090a0f] dark:text-[#e8e8e6] p-4 transition-colors font-sans selection:bg-[#87b2f4] selection:text-[#0a1128]">
                     <div className="max-w-md w-full border border-[#e2e8f0] dark:border-[#333333] bg-white dark:bg-[#1e1e1e] p-6 rounded-[3px] shadow-[0_1px_2px_rgba(0,0,0,0.02)] space-y-4 text-center transition-colors">
-                        <div className="flex items-center justify-between font-mono text-[11px] text-[#64748b] dark:text-[#a09f9d] border-b border-[#f0f2f5] dark:border-[#272727] pb-2">
+                        <div className="flex items-center justify-between font-mono text-[11px] text-[#64748b] dark:text-[#a09f9d] pb-2">
                             <span className="uppercase tracking-wider font-medium flex items-center gap-1.5 text-red-600 dark:text-red-400">
                                 <AlertTriangle className="h-3.5 w-3.5" />
-                                [Application Error]
+                                Application Error
                             </span>
                             <span className="text-[10px] text-[#94a3b8] dark:text-[#a09f9d]">
                                 500

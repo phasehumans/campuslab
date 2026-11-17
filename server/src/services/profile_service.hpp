@@ -75,13 +75,13 @@ public:
             }
         });
 
-        // Recent 10 submissions with problem details
+        // Latest 3 submissions with problem details (the profile panel shows exactly 3)
         auto recent_subs = txn.exec_params(
             "SELECT s.id, s.\"problemId\" AS problem_id, s.status, s.language, s.\"createdAt\"::text AS created_at, p.title, p.difficulty "
             "FROM \"Submission\" s "
             "JOIN \"Problem\" p ON s.\"problemId\" = p.id "
             "WHERE s.\"userId\" = $1 "
-            "ORDER BY s.\"createdAt\" DESC LIMIT 10",
+            "ORDER BY s.\"createdAt\" DESC LIMIT 3",
             user_id
         );
 
@@ -101,6 +101,22 @@ public:
             });
         }
 
+        // Last 30 IST days of activity (today included): distinct problems accepted per day
+        auto today_rows = txn.exec("SELECT (NOW() AT TIME ZONE 'Asia/Kolkata')::date::text AS today");
+        auto activity_rows = txn.exec_params(
+            "SELECT ((\"createdAt\" AT TIME ZONE 'UTC') AT TIME ZONE 'Asia/Kolkata')::date::text AS day, "
+            "COUNT(DISTINCT \"problemId\") AS solved "
+            "FROM \"Submission\" "
+            "WHERE \"userId\" = $1 AND status = 'Accepted' "
+            "AND \"createdAt\" >= ((((NOW() AT TIME ZONE 'Asia/Kolkata')::date - 29)::timestamp AT TIME ZONE 'Asia/Kolkata')::timestamp) "
+            "GROUP BY 1 ORDER BY 1",
+            user_id
+        );
+        json activity_days = json::array();
+        for (const auto& r : activity_rows) {
+            activity_days.push_back({{"date", r["day"].as<std::string>()}, {"count", r["solved"].as<int>()}});
+        }
+
         json profile_data = {
             {"user", {
                 {"id", user_id},
@@ -116,7 +132,11 @@ public:
                 {"byDifficulty", by_diff_arr}
             }},
             {"recentSubmissions", recent_subs_arr},
-            {"duels", DuelService::record_for(txn, user_id)}
+            {"duels", DuelService::record_for(txn, user_id)},
+            {"activity", {
+                {"today", today_rows[0]["today"].as<std::string>()},
+                {"days", activity_days}
+            }}
         };
 
         return profile_data;

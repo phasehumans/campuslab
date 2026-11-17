@@ -28,7 +28,7 @@ export function SolveScreenSkeleton({ backPath = '/' }: SolveScreenSkeletonProps
                 {/* Right: Actions Skeleton (Run & Submit) */}
                 <div className="flex items-center gap-1.5 sm:gap-2">
                     <div className="flex items-center gap-1 sm:gap-1.5 bg-[#252423] text-[#a09f9d] border border-[#333333] px-2.5 sm:px-3.5 py-1.5 rounded-[2px] font-mono text-xs font-medium opacity-80">
-                        <Play className="h-3.5 w-3.5 text-[#10b981] fill-[#10b981]" />
+                        <Play className="h-3.5 w-3.5 text-emerald-500 fill-emerald-500" />
                         <span>Run</span>
                     </div>
                     <div className="flex items-center gap-1 sm:gap-1.5 bg-[#87b2f4] text-[#141414] px-3 sm:px-4 py-1.5 rounded-[2px] font-mono text-xs font-semibold opacity-80">
@@ -57,7 +57,7 @@ export function SolveScreenSkeleton({ backPath = '/' }: SolveScreenSkeletonProps
                 {/* Left Split Panel: Problem Description Card (100% on mobile, 45% on desktop) */}
                 <div className="flex flex-col h-full bg-[#191919] rounded-[3px] border border-[#333333] overflow-hidden w-full md:w-[45%] md:min-w-[280px]">
                     {/* Header Tab Bar */}
-                    <div className="flex items-center justify-between bg-[#191919] px-2.5 py-1.5 border-b border-[#333333] font-mono text-xs shrink-0 select-none">
+                    <div className="flex items-center justify-between bg-[#191919] px-2.5 py-1.5 font-mono text-xs shrink-0 select-none">
                         <div className="flex items-center gap-1">
                             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[3px] bg-[#252423] text-[#e8e8e6] font-medium border border-[#333333]">
                                 <FileText className="h-3.5 w-3.5 text-[#87b2f4]" />
@@ -72,7 +72,7 @@ export function SolveScreenSkeleton({ backPath = '/' }: SolveScreenSkeletonProps
                     {/* Description Content Skeleton */}
                     <div className="flex-1 overflow-y-auto p-4 sm:p-5 bg-[#191919] space-y-5 animate-pulse">
                         {/* Title & Metadata row */}
-                        <div className="space-y-2 pb-4 border-b border-[#2e2e2e]">
+                        <div className="space-y-2 pb-4">
                             <div className="h-6 w-48 sm:w-64 bg-[#282828] rounded-[2px]" />
                             <div className="flex items-center gap-2 pt-1 font-mono text-xs">
                                 <div className="h-3.5 w-12 bg-[#282828] rounded-[2px]" />

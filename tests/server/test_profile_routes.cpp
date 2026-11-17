@@ -317,6 +317,45 @@ int main() {
         TEST_ASSERT(!opt4.has_value(), "Direct service lookup for SQLi ID safely returns nullopt");
     }
 
+    // -------------------------------------------------------------
+    // Part 6: Activity grid and duel record
+    // -------------------------------------------------------------
+    std::cout << "\n[6] Testing activity and duel record..." << std::endl;
+    {
+        OAuthUser rank_user;
+        {
+            auto g = pool.acquire();
+            rank_user = UserRepository::find_or_create_oauth_user(g.get(), "rank_prof_" + std::to_string(ts) + "@campuslab.io", "Rank Dev", "", "github");
+        }
+        std::string rank_token = AuthHelper::sign_jwt(rank_user.id, rank_user.role, cfg.jwt_secret);
+
+        auto b0 = json::parse(get_resp("/api/v1/profile/me", rank_token).body)["profile"];
+        TEST_ASSERT(b0["activity"]["today"].is_string(), "Activity reports today's IST date");
+        TEST_ASSERT(b0["activity"]["days"].empty(), "No activity before any solve");
+        TEST_ASSERT(b0["duels"]["wins"] == 0 && b0["duels"]["losses"] == 0, "Duel record present even with no duels");
+
+        std::string pid;
+        {
+            auto g = pool.acquire();
+            pqxx::work txn(g.get());
+            pid = txn.exec("SELECT id FROM \"Problem\" ORDER BY id LIMIT 1")[0][0].as<std::string>();
+            txn.exec_params(
+                "INSERT INTO \"ProblemSolved\" (id, \"userId\", \"problemId\", \"createdAt\", \"updatedAt\") "
+                "VALUES (gen_random_uuid(), $1, $2, NOW(), NOW()) ON CONFLICT DO NOTHING", rank_user.id, pid);
+            for (int i = 0; i < 2; ++i) {
+                txn.exec_params(
+                    "INSERT INTO \"Submission\" (id, \"userId\", \"problemId\", \"sourceCode\", language, status, \"createdAt\", \"updatedAt\") "
+                    "VALUES (gen_random_uuid(), $1, $2, '\"x\"'::jsonb, 'C++ (GCC 13)', 'Accepted', NOW(), NOW())", rank_user.id, pid);
+            }
+            txn.commit();
+        }
+
+        auto b1 = json::parse(get_resp("/api/v1/profile/me", rank_token).body)["profile"];
+        TEST_ASSERT(b1["activity"]["days"].size() == 1, "Today appears in the activity grid");
+        TEST_ASSERT(b1["activity"]["days"][0]["date"] == b1["activity"]["today"], "Activity day uses the IST date");
+        TEST_ASSERT(b1["activity"]["days"][0]["count"] == 1, "Activity counts distinct problems, not submissions");
+    }
+
     std::cout << "\n==========================================================" << std::endl;
     std::cout << " ALL PROFILE FEATURE & ROUTE UNIT TESTS PASSED (100%)!    " << std::endl;
     std::cout << "==========================================================" << std::endl;

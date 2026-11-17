@@ -99,7 +99,7 @@ export function TestResultPanel({
         return (
             <div className="space-y-3.5 font-mono text-xs">
                 {/* Header Verdict & Stats Row */}
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#282828] pb-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5">
                     <span
                         className={cn(
                             'text-sm font-semibold',
@@ -236,7 +236,7 @@ export function TestResultPanel({
     return (
         <div className="space-y-3 font-mono text-xs">
             {/* Top Summary Header */}
-            <div className="flex items-center justify-between border-b border-[#282828] pb-2.5">
+            <div className="flex items-center justify-between pb-2.5">
                 <span
                     className={cn(
                         'text-sm font-semibold',

@@ -281,9 +281,10 @@ int main() {
         auto leak = get("/api/v1/contests/rooms/" + code, c_tok);
         TEST_ASSERT(json::parse(leak.body)["room"]["questions"].empty(), "Contest route does not leak duel problem early");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(3300));
+        std::this_thread::sleep_for(std::chrono::milliseconds((DuelService::COUNTDOWN_SECONDS * 1000) + 300));
         auto g = get("/api/v1/duels/" + code, a_tok);
         auto dg = json::parse(g.body)["duel"];
+        if (dg["hasStarted"] != true) std::cerr << "DEBUG duel after sleep: " << dg.dump().substr(0, 600) << std::endl;
         TEST_ASSERT(dg["hasStarted"] == true, "Countdown elapsed");
         TEST_ASSERT(dg["questions"].size() == 1, "Exactly one problem revealed");
         TEST_ASSERT(dg["questions"][0]["difficulty"] == "Medium", "Problem matches chosen difficulty");
