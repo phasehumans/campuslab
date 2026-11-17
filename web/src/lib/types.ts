@@ -1,6 +1,14 @@
 type Difficulty = 'Easy' | 'Medium' | 'Hard'
 type ProblemStatus = 'Solved' | 'Attempted' | 'Unsolved'
-export type EditorLanguage = 'cpp'
+export type EditorLanguage =
+    | 'cpp'
+    | 'c'
+    | 'python'
+    | 'javascript'
+    | 'typescript'
+    | 'lua'
+    | 'perl'
+    | 'ruby'
 
 export type User = {
     id: string

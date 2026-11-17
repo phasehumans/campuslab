@@ -12,6 +12,7 @@
 #include <hiredis/hiredis.h>
 #include "json.hpp"
 #include "types.hpp"
+#include "languages.hpp"
 #include "../db/connection_pool.hpp"
 #include "../models/models.hpp"
 #include "../repositories/submission_repository.hpp"
@@ -28,6 +29,10 @@ public:
     // Invoked after a submission made inside a room has been judged (used by duels).
     std::function<void(const std::string& contest_code, const std::string& user_id, const json& submission)> on_contest_submission;
 
+    // How long a request waits for the judge (polls every 500 ms). 50 s covers slow
+    // languages with 50 tests and stays under nginx's default 60 s proxy timeout.
+    static constexpr int RESULT_WAIT_POLLS = 100;
+
     struct RunResult {
         bool success;
         int status_code;
@@ -43,7 +48,7 @@ public:
         json execution;
     };
 
-    RunResult run_code(const std::string& user_id, const std::string& source_code, const std::vector<Testcase>& testcases) {
+    RunResult run_code(const std::string& user_id, const std::string& source_code, const std::vector<Testcase>& testcases, const std::string& language = "cpp") {
         if (source_code.empty()) {
             return {false, 400, "Source code is required", nullptr};
         }
@@ -52,6 +57,7 @@ public:
         JudgeJob job;
         job.submission_id = job_id;
         job.type = "RUN";
+        job.language = language;
         job.user_id = user_id;
         job.source_code = source_code;
         job.testcases = testcases;
@@ -71,7 +77,7 @@ public:
         // Poll for result key job_result:<job_id> (up to 15 seconds)
         std::string result_key = "job_result:" + job_id;
         std::string result_str;
-        for (int i = 0; i < 30; ++i) {
+        for (int i = 0; i < RESULT_WAIT_POLLS; ++i) {
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
             redisReply* get_res = (redisReply*)redisCommand(redis, "GET %s", result_key.c_str());
             if (get_res && get_res->type == REDIS_REPLY_STRING) {
@@ -89,7 +95,7 @@ public:
 
         auto res_json = json::parse(result_str);
         json exec_data = {
-            {"language", "C++ (GCC 13)"},
+            {"language", language_display_name(language)},
             {"allPassed", res_json.value("allPassed", false)},
             {"results", res_json.value("results", json::array())}
         };
@@ -97,7 +103,7 @@ public:
         return {true, 200, "Code executed successfully", exec_data};
     }
 
-    SubmitResult submit_code(const std::string& user_id, const std::string& problem_id, const std::string& source_code, const std::string& contest_code, std::optional<int> user_solve_time = std::nullopt) {
+    SubmitResult submit_code(const std::string& user_id, const std::string& problem_id, const std::string& source_code, const std::string& contest_code, std::optional<int> user_solve_time = std::nullopt, const std::string& language = "cpp") {
         if (problem_id.empty() || source_code.empty()) {
             return {false, 400, "Missing problemId or sourceCode", nullptr, nullptr};
         }
@@ -172,12 +178,13 @@ public:
         std::string submission_id;
         {
             auto conn_guard = db_pool_.acquire();
-            submission_id = SubmissionRepository::create_submission(conn_guard.get(), user_id, problem_id, source_code, user_solve_time, contest_code);
+            submission_id = SubmissionRepository::create_submission(conn_guard.get(), user_id, problem_id, source_code, user_solve_time, contest_code, language);
         }
 
         JudgeJob job;
         job.submission_id = submission_id;
         job.type = "SUBMIT";
+        job.language = language;
         job.user_id = user_id;
         job.problem_id = problem_id;
         job.source_code = source_code;
@@ -199,7 +206,7 @@ public:
         // Wait for worker result (up to 20 seconds)
         std::string result_key = "job_result:" + submission_id;
         std::string result_str;
-        for (int i = 0; i < 40; ++i) {
+        for (int i = 0; i < RESULT_WAIT_POLLS; ++i) {
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
             redisReply* get_res = (redisReply*)redisCommand(redis, "GET %s", result_key.c_str());
             if (get_res && get_res->type == REDIS_REPLY_STRING) {
@@ -334,7 +341,7 @@ public:
         }
 
         json exec_data = {
-            {"language", "C++ (GCC 13)"},
+            {"language", language_display_name(language)},
             {"allPassed", accepted},
             {"results", exec_results}
         };

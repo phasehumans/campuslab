@@ -11,7 +11,7 @@ namespace campuslab {
 
 class SubmissionRepository {
 public:
-    static std::string create_submission(pqxx::connection& conn, const std::string& user_id, const std::string& problem_id, const std::string& source_code, std::optional<int> user_solve_time = std::nullopt, const std::string& contest_code = "") {
+    static std::string create_submission(pqxx::connection& conn, const std::string& user_id, const std::string& problem_id, const std::string& source_code, std::optional<int> user_solve_time = std::nullopt, const std::string& contest_code = "", const std::string& language = "cpp") {
         pqxx::work txn(conn);
         std::string time_col = user_solve_time.has_value() ? ", \"userSolveTime\"" : "";
         std::string time_val = user_solve_time.has_value() ? ", " + std::to_string(*user_solve_time) : "";
@@ -20,9 +20,9 @@ public:
         // so duel ordering reflects when the server actually received each submission.
         auto rows = txn.exec_params(
             "INSERT INTO \"Submission\" (\"id\", \"userId\", \"problemId\", \"sourceCode\", \"language\", \"status\"" + time_col + ", \"contestCode\", \"createdAt\", \"updatedAt\") "
-            "VALUES (gen_random_uuid(), $1, $2, $3, 'C++ (GCC 13)', 'Pending'" + time_val + ", NULLIF($4, ''), clock_timestamp(), clock_timestamp()) "
+            "VALUES (gen_random_uuid(), $1, $2, $3, $5, 'Pending'" + time_val + ", NULLIF($4, ''), clock_timestamp(), clock_timestamp()) "
             "RETURNING id",
-            user_id, problem_id, json(source_code).dump(), contest_code
+            user_id, problem_id, json(source_code).dump(), contest_code, language
         );
         txn.commit();
         return rows[0]["id"].as<std::string>();

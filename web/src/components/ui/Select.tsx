@@ -15,13 +15,15 @@ interface SelectProps {
     /** Accessible name, e.g. "Topic" */
     label: string
     className?: string
+    /** Tighter rows and a shorter list, for dense toolbars */
+    compact?: boolean
 }
 
 /**
  * Minimal dropdown matching the app's mono style. Keyboard: Enter/Space/Arrow keys
  * to open and move, Enter to choose, Escape to close, type a letter to jump.
  */
-export function Select({ value, options, onChange, label, className }: SelectProps) {
+export function Select({ value, options, onChange, label, className, compact = false }: SelectProps) {
     const [open, setOpen] = useState(false)
     const [activeIndex, setActiveIndex] = useState(0)
     const rootRef = useRef<HTMLDivElement>(null)
@@ -145,7 +147,10 @@ export function Select({ value, options, onChange, label, className }: SelectPro
                     id={listId}
                     role="listbox"
                     aria-label={label}
-                    className="absolute right-0 sm:right-auto sm:left-0 z-30 mt-1 min-w-full w-max max-w-[260px] max-h-64 overflow-y-auto py-1 bg-white dark:bg-[#1e1e1e] border border-[#e2e8f0] dark:border-[#333333] rounded-[3px] shadow-lg font-mono text-xs"
+                    className={cn(
+                        'absolute right-0 sm:right-auto sm:left-0 z-30 mt-1 min-w-full w-max max-w-[260px] overflow-y-auto py-1 bg-white dark:bg-[#1e1e1e] border border-[#e2e8f0] dark:border-[#333333] rounded-[3px] shadow-lg font-mono text-xs',
+                        compact ? 'max-h-48' : 'max-h-64'
+                    )}
                 >
                     {options.map((option, index) => {
                         const isSelected = option.value === value
@@ -159,7 +164,8 @@ export function Select({ value, options, onChange, label, className }: SelectPro
                                 onMouseDown={(e) => e.preventDefault()}
                                 onClick={() => choose(index)}
                                 className={cn(
-                                    'px-2.5 py-1.5 cursor-pointer truncate',
+                                    'px-2.5 cursor-pointer truncate',
+                                    compact ? 'py-1' : 'py-1.5',
                                     index === activeIndex && 'bg-[#f1f5f9] dark:bg-[#252423]',
                                     option.className ??
                                         (isSelected

@@ -7,11 +7,14 @@
 #include <cstdlib>
 #include <iostream>
 #include "../sandbox/isolate.hpp"
+#include "../languages.hpp"
 
 namespace campuslab {
 
 namespace fs = std::filesystem;
 
+// Host-side C++ compile. Only used by the judge test suites to build fixtures;
+// the worker compiles student code inside the sandbox (SandboxCompiler below).
 class CppCompiler {
 public:
     struct CompileResult {
@@ -66,6 +69,60 @@ public:
             res.error_message = err_output;
         }
 
+        return res;
+    }
+};
+
+// Compiles (or syntax-checks) student code inside an already-initialised isolate box,
+// so the compiler can't read server files or the judge's environment.
+class SandboxCompiler {
+public:
+    struct Result {
+        bool success = false;
+        std::string error_message;
+    };
+
+    static Result compile(int box_id, const std::string& box_dir, const LanguageSpec& spec,
+                          const std::string& source_code, bool use_cg) {
+        Result res;
+        {
+            std::ofstream ofs(box_dir + "/box/" + spec.source_file);
+            ofs << source_code;
+        }
+        if (spec.compile_argv.empty()) {
+            res.success = true;
+            return res;
+        }
+
+        IsolateSandbox::RunLimits lim;
+        lim.argv = spec.compile_argv;
+        lim.time_sec = 10.0;                     // CPU time
+        lim.memory_kb = 786432;                  // 768 MB for the compiler (cgroups)
+        lim.address_space_kb = 4LL * 1024 * 1024; // compilers/runtimes reserve lots of address space
+        lim.processes = 64;                      // g++ spawns cc1plus, as, ld
+        lim.use_cg = use_cg;
+        lim.env = spec.env;
+
+        int exit_code = 0;
+        auto meta = IsolateSandbox::run_in_box(box_id, lim, 20.0, 65536, "", "compile.txt", "", exit_code);
+        std::string output = IsolateSandbox::read_file_contents(box_dir + "/box/compile.txt");
+
+        std::string status = meta["status"];
+        bool ok = status.empty() && (meta["exitcode"].empty() || meta["exitcode"] == "0");
+        if (ok) {
+            res.success = true;
+            return res;
+        }
+
+        if (status == "TO") {
+            output = "Compilation timed out after 10 seconds.\n" + output;
+        } else if (output.empty()) {
+            output = "Compilation failed" + (meta["message"].empty() ? std::string() : (": " + meta["message"]));
+        }
+        if (output.size() > 10240) {
+            output = output.substr(0, 10240) + "\n... [compiler output truncated]";
+        }
+        res.error_message = output;
         return res;
     }
 };

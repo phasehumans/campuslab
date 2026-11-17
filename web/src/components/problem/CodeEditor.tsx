@@ -1,10 +1,9 @@
 import { Component, useMemo, type ReactNode } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
-import { cpp } from '@codemirror/lang-cpp'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
-import { LANGUAGES } from '@/data/code'
+import { languageInfo } from '@/data/code'
 
 interface CodeEditorProps {
     code: string
@@ -111,8 +110,7 @@ export function CodeEditor({
     }, [readOnly])
 
     const extensions = useMemo(() => {
-        const langConfig = LANGUAGES.find((l) => l.id === language)
-        return [langConfig?.ext() ?? cpp(), ...pasteFilter, ...readOnlyExtension]
+        return [languageInfo(language).ext(), ...pasteFilter, ...readOnlyExtension]
     }, [language, pasteFilter, readOnlyExtension])
 
     return (

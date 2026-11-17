@@ -482,7 +482,7 @@ export function SolveScreenNavbar({
 
                     {/* Reset Code Button */}
                     {handleResetCode && (
-                        <Tooltip content="Reset code to starter template" position="bottom">
+                        <Tooltip content="Clear the editor" position="bottom">
                             <button
                                 type="button"
                                 onClick={handleResetCode}

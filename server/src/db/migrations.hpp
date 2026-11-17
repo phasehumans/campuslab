@@ -42,7 +42,10 @@ public:
             // Submission -> room tagging (duel winner = earliest received Accepted)
             "ALTER TABLE public.\"Submission\" ADD COLUMN IF NOT EXISTS \"contestCode\" text",
             "CREATE INDEX IF NOT EXISTS \"Submission_contestCode_idx\" ON public.\"Submission\" USING btree (\"contestCode\")",
-            "CREATE INDEX IF NOT EXISTS \"Submission_problemId_createdAt_idx\" ON public.\"Submission\" USING btree (\"problemId\", \"createdAt\")"
+            "CREATE INDEX IF NOT EXISTS \"Submission_problemId_createdAt_idx\" ON public.\"Submission\" USING btree (\"problemId\", \"createdAt\")",
+
+            // Multi-language: submissions store a language id; older rows were all C++
+            "UPDATE public.\"Submission\" SET language = 'cpp' WHERE language = 'C++ (GCC 13)'"
         };
 
         auto guard = pool.acquire();

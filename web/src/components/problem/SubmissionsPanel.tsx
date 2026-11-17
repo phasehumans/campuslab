@@ -118,7 +118,8 @@ export function SubmissionsPanel({
         verdictStatus = 'Accepted'
         verdictTone = 'ok'
     } else if (failedItem) {
-        failedTestNum = failedItem.testcase < 1 ? failedItem.testcase + 1 : failedItem.testcase
+        // The judge numbers test cases from 0; show them from 1.
+        failedTestNum = failedItem.testcase + 1
         const rawStatus = failedItem.status || 'Wrong Answer'
 
         // Check if failed on a system (hidden) testcase beyond the public examples
@@ -216,8 +217,7 @@ export function SubmissionsPanel({
                             !compileErrorItem &&
                             (isCodeforcesHidden ? (
                                 <p className="pl-4 text-[11px] text-[#777777] leading-relaxed">
-                                    Test {failedTestNum} is a hidden test, so its data isn't shown.
-                                    Check edge cases, boundaries and integer overflow.
+                                    Test {failedTestNum} is hidden.
                                 </p>
                             ) : (
                                 <div className="space-y-3">

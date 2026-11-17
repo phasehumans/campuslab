@@ -41,9 +41,73 @@ public:
         return result;
     }
 
-    static bool init_box(int box_id, std::string& box_dir) {
+    // Limits for one program run inside a box.
+    struct RunLimits {
+        std::vector<std::string> argv{"/box/prog"};
+        double time_sec = 1.0;
+        int memory_kb = 262144;           // cgroup memory limit, or address-space limit without cgroups
+        long long address_space_kb = 0;   // address-space cap used instead when cgroups are off (0 = memory_kb)
+        int processes = 1;
+        bool use_cg = false;
+        int stack_kb = 0;                 // 0 = isolate default
+        std::vector<std::string> env;
+    };
+
+    static std::string shell_quote(const std::string& s) {
+        std::string out = "'";
+        for (char c : s) {
+            if (c == '\'') out += "'\\''";
+            else out += c;
+        }
+        out += "'";
+        return out;
+    }
+
+    // Runs argv inside an initialised box and returns isolate's meta file as a map.
+    static std::map<std::string, std::string> run_in_box(
+        int box_id,
+        const RunLimits& lim,
+        double wall_sec,
+        int fsize_kb,
+        const std::string& stdin_file,     // relative to /box, "" = none
+        const std::string& stdout_file,    // relative to /box
+        const std::string& stderr_file,    // relative to /box, "" = merge into stdout
+        int& exit_code
+    ) {
+        std::string meta_path = "/tmp/meta_" + std::to_string(box_id) + ".txt";
+        fs::remove(meta_path);
+
+        std::string cmd = "isolate --box-id=" + std::to_string(box_id);
+        if (lim.use_cg) {
+            cmd += " --cg --cg-mem=" + std::to_string(lim.memory_kb);
+        } else {
+            long long as_kb = lim.address_space_kb > 0 ? lim.address_space_kb : lim.memory_kb;
+            cmd += " --mem=" + std::to_string(as_kb);
+        }
+        cmd += " --time=" + std::to_string(lim.time_sec) +
+               " --wall-time=" + std::to_string(wall_sec) +
+               " --fsize=" + std::to_string(fsize_kb) +
+               " --processes=" + std::to_string(lim.processes) +
+               " --silent --meta=" + meta_path +
+               " --env=PATH=/usr/local/bin:/usr/bin:/bin --env=HOME=/box --env=LANG=C.UTF-8";
+        if (lim.stack_kb > 0) cmd += " --stack=" + std::to_string(lim.stack_kb);
+        for (const auto& e : lim.env) cmd += " --env=" + shell_quote(e);
+        if (!stdin_file.empty()) cmd += " --stdin=" + shell_quote(stdin_file);
+        cmd += " --stdout=" + shell_quote(stdout_file);
+        if (stderr_file.empty()) cmd += " --stderr-to-stdout";
+        else cmd += " --stderr=" + shell_quote(stderr_file);
+        cmd += " --run --";
+        for (const auto& a : lim.argv) cmd += " " + shell_quote(a);
+
+        exec_cmd(cmd, exit_code);
+        auto meta = parse_meta(meta_path);
+        fs::remove(meta_path);
+        return meta;
+    }
+
+    static bool init_box(int box_id, std::string& box_dir, bool use_cg = false) {
         int exit_code = 0;
-        std::string cmd = "isolate --box-id=" + std::to_string(box_id) + " --init";
+        std::string cmd = "isolate --box-id=" + std::to_string(box_id) + (use_cg ? " --cg" : "") + " --init";
         std::string out = exec_cmd(cmd, exit_code);
         if (exit_code != 0) {
             std::cerr << "[Sandbox] isolate --init failed: " << out << std::endl;
@@ -56,9 +120,9 @@ public:
         return true;
     }
 
-    static bool cleanup_box(int box_id) {
+    static bool cleanup_box(int box_id, bool use_cg = false) {
         int exit_code = 0;
-        std::string cmd = "isolate --box-id=" + std::to_string(box_id) + " --cleanup";
+        std::string cmd = "isolate --box-id=" + std::to_string(box_id) + (use_cg ? " --cg" : "") + " --cleanup";
         exec_cmd(cmd, exit_code);
         return exit_code == 0;
     }
@@ -107,6 +171,7 @@ public:
         return true;
     }
 
+    // Original C++-only signature, kept for the existing judge test suites.
     static ExecutionResultItem run_testcase(
         int box_id,
         const std::string& box_dir,
@@ -116,46 +181,44 @@ public:
         double time_limit_sec,
         int memory_limit_kb
     ) {
+        RunLimits lim;
+        lim.argv = {"/box/prog"};
+        lim.time_sec = time_limit_sec;
+        lim.memory_kb = memory_limit_kb;
+        return run_testcase(box_id, box_dir, tc_index, input, expected_output, lim);
+    }
+
+    static ExecutionResultItem run_testcase(
+        int box_id,
+        const std::string& box_dir,
+        int tc_index,
+        const std::string& input,
+        const std::optional<std::string>& expected_output,
+        const RunLimits& lim
+    ) {
         ExecutionResultItem item;
         item.testcase = tc_index;
         item.input = input;
         item.expected_output = expected_output;
 
         // Write stdin to box
-        std::string stdin_file = box_dir + "/box/stdin.txt";
         {
-            std::ofstream ofs(stdin_file);
+            std::ofstream ofs(box_dir + "/box/stdin.txt");
             ofs << input;
         }
 
-        std::string meta_path = "/tmp/meta_" + std::to_string(box_id) + ".txt";
-        fs::remove(meta_path);
-
-        double wall_time = time_limit_sec * 2.0 + 1.0;
-        std::string run_cmd = "isolate --box-id=" + std::to_string(box_id) +
-            " --time=" + std::to_string(time_limit_sec) +
-            " --wall-time=" + std::to_string(wall_time) +
-            " --mem=" + std::to_string(memory_limit_kb) +
-            " --fsize=10240" +
-            " --processes=1" +
-            " --silent" +
-            " --meta=" + meta_path +
-            " --stdin=stdin.txt" +
-            " --stdout=stdout.txt" +
-            " --stderr=stderr.txt" +
-            " --run -- /box/prog";
-
         int exit_code = 0;
-        exec_cmd(run_cmd, exit_code);
-
-        auto meta = parse_meta(meta_path);
-        fs::remove(meta_path);
+        double wall_time = lim.time_sec * 2.0 + 1.0;
+        auto meta = run_in_box(box_id, lim, wall_time, 10240, "stdin.txt", "stdout.txt", "stderr.txt", exit_code);
+        const int memory_limit_kb = lim.memory_kb;
 
         std::string status_code = meta["status"];
         std::string time_str = meta["time"];
-        std::string memory_str = meta["max-rss"];
+        // With cgroups, cg-mem is the real peak memory of the whole box
+        std::string memory_str = lim.use_cg && !meta["cg-mem"].empty() ? meta["cg-mem"] : meta["max-rss"];
         std::string isolate_exitcode = meta["exitcode"];
         std::string isolate_message = meta["message"];
+        bool oom_killed = meta["cg-oom-killed"] == "1";
 
         if (!time_str.empty()) {
             item.time = time_str + "s";
@@ -182,6 +245,9 @@ public:
         // Determine verdict
         if (status_code == "TO") {
             item.status = "Time Limit Exceeded";
+            item.passed = false;
+        } else if (oom_killed) {
+            item.status = "Memory Limit Exceeded";
             item.passed = false;
         } else if (status_code == "SG" || status_code == "RE" || (!isolate_exitcode.empty() && isolate_exitcode != "0")) {
             if (isolate_message.find("Memory") != std::string::npos || 

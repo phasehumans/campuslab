@@ -50,6 +50,8 @@ services:
         restart: unless-stopped
         logging: *default-logging
         privileged: true
+        # Own cgroup namespace so judge/entrypoint.sh can delegate cgroup v2 to isolate
+        cgroup: private
         environment:
             REDIS_HOST: ${REDIS_HOST:-redis}
             REDIS_PORT: ${REDIS_PORT:-6379}

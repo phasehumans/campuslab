@@ -180,11 +180,7 @@ export function TestResultPanel({
                     <div>
                         {isCodeforcesHidden ? (
                             <div className="rounded-[3px] border border-[#2a2a2a] bg-[#141414] p-3 text-xs text-[#888888]">
-                                <span className="text-[#e8e8e6] font-medium">
-                                    System Test #{failedTestNum} (Hidden):
-                                </span>{' '}
-                                Test data is hidden for system testcases to maintain competitive
-                                programming integrity.
+                                Test {failedTestNum} is hidden.
                             </div>
                         ) : (
                             <div className="space-y-2 pt-1">

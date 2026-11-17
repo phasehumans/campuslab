@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { FileText, History } from 'lucide-react'
 import { cn, parseUtcDate } from '@/lib/utils'
-import { FALLBACK_CODE, LANGUAGES } from '@/data/code'
+import { EMPTY_CODE, getRememberedLanguage, rememberLanguage } from '@/data/code'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { SignoutModal } from '@/components/auth/SignoutModal'
@@ -426,9 +426,14 @@ export function SolveScreen() {
         blast()
     }, [isWinner, dismissedContestResult])
 
-    const [language, setLanguage] = useState<EditorLanguage>('cpp')
+    // Last-used language is remembered in this browser; every language starts empty
+    const [language, setLanguageState] = useState<EditorLanguage>(getRememberedLanguage)
+    const setLanguage = (next: EditorLanguage) => {
+        setLanguageState(next)
+        rememberLanguage(next)
+    }
     const [codeByLanguage, setCodeByLanguage] =
-        useState<Record<EditorLanguage, string>>(FALLBACK_CODE)
+        useState<Record<EditorLanguage, string>>(EMPTY_CODE)
     const [activeLeftTab, setActiveLeftTab] = useState<'description' | 'submissions'>('description')
     const [bottomPanelOpen, setBottomPanelOpen] = useState(false)
     const [activeBottomTab, setActiveBottomTab] = useState<'testcase' | 'testresult'>('testcase')
@@ -523,22 +528,14 @@ export function SolveScreen() {
             return
         }
 
-        const nextCodes = {
-            ...FALLBACK_CODE,
-            ...(problemQuery.data.starterCodes ?? {}),
-        }
-
-        setCodeByLanguage(nextCodes)
+        // Codeforces-style: a fresh, empty editor for every problem
+        setCodeByLanguage(EMPTY_CODE)
         setActiveTestCase(0)
         setActiveLeftTab('description')
         setExecutionResult(null)
         setLatestSubmission(null)
         setResultMessage(null)
         solveStartTimeRef.current = Date.now()
-
-        const defaultLanguage =
-            LANGUAGES.find((item) => problemQuery.data?.starterCodes?.[item.id])?.id ?? 'cpp'
-        setLanguage(defaultLanguage)
     }, [problemQuery.data?.id])
 
     const runMutation = useMutation({
@@ -646,10 +643,9 @@ export function SolveScreen() {
 
     const handleResetCode = () => {
         if (isDisqualified || !problemQuery.data) return
-        const defaultCode = problemQuery.data.starterCodes?.[language] ?? FALLBACK_CODE[language]
         setCodeByLanguage((current) => ({
             ...current,
-            [language]: defaultCode,
+            [language]: '',
         }))
     }
 
@@ -693,7 +689,7 @@ export function SolveScreen() {
     const problem = problemQuery.data
     const duelCopy =
         isDuel && duelFinished && contestRoom ? duelResultCopy(contestRoom, user?.id) : null
-    const activeCode = codeByLanguage[language] ?? FALLBACK_CODE[language]
+    const activeCode = codeByLanguage[language] ?? ''
 
     return (
         <DarkSurface>
@@ -959,7 +955,11 @@ export function SolveScreen() {
                                     }
                                     className="flex flex-col overflow-hidden min-h-[140px]"
                                 >
-                                    <EditorHeader language={language} />
+                                    <EditorHeader
+                                        language={language}
+                                        onLanguageChange={setLanguage}
+                                        disabled={isDisqualified}
+                                    />
 
                                     <CodeEditor
                                         code={activeCode}

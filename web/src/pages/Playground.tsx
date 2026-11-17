@@ -8,12 +8,13 @@ import {
     Check,
     AlertCircle,
     Loader2,
-    Code2,
     ArrowLeft,
     Maximize,
     Minimize,
 } from 'lucide-react'
 import { CodeEditor } from '@/components/problem/CodeEditor'
+import { EditorHeader } from '@/components/problem/EditorHeader'
+import { getRememberedLanguage, rememberLanguage } from '@/data/code'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { SignoutModal } from '@/components/auth/SignoutModal'
@@ -21,36 +22,37 @@ import { runPlaygroundCode } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { DarkSurface } from '@/components/ui/Modal'
-import type { PlaygroundRunResponse } from '@/lib/types'
+import type { EditorLanguage, PlaygroundRunResponse } from '@/lib/types'
 
 const RUN_SHORTCUT_HINT =
     typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent)
         ? 'Run code (⌘ + Enter)'
         : 'Run code (Ctrl + Enter)'
 
-const DEFAULT_CPP_BOILERPLATE = `#include <iostream>
 
-using namespace std;
+// Code is kept per language (the C++ key matches what older versions saved)
+const codeStorageKey = (language: EditorLanguage) => `campuslab_playground_code_${language}`
 
-int main() {
-    // Write your C++ code here
-    cout << "Hello from CampusLab Playground!" << endl;
-    return 0;
+function loadCode(language: EditorLanguage) {
+    try {
+        return localStorage.getItem(codeStorageKey(language)) ?? ''
+    } catch {
+        return ''
+    }
 }
-`
-
-const STORAGE_KEY_CODE = 'campuslab_playground_code_cpp'
 const STORAGE_KEY_STDIN = 'campuslab_playground_stdin'
 
 export function Playground() {
     const { isLoggedIn, openModal } = useAuth()
-    const [code, setCode] = useState<string>(() => {
-        try {
-            return localStorage.getItem(STORAGE_KEY_CODE) || DEFAULT_CPP_BOILERPLATE
-        } catch {
-            return DEFAULT_CPP_BOILERPLATE
-        }
-    })
+    const [language, setLanguageState] = useState<EditorLanguage>(getRememberedLanguage)
+    const [code, setCode] = useState<string>(() => loadCode(getRememberedLanguage()))
+    const changeLanguage = (next: EditorLanguage) => {
+        setLanguageState(next)
+        rememberLanguage(next)
+        setCode(loadCode(next))
+        setResult(null)
+        setErrorMsg(null)
+    }
 
     const [stdin, setStdin] = useState<string>(() => {
         try {
@@ -70,11 +72,11 @@ export function Playground() {
     // Autosave code to localStorage
     useEffect(() => {
         try {
-            localStorage.setItem(STORAGE_KEY_CODE, code)
+            localStorage.setItem(codeStorageKey(language), code)
         } catch {
             // ignore storage quota errors
         }
-    }, [code])
+    }, [code, language])
 
     // Autosave stdin to localStorage
     useEffect(() => {
@@ -94,7 +96,7 @@ export function Playground() {
             const res = await runPlaygroundCode({
                 sourceCode: code,
                 stdin,
-                language: 'cpp',
+                language,
             })
             startTransition(() => {
                 setResult(res)
@@ -106,7 +108,7 @@ export function Playground() {
         } finally {
             setIsRunning(false)
         }
-    }, [code, stdin, isRunning])
+    }, [code, stdin, isRunning, language])
 
     // Global keyboard shortcut: Ctrl+Enter or Cmd+Enter to run
     useEffect(() => {
@@ -139,10 +141,10 @@ export function Playground() {
     const handleReset = () => {
         if (
             window.confirm(
-                'Reset code to default C++ template? Your current edits will be cleared.'
+                'Clear the editor? Your current code will be removed.'
             )
         ) {
-            setCode(DEFAULT_CPP_BOILERPLATE)
+            setCode('')
             setResult(null)
             setErrorMsg(null)
         }
@@ -215,11 +217,11 @@ export function Playground() {
 
                     {/* Right: Reset, Clear, Fullscreen, GitHub, Auth */}
                     <div className="flex items-center gap-2 font-mono text-xs">
-                        <Tooltip content="Reset code to default template" position="bottom">
+                        <Tooltip content="Clear the editor" position="bottom">
                             <button
                                 type="button"
                                 onClick={handleReset}
-                                aria-label="Reset code to default template"
+                                aria-label="Clear the editor"
                                 className="p-1.5 text-[#a09f9d] hover:text-[#e8e8e6] border border-[#333333] bg-[#252423] hover:bg-[#2f2e2d] rounded-[3px] transition-colors cursor-pointer flex items-center justify-center"
                             >
                                 <RotateCcw className="h-3.5 w-3.5" />
@@ -294,15 +296,9 @@ export function Playground() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 h-full">
                         {/* Left Panel: Code Editor */}
                         <div className="flex flex-col border border-[#333333] rounded-[3px] bg-[#191919] overflow-hidden h-full shadow-xs">
-                            <div className="flex items-center justify-between px-3.5 py-2 bg-[#191919] border-b border-[#333333] font-mono text-xs text-[#a09f9d] shrink-0">
-                                <div className="flex items-center gap-1.5 bg-[#252423] text-[#e8e8e6] border border-[#333333] px-2.5 py-1 rounded-[2px] font-medium text-[11px]">
-                                    <Code2 className="h-3.5 w-3.5 text-[#87b2f4]" />
-                                    <span>main.cpp</span>
-                                </div>
-                                <span className="text-[11px] text-[#888888]">C++20</span>
-                            </div>
+                            <EditorHeader language={language} onLanguageChange={changeLanguage} />
                             <div className="flex-1 min-h-0 flex flex-col bg-[#1E1E1E]">
-                                <CodeEditor code={code} setCode={setCode} language="cpp" />
+                                <CodeEditor code={code} setCode={setCode} language={language} />
                             </div>
                         </div>
 

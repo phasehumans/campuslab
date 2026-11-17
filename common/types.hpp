@@ -84,6 +84,7 @@ struct JudgeJob {
     std::string problem_id;
     std::string source_code;
     std::string contest_code;
+    std::string language = "cpp";  // id from common/languages.hpp
     double time_limit_sec = 1.0;
     int memory_limit_kb = 262144; // 256 MB
     std::vector<Testcase> testcases;
@@ -96,6 +97,8 @@ struct JudgeJob {
         job.problem_id = j.value("problemId", "");
         job.source_code = j.value("sourceCode", "");
         job.contest_code = j.value("contestCode", "");
+        job.language = j.value("language", std::string("cpp"));
+        if (job.language.empty()) job.language = "cpp";
         job.time_limit_sec = j.value("timeLimitSec", 1.0);
         job.memory_limit_kb = j.value("memoryLimitKb", 262144);
         if (j.contains("testcases") && j["testcases"].is_array()) {
@@ -117,6 +120,7 @@ struct JudgeJob {
         j["problemId"] = problem_id;
         j["sourceCode"] = source_code;
         j["contestCode"] = contest_code;
+        j["language"] = language;
         j["timeLimitSec"] = time_limit_sec;
         j["memoryLimitKb"] = memory_limit_kb;
         j["testcases"] = json::array();

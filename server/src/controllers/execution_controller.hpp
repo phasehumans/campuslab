@@ -48,6 +48,14 @@ public:
                 };
 
                 std::string source_code = get_str(body, "sourceCode");
+
+                // Language id (defaults to C++); unknown languages are rejected
+                std::string language = normalize_language(get_str(body, "language"));
+                if (language.empty()) {
+                    crow::response response(400, json({{"success", false}, {"message", "Unsupported language"}}).dump());
+                    response.add_header("Content-Type", "application/json");
+                    return response;
+                }
                 if (source_code.empty()) {
                     crow::response response(400, json({{"success", false}, {"message", "Source code is required"}}).dump());
                     response.add_header("Content-Type", "application/json");
@@ -71,7 +79,7 @@ public:
                 testcases.push_back({ stdin_input, "" });
 
                 // Run code as ephemeral guest job - no database records created
-                auto res = execution_service_.run_code("guest", source_code, testcases);
+                auto res = execution_service_.run_code("guest", source_code, testcases, language);
                 if (!res.success) {
                     crow::response response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
                     response.add_header("Content-Type", "application/json");
@@ -145,6 +153,14 @@ public:
                 };
 
                 std::string source_code = get_str(body, "sourceCode");
+
+                // Language id (defaults to C++); unknown languages are rejected
+                std::string language = normalize_language(get_str(body, "language"));
+                if (language.empty()) {
+                    crow::response response(400, json({{"success", false}, {"message", "Unsupported language"}}).dump());
+                    response.add_header("Content-Type", "application/json");
+                    return response;
+                }
                 if (source_code.size() > 65536) {
                     return crow::response(413, json({{"success", false}, {"message", "Source code exceeds maximum allowed size of 64KB"}}).dump());
                 }
@@ -159,7 +175,7 @@ public:
                     }
                 }
 
-                auto res = execution_service_.run_code(auth.user_id, source_code, testcases);
+                auto res = execution_service_.run_code(auth.user_id, source_code, testcases, language);
                 if (!res.success) {
                     return crow::response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
                 }
@@ -213,6 +229,14 @@ public:
                 std::string source_code = get_str(body, "sourceCode");
                 std::string contest_code = get_str(body, "contestCode");
 
+                // Language id (defaults to C++); unknown languages are rejected
+                std::string language = normalize_language(get_str(body, "language"));
+                if (language.empty()) {
+                    crow::response response(400, json({{"success", false}, {"message", "Unsupported language"}}).dump());
+                    response.add_header("Content-Type", "application/json");
+                    return response;
+                }
+
                 std::optional<int> user_solve_time = std::nullopt;
                 if (body.contains("solveDurationSeconds") && body["solveDurationSeconds"].is_number_integer()) {
                     user_solve_time = body["solveDurationSeconds"].get<int>();
@@ -224,7 +248,7 @@ public:
                     return crow::response(413, json({{"success", false}, {"message", "Source code exceeds maximum allowed size of 64KB"}}).dump());
                 }
 
-                auto res = execution_service_.submit_code(auth.user_id, problem_id, source_code, contest_code, user_solve_time);
+                auto res = execution_service_.submit_code(auth.user_id, problem_id, source_code, contest_code, user_solve_time, language);
                 if (!res.success) {
                     return crow::response(res.status_code, json({{"success", false}, {"message", res.message}}).dump());
                 }
